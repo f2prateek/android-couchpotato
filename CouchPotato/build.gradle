@@ -1,0 +1,65 @@
+buildscript {
+  repositories {
+    mavenCentral()
+    maven { url 'http://download.crashlytics.com/maven' }
+  }
+  dependencies {
+    classpath group: 'com.android.tools.build', name: 'gradle', version: '0.6.+'
+    classpath group: 'com.crashlytics.tools.gradle', name: 'crashlytics-gradle', version: '1.+'
+  }
+}
+
+apply plugin: 'android'
+apply plugin: 'crashlytics'
+
+dependencies {
+  repositories {
+    mavenCentral()
+    maven { url 'http://download.crashlytics.com/maven' }
+  }
+
+  compile group: 'com.android.support', name: 'support-v13', version: '13.0.+'
+  compile group: 'com.crashlytics.android', name: 'crashlytics', version: '1.+'
+  compile fileTree(dir: 'libs', include: '*.jar')
+
+  compile group: 'com.jakewharton', name: 'butterknife', version: '3.0.+'
+  compile group: 'com.squareup', name: 'tape', version: '1.1.+'
+  compile group: 'com.squareup', name: 'otto', version: '1.3.+'
+  compile group: 'com.squareup.picasso', name: 'picasso', version: '2.1.+'
+  compile group: 'com.squareup.dagger', name: 'dagger', version: '1.1.+'
+  compile group: 'com.squareup.retrofit', name: 'retrofit', version: '1.2.+'
+  compile group: 'com.google.guava', name: 'guava', version: '15.+'
+  compile(group: 'de.keyboardsurfer.android.widget', name: 'crouton', version: '1.8.+') {
+    exclude module: 'support-v4'
+    compile group: 'com.android.support', name: 'support-v4', version: '13.0.+'
+  }
+  compile group: 'com.squareup.okhttp', name: 'okhttp', version: '1.2.+'
+  compile group: 'com.squareup.dagger', name: 'dagger-compiler', version: '1.1.+'
+  instrumentTestCompile group: 'com.squareup', name: 'fest-android', version: '1.0.+'
+  instrumentTestCompile group: 'com.squareup.spoon', name: 'spoon-client', version: '1.0.+'
+}
+
+android {
+  compileSdkVersion 18
+  buildToolsVersion "18.1.1"
+
+  testBuildType "debug"
+
+  buildTypes {
+    debug {
+      packageNameSuffix ".debug"
+    }
+  }
+
+  defaultConfig {
+    minSdkVersion 16
+    targetSdkVersion 18
+    buildConfig """\
+          public static final boolean RELEASE = !DEBUG;
+        """
+  }
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '1.8'
+}
