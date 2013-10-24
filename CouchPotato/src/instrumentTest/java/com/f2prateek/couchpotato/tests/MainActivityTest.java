@@ -16,9 +16,13 @@
 
 package com.f2prateek.couchpotato.tests;
 
+import android.app.Instrumentation;
+import android.content.IntentFilter;
 import android.test.suitebuilder.annotation.SmallTest;
 import com.f2prateek.couchpotato.ui.activities.MainActivity;
 import com.squareup.spoon.Spoon;
+
+import static org.fest.assertions.api.ANDROID.assertThat;
 
 public class MainActivityTest extends ActivityTest<MainActivity> {
 
@@ -32,7 +36,11 @@ public class MainActivityTest extends ActivityTest<MainActivity> {
   }
 
   @SmallTest
-  public void testUI() {
-    Spoon.screenshot(activity, "Initial_State");
+  public void testStartsActivityWhenNotLoggedIn() {
+    IntentFilter filter = new IntentFilter();
+    Instrumentation.ActivityMonitor monitor = instrumentation.addMonitor(filter, null, false);
+    // Verify new activity was shown.
+    assertThat(monitor).hasHits(1);
+    Spoon.screenshot(monitor.getLastActivity(), "next_activity_shown");
   }
 }
