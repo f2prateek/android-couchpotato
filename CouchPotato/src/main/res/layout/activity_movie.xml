@@ -53,70 +53,7 @@
 
     </FrameLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingRight="@dimen/default_padding"
-        android:paddingLeft="@dimen/default_padding"
-        android:paddingTop="@dimen/default_padding_small"
-        android:orientation="vertical">
-
-      <TextView android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          style="?android:attr/listSeparatorTextViewStyle"
-          android:text="@string/movie_plot_label"/>
-
-      <TextView android:id="@+id/movie_plot"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          style="@style/TextAppearance.Movie"/>
-
-      <TextView android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          style="?android:attr/listSeparatorTextViewStyle"
-          android:text="@string/movie_genre_label"/>
-
-      <TextView android:id="@+id/movie_genres"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          style="@style/TextAppearance.Movie.Genre"/>
-
-      <TextView android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          style="?android:attr/listSeparatorTextViewStyle"
-          android:text="@string/movie_cast_label"/>
-
-      <TextView android:id="@+id/movie_cast"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          style="@style/TextAppearance.Movie.Cast"/>
-
-      <TextView android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          style="?android:attr/listSeparatorTextViewStyle"
-          android:text="@string/movie_directors_label"/>
-
-      <TextView android:id="@+id/movie_directors"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          style="@style/TextAppearance.Movie.Directors"/>
-
-      <TextView android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          style="?android:attr/listSeparatorTextViewStyle"
-          android:text="@string/movie_writers_label"/>
-
-      <TextView android:id="@+id/movie_writers"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          style="@style/TextAppearance.Movie.Writers"/>
-
-      <TextView android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          style="?android:attr/listSeparatorTextViewStyle"
-          android:text="@string/movie_runtime_label"/>
-
-    </LinearLayout>
+    <include layout="@layout/movie_info_layout"/>
 
   </LinearLayout>
 
