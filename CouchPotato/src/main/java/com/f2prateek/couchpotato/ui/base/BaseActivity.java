@@ -18,8 +18,6 @@ package com.f2prateek.couchpotato.ui.base;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.view.MenuItem;
 import android.view.Window;
 import butterknife.Views;
 import com.f2prateek.couchpotato.CouchPotatoApplication;
@@ -53,17 +51,6 @@ public abstract class BaseActivity extends Activity {
     super.setContentView(layoutResID);
     // Perform "view injection"
     Views.inject(this);
-  }
-
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      // Respond to the action bar's Up/Home button
-      case android.R.id.home:
-        NavUtils.navigateUpFromSameTask(this);
-        return true;
-    }
-    return super.onOptionsItemSelected(item);
   }
 
   @Override protected void onResume() {
