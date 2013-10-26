@@ -19,7 +19,7 @@
 
   <color name="cards_background">#e5e5e5</color>
 
-  <color name="ab_color">@android:color/holo_red_dark</color>
+  <color name="transparent_action_bar_color">@android:color/holo_blue_dark</color>
 
   <color name="background_tab_pressed">#6633B5E5</color>
 

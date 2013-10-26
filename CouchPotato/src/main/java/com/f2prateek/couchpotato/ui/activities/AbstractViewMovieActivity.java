@@ -62,7 +62,7 @@ public abstract class AbstractViewMovieActivity extends BaseAuthenticatedActivit
     getActionBar().setDisplayShowHomeEnabled(false);
     setContentView(R.layout.activity_movie);
     setupPages();
-    setUpFancyScroll(getResources().getColor(R.color.ab_color));
+    setUpFancyScroll(getResources().getColor(R.color.transparent_action_bar_color));
   }
 
   protected abstract void setupPages();

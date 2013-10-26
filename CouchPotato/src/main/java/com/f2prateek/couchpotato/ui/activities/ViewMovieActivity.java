@@ -81,7 +81,8 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
     setContentView(R.layout.activity_movie);
 
     movie = new Gson().fromJson(getIntent().getExtras().getString(MOVIE_KEY), Movie.class);
-    setUpFancyScroll(getResources().getColor(R.color.ab_color));
+    setUpFancyScroll(getResources().getColor(R.color.transparent_action_bar_color));
+    tabStrip.setIndicatorColor(getResources().getColor(R.color.transparent_action_bar_color));
     refreshView();
   }
 
@@ -150,11 +151,11 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
       switch (position) {
         // TODO : use resources
         case 0:
-          return "Cast";
+          return "Crew";
         case 1:
           return "Info";
         case 2:
-          return "Files";
+          return "Artwork";
         default:
           return super.getPageTitle(position);
       }

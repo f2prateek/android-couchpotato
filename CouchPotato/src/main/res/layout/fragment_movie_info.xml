@@ -28,7 +28,8 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:id="@+id/movie_plot"
-      android:padding="@dimen/default_padding"
+      android:paddingRight="@dimen/default_padding"
+      android:paddingLeft="@dimen/default_padding"
       style="@style/TextAppearance.Plot"/>
 
 </LinearLayout>
