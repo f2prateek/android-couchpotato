@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
   ~ Copyright 2013 Prateek Srivastava (@f2prateek)
   ~
@@ -15,12 +16,10 @@
   ~ limitations under the License.
   -->
 
-<resources>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/movie_cast">
 
-  <color name="cards_background">#e5e5e5</color>
-
-  <color name="ab_color">@android:color/holo_red_dark</color>
-
-  <color name="background_tab_pressed">#6633B5E5</color>
-
-</resources>
+</LinearLayout>

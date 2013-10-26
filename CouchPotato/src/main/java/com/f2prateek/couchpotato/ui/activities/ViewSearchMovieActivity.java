@@ -24,9 +24,9 @@ import android.view.SubMenu;
 import android.view.View;
 import android.widget.Toast;
 import com.f2prateek.couchpotato.R;
-import com.f2prateek.couchpotato.model.ProfileListResponse;
-import com.f2prateek.couchpotato.model.movie.MovieAddResponse;
-import com.f2prateek.couchpotato.model.movie.search.SearchMovie;
+import com.f2prateek.couchpotato.model.couchpotato.ProfileListResponse;
+import com.f2prateek.couchpotato.model.couchpotato.movie.MovieAddResponse;
+import com.f2prateek.couchpotato.model.couchpotato.movie.search.SearchMovie;
 import com.f2prateek.couchpotato.ui.CropPosterTransformation;
 import com.f2prateek.couchpotato.util.Ln;
 import com.google.gson.Gson;
@@ -36,7 +36,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-/** An activity to show a single {@link com.f2prateek.couchpotato.model.movie.search.SearchMovie}. */
+/** An activity to show a single {@link com.f2prateek.couchpotato.model.couchpotato.movie.search.SearchMovie}. */
 public class ViewSearchMovieActivity extends AbstractViewMovieActivity {
   private SearchMovie movie;
   private List<ProfileListResponse.Profile> profiles;
@@ -63,6 +63,10 @@ public class ViewSearchMovieActivity extends AbstractViewMovieActivity {
     });
   }
 
+  @Override protected void setupPages() {
+
+  }
+
   public void bindView(SearchMovie movie) {
     getActionBar().setTitle(movie.original_title);
     Picasso.with(this)
@@ -70,16 +74,16 @@ public class ViewSearchMovieActivity extends AbstractViewMovieActivity {
         .transform(new CropPosterTransformation(movie_backdrop,
             getResources().getConfiguration().orientation))
         .into(movie_backdrop);
-    movie_plot.setText(movie.plot);
+    //movie_plot.setText(movie.plot);
     if (TextUtils.isEmpty(movie.tagline)) {
       movie_tagline.setVisibility(View.GONE);
     } else {
       movie_tagline.setText(movie.tagline);
     }
-    writeToTextView(movie_genres, movie.genres);
-    writeToTextView(movie_cast, movie.actors);
-    writeToTextView(movie_directors, movie.directors);
-    writeToTextView(movie_writers, movie.writers);
+    //writeToTextView(movie_genres, movie.genres);
+    //writeToTextView(movie_cast, movie.actors);
+    //writeToTextView(movie_directors, movie.directors);
+    //writeToTextView(movie_writers, movie.writers);
   }
 
   @Override

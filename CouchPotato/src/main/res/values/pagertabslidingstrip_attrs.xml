@@ -17,10 +17,18 @@
 
 <resources>
 
-  <color name="cards_background">#e5e5e5</color>
-
-  <color name="ab_color">@android:color/holo_red_dark</color>
-
-  <color name="background_tab_pressed">#6633B5E5</color>
+  <declare-styleable name="PagerSlidingTabStrip">
+    <attr name="indicatorColor" format="color"/>
+    <attr name="underlineColor" format="color"/>
+    <attr name="dividerColor" format="color"/>
+    <attr name="indicatorHeight" format="dimension"/>
+    <attr name="underlineHeight" format="dimension"/>
+    <attr name="dividerPadding" format="dimension"/>
+    <attr name="tabPaddingLeftRight" format="dimension"/>
+    <attr name="scrollOffset" format="dimension"/>
+    <attr name="tabBackground" format="reference"/>
+    <attr name="shouldExpand" format="boolean"/>
+    <attr name="textAllCaps" format="boolean"/>
+  </declare-styleable>
 
 </resources>

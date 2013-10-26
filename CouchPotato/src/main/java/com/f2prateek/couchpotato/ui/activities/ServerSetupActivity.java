@@ -27,7 +27,7 @@ import butterknife.OnClick;
 import com.f2prateek.couchpotato.CouchPotatoLoginApi;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.UserConfig;
-import com.f2prateek.couchpotato.model.GetKeyResponse;
+import com.f2prateek.couchpotato.model.couchpotato.GetKeyResponse;
 import com.f2prateek.couchpotato.ui.base.BaseActivity;
 import com.f2prateek.couchpotato.util.Ln;
 import com.f2prateek.couchpotato.util.RetrofitErrorHandler;

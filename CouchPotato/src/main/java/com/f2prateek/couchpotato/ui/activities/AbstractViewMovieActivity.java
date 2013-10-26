@@ -22,6 +22,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -50,11 +51,8 @@ public abstract class AbstractViewMovieActivity extends BaseAuthenticatedActivit
   @InjectView(R.id.scroll_view) NotifyingScrollView notifyingScrollView;
   @InjectView(R.id.movie_backdrop) ImageView movie_backdrop;
   @InjectView(R.id.movie_tagline) TextView movie_tagline;
-  @InjectView(R.id.movie_plot) TextView movie_plot;
-  @InjectView(R.id.movie_genres) TextView movie_genres;
-  @InjectView(R.id.movie_cast) TextView movie_cast;
-  @InjectView(R.id.movie_directors) TextView movie_directors;
-  @InjectView(R.id.movie_writers) TextView movie_writers;
+
+  @InjectView(R.id.movie_info_pager) ViewPager movie_info_pager;
 
   private Drawable actionBarBackgroundDrawable;
 
@@ -63,8 +61,11 @@ public abstract class AbstractViewMovieActivity extends BaseAuthenticatedActivit
     getActionBar().setDisplayHomeAsUpEnabled(true);
     getActionBar().setDisplayShowHomeEnabled(false);
     setContentView(R.layout.activity_movie);
+    setupPages();
     setUpFancyScroll(getResources().getColor(R.color.ab_color));
   }
+
+  protected abstract void setupPages();
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {

@@ -14,15 +14,12 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato;
+package com.f2prateek.couchpotato.model.couchpotato.movie;
 
-import com.f2prateek.couchpotato.model.couchpotato.GetKeyResponse;
-import retrofit.Callback;
-import retrofit.http.GET;
-import retrofit.http.Query;
+import java.util.ArrayList;
 
-/** To login */
-public interface CouchPotatoLoginApi {
-  @GET("/getkey") void get_key(@Query("p") String password, @Query("u") String username,
-      Callback<GetKeyResponse> cb);
+public class Rating {
+  public ArrayList<Double> imdb;
+  public long tmdb_id;
+  public boolean via_imdb;
 }

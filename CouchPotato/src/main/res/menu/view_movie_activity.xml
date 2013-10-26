@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright 2013 Prateek Srivastava (@f2prateek)
   ~
@@ -15,12 +14,16 @@
   ~ limitations under the License.
   -->
 
-<resources>
-
-  <color name="cards_background">#e5e5e5</color>
-
-  <color name="ab_color">@android:color/holo_red_dark</color>
-
-  <color name="background_tab_pressed">#6633B5E5</color>
-
-</resources>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:id="@+id/action_play_trailer"
+      android:title="@string/action_play_trailer"
+      android:icon="@drawable/ic_action_playback_play"
+      android:showAsAction="ifRoom"/>
+  <item android:id="@+id/action_imdb"
+      android:title="@string/action_imdb"
+      android:showAsAction="ifRoom"/>
+  <item android:id="@+id/action_refresh"
+      android:title="@string/action_refresh"
+      android:icon="@drawable/ic_action_refresh"
+      android:showAsAction="ifRoom"/>
+</menu>

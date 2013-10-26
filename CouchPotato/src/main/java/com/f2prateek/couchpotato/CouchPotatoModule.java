@@ -28,6 +28,8 @@ import com.f2prateek.couchpotato.ui.base.BaseFragment;
 import com.f2prateek.couchpotato.ui.base.BaseProgressFragment;
 import com.f2prateek.couchpotato.ui.base.BaseProgressGridFragment;
 import com.f2prateek.couchpotato.ui.fragments.DetailedMovieGridFragment;
+import com.f2prateek.couchpotato.ui.fragments.MovieCastFragment;
+import com.f2prateek.couchpotato.ui.fragments.MovieInfoFragment;
 import com.f2prateek.couchpotato.ui.fragments.MovieSearchGridFragment;
 import com.squareup.otto.Bus;
 import dagger.Module;
@@ -40,7 +42,8 @@ import retrofit.RestAdapter;
         BaseActivity.class, BaseAuthenticatedActivity.class, MainActivity.class,
         ViewMovieActivity.class, MovieSearchActivity.class, ViewSearchMovieActivity.class,
         BaseFragment.class, BaseProgressFragment.class, BaseProgressGridFragment.class,
-        DetailedMovieGridFragment.class, MovieSearchGridFragment.class, ServerSetupActivity.class
+        DetailedMovieGridFragment.class, MovieSearchGridFragment.class, ServerSetupActivity.class,
+        MovieCastFragment.class, MovieInfoFragment.class
     },
     complete = false)
 public class CouchPotatoModule {

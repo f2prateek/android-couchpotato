@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato;
+package com.f2prateek.couchpotato.model.couchpotato.logging;
 
-import com.f2prateek.couchpotato.model.couchpotato.GetKeyResponse;
-import retrofit.Callback;
-import retrofit.http.GET;
-import retrofit.http.Query;
+import com.google.gson.annotations.SerializedName;
 
-/** To login */
-public interface CouchPotatoLoginApi {
-  @GET("/getkey") void get_key(@Query("p") String password, @Query("u") String username,
-      Callback<GetKeyResponse> cb);
+/** Response for /logging.log */
+public class LoggingLogResponse {
+  public String type;
+  @SerializedName("**kwargs")
+  public String kwargs;
 }

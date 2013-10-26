@@ -59,6 +59,10 @@
     <item name="android:maxLines">1</item>
   </style>
 
+  <style name="TextAppearance.Plot">
+    <item name="android:textSize">@dimen/text_size_medium</item>
+  </style>
+
   <style name="TextAppearance.Movie">
     <item name="android:textSize">@dimen/text_size_medium</item>
   </style>

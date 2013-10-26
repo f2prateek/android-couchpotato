@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato;
+package com.f2prateek.couchpotato.model.couchpotato;
 
-import com.f2prateek.couchpotato.model.couchpotato.GetKeyResponse;
-import retrofit.Callback;
-import retrofit.http.GET;
-import retrofit.http.Query;
+public class GetKeyResponse {
+  public String api_key;
+  public boolean success;
 
-/** To login */
-public interface CouchPotatoLoginApi {
-  @GET("/getkey") void get_key(@Query("p") String password, @Query("u") String username,
-      Callback<GetKeyResponse> cb);
+  @Override public String toString() {
+    return "GetKeyResponse{" +
+        "api_key='" + api_key + '\'' +
+        ", success=" + success +
+        '}';
+  }
 }

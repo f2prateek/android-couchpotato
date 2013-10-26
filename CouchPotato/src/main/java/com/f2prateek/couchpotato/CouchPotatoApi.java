@@ -16,22 +16,22 @@
 
 package com.f2prateek.couchpotato;
 
-import com.f2prateek.couchpotato.model.DirectoryListResponse;
-import com.f2prateek.couchpotato.model.FileTypesResponse;
-import com.f2prateek.couchpotato.model.ProfileListResponse;
-import com.f2prateek.couchpotato.model.app.AppAvailableResponse;
-import com.f2prateek.couchpotato.model.app.AppVersionResponse;
-import com.f2prateek.couchpotato.model.logging.LoggingClearResponse;
-import com.f2prateek.couchpotato.model.logging.LoggingGetResponse;
-import com.f2prateek.couchpotato.model.logging.LoggingLogResponse;
-import com.f2prateek.couchpotato.model.logging.LoggingPartialResponse;
-import com.f2prateek.couchpotato.model.manage.ManageProgressResponse;
-import com.f2prateek.couchpotato.model.manage.ManageUpdateResponse;
-import com.f2prateek.couchpotato.model.movie.MovieAddResponse;
-import com.f2prateek.couchpotato.model.movie.MovieGetResponse;
-import com.f2prateek.couchpotato.model.movie.MovieListResponse;
-import com.f2prateek.couchpotato.model.movie.MovieRefreshResponse;
-import com.f2prateek.couchpotato.model.movie.search.MovieSearchResponse;
+import com.f2prateek.couchpotato.model.couchpotato.DirectoryListResponse;
+import com.f2prateek.couchpotato.model.couchpotato.FileTypesResponse;
+import com.f2prateek.couchpotato.model.couchpotato.ProfileListResponse;
+import com.f2prateek.couchpotato.model.couchpotato.app.AppAvailableResponse;
+import com.f2prateek.couchpotato.model.couchpotato.app.AppVersionResponse;
+import com.f2prateek.couchpotato.model.couchpotato.logging.LoggingClearResponse;
+import com.f2prateek.couchpotato.model.couchpotato.logging.LoggingGetResponse;
+import com.f2prateek.couchpotato.model.couchpotato.logging.LoggingLogResponse;
+import com.f2prateek.couchpotato.model.couchpotato.logging.LoggingPartialResponse;
+import com.f2prateek.couchpotato.model.couchpotato.manage.ManageProgressResponse;
+import com.f2prateek.couchpotato.model.couchpotato.manage.ManageUpdateResponse;
+import com.f2prateek.couchpotato.model.couchpotato.movie.MovieAddResponse;
+import com.f2prateek.couchpotato.model.couchpotato.movie.MovieGetResponse;
+import com.f2prateek.couchpotato.model.couchpotato.movie.MovieListResponse;
+import com.f2prateek.couchpotato.model.couchpotato.movie.MovieRefreshResponse;
+import com.f2prateek.couchpotato.model.couchpotato.movie.search.MovieSearchResponse;
 import retrofit.Callback;
 import retrofit.client.Response;
 import retrofit.http.GET;
@@ -83,6 +83,6 @@ public interface CouchPotatoApi {
 
   @GET("/manage.update") void manage_update(Callback<ManageUpdateResponse> cb);
 
-  // manage
+  // profile
   @GET("/profile.list") void profile_list(Callback<ProfileListResponse> cb);
 }

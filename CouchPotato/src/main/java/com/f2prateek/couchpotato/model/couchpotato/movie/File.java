@@ -14,15 +14,22 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato;
+package com.f2prateek.couchpotato.model.couchpotato.movie;
 
-import com.f2prateek.couchpotato.model.couchpotato.GetKeyResponse;
-import retrofit.Callback;
-import retrofit.http.GET;
-import retrofit.http.Query;
+public class File {
+  public boolean available;
+  public String path;
+  public int part;
+  public long id;
+  public long type_id;
 
-/** To login */
-public interface CouchPotatoLoginApi {
-  @GET("/getkey") void get_key(@Query("p") String password, @Query("u") String username,
-      Callback<GetKeyResponse> cb);
+  @Override public String toString() {
+    return "File{" +
+        "available=" + available +
+        ", path='" + path + '\'' +
+        ", part=" + part +
+        ", id=" + id +
+        ", type_id=" + type_id +
+        '}';
+  }
 }

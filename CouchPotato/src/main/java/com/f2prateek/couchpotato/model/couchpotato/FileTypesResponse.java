@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato;
+package com.f2prateek.couchpotato.model.couchpotato;
 
-import com.f2prateek.couchpotato.model.couchpotato.GetKeyResponse;
-import retrofit.Callback;
-import retrofit.http.GET;
-import retrofit.http.Query;
+import java.util.ArrayList;
 
-/** To login */
-public interface CouchPotatoLoginApi {
-  @GET("/getkey") void get_key(@Query("p") String password, @Query("u") String username,
-      Callback<GetKeyResponse> cb);
+/** Response for /file.types */
+public class FileTypesResponse {
+  public ArrayList<FileType> types;
+
+  public static class FileType {
+    public String identifier;
+    public String type;
+    public int id;
+    public String name;
+  }
 }

@@ -51,7 +51,8 @@ public abstract class BaseProgressFragment extends BaseFragment {
   /** Attach to view once the view hierarchy has been created. */
   @Override
   public void onViewCreated(View view, Bundle savedInstanceState) {
-    super.onViewCreated(view, savedInstanceState);
+    // Skip this call since we don't want view injection
+    // super.onViewCreated(view, savedInstanceState);
     ensureContent();
   }
 

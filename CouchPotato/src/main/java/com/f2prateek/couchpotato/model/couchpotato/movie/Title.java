@@ -14,15 +14,23 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato;
+package com.f2prateek.couchpotato.model.couchpotato.movie;
 
-import com.f2prateek.couchpotato.model.couchpotato.GetKeyResponse;
-import retrofit.Callback;
-import retrofit.http.GET;
-import retrofit.http.Query;
+import com.google.gson.annotations.SerializedName;
 
-/** To login */
-public interface CouchPotatoLoginApi {
-  @GET("/getkey") void get_key(@Query("p") String password, @Query("u") String username,
-      Callback<GetKeyResponse> cb);
+public class Title {
+  @SerializedName("default")
+  public boolean isDefault;
+  public String simple_title;
+  public long id;
+  public String title;
+
+  @Override public String toString() {
+    return "Title{" +
+        "isDefault=" + isDefault +
+        ", simple_title='" + simple_title + '\'' +
+        ", id=" + id +
+        ", title='" + title + '\'' +
+        '}';
+  }
 }

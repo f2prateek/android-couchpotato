@@ -65,7 +65,8 @@ public abstract class BaseProgressGridFragment extends BaseFragment {
 
   @Override
   public void onViewCreated(View view, Bundle savedInstanceState) {
-    super.onViewCreated(view, savedInstanceState);
+    // Skip this call since we don't want view injection
+    // super.onViewCreated(view, savedInstanceState);
     ensureList();
   }
 

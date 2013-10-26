@@ -53,7 +53,14 @@
 
     </FrameLayout>
 
-    <include layout="@layout/movie_info_layout"/>
+    <com.f2prateek.couchpotato.ui.widgets.PagerSlidingTabStrip
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"/>
+
+    <android.support.v4.view.ViewPager android:id="@+id/movie_info_pager"
+        android:layout_height="500dp"
+        android:layout_width="match_parent"/>
 
   </LinearLayout>
 
