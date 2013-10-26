@@ -186,6 +186,7 @@ public class DetailedMovieGridFragment extends BaseProgressGridFragment
     private final ForegroundColorSpan redColorSpan;
     private final ImageSpan starSpan;
     private final ImageSpan labelSpan;
+    private final int itemPadding;
 
     public DetailedMovieAdapter(Context context, List<Movie> list) {
       super(context, list);
@@ -202,10 +203,12 @@ public class DetailedMovieGridFragment extends BaseProgressGridFragment
 
       greenColorSpan = new ForegroundColorSpan(resources.getColor(android.R.color.holo_green_dark));
       redColorSpan = new ForegroundColorSpan(resources.getColor(android.R.color.holo_red_dark));
+      itemPadding = resources.getDimensionPixelOffset(R.dimen.movie_grid_item_padding);
     }
 
     @Override public View newView(LayoutInflater inflater, int type, ViewGroup parent) {
       View view = inflater.inflate(R.layout.detailed_movie_grid_item, parent, false);
+      view.setPadding(itemPadding, itemPadding, itemPadding, itemPadding);
       ViewHolder holder = new ViewHolder(view);
       view.setTag(holder);
       return view;

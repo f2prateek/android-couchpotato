@@ -24,6 +24,8 @@
 
   <!-- Padding for movie image in the detailed grid !-->
   <dimen name="movie_poster_padding">@dimen/default_padding</dimen>
+  <!-- Padding for movie card in the detailed grid !-->
+  <dimen name="movie_grid_item_padding">@dimen/default_padding</dimen>
 
   <!-- Text Sizes !-->
   <dimen name="text_size_large">18sp</dimen>
