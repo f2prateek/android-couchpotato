@@ -23,43 +23,44 @@
     android:padding="@dimen/default_padding">
 
   <ImageView
-      android:layout_height="112dp"
-      android:layout_width="72dp"
+      android:layout_height="wrap_content"
+      android:layout_width="wrap_content"
       android:id="@+id/movie_poster"
       android:scaleType="centerCrop"
       android:layout_marginRight="@dimen/movie_poster_padding"
       android:layout_alignParentLeft="true"/>
 
-  <TextView
+  <LinearLayout
+      android:layout_height="match_parent"
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:id="@+id/movie_title"
-      android:layout_toRightOf="@+id/movie_poster"
-      android:layout_alignParentTop="true"
-      style="@style/TextAppearance.Title"/>
+      android:orientation="vertical"
+      android:layout_toRightOf="@+id/movie_poster">
 
-  <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:id="@+id/movie_runtime"
-      android:layout_toRightOf="@+id/movie_poster"
-      android:layout_below="@+id/movie_title"
-      style="@style/TextAppearance.Runtime"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/movie_title"
+        style="@style/TextAppearance.Title"/>
 
-  <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:id="@+id/movie_rating"
-      android:layout_toRightOf="@+id/movie_poster"
-      android:layout_below="@+id/movie_runtime"
-      style="@style/TextAppearance.Rating"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/movie_runtime"
+        style="@style/TextAppearance.Runtime"/>
 
-  <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:id="@+id/movie_genres"
-      android:layout_toRightOf="@+id/movie_poster"
-      android:layout_alignBottom="@+id/movie_poster"
-      style="@style/TextAppearance.Genres"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/movie_rating"
+        style="@style/TextAppearance.Rating"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/movie_genres"
+        style="@style/TextAppearance.Genres"/>
+
+  </LinearLayout>
+
 
 </com.f2prateek.couchpotato.ui.widgets.CheckableRelativeLayout>
