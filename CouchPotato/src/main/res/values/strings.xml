@@ -57,6 +57,10 @@
   <string name="info_not_available">Not available</string>
   <string name="action_add">Add</string>
   <string name="movie_added">Movie Added</string>
+  <string name="crew">crew</string>
+  <string name="cast">cast</string>
+  <string name="info">info</string>
+  <string name="artwork">artwork</string>
 
   <!-- Server Setup Activity !-->
   <string name="username">Username</string>

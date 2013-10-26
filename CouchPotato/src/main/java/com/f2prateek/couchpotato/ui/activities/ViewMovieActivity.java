@@ -18,6 +18,7 @@ package com.f2prateek.couchpotato.ui.activities;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -60,7 +61,11 @@ import retrofit.client.Response;
 public class ViewMovieActivity extends BaseAuthenticatedActivity {
 
   public static final String MOVIE_KEY = "com.f2prateek.couchpotato.MOVIE_KEY";
-  private final Joiner commaJoiner = Joiner.on(", ");
+  private static final Joiner commaJoiner = Joiner.on(", ");
+  private static final int CREW_FRAGMENT_NUM = 0;
+  private static final int CAST_FRAGMENT_NUM = 1;
+  private static final int INFO_FRAGMENT_NUM = 2;
+  private static final int ARTWORK_FRAGMENT_NUM = 3;
 
   @Inject CouchPotatoApi couchPotatoApi;
 
@@ -123,20 +128,24 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
 
   public static class MovieInfoAdapter extends FragmentPagerAdapter {
 
+    private final Context context;
     private final Movie movie;
 
-    public MovieInfoAdapter(FragmentManager fm, Movie movie) {
+    public MovieInfoAdapter(FragmentManager fm, Context context, Movie movie) {
       super(fm);
+      this.context = context;
       this.movie = movie;
     }
 
     @Override public Fragment getItem(int position) {
       switch (position) {
-        case 0:
+        case CREW_FRAGMENT_NUM:
           return MovieCastFragment.newInstance(movie);
-        case 1:
+        case CAST_FRAGMENT_NUM:
+          return MovieCastFragment.newInstance(movie);
+        case INFO_FRAGMENT_NUM:
           return MovieInfoFragment.newInstance(movie);
-        case 2:
+        case ARTWORK_FRAGMENT_NUM:
           return MovieCastFragment.newInstance(movie);
         default:
           return null;
@@ -144,18 +153,19 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
     }
 
     @Override public int getCount() {
-      return 3;
+      return 4;
     }
 
     @Override public CharSequence getPageTitle(int position) {
       switch (position) {
-        // TODO : use resources
-        case 0:
-          return "Crew";
-        case 1:
-          return "Info";
-        case 2:
-          return "Artwork";
+        case CREW_FRAGMENT_NUM:
+          return context.getResources().getString(R.string.crew);
+        case CAST_FRAGMENT_NUM:
+          return context.getResources().getString(R.string.cast);
+        case INFO_FRAGMENT_NUM:
+          return context.getResources().getString(R.string.info);
+        case ARTWORK_FRAGMENT_NUM:
+          return context.getResources().getString(R.string.artwork);
         default:
           return super.getPageTitle(position);
       }
@@ -202,8 +212,8 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
   public void refreshView() {
     initializePoster();
     // TODO : figure out height issue
-    movie_info_pager.setAdapter(new MovieInfoAdapter(getFragmentManager(), movie));
-    movie_info_pager.setCurrentItem(1);
+    movie_info_pager.setAdapter(new MovieInfoAdapter(getFragmentManager(), this, movie));
+    movie_info_pager.setCurrentItem(2);
     tabStrip.setViewPager(movie_info_pager);
   }
 
