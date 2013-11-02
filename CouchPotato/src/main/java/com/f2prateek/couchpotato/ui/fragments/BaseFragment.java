@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato.ui.base;
+package com.f2prateek.couchpotato.ui.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.View;
 import butterknife.Views;
 import com.f2prateek.couchpotato.CouchPotatoApplication;
+import com.google.gson.Gson;
 import com.squareup.otto.Bus;
 import javax.inject.Inject;
 
@@ -30,6 +31,7 @@ import javax.inject.Inject;
  */
 public abstract class BaseFragment extends Fragment {
   @Inject Bus bus;
+  public static final Gson gson = new Gson();
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

@@ -16,14 +16,25 @@
 
 package com.f2prateek.couchpotato;
 
-import retrofit.Callback;
-import retrofit.client.Response;
+import com.f2prateek.couchpotato.model.moviedb.Casts;
+import com.f2prateek.couchpotato.model.moviedb.Configuration;
+import com.f2prateek.couchpotato.model.moviedb.Images;
+import com.f2prateek.couchpotato.model.moviedb.MovieDBMovie;
+import com.f2prateek.couchpotato.model.moviedb.SimilarMovies;
+import com.f2prateek.couchpotato.model.moviedb.Trailers;
 import retrofit.http.GET;
 import retrofit.http.Path;
 
 public interface MovieDBApi {
+  @GET("/configuration") Configuration get_configuration();
 
-  @GET("/movie/{id}")
-  void movie_add(@Path("id") int id, Callback<Movie> cb);
+  @GET("/movie/{id}") MovieDBMovie get_movie(@Path("id") long id);
 
+  @GET("/movie/{id}/casts") Casts get_movie_cast(@Path("id") long id);
+
+  @GET("/movie/{id}/images") Images get_movie_images(@Path("id") long id);
+
+  @GET("/movie/{id}/trailers") Trailers get_movie_trailers(@Path("id") long id);
+
+  @GET("/movie/{id}/similar_movies") SimilarMovies get_movie_similar(@Path("id") long id);
 }

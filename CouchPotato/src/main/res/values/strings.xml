@@ -25,7 +25,7 @@
   <string name="restarting">Restarting server</string>
 
 
-  <!-- Movie List Fragment !-->
+  <!-- MovieDBMovie List Fragment !-->
   <string name="movie_list_fragment">Movies</string>
   <string name="empty">This list is empty!</string>
   <string name="failed">Failed to load list.</string>
@@ -36,7 +36,7 @@
     <item quantity="other">%d items selected</item>
   </plurals>
 
-  <!-- Movie Activity !-->
+  <!-- MovieDBMovie Activity !-->
   <string name="action_imdb">IMDB</string>
   <string name="action_play_trailer">Play trailer</string>
   <string name="movie_plot_label">plot</string>

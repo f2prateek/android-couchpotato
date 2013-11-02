@@ -18,6 +18,6 @@ package com.f2prateek.couchpotato.model.couchpotato.movie;
 
 /** Response for /movie.get */
 public class MovieGetResponse {
-  public Movie movie;
+  public CouchPotatoMovie movie;
   public boolean success;
 }

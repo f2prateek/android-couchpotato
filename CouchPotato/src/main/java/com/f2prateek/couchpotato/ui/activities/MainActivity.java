@@ -27,17 +27,9 @@ import android.widget.SearchView;
 import butterknife.InjectView;
 import com.f2prateek.couchpotato.CouchPotatoApi;
 import com.f2prateek.couchpotato.R;
-import com.f2prateek.couchpotato.ui.base.BaseAuthenticatedActivity;
 import com.f2prateek.couchpotato.ui.fragments.DetailedMovieGridFragment;
 import com.f2prateek.couchpotato.ui.widgets.SwipeableActionBarTabsAdapter;
-import com.f2prateek.couchpotato.util.Ln;
-import com.f2prateek.couchpotato.util.RetrofitErrorHandler;
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
 import javax.inject.Inject;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 /** The top level activity that is shown first to the user. */
 public class MainActivity extends BaseAuthenticatedActivity {
@@ -82,9 +74,9 @@ public class MainActivity extends BaseAuthenticatedActivity {
         MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
     searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
       @Override public boolean onQueryTextSubmit(String query) {
-        Intent intent = new Intent(MainActivity.this, MovieSearchActivity.class);
-        intent.putExtra(MovieSearchActivity.SEARCH_QUERY, query);
-        startActivity(intent);
+        //Intent intent = new Intent(MainActivity.this, MovieSearchActivity.class);
+        //intent.putExtra(MovieSearchActivity.SEARCH_QUERY, query);
+        //startActivity(intent);
         return true;
       }
 
@@ -118,6 +110,7 @@ public class MainActivity extends BaseAuthenticatedActivity {
 
   /** Shutdown the CouchPotato server. */
   private void shutdown() {
+    /*
     couchPotatoApi.app_shutdown(new Callback<Response>() {
       @Override public void success(Response appShutdownResponse, Response response) {
         Ln.d("Shutting Down");
@@ -129,10 +122,12 @@ public class MainActivity extends BaseAuthenticatedActivity {
         RetrofitErrorHandler.showError(MainActivity.this, retrofitError);
       }
     });
+    */
   }
 
   /** Restart the CouchPotato server. */
   private void restart() {
+    /*
     couchPotatoApi.app_restart(new Callback<Response>() {
       @Override public void success(Response appRestartResponse, Response response) {
         Ln.d("Restarting");
@@ -144,5 +139,6 @@ public class MainActivity extends BaseAuthenticatedActivity {
         RetrofitErrorHandler.showError(MainActivity.this, retrofitError);
       }
     });
+    */
   }
 }

@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato.model.couchpotato.movie;
+package com.f2prateek.couchpotato.services;
 
-/** Response for /CouchPotatoMovie.refresh */
-public class MovieRefreshResponse {
-  public boolean success;
+public class CouchPotatoService extends BaseApiService {
+
 }

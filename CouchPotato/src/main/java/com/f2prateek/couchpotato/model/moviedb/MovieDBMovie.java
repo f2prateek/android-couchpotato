@@ -18,20 +18,29 @@ package com.f2prateek.couchpotato.model.moviedb;
 
 import java.util.ArrayList;
 
-public class SimilarMovies {
-  public int page;
-  public int total_pages;
-  public int total_results;
-  public ArrayList<SimilarMovie> results;
+public class MovieDBMovie {
+  public long id;
 
-  public static class SimilarMovie {
-    public String backdrop_path;
-    public int id;
-    public String original_title;
-    // TODO : public Date release_date;
-    public String poster_path;
-    public String title;
-    public double vote_average;
-    public int vote_count;
-  }
+  public boolean adult;
+  public String backdrop_path;
+  public long budget;
+  public ArrayList<Genre> genres;
+  public String homepage;
+  public String imdb_id;
+  public String original_title;
+  public String overview;
+  public float popularity;
+  public String poster_path;
+  // TODO: public Date release_date;
+  public long revenue;
+  public int runtime;
+  public String status;
+  public String tagline;
+  public String title;
+  public double vote_average;
+  public int vote_count;
+  public Casts casts;
+  public Images images;
+  public SimilarMovies similarMovies;
+  public Trailers trailers;
 }

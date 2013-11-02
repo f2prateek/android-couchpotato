@@ -14,9 +14,16 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato.model.couchpotato.movie;
+package com.f2prateek.couchpotato.bus;
 
-/** Response for /CouchPotatoMovie.refresh */
-public class MovieRefreshResponse {
-  public boolean success;
+/**
+ * Similar to {@link com.f2prateek.couchpotato.bus.DataEvent}, but wraps an error instead.
+ * Only activities, should be listening for this, to display an error message to the user.
+ */
+public class ErrorEvent {
+  public final Exception exception;
+
+  public ErrorEvent(Exception exception) {
+    this.exception = exception;
+  }
 }

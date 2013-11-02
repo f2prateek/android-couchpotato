@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato.ui.base;
+package com.f2prateek.couchpotato.ui.fragments;
 
 import android.os.Bundle;
 import android.os.Handler;

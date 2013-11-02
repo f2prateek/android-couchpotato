@@ -40,49 +40,46 @@ import retrofit.http.Query;
 public interface CouchPotatoApi {
 
   // app
-  @GET("/app.available") void app_available(Callback<AppAvailableResponse> cb);
+  @GET("/app.available") AppAvailableResponse app_available();
 
-  @GET("/app.restart") void app_restart(Callback<Response> cb);
+  @GET("/app.restart") Response app_restart();
 
-  @GET("/app.shutdown") void app_shutdown(Callback<Response> cb);
+  @GET("/app.shutdown") Response app_shutdown();
 
-  @GET("/app.version") void app_version(Callback<AppVersionResponse> cb);
+  @GET("/app.version") AppVersionResponse app_version();
 
   // directory
-  @GET("/directory.list") void directory_list(Callback<DirectoryListResponse> cb);
+  @GET("/directory.list") DirectoryListResponse directory_list();
 
   // file
-  @GET("/file.types") void file_types(Callback<FileTypesResponse> cb);
+  @GET("/file.types") FileTypesResponse file_types();
 
   // logging
-  @GET("/logging.clear") void logging_clear(Callback<LoggingClearResponse> cb);
+  @GET("/logging.clear") LoggingClearResponse logging_clear();
 
-  @GET("/logging.get") void logging_get(@Query("id") long id, Callback<LoggingGetResponse> cb);
+  @GET("/logging.get") LoggingGetResponse logging_get(@Query("id") long id);
 
-  @GET("/logging.log") void logging_log(Callback<LoggingLogResponse> cb);
+  @GET("/logging.log") LoggingLogResponse logging_log();
 
-  @GET("/logging.partial") void logging_partial(Callback<LoggingPartialResponse> cb);
+  @GET("/logging.partial") LoggingPartialResponse logging_partial();
 
   // movie
-  @GET("/movie.add")
-  void movie_add(@Query("profile_id") String profile_id, @Query("identifier") String identifier,
-      @Query("title") String title, Callback<MovieAddResponse> cb);
+  @GET("/movie.add") MovieAddResponse movie_add(@Query("profile_id") String profile_id,
+      @Query("identifier") String identifier, @Query("title") String title);
 
   @GET("/movie.list") void movie_list(Callback<MovieListResponse> cb);
 
-  @GET("/movie.get") void movie_get(@Query("id") long id, Callback<MovieGetResponse> cb);
+  @GET("/movie.get") MovieGetResponse movie_get(@Query("id") long id);
 
-  @GET("/movie.refresh")
-  void movie_refresh(@Query("id") long id, Callback<MovieRefreshResponse> cb);
+  @GET("/movie.refresh") MovieRefreshResponse movie_refresh(@Query("id") long id);
 
-  @GET("/movie.search")
-  void movie_search(@Query("q") String query, Callback<MovieSearchResponse> cb);
+  @GET("/movie.search") MovieSearchResponse movie_search(@Query("q") String query);
 
   // manage
-  @GET("/manage.progress") void manage_progress(Callback<ManageProgressResponse> cb);
+  @GET("/manage.progress") ManageProgressResponse manage_progress();
 
-  @GET("/manage.update") void manage_update(Callback<ManageUpdateResponse> cb);
+  @GET("/manage.update") ManageUpdateResponse manage_update();
 
   // profile
-  @GET("/profile.list") void profile_list(Callback<ProfileListResponse> cb);
+  @GET("/profile.list") ProfileListResponse profile_list();
 }

@@ -18,7 +18,7 @@ package com.f2prateek.couchpotato.model.couchpotato.movie.search;
 
 import java.util.List;
 
-/** Response for /movie.search */
+/** Response for /CouchPotatoMovie.search */
 public class MovieSearchResponse {
   public List<SearchMovie> movies;
   public boolean empty;

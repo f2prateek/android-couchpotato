@@ -25,35 +25,34 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.InjectView;
 import com.f2prateek.couchpotato.R;
-import com.f2prateek.couchpotato.model.couchpotato.movie.Movie;
-import com.f2prateek.couchpotato.ui.base.BaseFragment;
-import com.google.gson.Gson;
+import com.f2prateek.couchpotato.model.moviedb.Casts;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**
- * Fragment to display the movie's cast, writers, directors, etc.
+ * Fragment to display the CouchPotatoMovie's cast, writers, directors, etc.
  * Rather than use a specific MovieBean, supply the info directly.
  */
 public class MovieCastFragment extends BaseFragment {
 
-  // TODO : actor images, etc.
-
   @InjectView(R.id.movie_cast) LinearLayout movie_cast;
-  private Movie movie;
+  private ArrayList<Casts.Cast> cast;
 
   /** Create a new instance of MovieCastFragment */
-  public static MovieCastFragment newInstance(Movie movie) {
+  public static MovieCastFragment newInstance(ArrayList<Casts.Cast> cast) {
     MovieCastFragment f = new MovieCastFragment();
     Bundle args = new Bundle();
-    args.putString("movie", new Gson().toJson(movie));
+    args.putString("cast", gson.toJson(cast));
     f.setArguments(args);
     return f;
   }
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
-    movie = new Gson().fromJson(getArguments().getString("movie"), Movie.class);
+    Type collectionType = new TypeToken<ArrayList<Casts.Cast>>() {
+    }.getType();
+    cast = gson.fromJson(getArguments().getString("cast"), collectionType);
   }
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,20 +63,15 @@ public class MovieCastFragment extends BaseFragment {
   @Override public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     Context context = getActivity();
-    addViewForList(movie.library.info.actors, context);
-    addViewForList(movie.library.info.writers, context);
-    addViewForList(movie.library.info.directors, context);
-  }
-
-  private void addViewForList(ArrayList<String> people, Context context) {
-    for (String person : people) {
-      movie_cast.addView(getViewForPerson(person, context));
+    for (Casts.Cast actor : cast) {
+      movie_cast.addView(getViewForActor(actor.name, context));
     }
   }
 
-  private View getViewForPerson(String person, Context context) {
+  private View getViewForActor(String name, Context context) {
+    // TODO : actor images, etc.
     TextView textView = new TextView(context);
-    textView.setText(person);
+    textView.setText(name);
     return textView;
   }
 }

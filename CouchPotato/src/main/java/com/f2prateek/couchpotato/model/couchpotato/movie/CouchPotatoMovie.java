@@ -18,7 +18,7 @@ package com.f2prateek.couchpotato.model.couchpotato.movie;
 
 import java.util.ArrayList;
 
-public class Movie {
+public class CouchPotatoMovie {
   public MovieProfile profile;
   public long library_id;
   public ArrayList<Release> releases;
@@ -30,7 +30,7 @@ public class Movie {
   public ArrayList<File> files;
 
   @Override public String toString() {
-    return "Movie{" +
+    return "MovieDBMovie{" +
         "profile=" + profile +
         ", library_id=" + library_id +
         ", releases=" + releases +

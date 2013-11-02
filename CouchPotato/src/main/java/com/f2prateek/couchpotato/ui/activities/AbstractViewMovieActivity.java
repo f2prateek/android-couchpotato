@@ -31,7 +31,6 @@ import android.widget.TextView;
 import butterknife.InjectView;
 import com.f2prateek.couchpotato.CouchPotatoApi;
 import com.f2prateek.couchpotato.R;
-import com.f2prateek.couchpotato.ui.base.BaseAuthenticatedActivity;
 import com.f2prateek.couchpotato.ui.widgets.NotifyingScrollView;
 import com.google.common.base.Joiner;
 import java.util.List;

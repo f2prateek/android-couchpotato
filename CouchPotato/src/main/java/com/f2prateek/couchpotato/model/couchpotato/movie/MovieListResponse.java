@@ -18,9 +18,9 @@ package com.f2prateek.couchpotato.model.couchpotato.movie;
 
 import java.util.ArrayList;
 
-/** Response for /movie.list */
+/** Response for /CouchPotatoMovie.list */
 public class MovieListResponse {
-  public ArrayList<Movie> movies;
+  public ArrayList<CouchPotatoMovie> movies;
   public int total;
   public boolean success;
   public boolean empty;

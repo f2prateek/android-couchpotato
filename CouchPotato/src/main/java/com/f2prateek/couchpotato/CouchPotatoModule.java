@@ -17,33 +17,34 @@
 package com.f2prateek.couchpotato;
 
 import android.content.SharedPreferences;
+import com.f2prateek.couchpotato.services.BaseApiService;
+import com.f2prateek.couchpotato.services.CouchPotatoService;
+import com.f2prateek.couchpotato.services.MovieDBService;
+import com.f2prateek.couchpotato.ui.activities.BaseActivity;
+import com.f2prateek.couchpotato.ui.activities.BaseAuthenticatedActivity;
 import com.f2prateek.couchpotato.ui.activities.MainActivity;
-import com.f2prateek.couchpotato.ui.activities.MovieSearchActivity;
 import com.f2prateek.couchpotato.ui.activities.ServerSetupActivity;
 import com.f2prateek.couchpotato.ui.activities.ViewMovieActivity;
-import com.f2prateek.couchpotato.ui.activities.ViewSearchMovieActivity;
-import com.f2prateek.couchpotato.ui.base.BaseActivity;
-import com.f2prateek.couchpotato.ui.base.BaseAuthenticatedActivity;
-import com.f2prateek.couchpotato.ui.base.BaseFragment;
-import com.f2prateek.couchpotato.ui.base.BaseProgressFragment;
-import com.f2prateek.couchpotato.ui.base.BaseProgressGridFragment;
+import com.f2prateek.couchpotato.ui.fragments.BaseFragment;
+import com.f2prateek.couchpotato.ui.fragments.BaseProgressFragment;
+import com.f2prateek.couchpotato.ui.fragments.BaseProgressGridFragment;
 import com.f2prateek.couchpotato.ui.fragments.DetailedMovieGridFragment;
 import com.f2prateek.couchpotato.ui.fragments.MovieCastFragment;
 import com.f2prateek.couchpotato.ui.fragments.MovieInfoFragment;
-import com.f2prateek.couchpotato.ui.fragments.MovieSearchGridFragment;
 import com.squareup.otto.Bus;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
+import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 
 @Module(
     injects = {
         BaseActivity.class, BaseAuthenticatedActivity.class, MainActivity.class,
-        ViewMovieActivity.class, MovieSearchActivity.class, ViewSearchMovieActivity.class,
-        BaseFragment.class, BaseProgressFragment.class, BaseProgressGridFragment.class,
-        DetailedMovieGridFragment.class, MovieSearchGridFragment.class, ServerSetupActivity.class,
-        MovieCastFragment.class, MovieInfoFragment.class
+        ViewMovieActivity.class, BaseFragment.class, BaseProgressFragment.class,
+        BaseProgressGridFragment.class, DetailedMovieGridFragment.class, ServerSetupActivity.class,
+        MovieCastFragment.class, MovieInfoFragment.class, BaseApiService.class,
+        CouchPotatoService.class, MovieDBService.class
     },
     complete = false)
 public class CouchPotatoModule {
@@ -55,11 +56,21 @@ public class CouchPotatoModule {
     return new UserConfig(sharedPreferences);
   }
 
-  @Provides RestAdapter provideRestAdapter(UserConfig userConfig) {
-    return new RestAdapter.Builder().setServer(userConfig.getServerUrl()).build();
+  @Provides CouchPotatoApi provideCouchPotatoApi(UserConfig userConfig) {
+    return new RestAdapter.Builder().setServer(userConfig.getServerUrl())
+        .build()
+        .create(CouchPotatoApi.class);
   }
 
-  @Provides CouchPotatoApi provideCouchPotatoApi(RestAdapter restAdapter) {
-    return restAdapter.create(CouchPotatoApi.class);
+  @Provides MovieDBApi provideMovieDBApi() {
+    RequestInterceptor movieDbRequestInterceptor = new RequestInterceptor() {
+      @Override public void intercept(RequestFacade request) {
+        request.addQueryParam("api_key", "c820209625cf108a92f8e4192ec26a7f");
+      }
+    };
+    return new RestAdapter.Builder().setServer("http://api.themoviedb.org/3/")
+        .setRequestInterceptor(movieDbRequestInterceptor)
+        .build()
+        .create(MovieDBApi.class);
   }
 }

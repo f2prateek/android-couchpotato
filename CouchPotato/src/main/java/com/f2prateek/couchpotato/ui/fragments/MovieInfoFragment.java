@@ -34,8 +34,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.InjectView;
 import com.f2prateek.couchpotato.R;
-import com.f2prateek.couchpotato.model.couchpotato.movie.Movie;
-import com.f2prateek.couchpotato.ui.base.BaseFragment;
+import com.f2prateek.couchpotato.model.couchpotato.movie.CouchPotatoMovie;
 import com.google.common.base.Joiner;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -66,10 +65,10 @@ public class MovieInfoFragment extends BaseFragment {
   private ForegroundColorSpan redColorSpan;
   private ImageSpan starSpan;
   private ImageSpan labelSpan;
-  private Movie movie;
+  private CouchPotatoMovie movie;
 
   /** Create a new instance of MovieInfoFragment */
-  public static MovieInfoFragment newInstance(Movie movie) {
+  public static MovieInfoFragment newInstance(CouchPotatoMovie movie) {
     MovieInfoFragment f = new MovieInfoFragment();
     Bundle args = new Bundle();
     args.putString("movie", new Gson().toJson(movie));
@@ -80,7 +79,7 @@ public class MovieInfoFragment extends BaseFragment {
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    movie = new Gson().fromJson(getArguments().getString("movie"), Movie.class);
+    movie = new Gson().fromJson(getArguments().getString("movie"), CouchPotatoMovie.class);
 
     Resources resources = getResources();
     titleTextFormat = resources.getString(R.string.title_text_format);
@@ -106,7 +105,7 @@ public class MovieInfoFragment extends BaseFragment {
     bindView(movie);
   }
 
-  public void bindView(Movie movie) {
+  public void bindView(CouchPotatoMovie movie) {
     Picasso.with(getActivity()).load(movie.getPosterUrl()).into(poster);
     title.setText(getTitleText(movie.library.titles.get(0).title, movie.library.info.year));
     runtime.setText(getRuntimeText(movie.library.info.runtime));

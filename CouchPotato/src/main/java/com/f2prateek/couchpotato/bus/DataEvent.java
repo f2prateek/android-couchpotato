@@ -14,9 +14,16 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato.model.couchpotato.movie;
+package com.f2prateek.couchpotato.bus;
 
-/** Response for /CouchPotatoMovie.refresh */
-public class MovieRefreshResponse {
-  public boolean success;
+/**
+ * A class that delivers an event of {@link T}.
+ * This way I don't have to create a new event for every object that is marshalled through the bus.
+ */
+public class DataEvent<T> {
+  public final T data;
+
+  public DataEvent(T data) {
+    this.data = data;
+  }
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato.ui.base;
+package com.f2prateek.couchpotato.ui.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -22,6 +22,7 @@ import android.view.Window;
 import butterknife.Views;
 import com.f2prateek.couchpotato.CouchPotatoApplication;
 import com.google.analytics.tracking.android.EasyTracker;
+import com.google.gson.Gson;
 import com.squareup.otto.Bus;
 import javax.inject.Inject;
 
@@ -32,6 +33,7 @@ import javax.inject.Inject;
 public abstract class BaseActivity extends Activity {
 
   @Inject Bus bus;
+  public static final Gson gson = new Gson();
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

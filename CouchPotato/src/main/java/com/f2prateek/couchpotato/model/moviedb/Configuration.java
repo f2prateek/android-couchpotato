@@ -17,25 +17,15 @@
 package com.f2prateek.couchpotato.model.moviedb;
 
 import java.util.ArrayList;
-import java.util.Date;
 
-public class Movie {
-  public boolean adult;
-  public String backdrop_path;
-  public long budget;
-  public ArrayList<Genre> genres;
-  public String homepage;
-  public String imdb_id;
-  public String original_title;
-  public String overview;
-  public float popularity;
-  public String poster_path;
-  public Date release_date;
-  public long revenue;
-  public int runtime;
-  public String status;
-  public String tagline;
-  public String title;
-  public double vote_average;
-  public int vote_count;
+public class Configuration {
+  public static class ImagesConfiguration {
+    public String base_url;
+    public ArrayList<String> poster_sizes;
+    public ArrayList<String> backdrop_sizes;
+    public ArrayList<String> profile_sizes;
+    public ArrayList<String> logo_sizes;
+  }
+
+  public ImagesConfiguration images;
 }

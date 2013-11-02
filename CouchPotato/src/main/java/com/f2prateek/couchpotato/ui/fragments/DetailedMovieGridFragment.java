@@ -46,10 +46,9 @@ import butterknife.InjectView;
 import butterknife.Views;
 import com.f2prateek.couchpotato.CouchPotatoApi;
 import com.f2prateek.couchpotato.R;
-import com.f2prateek.couchpotato.model.couchpotato.movie.Movie;
+import com.f2prateek.couchpotato.model.couchpotato.movie.CouchPotatoMovie;
 import com.f2prateek.couchpotato.model.couchpotato.movie.MovieListResponse;
 import com.f2prateek.couchpotato.ui.activities.ViewMovieActivity;
-import com.f2prateek.couchpotato.ui.base.BaseProgressGridFragment;
 import com.f2prateek.couchpotato.ui.util.BindingListAdapter;
 import com.f2prateek.couchpotato.util.Ln;
 import com.f2prateek.couchpotato.util.RetrofitErrorHandler;
@@ -125,9 +124,9 @@ public class DetailedMovieGridFragment extends BaseProgressGridFragment
   }
 
   @Override public void onGridItemClick(GridView gridView, View v, int position, long id) {
-    Movie movie = (Movie) getGridAdapter().getItem(position);
+    CouchPotatoMovie CouchPotatoMovie = (CouchPotatoMovie) getGridAdapter().getItem(position);
     Intent movieIntent = new Intent(getActivity(), ViewMovieActivity.class);
-    movieIntent.putExtra(ViewMovieActivity.MOVIE_KEY, new Gson().toJson(movie));
+    movieIntent.putExtra(ViewMovieActivity.MOVIE_KEY, new Gson().toJson(CouchPotatoMovie));
     startActivity(movieIntent);
   }
 
@@ -143,7 +142,7 @@ public class DetailedMovieGridFragment extends BaseProgressGridFragment
     RetrofitErrorHandler.showError(getActivity(), retrofitError);
     showIndeterminateBar(false);
     setEmptyText(getResources().getString(R.string.failed));
-    ListAdapter adapter = new DetailedMovieAdapter(getActivity(), new ArrayList<Movie>());
+    ListAdapter adapter = new DetailedMovieAdapter(getActivity(), new ArrayList<CouchPotatoMovie>());
     setGridAdapter(adapter);
   }
 
@@ -173,7 +172,7 @@ public class DetailedMovieGridFragment extends BaseProgressGridFragment
 
   }
 
-  public class DetailedMovieAdapter extends BindingListAdapter<Movie> {
+  public class DetailedMovieAdapter extends BindingListAdapter<CouchPotatoMovie> {
     private final Joiner commaJoiner = Joiner.on(", ");
 
     // Cached resources
@@ -188,7 +187,7 @@ public class DetailedMovieGridFragment extends BaseProgressGridFragment
     private final ImageSpan labelSpan;
     private final int itemPadding;
 
-    public DetailedMovieAdapter(Context context, List<Movie> list) {
+    public DetailedMovieAdapter(Context context, List<CouchPotatoMovie> list) {
       super(context, list);
       Resources resources = context.getResources();
       titleTextFormat = resources.getString(R.string.title_text_format);
@@ -214,11 +213,7 @@ public class DetailedMovieGridFragment extends BaseProgressGridFragment
       return view;
     }
 
-    @Override public void bindView(int position, int type, View view) {
-      super.bindView(position, type, view);
-    }
-
-    @Override public void bindView(Movie movie, View view) {
+    @Override public void bindView(CouchPotatoMovie movie, View view) {
       ViewHolder holder = (ViewHolder) view.getTag();
       Picasso.with(getContext()).load(movie.getPosterUrl()).into(holder.poster);
       holder.title

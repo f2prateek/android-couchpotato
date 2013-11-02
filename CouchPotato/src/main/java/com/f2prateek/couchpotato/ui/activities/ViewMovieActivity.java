@@ -35,39 +35,31 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import butterknife.InjectView;
-import com.f2prateek.couchpotato.CouchPotatoApi;
 import com.f2prateek.couchpotato.R;
-import com.f2prateek.couchpotato.model.couchpotato.movie.Movie;
-import com.f2prateek.couchpotato.model.couchpotato.movie.MovieGetResponse;
-import com.f2prateek.couchpotato.model.couchpotato.movie.MovieRefreshResponse;
+import com.f2prateek.couchpotato.bus.DataEvent;
+import com.f2prateek.couchpotato.model.couchpotato.movie.CouchPotatoMovie;
+import com.f2prateek.couchpotato.model.moviedb.MovieDBMovie;
+import com.f2prateek.couchpotato.services.MovieDBService;
 import com.f2prateek.couchpotato.ui.CropPosterTransformation;
-import com.f2prateek.couchpotato.ui.base.BaseAuthenticatedActivity;
 import com.f2prateek.couchpotato.ui.fragments.MovieCastFragment;
 import com.f2prateek.couchpotato.ui.fragments.MovieInfoFragment;
 import com.f2prateek.couchpotato.ui.widgets.NotifyingScrollView;
 import com.f2prateek.couchpotato.ui.widgets.PagerSlidingTabStrip;
-import com.f2prateek.couchpotato.util.Ln;
-import com.f2prateek.couchpotato.util.RetrofitErrorHandler;
-import com.google.common.base.Joiner;
-import com.google.gson.Gson;
+import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
-import java.util.List;
-import javax.inject.Inject;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
-/** An activity to show a single {@link Movie}. This is a movie available in the user's library. */
+/**
+ * An activity to show a single {@link com.f2prateek.couchpotato.model.moviedb.MovieDBMovie}. This
+ * is a CouchPotatoMovie available in the user's library.
+ */
 public class ViewMovieActivity extends BaseAuthenticatedActivity {
 
-  public static final String MOVIE_KEY = "com.f2prateek.couchpotato.MOVIE_KEY";
-  private static final Joiner commaJoiner = Joiner.on(", ");
+  public static final String MOVIE_KEY = "ViewMovieActivity.MOVIE_KEY";
+
   private static final int CREW_FRAGMENT_NUM = 0;
   private static final int CAST_FRAGMENT_NUM = 1;
   private static final int INFO_FRAGMENT_NUM = 2;
   private static final int ARTWORK_FRAGMENT_NUM = 3;
-
-  @Inject CouchPotatoApi couchPotatoApi;
 
   @InjectView(R.id.scroll_view) NotifyingScrollView notifyingScrollView;
   @InjectView(R.id.movie_backdrop) ImageView movie_backdrop;
@@ -76,19 +68,26 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
   @InjectView(R.id.tabs) PagerSlidingTabStrip tabStrip;
 
   private Drawable actionBarBackgroundDrawable;
-  private Movie movie;
+
+  private CouchPotatoMovie couchPotatoMovie;
+  private MovieDBMovie movieDBMovie;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
     getActionBar().setDisplayHomeAsUpEnabled(true);
     getActionBar().setDisplayShowHomeEnabled(false);
-    setContentView(R.layout.activity_movie);
 
-    movie = new Gson().fromJson(getIntent().getExtras().getString(MOVIE_KEY), Movie.class);
+    couchPotatoMovie =
+        gson.fromJson(getIntent().getExtras().getString(MOVIE_KEY), CouchPotatoMovie.class);
+    Intent intent = new Intent(this, MovieDBService.class);
+    intent.putExtra(MovieDBService.EXTRA_MOVIE_ID, couchPotatoMovie.library.info.tmdb_id);
+    startService(intent);
+
+    setContentView(R.layout.activity_movie);
     setUpFancyScroll(getResources().getColor(R.color.transparent_action_bar_color));
     tabStrip.setIndicatorColor(getResources().getColor(R.color.transparent_action_bar_color));
-    refreshView();
   }
 
   @Override
@@ -106,47 +105,49 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
         playTrailer();
         return true;
       case R.id.action_refresh:
-        refresh();
+        refreshMovie();
         return true;
     }
     return super.onOptionsItemSelected(item);
   }
 
   public void openImdbPage() {
-    openUrl(movie.getImdbPage());
+    openUrl(couchPotatoMovie.getImdbPage());
   }
 
   public void playTrailer() {
-    //TODO:stub
+    openUrl("https://www.youtube.com/watch?v=" + movieDBMovie.trailers.youtube.get(0).name);
   }
 
   public void openUrl(String url) {
-    Intent imdb = new Intent(Intent.ACTION_VIEW);
-    imdb.setData(Uri.parse(url));
-    startActivity(imdb);
+    Intent intent = new Intent(Intent.ACTION_VIEW);
+    intent.setData(Uri.parse(url));
+    startActivity(intent);
   }
 
   public static class MovieInfoAdapter extends FragmentPagerAdapter {
-
     private final Context context;
-    private final Movie movie;
+    private final MovieDBMovie movieDBMovie;
+    private final CouchPotatoMovie couchPotatoMovie;
 
-    public MovieInfoAdapter(FragmentManager fm, Context context, Movie movie) {
+    public MovieInfoAdapter(FragmentManager fm, Context context, MovieDBMovie movieDBMovie,
+        CouchPotatoMovie couchPotatoMovie) {
       super(fm);
       this.context = context;
-      this.movie = movie;
+      this.movieDBMovie = movieDBMovie;
+      this.couchPotatoMovie = couchPotatoMovie;
     }
 
     @Override public Fragment getItem(int position) {
       switch (position) {
         case CREW_FRAGMENT_NUM:
-          return MovieCastFragment.newInstance(movie);
+          return MovieCastFragment.newInstance(movieDBMovie.casts.cast);
         case CAST_FRAGMENT_NUM:
-          return MovieCastFragment.newInstance(movie);
+          return MovieCastFragment.newInstance(movieDBMovie.casts.cast);
         case INFO_FRAGMENT_NUM:
-          return MovieInfoFragment.newInstance(movie);
+          return MovieInfoFragment.newInstance(couchPotatoMovie);
         case ARTWORK_FRAGMENT_NUM:
-          return MovieCastFragment.newInstance(movie);
+          return MovieCastFragment.newInstance(movieDBMovie.casts.cast);
         default:
           return null;
       }
@@ -173,79 +174,50 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
   }
 
   /**
-   * Refresh the movie from the server. We still have to fetch it again from the server.
+   * Refresh the CouchPotatoMovie from the server.
    */
-  private void refresh() {
-    couchPotatoApi.movie_refresh(movie.id, new Callback<MovieRefreshResponse>() {
+  private void refreshMovie() {
+    /*
+    couchPotatoApi.movie_refresh(couchPotatoMovie.id, new Callback<MovieRefreshResponse>() {
+
       @Override public void success(MovieRefreshResponse movieRefreshResponse, Response response) {
-        Ln.d("Refreshed movie: " + String.valueOf(movieRefreshResponse.success));
-        if (movieRefreshResponse.success) update();
+        Ln.d("Refreshed CouchPotatoMovie: " + String.valueOf(movieRefreshResponse.success));
       }
 
       @Override public void failure(RetrofitError retrofitError) {
-        Ln.e("Could not get refresh with id %d" + movie.id);
+        Ln.e("Could not get refresh with id %d" + couchPotatoMovie.id);
         RetrofitErrorHandler.showError(ViewMovieActivity.this, retrofitError);
       }
     });
+  */
   }
 
-  /**
-   * Update this movie from the server.
-   */
-  private void update() {
-    couchPotatoApi.movie_get(movie.id, new Callback<MovieGetResponse>() {
-      @Override public void success(MovieGetResponse movieGetResponse, Response response) {
-        Ln.d("Got movie: " + String.valueOf(movieGetResponse.success));
-        if (movieGetResponse.success) {
-          movie = movieGetResponse.movie;
-          refreshView();
-        }
-      }
-
-      @Override public void failure(RetrofitError retrofitError) {
-        Ln.e("Could not get movie with id %d" + movie.id);
-        RetrofitErrorHandler.showError(ViewMovieActivity.this, retrofitError);
-      }
-    });
+  @Subscribe
+  public void onMovieReceived(DataEvent<MovieDBMovie> event) {
+    movieDBMovie = event.data;
+    refreshView();
   }
 
   public void refreshView() {
-    initializePoster();
-    // TODO : figure out height issue
-    movie_info_pager.setAdapter(new MovieInfoAdapter(getFragmentManager(), this, movie));
+    getActionBar().setTitle(couchPotatoMovie.library.titles.get(0).title);
+    Picasso.with(this)
+        .load(couchPotatoMovie.getBackdropUrl())
+        .transform(new CropPosterTransformation(movie_backdrop,
+            getResources().getConfiguration().orientation))
+        .into(movie_backdrop);
+    if (TextUtils.isEmpty(couchPotatoMovie.library.info.tagline)) {
+      movie_tagline.setVisibility(View.GONE);
+    } else {
+      movie_tagline.setText(couchPotatoMovie.library.info.tagline);
+    }
+    // TODO : figure out height issue, currently VP height is fixed, make it dynamic
+    movie_info_pager.setAdapter(
+        new MovieInfoAdapter(getFragmentManager(), this, movieDBMovie, couchPotatoMovie));
     movie_info_pager.setCurrentItem(2);
     tabStrip.setViewPager(movie_info_pager);
   }
 
-  public void initializePoster() {
-    getActionBar().setTitle(movie.library.titles.get(0).title);
-    Picasso.with(this)
-        .load(movie.getBackdropUrl())
-        .transform(new CropPosterTransformation(movie_backdrop,
-            getResources().getConfiguration().orientation))
-        .into(movie_backdrop);
-    if (TextUtils.isEmpty(movie.library.info.tagline)) {
-      movie_tagline.setVisibility(View.GONE);
-    } else {
-      movie_tagline.setText(movie.library.info.tagline);
-    }
-    //movie_plot.setText(movie.library.info.plot);
-    //writeToTextView(movie_genres, movie.library.info.genres);
-    //writeToTextView(movie_cast, movie.library.info.actors);
-    //writeToTextView(movie_directors, movie.library.info.directors);
-    //writeToTextView(movie_writers, movie.library.info.writers);
-  }
-
-  private void writeToTextView(TextView textView, List<String> text) {
-    if (text != null && text.size() > 0) {
-      textView.setText(commaJoiner.join(text));
-    } else {
-      textView.setText(R.string.info_not_available);
-    }
-  }
-
   // ViewFX
-
   public void setUpFancyScroll(int color) {
     actionBarBackgroundDrawable = new ColorDrawable(color);
     actionBarBackgroundDrawable.setAlpha(0);
