@@ -44,10 +44,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import butterknife.InjectView;
 import butterknife.Views;
-import com.f2prateek.couchpotato.CouchPotatoApi;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.model.couchpotato.movie.CouchPotatoMovie;
 import com.f2prateek.couchpotato.model.couchpotato.movie.MovieListResponse;
+import com.f2prateek.couchpotato.services.CouchPotatoApi;
 import com.f2prateek.couchpotato.ui.activities.ViewMovieActivity;
 import com.f2prateek.couchpotato.ui.util.BindingListAdapter;
 import com.f2prateek.couchpotato.util.Ln;
@@ -142,7 +142,8 @@ public class DetailedMovieGridFragment extends BaseProgressGridFragment
     RetrofitErrorHandler.showError(getActivity(), retrofitError);
     showIndeterminateBar(false);
     setEmptyText(getResources().getString(R.string.failed));
-    ListAdapter adapter = new DetailedMovieAdapter(getActivity(), new ArrayList<CouchPotatoMovie>());
+    ListAdapter adapter =
+        new DetailedMovieAdapter(getActivity(), new ArrayList<CouchPotatoMovie>());
     setGridAdapter(adapter);
   }
 

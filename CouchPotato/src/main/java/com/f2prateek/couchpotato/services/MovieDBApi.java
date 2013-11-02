@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato;
+package com.f2prateek.couchpotato.services;
 
 import com.f2prateek.couchpotato.model.moviedb.Casts;
 import com.f2prateek.couchpotato.model.moviedb.Configuration;

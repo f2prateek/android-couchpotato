@@ -18,7 +18,9 @@ package com.f2prateek.couchpotato;
 
 import android.content.SharedPreferences;
 import com.f2prateek.couchpotato.services.BaseApiService;
+import com.f2prateek.couchpotato.services.CouchPotatoApi;
 import com.f2prateek.couchpotato.services.CouchPotatoService;
+import com.f2prateek.couchpotato.services.MovieDBApi;
 import com.f2prateek.couchpotato.services.MovieDBService;
 import com.f2prateek.couchpotato.ui.activities.BaseActivity;
 import com.f2prateek.couchpotato.ui.activities.BaseAuthenticatedActivity;

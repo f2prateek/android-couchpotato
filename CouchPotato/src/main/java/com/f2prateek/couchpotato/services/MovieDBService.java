@@ -17,7 +17,6 @@
 package com.f2prateek.couchpotato.services;
 
 import android.content.Intent;
-import com.f2prateek.couchpotato.MovieDBApi;
 import com.f2prateek.couchpotato.bus.DataEvent;
 import com.f2prateek.couchpotato.model.moviedb.MovieDBMovie;
 import com.f2prateek.couchpotato.util.Ln;
