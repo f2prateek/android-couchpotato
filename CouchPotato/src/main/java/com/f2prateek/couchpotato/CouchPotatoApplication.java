@@ -17,7 +17,9 @@
 package com.f2prateek.couchpotato;
 
 import android.app.Application;
+import android.content.Intent;
 import com.crashlytics.android.Crashlytics;
+import com.f2prateek.couchpotato.services.MovieDBService;
 import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.squareup.picasso.Picasso;
 import dagger.ObjectGraph;
@@ -38,6 +40,14 @@ public class CouchPotatoApplication extends Application {
       // Release specific stuff goes here.
       Crashlytics.start(this);
     }
+
+    getMovieDbConfiguration();
+  }
+
+  private void getMovieDbConfiguration() {
+    Intent intent = new Intent(this, MovieDBService.class);
+    intent.setAction(MovieDBService.ACTION_GET_CONFIGURATION);
+    startService(intent);
   }
 
   protected List<Object> getModules() {
