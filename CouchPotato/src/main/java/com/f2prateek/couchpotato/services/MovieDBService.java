@@ -38,7 +38,7 @@ public class MovieDBService extends BaseApiService {
     } else if (ACTION_GET_CONFIGURATION.equals(intent.getAction())) {
       new GetConfigurationTask().execute();
     }
-    return START_STICKY;
+    return START_REDELIVER_INTENT;
   }
 
   private class GetConfigurationTask extends SaveableDataEventTask<Configuration> {

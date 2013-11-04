@@ -49,7 +49,7 @@ public class CouchPotatoService extends BaseApiService {
     } else if (ACTION_GET_DIRECTORIES.equals(intent.getAction())) {
       new GetDirectoriesTask().execute();
     }
-    return START_STICKY;
+    return START_REDELIVER_INTENT;
   }
 
   private class GetMovieTask extends DataEventTask<CouchPotatoMovie> {
