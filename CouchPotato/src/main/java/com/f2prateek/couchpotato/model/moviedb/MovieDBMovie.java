@@ -16,6 +16,7 @@
 
 package com.f2prateek.couchpotato.model.moviedb;
 
+import com.f2prateek.couchpotato.util.CollectionUtils;
 import java.util.ArrayList;
 
 public class MovieDBMovie {
@@ -43,4 +44,31 @@ public class MovieDBMovie {
   public Images images;
   public SimilarMovies similarMovies;
   public Trailers trailers;
+
+  public String getPosterUrl(Configuration configuration) {
+    if (CollectionUtils.isEmpty(configuration.images.poster_sizes) || CollectionUtils.isEmpty(
+        images.posters)) {
+      return null;
+    }
+    return configuration.images.base_url + configuration.images.poster_sizes.get(3) + images.posters
+        .get(0).file_path;
+  }
+
+  public String getBackdropUrl(Configuration configuration) {
+    if (CollectionUtils.isEmpty(configuration.images.backdrop_sizes) || CollectionUtils.isEmpty(
+        images.backdrops)) {
+      return null;
+    }
+    return configuration.images.base_url + configuration.images.backdrop_sizes.get(1) + "/" + images
+        .backdrops
+        .get(0).file_path;
+  }
+
+  public ArrayList<Trailers.Trailer> getYoutubeTrailers() {
+    return trailers.youtube;
+  }
+
+  public String getImdbPage() {
+    return "http://www.imdb.com/title/" + imdb_id;
+  }
 }

@@ -17,6 +17,7 @@
 package com.f2prateek.couchpotato.ui.fragments;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import butterknife.Views;
@@ -32,11 +33,13 @@ import javax.inject.Inject;
 public abstract class BaseFragment extends Fragment {
   @Inject Bus bus;
   public static final Gson gson = new Gson();
+  protected Context activityContext;
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     // Perform injection so that when this call returns all dependencies will be available for use.
     ((CouchPotatoApplication) getActivity().getApplication()).inject(this);
+    activityContext = getActivity();
   }
 
   @Override public void onResume() {

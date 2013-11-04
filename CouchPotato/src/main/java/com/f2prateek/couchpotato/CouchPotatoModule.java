@@ -17,9 +17,11 @@
 package com.f2prateek.couchpotato;
 
 import android.content.SharedPreferences;
+import com.f2prateek.couchpotato.model.moviedb.Configuration;
 import com.f2prateek.couchpotato.services.BaseApiService;
 import com.f2prateek.couchpotato.services.CouchPotatoApi;
 import com.f2prateek.couchpotato.services.CouchPotatoService;
+import com.f2prateek.couchpotato.services.FilePreference;
 import com.f2prateek.couchpotato.services.MovieDBApi;
 import com.f2prateek.couchpotato.services.MovieDBService;
 import com.f2prateek.couchpotato.ui.activities.BaseActivity;
@@ -33,6 +35,8 @@ import com.f2prateek.couchpotato.ui.fragments.BaseProgressGridFragment;
 import com.f2prateek.couchpotato.ui.fragments.DetailedMovieGridFragment;
 import com.f2prateek.couchpotato.ui.fragments.MovieCastFragment;
 import com.f2prateek.couchpotato.ui.fragments.MovieInfoFragment;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.squareup.otto.Bus;
 import dagger.Module;
 import dagger.Provides;
@@ -50,8 +54,25 @@ import retrofit.RestAdapter;
     },
     complete = false)
 public class CouchPotatoModule {
+
+  private final CouchPotatoApplication application;
+
+  public CouchPotatoModule(CouchPotatoApplication application) {
+    this.application = application;
+  }
+
   @Provides @Singleton Bus provideOttoBus() {
     return new Bus();
+  }
+
+  @Provides @Singleton Gson provideGson() {
+    return new GsonBuilder().create();
+  }
+
+  @Provides Configuration provideConfiguration(Gson gson) {
+    FilePreference<Configuration> configurationFilePreference =
+        new FilePreference<Configuration>(gson, application.getFilesDir(), Configuration.class);
+    return configurationFilePreference.get();
   }
 
   @Provides UserConfig provideUserConfig(SharedPreferences sharedPreferences) {

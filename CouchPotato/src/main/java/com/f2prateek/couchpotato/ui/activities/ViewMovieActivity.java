@@ -36,8 +36,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import butterknife.InjectView;
 import com.f2prateek.couchpotato.R;
-import com.f2prateek.couchpotato.bus.DataEvent;
 import com.f2prateek.couchpotato.model.couchpotato.movie.CouchPotatoMovie;
+import com.f2prateek.couchpotato.model.moviedb.Configuration;
 import com.f2prateek.couchpotato.model.moviedb.MovieDBMovie;
 import com.f2prateek.couchpotato.services.MovieDBService;
 import com.f2prateek.couchpotato.ui.CropPosterTransformation;
@@ -45,8 +45,11 @@ import com.f2prateek.couchpotato.ui.fragments.MovieCastFragment;
 import com.f2prateek.couchpotato.ui.fragments.MovieInfoFragment;
 import com.f2prateek.couchpotato.ui.widgets.NotifyingScrollView;
 import com.f2prateek.couchpotato.ui.widgets.PagerSlidingTabStrip;
+import com.f2prateek.couchpotato.util.CollectionUtils;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
+import javax.inject.Inject;
+import javax.inject.Provider;
 
 /**
  * An activity to show a single {@link com.f2prateek.couchpotato.model.moviedb.MovieDBMovie}. This
@@ -71,6 +74,7 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
 
   private CouchPotatoMovie couchPotatoMovie;
   private MovieDBMovie movieDBMovie;
+  @Inject Provider<Configuration> configurationProvider;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +86,7 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
     couchPotatoMovie =
         gson.fromJson(getIntent().getExtras().getString(MOVIE_KEY), CouchPotatoMovie.class);
     Intent intent = new Intent(this, MovieDBService.class);
+    intent.setAction(MovieDBService.ACTION_GET_MOVIE);
     intent.putExtra(MovieDBService.EXTRA_MOVIE_ID, couchPotatoMovie.library.info.tmdb_id);
     startService(intent);
 
@@ -112,14 +117,19 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
   }
 
   public void openImdbPage() {
-    openUrl(couchPotatoMovie.getImdbPage());
+    openUrl(movieDBMovie.getImdbPage());
   }
 
   public void playTrailer() {
-    openUrl("https://www.youtube.com/watch?v=" + movieDBMovie.trailers.youtube.get(0).name);
+    if (!CollectionUtils.isEmpty(movieDBMovie.getYoutubeTrailers())) {
+      openUrl("https://www.youtube.com/watch?v=" + movieDBMovie.getYoutubeTrailers().get(0));
+    }
   }
 
   public void openUrl(String url) {
+    if (url == null) {
+      return;
+    }
     Intent intent = new Intent(Intent.ACTION_VIEW);
     intent.setData(Uri.parse(url));
     startActivity(intent);
@@ -193,26 +203,24 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
   }
 
   @Subscribe
-  public void onMovieReceived(DataEvent<MovieDBMovie> event) {
-    movieDBMovie = event.data;
-    refreshView();
+  public void onMovieReceived(MovieDBMovie movieDBMovie) {
+    this.movieDBMovie = movieDBMovie;
+    refreshView(movieDBMovie);
   }
 
-  public void refreshView() {
-    getActionBar().setTitle(couchPotatoMovie.library.titles.get(0).title);
-    Picasso.with(this)
-        .load(couchPotatoMovie.getBackdropUrl())
-        .transform(new CropPosterTransformation(movie_backdrop,
+  public void refreshView(MovieDBMovie movie) {
+    getActionBar().setTitle(movie.title);
+    Picasso.with(this).load(movie.getBackdropUrl(configurationProvider.get())).transform(new CropPosterTransformation(movie_backdrop,
             getResources().getConfiguration().orientation))
         .into(movie_backdrop);
-    if (TextUtils.isEmpty(couchPotatoMovie.library.info.tagline)) {
+    if (TextUtils.isEmpty(movie.tagline)) {
       movie_tagline.setVisibility(View.GONE);
     } else {
       movie_tagline.setText(couchPotatoMovie.library.info.tagline);
     }
     // TODO : figure out height issue, currently VP height is fixed, make it dynamic
     movie_info_pager.setAdapter(
-        new MovieInfoAdapter(getFragmentManager(), this, movieDBMovie, couchPotatoMovie));
+        new MovieInfoAdapter(getFragmentManager(), this, movie, couchPotatoMovie));
     movie_info_pager.setCurrentItem(2);
     tabStrip.setViewPager(movie_info_pager);
   }

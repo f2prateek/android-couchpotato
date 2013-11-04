@@ -17,27 +17,41 @@
 package com.f2prateek.couchpotato.services;
 
 import android.content.Intent;
-import com.f2prateek.couchpotato.bus.DataEvent;
+import com.f2prateek.couchpotato.model.moviedb.Configuration;
 import com.f2prateek.couchpotato.model.moviedb.MovieDBMovie;
-import com.f2prateek.couchpotato.util.Ln;
-import com.f2prateek.couchpotato.util.SafeAsyncTask;
 import java.util.HashMap;
 import javax.inject.Inject;
 
 // A service that communicates with MovieDB
 public class MovieDBService extends BaseApiService {
+  public static final String ACTION_GET_MOVIE = "MovieDBService.ACTION_GET_MOVIE";
+  public static final String ACTION_GET_CONFIGURATION = "MovieDBService.ACTION_GET_CONFIGURATION";
   public static final String EXTRA_MOVIE_ID = "MovieDBService.EXTRA_MOVIE_ID";
 
   @Inject MovieDBApi movieDBApi;
   HashMap<Long, MovieDBMovie> movieCache = new HashMap<Long, MovieDBMovie>();
 
   @Override public int onStartCommand(Intent intent, int flags, int startId) {
-    long id = intent.getLongExtra(EXTRA_MOVIE_ID, 0);
-    new GetMovieTask(id).execute();
+    if (ACTION_GET_MOVIE.equals(intent.getAction())) {
+      long id = intent.getLongExtra(EXTRA_MOVIE_ID, 0);
+      new GetMovieTask(id).execute();
+    } else if (ACTION_GET_CONFIGURATION.equals(intent.getAction())) {
+      new GetConfigurationTask().execute();
+    }
     return START_STICKY;
   }
 
-  private class GetMovieTask extends SafeAsyncTask<MovieDBMovie> {
+  private class GetConfigurationTask extends SaveableDataEventTask<Configuration> {
+    public GetConfigurationTask() {
+      super(Configuration.class);
+    }
+
+    @Override public Configuration get() {
+      return movieDBApi.get_configuration();
+    }
+  }
+
+  private class GetMovieTask extends DataEventTask<MovieDBMovie> {
     private final long id;
 
     private GetMovieTask(long id) {
@@ -46,24 +60,15 @@ public class MovieDBService extends BaseApiService {
 
     @Override public MovieDBMovie call() throws Exception {
       MovieDBMovie movie = movieCache.get(id);
-      if (movieCache.get(id) == null) {
+      if (movie == null) {
         movie = movieDBApi.get_movie(id);
         movie.casts = movieDBApi.get_movie_cast(id);
         movie.trailers = movieDBApi.get_movie_trailers(id);
         movie.images = movieDBApi.get_movie_images(id);
         movie.similarMovies = movieDBApi.get_movie_similar(id);
+        movieCache.put(movie.id, movie);
       }
       return movie;
-    }
-
-    @Override protected void onSuccess(MovieDBMovie movieDBMovie) throws Exception {
-      super.onSuccess(movieDBMovie);
-      bus.post(new DataEvent<MovieDBMovie>(movieDBMovie));
-    }
-
-    @Override protected void onException(Exception e) throws RuntimeException {
-      super.onException(e);
-      Ln.e(e);
     }
   }
 }

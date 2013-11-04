@@ -20,29 +20,30 @@ import android.content.SharedPreferences;
 
 public class UserConfig {
 
-  public static final String HOST_SCHEME = "host_scheme";
-  public static final String HOST_URL = "host_url";
-  public static final String API_KEY = "api_key";
-  public static final String HOST_PORT = "host_port";
+  private static final String KEY_HOST_SCHEME = "UserConfig.KEY_HOST_SCHEME";
+  private static final String KEY_HOST_URL = "UserConfig.KEY_HOST_URL";
+  private static final String KEY_API_KEY = "UserConfig.KEY_API_KEY";
+  private static final String KEY_HOST_PORT = "UserConfig.KEY_HOST_PORT";
 
   private String hostScheme;
   private String hostUrl;
   private String apiKey;
   private int port;
 
+  // COnvencience to read from shared Preferences
   public UserConfig(SharedPreferences sharedPreferences) {
-    this.hostScheme = sharedPreferences.getString(HOST_SCHEME, "http");
-    this.hostUrl = sharedPreferences.getString(HOST_URL, null);
-    this.apiKey = sharedPreferences.getString(API_KEY, null);
-    this.port = sharedPreferences.getInt(HOST_PORT, 5050);
+    this.hostScheme = sharedPreferences.getString(KEY_HOST_SCHEME, "http");
+    this.hostUrl = sharedPreferences.getString(KEY_HOST_URL, null);
+    this.apiKey = sharedPreferences.getString(KEY_API_KEY, null);
+    this.port = sharedPreferences.getInt(KEY_HOST_PORT, 5050);
   }
 
   public void save(SharedPreferences sharedPreferences) {
     SharedPreferences.Editor editor = sharedPreferences.edit();
-    editor.putString(HOST_SCHEME, hostScheme);
-    editor.putString(HOST_URL, hostUrl);
-    editor.putString(API_KEY, apiKey);
-    editor.putInt(HOST_PORT, port);
+    editor.putString(KEY_HOST_SCHEME, hostScheme);
+    editor.putString(KEY_HOST_URL, hostUrl);
+    editor.putString(KEY_API_KEY, apiKey);
+    editor.putInt(KEY_HOST_PORT, port);
     editor.commit();
   }
 

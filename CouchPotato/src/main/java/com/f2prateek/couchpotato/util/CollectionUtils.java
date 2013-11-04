@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato.bus;
+package com.f2prateek.couchpotato.util;
 
-/**
- * Similar to {@link com.f2prateek.couchpotato.bus.DataEvent}, but wraps an error instead.
- * Only activities, should be listening for this, to display an error message to the user.
- */
-public class ErrorEvent {
-  public final Exception exception;
+import java.util.Collection;
 
-  public ErrorEvent(Exception exception) {
-    this.exception = exception;
+public class CollectionUtils {
+
+  public static boolean isEmpty(Collection collection) {
+    return collection == null || collection.size() == 0;
   }
 }

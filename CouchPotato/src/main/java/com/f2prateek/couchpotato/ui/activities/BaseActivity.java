@@ -32,7 +32,7 @@ import javax.inject.Inject;
  */
 public abstract class BaseActivity extends Activity {
 
-  @Inject Bus bus;
+  @Inject public Bus bus;
   public static final Gson gson = new Gson();
 
   @Override protected void onCreate(Bundle savedInstanceState) {

@@ -21,6 +21,7 @@
 
   <dimen name="default_padding">16dp</dimen>
   <dimen name="default_padding_small">8dp</dimen>
+  <dimen name="default_padding_xsmall">4dp</dimen>
 
   <!-- Padding for movie image in the detailed grid !-->
   <dimen name="movie_poster_padding">@dimen/default_padding</dimen>

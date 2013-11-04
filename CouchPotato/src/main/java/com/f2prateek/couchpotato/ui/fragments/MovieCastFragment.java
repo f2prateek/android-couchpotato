@@ -16,8 +16,12 @@
 
 package com.f2prateek.couchpotato.ui.fragments;
 
-import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +30,15 @@ import android.widget.TextView;
 import butterknife.InjectView;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.model.moviedb.Casts;
+import com.f2prateek.couchpotato.model.moviedb.Configuration;
+import com.f2prateek.couchpotato.ui.widgets.RoundedAvatarDrawable;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import javax.inject.Inject;
+import javax.inject.Provider;
 
 /**
  * Fragment to display the CouchPotatoMovie's cast, writers, directors, etc.
@@ -37,7 +47,9 @@ import java.util.ArrayList;
 public class MovieCastFragment extends BaseFragment {
 
   @InjectView(R.id.movie_cast) LinearLayout movie_cast;
+  @Inject Provider<Configuration> configurationProvider;
   private ArrayList<Casts.Cast> cast;
+  private static final StyleSpan boldSpan = new StyleSpan(android.graphics.Typeface.BOLD);
 
   /** Create a new instance of MovieCastFragment */
   public static MovieCastFragment newInstance(ArrayList<Casts.Cast> cast) {
@@ -62,16 +74,39 @@ public class MovieCastFragment extends BaseFragment {
 
   @Override public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    Context context = getActivity();
     for (Casts.Cast actor : cast) {
-      movie_cast.addView(getViewForActor(actor.name, context));
+      movie_cast.addView(getViewForActor(actor));
     }
   }
 
-  private View getViewForActor(String name, Context context) {
-    // TODO : actor images, etc.
-    TextView textView = new TextView(context);
-    textView.setText(name);
+  private View getViewForActor(Casts.Cast actor) {
+    final TextView textView = (TextView) LayoutInflater.from(activityContext)
+        .inflate(R.layout.item_movie_cast_and_crew, null);
+    textView.setText(
+        getTitleText(activityContext.getString(R.string.movie_cast_name_format), actor));
+    String imageUrl = actor.getImage(configurationProvider.get());
+    Picasso.with(activityContext).load(imageUrl).into(new Target() {
+      @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom loadedFrom) {
+        textView.setCompoundDrawablesWithIntrinsicBounds(new RoundedAvatarDrawable(bitmap), null,
+            null, null);
+      }
+
+      @Override public void onBitmapFailed(Drawable drawable) {
+
+      }
+
+      @Override public void onPrepareLoad(Drawable drawable) {
+
+      }
+    });
     return textView;
+  }
+
+  private static Spannable getTitleText(String format, Casts.Cast actor) {
+    String text = String.format(format, actor.name, actor.character);
+    SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(text);
+    spannableStringBuilder.setSpan(boldSpan, text.indexOf(actor.name), actor.name.length(),
+        Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+    return spannableStringBuilder;
   }
 }

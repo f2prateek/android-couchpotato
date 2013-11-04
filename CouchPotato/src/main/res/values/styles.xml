@@ -76,6 +76,8 @@
   </style>
 
   <style name="TextAppearance.Movie.Cast">
+    <item name="android:textSize">@dimen/text_size_medium</item>
+    <item name="android:maxLines">2</item>
   </style>
 
   <style name="TextAppearance.Movie.Directors">

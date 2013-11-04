@@ -18,13 +18,20 @@ package com.f2prateek.couchpotato.services;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import com.f2prateek.couchpotato.CouchPotatoApplication;
+import com.f2prateek.couchpotato.util.Ln;
+import com.f2prateek.couchpotato.util.SafeAsyncTask;
+import com.google.gson.Gson;
 import com.squareup.otto.Bus;
 import javax.inject.Inject;
 
 public abstract class BaseApiService extends Service {
   @Inject Bus bus;
+  public static final Gson gson = new Gson();
+  private static final Handler MAIN_THREAD = new Handler(Looper.getMainLooper());
 
   @Override public void onCreate() {
     super.onCreate();
@@ -39,5 +46,62 @@ public abstract class BaseApiService extends Service {
 
   @Override public IBinder onBind(Intent intent) {
     return null;
+  }
+
+  /**
+   * A task that fetches T, and posts to the event bus.
+   */
+  public abstract class DataEventTask<T> extends SafeAsyncTask<T> {
+
+    @Override protected void onSuccess(T data) throws Exception {
+      super.onSuccess(data);
+      if (data != null) {
+        post(data);
+      } else {
+        // TODO : throw Exception!
+      }
+    }
+
+    @Override protected void onException(Exception e) throws RuntimeException {
+      super.onException(e);
+      // TODO : propagate exception
+      Ln.e(e);
+    }
+
+    public void post(T data) {
+      bus.post(data);
+    }
+  }
+
+  /**
+   * A task that saves the data to the FileSystem. It fetches the data from the file first, then
+   * switches to the network call.
+   */
+  public abstract class SaveableDataEventTask<T> extends DataEventTask<T> {
+    private final FilePreference<T> filePreference;
+
+    public SaveableDataEventTask(Class<T> typeParameterClass) {
+      filePreference = new FilePreference<T>(gson, getFilesDir(), typeParameterClass);
+    }
+
+    @Override public T call() throws Exception {
+      final T data = filePreference.get();
+      if (data != null) {
+        MAIN_THREAD.post(new Runnable() {
+          @Override public void run() {
+            post(data);
+          }
+        });
+      }
+      return get();
+    }
+
+    public abstract T get() throws Exception;
+
+    @Override protected void onSuccess(T data) throws Exception {
+      super.onSuccess(data);
+      // Super throws an exception if data is null, so we can be sure it's not null here
+      filePreference.save(data);
+    }
   }
 }

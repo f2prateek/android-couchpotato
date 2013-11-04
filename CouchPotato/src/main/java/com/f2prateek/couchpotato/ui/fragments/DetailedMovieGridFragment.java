@@ -173,7 +173,7 @@ public class DetailedMovieGridFragment extends BaseProgressGridFragment
 
   }
 
-  public class DetailedMovieAdapter extends BindingListAdapter<CouchPotatoMovie> {
+  class DetailedMovieAdapter extends BindingListAdapter<CouchPotatoMovie> {
     private final Joiner commaJoiner = Joiner.on(", ");
 
     // Cached resources
@@ -188,7 +188,7 @@ public class DetailedMovieGridFragment extends BaseProgressGridFragment
     private final ImageSpan labelSpan;
     private final int itemPadding;
 
-    public DetailedMovieAdapter(Context context, List<CouchPotatoMovie> list) {
+    DetailedMovieAdapter(Context context, List<CouchPotatoMovie> list) {
       super(context, list);
       Resources resources = context.getResources();
       titleTextFormat = resources.getString(R.string.title_text_format);

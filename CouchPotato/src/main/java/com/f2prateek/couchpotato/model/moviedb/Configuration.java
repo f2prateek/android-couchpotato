@@ -17,8 +17,12 @@
 package com.f2prateek.couchpotato.model.moviedb;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Configuration {
+  public ImagesConfiguration images;
+
   public static class ImagesConfiguration {
     public String base_url;
     public ArrayList<String> poster_sizes;
@@ -27,5 +31,14 @@ public class Configuration {
     public ArrayList<String> logo_sizes;
   }
 
-  public ImagesConfiguration images;
+  // Lists cannot be saved directly, convert to HashSet
+  static Set<String> listToSet(ArrayList<String> list) {
+    return new HashSet<String>(list);
+  }
+
+  // Convert from set to list
+  static ArrayList<String> setToList(Set<String> set) {
+    return new ArrayList<String>(set);
+  }
 }
+
