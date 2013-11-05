@@ -30,7 +30,7 @@ public class FilePreference<T> {
 
   public FilePreference(Gson gson, File directory, Class<T> typeParameterClass) {
     gsonConverter = new GsonConverter(gson, typeParameterClass);
-    file = new File(directory, typeParameterClass.getName());
+    file = new File(directory, typeParameterClass.getCanonicalName());
   }
 
   public boolean save(T data) {

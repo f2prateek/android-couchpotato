@@ -34,11 +34,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.InjectView;
 import com.f2prateek.couchpotato.R;
-import com.f2prateek.couchpotato.model.couchpotato.movie.CouchPotatoMovie;
+import com.f2prateek.couchpotato.model.moviedb.Configuration;
+import com.f2prateek.couchpotato.model.moviedb.Genre;
+import com.f2prateek.couchpotato.model.moviedb.MovieDBMovie;
 import com.google.common.base.Joiner;
-import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import java.util.List;
+import javax.inject.Inject;
 
 /**
  * Fragment to display the movie's cast, writers, directors, etc.
@@ -48,6 +50,7 @@ public class MovieInfoFragment extends BaseFragment {
   private final Joiner commaJoiner = Joiner.on(", ");
 
   // TODO : actor images, etc.
+  @Inject Configuration configuration;
 
   @InjectView(R.id.movie_poster) ImageView poster;
   @InjectView(R.id.movie_title) TextView title;
@@ -65,13 +68,13 @@ public class MovieInfoFragment extends BaseFragment {
   private ForegroundColorSpan redColorSpan;
   private ImageSpan starSpan;
   private ImageSpan labelSpan;
-  private CouchPotatoMovie movie;
+  private MovieDBMovie movie;
 
   /** Create a new instance of MovieInfoFragment */
-  public static MovieInfoFragment newInstance(CouchPotatoMovie movie) {
+  public static MovieInfoFragment newInstance(MovieDBMovie movie) {
     MovieInfoFragment f = new MovieInfoFragment();
     Bundle args = new Bundle();
-    args.putString("movie", new Gson().toJson(movie));
+    args.putString("movie", gson.toJson(movie));
     f.setArguments(args);
     return f;
   }
@@ -79,7 +82,7 @@ public class MovieInfoFragment extends BaseFragment {
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    movie = new Gson().fromJson(getArguments().getString("movie"), CouchPotatoMovie.class);
+    movie = gson.fromJson(getArguments().getString("movie"), MovieDBMovie.class);
 
     Resources resources = getResources();
     titleTextFormat = resources.getString(R.string.title_text_format);
@@ -105,13 +108,15 @@ public class MovieInfoFragment extends BaseFragment {
     bindView(movie);
   }
 
-  public void bindView(CouchPotatoMovie movie) {
-    Picasso.with(getActivity()).load(movie.getPosterUrl()).into(poster);
-    title.setText(getTitleText(movie.library.titles.get(0).title, movie.library.info.year));
-    runtime.setText(getRuntimeText(movie.library.info.runtime));
-    rating.setText(getRatingText(movie.library.info.rating.imdb.get(0)));
-    genres.setText(getGenreText(movie.library.info.genres));
-    plot.setText(movie.library.info.plot);
+  public void bindView(MovieDBMovie movie) {
+    Picasso.with(getActivity()).load(movie.getSmallPosterUrl(configuration)).into(poster);
+    // TODO, use movie.release_date
+    title.setText(getTitleText(movie.title, 1995));
+    runtime.setText(getRuntimeText(movie.runtime));
+
+    rating.setText(getRatingText(movie.vote_average));
+    genres.setText(getGenreText(movie.genres));
+    plot.setText(movie.overview);
   }
 
   private Spannable getTitleText(String title, int year) {
@@ -150,7 +155,7 @@ public class MovieInfoFragment extends BaseFragment {
     return spannableStringBuilder;
   }
 
-  private Spanned getGenreText(List<String> genres) {
+  private Spanned getGenreText(List<Genre> genres) {
     SpannableStringBuilder spannableStringBuilder =
         new SpannableStringBuilder("  " + commaJoiner.join(genres));
     spannableStringBuilder.setSpan(labelSpan, 0, 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);

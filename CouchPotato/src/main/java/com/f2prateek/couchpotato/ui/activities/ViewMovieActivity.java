@@ -72,7 +72,6 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
 
   private Drawable actionBarBackgroundDrawable;
 
-  private CouchPotatoMovie couchPotatoMovie;
   private MovieDBMovie movieDBMovie;
   @Inject Provider<Configuration> configurationProvider;
 
@@ -83,7 +82,7 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
     getActionBar().setDisplayHomeAsUpEnabled(true);
     getActionBar().setDisplayShowHomeEnabled(false);
 
-    couchPotatoMovie =
+    CouchPotatoMovie couchPotatoMovie =
         gson.fromJson(getIntent().getExtras().getString(MOVIE_KEY), CouchPotatoMovie.class);
     Intent intent = new Intent(this, MovieDBService.class);
     intent.setAction(MovieDBService.ACTION_GET_MOVIE);
@@ -138,14 +137,11 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
   public static class MovieInfoAdapter extends FragmentPagerAdapter {
     private final Context context;
     private final MovieDBMovie movieDBMovie;
-    private final CouchPotatoMovie couchPotatoMovie;
 
-    public MovieInfoAdapter(FragmentManager fm, Context context, MovieDBMovie movieDBMovie,
-        CouchPotatoMovie couchPotatoMovie) {
+    public MovieInfoAdapter(FragmentManager fm, Context context, MovieDBMovie movieDBMovie) {
       super(fm);
       this.context = context;
       this.movieDBMovie = movieDBMovie;
-      this.couchPotatoMovie = couchPotatoMovie;
     }
 
     @Override public Fragment getItem(int position) {
@@ -155,7 +151,7 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
         case CAST_FRAGMENT_NUM:
           return MovieCastFragment.newInstance(movieDBMovie.casts.cast);
         case INFO_FRAGMENT_NUM:
-          return MovieInfoFragment.newInstance(couchPotatoMovie);
+          return MovieInfoFragment.newInstance(movieDBMovie);
         case ARTWORK_FRAGMENT_NUM:
           return MovieCastFragment.newInstance(movieDBMovie.casts.cast);
         default:
@@ -210,17 +206,18 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
 
   public void refreshView(MovieDBMovie movie) {
     getActionBar().setTitle(movie.title);
-    Picasso.with(this).load(movie.getBackdropUrl(configurationProvider.get())).transform(new CropPosterTransformation(movie_backdrop,
+    Picasso.with(this)
+        .load(movie.getBackdropUrl(configurationProvider.get()))
+        .transform(new CropPosterTransformation(movie_backdrop,
             getResources().getConfiguration().orientation))
         .into(movie_backdrop);
     if (TextUtils.isEmpty(movie.tagline)) {
       movie_tagline.setVisibility(View.GONE);
     } else {
-      movie_tagline.setText(couchPotatoMovie.library.info.tagline);
+      movie_tagline.setText(movie.tagline);
     }
     // TODO : figure out height issue, currently VP height is fixed, make it dynamic
-    movie_info_pager.setAdapter(
-        new MovieInfoAdapter(getFragmentManager(), this, movie, couchPotatoMovie));
+    movie_info_pager.setAdapter(new MovieInfoAdapter(getFragmentManager(), this, movie));
     movie_info_pager.setCurrentItem(2);
     tabStrip.setViewPager(movie_info_pager);
   }

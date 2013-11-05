@@ -20,7 +20,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/default_padding_small"
-    android:drawablePadding="@dimen/default_padding_small"
+    android:drawablePadding="@dimen/text_size_large"
     style="@style/TextAppearance.Movie.Cast">
 
 </TextView>

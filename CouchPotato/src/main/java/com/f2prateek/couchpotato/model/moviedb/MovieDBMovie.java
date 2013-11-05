@@ -54,6 +54,15 @@ public class MovieDBMovie {
         .get(0).file_path;
   }
 
+  public String getSmallPosterUrl(Configuration configuration) {
+    if (CollectionUtils.isEmpty(configuration.images.poster_sizes) || CollectionUtils.isEmpty(
+        images.posters)) {
+      return null;
+    }
+    return configuration.images.base_url + configuration.images.poster_sizes.get(1) + images.posters
+        .get(0).file_path;
+  }
+
   public String getBackdropUrl(Configuration configuration) {
     if (CollectionUtils.isEmpty(configuration.images.backdrop_sizes) || CollectionUtils.isEmpty(
         images.backdrops)) {
