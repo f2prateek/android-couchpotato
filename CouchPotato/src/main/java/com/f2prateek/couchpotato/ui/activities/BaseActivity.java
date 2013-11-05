@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Window;
 import butterknife.Views;
+import com.f2prateek.couchpotato.AppConstants;
 import com.f2prateek.couchpotato.CouchPotatoApplication;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.gson.Gson;
@@ -33,7 +34,7 @@ import javax.inject.Inject;
 public abstract class BaseActivity extends Activity {
 
   @Inject public Bus bus;
-  public static final Gson gson = new Gson();
+  public static final Gson gson = AppConstants.gson;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

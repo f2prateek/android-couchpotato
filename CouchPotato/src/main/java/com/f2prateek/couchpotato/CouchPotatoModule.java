@@ -36,13 +36,13 @@ import com.f2prateek.couchpotato.ui.fragments.DetailedMovieGridFragment;
 import com.f2prateek.couchpotato.ui.fragments.MovieCastFragment;
 import com.f2prateek.couchpotato.ui.fragments.MovieInfoFragment;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.squareup.otto.Bus;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
+import retrofit.converter.GsonConverter;
 
 @Module(
     injects = {
@@ -66,7 +66,7 @@ public class CouchPotatoModule {
   }
 
   @Provides @Singleton Gson provideGson() {
-    return new GsonBuilder().create();
+    return AppConstants.gson;
   }
 
   @Provides Configuration provideConfiguration(Gson gson) {
@@ -85,13 +85,14 @@ public class CouchPotatoModule {
         .create(CouchPotatoApi.class);
   }
 
-  @Provides MovieDBApi provideMovieDBApi() {
+  @Provides MovieDBApi provideMovieDBApi(Gson gson) {
     RequestInterceptor movieDbRequestInterceptor = new RequestInterceptor() {
       @Override public void intercept(RequestFacade request) {
         request.addQueryParam("api_key", "c820209625cf108a92f8e4192ec26a7f");
       }
     };
-    return new RestAdapter.Builder().setServer("http://api.themoviedb.org/3/")
+    return new RestAdapter.Builder().setConverter(new GsonConverter(gson))
+        .setServer("http://api.themoviedb.org/3/")
         .setRequestInterceptor(movieDbRequestInterceptor)
         .build()
         .create(MovieDBApi.class);

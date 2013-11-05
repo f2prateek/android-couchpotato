@@ -39,6 +39,7 @@ import com.f2prateek.couchpotato.model.moviedb.Genre;
 import com.f2prateek.couchpotato.model.moviedb.MovieDBMovie;
 import com.google.common.base.Joiner;
 import com.squareup.picasso.Picasso;
+import java.util.Calendar;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -109,9 +110,11 @@ public class MovieInfoFragment extends BaseFragment {
   }
 
   public void bindView(MovieDBMovie movie) {
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(movie.release_date);
     Picasso.with(getActivity()).load(movie.getSmallPosterUrl(configuration)).into(poster);
     // TODO, use movie.release_date
-    title.setText(getTitleText(movie.title, 1995));
+    title.setText(getTitleText(movie.title, cal.get(Calendar.YEAR)));
     runtime.setText(getRuntimeText(movie.runtime));
 
     rating.setText(getRatingText(movie.vote_average));

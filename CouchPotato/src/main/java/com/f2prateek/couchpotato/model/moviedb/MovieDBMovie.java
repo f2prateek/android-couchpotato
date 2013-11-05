@@ -18,6 +18,7 @@ package com.f2prateek.couchpotato.model.moviedb;
 
 import com.f2prateek.couchpotato.util.CollectionUtils;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MovieDBMovie {
   public long id;
@@ -32,7 +33,7 @@ public class MovieDBMovie {
   public String overview;
   public float popularity;
   public String poster_path;
-  // TODO: public Date release_date;
+  public Date release_date;
   public long revenue;
   public int runtime;
   public String status;

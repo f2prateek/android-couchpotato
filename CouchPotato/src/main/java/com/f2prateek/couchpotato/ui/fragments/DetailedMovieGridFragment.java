@@ -53,7 +53,6 @@ import com.f2prateek.couchpotato.ui.util.BindingListAdapter;
 import com.f2prateek.couchpotato.util.Ln;
 import com.f2prateek.couchpotato.util.RetrofitErrorHandler;
 import com.google.common.base.Joiner;
-import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
@@ -126,7 +125,7 @@ public class DetailedMovieGridFragment extends BaseProgressGridFragment
   @Override public void onGridItemClick(GridView gridView, View v, int position, long id) {
     CouchPotatoMovie CouchPotatoMovie = (CouchPotatoMovie) getGridAdapter().getItem(position);
     Intent movieIntent = new Intent(getActivity(), ViewMovieActivity.class);
-    movieIntent.putExtra(ViewMovieActivity.MOVIE_KEY, new Gson().toJson(CouchPotatoMovie));
+    movieIntent.putExtra(ViewMovieActivity.MOVIE_KEY, gson.toJson(CouchPotatoMovie));
     startActivity(movieIntent);
   }
 
