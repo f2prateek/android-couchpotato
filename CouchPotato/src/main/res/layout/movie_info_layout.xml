@@ -49,7 +49,7 @@
       style="?android:attr/listSeparatorTextViewStyle"
       android:text="@string/movie_cast_label"/>
 
-  <TextView android:id="@+id/movie_cast"
+  <TextView android:id="@+id/movie_cast_and_crew"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       style="@style/TextAppearance.Movie.Cast"/>

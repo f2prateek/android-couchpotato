@@ -42,6 +42,7 @@ import com.f2prateek.couchpotato.model.moviedb.MovieDBMovie;
 import com.f2prateek.couchpotato.services.MovieDBService;
 import com.f2prateek.couchpotato.ui.CropPosterTransformation;
 import com.f2prateek.couchpotato.ui.fragments.MovieCastFragment;
+import com.f2prateek.couchpotato.ui.fragments.MovieCrewFragment;
 import com.f2prateek.couchpotato.ui.fragments.MovieInfoFragment;
 import com.f2prateek.couchpotato.ui.widgets.NotifyingScrollView;
 import com.f2prateek.couchpotato.ui.widgets.PagerSlidingTabStrip;
@@ -147,7 +148,7 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
     @Override public Fragment getItem(int position) {
       switch (position) {
         case CREW_FRAGMENT_NUM:
-          return MovieCastFragment.newInstance(movieDBMovie.casts.cast);
+          return MovieCrewFragment.newInstance(movieDBMovie.casts.crew);
         case CAST_FRAGMENT_NUM:
           return MovieCastFragment.newInstance(movieDBMovie.casts.cast);
         case INFO_FRAGMENT_NUM:

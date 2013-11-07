@@ -46,5 +46,14 @@ public class Casts {
     public String department;
     public String job;
     public String profile_path;
+
+    public String getImage(Configuration configuration) {
+      if (profile_path == null) {
+        return null;
+      }
+      return configuration.images.base_url
+          + configuration.images.profile_sizes.get(0)
+          + profile_path;
+    }
   }
 }

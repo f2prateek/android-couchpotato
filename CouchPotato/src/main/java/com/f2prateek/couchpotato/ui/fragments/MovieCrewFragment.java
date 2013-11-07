@@ -44,27 +44,27 @@ import javax.inject.Provider;
  * Fragment to display the CouchPotatoMovie's cast, writers, directors, etc.
  * Rather than use a specific MovieBean, supply the info directly.
  */
-public class MovieCastFragment extends BaseFragment {
+public class MovieCrewFragment extends BaseFragment {
 
   @InjectView(R.id.movie_cast_and_crew) LinearLayout movie_cast;
   @Inject Provider<Configuration> configurationProvider;
-  private ArrayList<Casts.Cast> cast;
+  private ArrayList<Casts.Crew> crew;
   private static final StyleSpan boldSpan = new StyleSpan(android.graphics.Typeface.BOLD);
 
   /** Create a new instance of MovieCastFragment */
-  public static MovieCastFragment newInstance(ArrayList<Casts.Cast> cast) {
-    MovieCastFragment f = new MovieCastFragment();
+  public static MovieCrewFragment newInstance(ArrayList<Casts.Crew> crew) {
+    MovieCrewFragment f = new MovieCrewFragment();
     Bundle args = new Bundle();
-    args.putString("cast", gson.toJson(cast));
+    args.putString("crew", gson.toJson(crew));
     f.setArguments(args);
     return f;
   }
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    Type collectionType = new TypeToken<ArrayList<Casts.Cast>>() {
+    Type collectionType = new TypeToken<ArrayList<Casts.Crew>>() {
     }.getType();
-    cast = gson.fromJson(getArguments().getString("cast"), collectionType);
+    crew = gson.fromJson(getArguments().getString("crew"), collectionType);
   }
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,16 +74,16 @@ public class MovieCastFragment extends BaseFragment {
 
   @Override public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    for (Casts.Cast actor : cast) {
-      movie_cast.addView(getViewForActor(actor));
+    for (Casts.Crew person : crew) {
+      movie_cast.addView(getViewForCrew(person));
     }
   }
 
-  private View getViewForActor(Casts.Cast actor) {
+  private View getViewForCrew(Casts.Crew person) {
     final TextView textView = (TextView) LayoutInflater.from(activityContext)
         .inflate(R.layout.item_movie_cast_and_crew, null);
-    textView.setText(getText(activityContext.getString(R.string.movie_cast_name_format), actor));
-    String imageUrl = actor.getImage(configurationProvider.get());
+    textView.setText(getText(activityContext.getString(R.string.movie_crew_name_format), person));
+    String imageUrl = person.getImage(configurationProvider.get());
     Picasso.with(activityContext).load(imageUrl).into(new Target() {
       @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom loadedFrom) {
         textView.setCompoundDrawablesWithIntrinsicBounds(new RoundedAvatarDrawable(bitmap), null,
@@ -101,10 +101,10 @@ public class MovieCastFragment extends BaseFragment {
     return textView;
   }
 
-  private static Spannable getText(String format, Casts.Cast actor) {
-    String text = String.format(format, actor.name, actor.character);
+  private static Spannable getText(String format, Casts.Crew person) {
+    String text = String.format(format, person.name, person.department);
     SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(text);
-    spannableStringBuilder.setSpan(boldSpan, text.indexOf(actor.name), actor.name.length(),
+    spannableStringBuilder.setSpan(boldSpan, text.indexOf(person.name), person.name.length(),
         Spannable.SPAN_INCLUSIVE_INCLUSIVE);
     return spannableStringBuilder;
   }
