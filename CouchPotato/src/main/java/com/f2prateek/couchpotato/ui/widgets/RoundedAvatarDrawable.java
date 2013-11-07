@@ -54,7 +54,7 @@ public class RoundedAvatarDrawable extends Drawable {
 
   @Override
   public void draw(Canvas canvas) {
-    canvas.drawOval(mRectF, mPaint);
+    canvas.drawCircle(mRectF.centerX(), mRectF.centerY(), mRectF.width(), mPaint);
   }
 
   @Override
