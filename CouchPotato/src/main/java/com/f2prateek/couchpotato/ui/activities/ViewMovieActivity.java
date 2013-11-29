@@ -31,7 +31,6 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import butterknife.InjectView;
@@ -40,10 +39,10 @@ import com.f2prateek.couchpotato.model.couchpotato.movie.CouchPotatoMovie;
 import com.f2prateek.couchpotato.model.moviedb.Configuration;
 import com.f2prateek.couchpotato.model.moviedb.MovieDBMovie;
 import com.f2prateek.couchpotato.services.MovieDBService;
-import com.f2prateek.couchpotato.ui.CropPosterTransformation;
 import com.f2prateek.couchpotato.ui.fragments.MovieCastFragment;
 import com.f2prateek.couchpotato.ui.fragments.MovieCrewFragment;
 import com.f2prateek.couchpotato.ui.fragments.MovieInfoFragment;
+import com.f2prateek.couchpotato.ui.widgets.AspectRatioImageView;
 import com.f2prateek.couchpotato.ui.widgets.NotifyingScrollView;
 import com.f2prateek.couchpotato.ui.widgets.PagerSlidingTabStrip;
 import com.f2prateek.couchpotato.util.CollectionUtils;
@@ -66,7 +65,7 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
   private static final int ARTWORK_FRAGMENT_NUM = 3;
 
   @InjectView(R.id.scroll_view) NotifyingScrollView notifyingScrollView;
-  @InjectView(R.id.movie_backdrop) ImageView movie_backdrop;
+  @InjectView(R.id.movie_backdrop) AspectRatioImageView movie_backdrop;
   @InjectView(R.id.movie_tagline) TextView movie_tagline;
   @InjectView(R.id.movie_info_pager) ViewPager movie_info_pager;
   @InjectView(R.id.tabs) PagerSlidingTabStrip tabStrip;
@@ -207,10 +206,12 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
 
   public void refreshView(MovieDBMovie movie) {
     getActionBar().setTitle(movie.title);
+    float aspectRatio = 1 / movie.images.backdrops.get(0).aspect_ratio;  // width is measured first
+    movie_backdrop.setAspectRatio(aspectRatio);
     Picasso.with(this)
         .load(movie.getBackdropUrl(configurationProvider.get()))
-        .transform(new CropPosterTransformation(movie_backdrop,
-            getResources().getConfiguration().orientation))
+        .fit()
+        .centerInside()
         .into(movie_backdrop);
     if (TextUtils.isEmpty(movie.tagline)) {
       movie_tagline.setVisibility(View.GONE);

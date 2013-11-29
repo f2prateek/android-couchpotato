@@ -36,6 +36,7 @@ import com.f2prateek.couchpotato.ui.fragments.DetailedMovieGridFragment;
 import com.f2prateek.couchpotato.ui.fragments.MovieCastFragment;
 import com.f2prateek.couchpotato.ui.fragments.MovieCrewFragment;
 import com.f2prateek.couchpotato.ui.fragments.MovieInfoFragment;
+import com.f2prateek.couchpotato.ui.fragments.SimpleMovieGridFragment;
 import com.google.gson.Gson;
 import com.squareup.otto.Bus;
 import dagger.Module;
@@ -49,9 +50,10 @@ import retrofit.converter.GsonConverter;
     injects = {
         BaseActivity.class, BaseAuthenticatedActivity.class, MainActivity.class,
         ViewMovieActivity.class, BaseFragment.class, BaseProgressFragment.class,
-        BaseProgressGridFragment.class, DetailedMovieGridFragment.class, ServerSetupActivity.class,
-        MovieCastFragment.class, MovieCrewFragment.class, MovieInfoFragment.class,
-        BaseApiService.class, CouchPotatoService.class, MovieDBService.class
+        BaseProgressGridFragment.class, DetailedMovieGridFragment.class,
+        SimpleMovieGridFragment.class, ServerSetupActivity.class, MovieCastFragment.class,
+        MovieCrewFragment.class, MovieInfoFragment.class, BaseApiService.class,
+        CouchPotatoService.class, MovieDBService.class
     },
     complete = false)
 public class CouchPotatoModule {

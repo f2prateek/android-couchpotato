@@ -28,6 +28,7 @@ import butterknife.InjectView;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.services.CouchPotatoApi;
 import com.f2prateek.couchpotato.ui.fragments.DetailedMovieGridFragment;
+import com.f2prateek.couchpotato.ui.fragments.SimpleMovieGridFragment;
 import com.f2prateek.couchpotato.ui.widgets.SwipeableActionBarTabsAdapter;
 import javax.inject.Inject;
 
@@ -53,6 +54,8 @@ public class MainActivity extends BaseAuthenticatedActivity {
     actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
     tabsAdapter = new SwipeableActionBarTabsAdapter(this, viewPager);
+    tabsAdapter.addTab(actionBar.newTab().setText(R.string.movie_list_fragment),
+        SimpleMovieGridFragment.class, null);
     tabsAdapter.addTab(actionBar.newTab().setText(R.string.movie_list_fragment),
         DetailedMovieGridFragment.class, null);
 

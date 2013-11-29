@@ -34,11 +34,10 @@
   <dimen name="text_size_small">12sp</dimen>
 
   <!-- Spacing between grid items !-->
-  <dimen name="grid_item_spacing">2dp</dimen>
+  <dimen name="grid_item_spacing">1dp</dimen>
 
   <!-- Dimension for simple movie grid !-->
-  <dimen name="simple_movie_grid_height">189dp</dimen>
-  <dimen name="simple_movie_grid_width">126dp</dimen>
+  <dimen name="simple_movie_grid_width">96dp</dimen>
 
   <dimen name="detailed_grid_column_width">290dp</dimen>
 
