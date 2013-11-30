@@ -32,7 +32,6 @@ import com.f2prateek.couchpotato.model.couchpotato.movie.MovieGetResponse;
 import com.f2prateek.couchpotato.model.couchpotato.movie.MovieListResponse;
 import com.f2prateek.couchpotato.model.couchpotato.movie.MovieRefreshResponse;
 import com.f2prateek.couchpotato.model.couchpotato.movie.search.MovieSearchResponse;
-import retrofit.Callback;
 import retrofit.client.Response;
 import retrofit.http.GET;
 import retrofit.http.Query;
@@ -67,7 +66,7 @@ public interface CouchPotatoApi {
   @GET("/movie.add") MovieAddResponse movie_add(@Query("profile_id") String profile_id,
       @Query("identifier") String identifier, @Query("title") String title);
 
-  @GET("/movie.list") void movie_list(Callback<MovieListResponse> cb);
+  @GET("/movie.list") MovieListResponse movie_list();
 
   @GET("/movie.get") MovieGetResponse movie_get(@Query("id") long id);
 

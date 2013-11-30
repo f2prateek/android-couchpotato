@@ -46,29 +46,25 @@ import butterknife.InjectView;
 import butterknife.Views;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.model.couchpotato.movie.CouchPotatoMovie;
-import com.f2prateek.couchpotato.model.couchpotato.movie.MovieListResponse;
 import com.f2prateek.couchpotato.services.CouchPotatoApi;
+import com.f2prateek.couchpotato.services.CouchPotatoService;
 import com.f2prateek.couchpotato.ui.activities.ViewMovieActivity;
 import com.f2prateek.couchpotato.ui.util.BindingListAdapter;
-import com.f2prateek.couchpotato.util.Ln;
-import com.f2prateek.couchpotato.util.RetrofitErrorHandler;
 import com.google.common.base.Joiner;
+import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 /**
  * A {@link BaseProgressGridFragment} that displays a detailed view of movies in the user's
  * library.
  */
 public class DetailedMovieGridFragment extends BaseProgressGridFragment
-    implements Callback<MovieListResponse>, AbsListView.MultiChoiceModeListener {
+    implements AbsListView.MultiChoiceModeListener {
 
   @Inject CouchPotatoApi couchPotatoApi;
 
@@ -103,7 +99,9 @@ public class DetailedMovieGridFragment extends BaseProgressGridFragment
       showIndeterminateBar(true);
       Crouton.makeText(getActivity(), R.string.refreshing, Style.INFO).show();
     }
-    couchPotatoApi.movie_list(this);
+    Intent intent = new Intent(activityContext, CouchPotatoService.class);
+    intent.setAction(CouchPotatoService.ACTION_GET_MOVIES);
+    activityContext.startService(intent);
   }
 
   @Override public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -129,20 +127,9 @@ public class DetailedMovieGridFragment extends BaseProgressGridFragment
     startActivity(movieIntent);
   }
 
-  @Override public void success(MovieListResponse movieListResponse, Response response) {
-    showIndeterminateBar(false);
-    setEmptyText(getResources().getString(R.string.no_movies));
-    ListAdapter adapter = new DetailedMovieAdapter(getActivity(), movieListResponse.movies);
-    setGridAdapter(adapter);
-  }
-
-  @Override public void failure(RetrofitError retrofitError) {
-    Ln.e("Could not refresh movies.");
-    RetrofitErrorHandler.showError(getActivity(), retrofitError);
-    showIndeterminateBar(false);
-    setEmptyText(getResources().getString(R.string.failed));
-    ListAdapter adapter =
-        new DetailedMovieAdapter(getActivity(), new ArrayList<CouchPotatoMovie>());
+  @Subscribe
+  public void onMoviesReceived(ArrayList<CouchPotatoMovie> movies) {
+    ListAdapter adapter = new DetailedMovieAdapter(activityContext, movies);
     setGridAdapter(adapter);
   }
 

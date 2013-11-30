@@ -21,12 +21,15 @@ import com.f2prateek.couchpotato.model.couchpotato.DirectoryListResponse;
 import com.f2prateek.couchpotato.model.couchpotato.app.AppAvailableResponse;
 import com.f2prateek.couchpotato.model.couchpotato.movie.CouchPotatoMovie;
 import com.f2prateek.couchpotato.model.couchpotato.movie.MovieGetResponse;
+import com.f2prateek.couchpotato.model.couchpotato.movie.MovieListResponse;
+import java.util.List;
 import javax.inject.Inject;
 import retrofit.client.Response;
 
 public class CouchPotatoService extends BaseApiService {
 
   public static final String ACTION_GET_MOVIE = "CouchPotatoService.ACTION_GET_MOVIE";
+  public static final String ACTION_GET_MOVIES = "CouchPotatoService.ACTION_GET_MOVIES";
   public static final String ACTION_IS_APP_AVAILABLE = "CouchPotatoService.ACTION_IS_APP_AVAILABLE";
   public static final String ACTION_RESTART_APP = "CouchPotatoService.ACTION_RESTART_APP";
   public static final String ACTION_SHUTDOWN_APP = "CouchPotatoService.ACTION_SHUTDOWN_APP";
@@ -37,7 +40,9 @@ public class CouchPotatoService extends BaseApiService {
   @Inject CouchPotatoApi couchPotatoApi;
 
   @Override public int onStartCommand(Intent intent, int flags, int startId) {
-    if (ACTION_GET_MOVIE.equals(intent.getAction())) {
+    if (ACTION_GET_MOVIES.equals(intent.getAction())) {
+      new GetMoviesTask().execute();
+    } else if (ACTION_GET_MOVIE.equals(intent.getAction())) {
       long id = intent.getLongExtra(EXTRA_MOVIE_ID, 0);
       new GetMovieTask(id).execute();
     } else if (ACTION_IS_APP_AVAILABLE.equals(intent.getAction())) {
@@ -50,6 +55,18 @@ public class CouchPotatoService extends BaseApiService {
       new GetDirectoriesTask().execute();
     }
     return START_REDELIVER_INTENT;
+  }
+
+  private class GetMoviesTask extends DataEventTask<List<CouchPotatoMovie>> {
+
+    @Override public List<CouchPotatoMovie> call() throws Exception {
+      MovieListResponse response = couchPotatoApi.movie_list();
+      if (response.success) {
+        return response.movies;
+      } else {
+        return null;
+      }
+    }
   }
 
   private class GetMovieTask extends DataEventTask<CouchPotatoMovie> {
