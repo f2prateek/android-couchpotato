@@ -37,7 +37,7 @@
   <dimen name="grid_item_spacing">1dp</dimen>
 
   <!-- Dimension for simple movie grid !-->
-  <dimen name="simple_movie_grid_width">96dp</dimen>
+  <dimen name="simple_movie_grid_width">128dp</dimen>
 
   <dimen name="detailed_grid_column_width">290dp</dimen>
 

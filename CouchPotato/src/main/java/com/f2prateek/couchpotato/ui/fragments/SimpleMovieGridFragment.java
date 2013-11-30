@@ -30,6 +30,8 @@ import android.widget.AbsListView;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import butterknife.InjectView;
+import butterknife.Views;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.model.couchpotato.movie.CouchPotatoMovie;
 import com.f2prateek.couchpotato.model.couchpotato.movie.MovieListResponse;
@@ -98,13 +100,9 @@ public class SimpleMovieGridFragment extends BaseProgressGridFragment
     GridView gridView = getGridView();
     gridView.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
     gridView.setNumColumns(GridView.AUTO_FIT);
-    gridView.setColumnWidth(
-        getResources().getDimensionPixelOffset(R.dimen.simple_movie_grid_width));
+    gridView.setColumnWidth(getResources().getDimensionPixelOffset(R.dimen.simple_movie_grid_width));
     gridView.setFastScrollEnabled(true);
     gridView.setDrawSelectorOnTop(true);
-    gridView.setHorizontalSpacing(
-        getResources().getDimensionPixelOffset(R.dimen.grid_item_spacing));
-    gridView.setVerticalSpacing(getResources().getDimensionPixelOffset(R.dimen.grid_item_spacing));
     gridView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
     gridView.setMultiChoiceModeListener(this);
   }
@@ -166,16 +164,23 @@ public class SimpleMovieGridFragment extends BaseProgressGridFragment
     }
 
     @Override public View newView(LayoutInflater inflater, int type, ViewGroup parent) {
-      AspectRatioImageView view = new AspectRatioImageView(inflater.getContext());
-      view.setDominantMeasurement(AspectRatioImageView.MEASUREMENT_WIDTH);
-      view.setAspectRatioEnabled(true);
-      view.setAspectRatio(1.5f); // Ratio of posters
+      View view = inflater.inflate(R.layout.simple_movie_grid_item, parent, false);
+      ViewHolder holder = new ViewHolder(view);
+      view.setTag(holder);
       return view;
     }
 
     @Override public void bindView(CouchPotatoMovie movie, View view) {
-      AspectRatioImageView imageView = (AspectRatioImageView) view;
-      Picasso.with(getContext()).load(movie.getPosterUrl()).fit().centerCrop().into(imageView);
+      ViewHolder holder = (ViewHolder) view.getTag();
+      Picasso.with(getContext()).load(movie.getPosterUrl()).fit().centerCrop().into(holder.poster);
+    }
+
+    class ViewHolder {
+      @InjectView(R.id.movie_poster) AspectRatioImageView poster;
+
+      ViewHolder(View view) {
+        Views.inject(this, view);
+      }
     }
   }
 }

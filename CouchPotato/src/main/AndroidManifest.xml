@@ -36,7 +36,6 @@
 
     <activity
         android:name=".ui.activities.MainActivity"
-        android:theme="@style/MainActivity"
         android:label="@string/app_name">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
