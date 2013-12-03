@@ -41,25 +41,74 @@ dependencies {
   instrumentTestCompile group: 'com.squareup.spoon', name: 'spoon-client', version: '1.0.+'
 }
 
+def versionMajor = 1
+def versionMinor = 0
+def versionPatch = 0
+// bump for dogfood builds, public betas, etc.
+def versionBuild = 0
+
 android {
   compileSdkVersion 19
-  buildToolsVersion "19.0.0"
+  buildToolsVersion '19'
 
   testBuildType "debug"
+
+  signingConfigs {
+    release {
+      storeFile file("keystore")
+      storePassword "notYourRealPassword"
+      keyAlias "keystore"
+      keyPassword "notYourRealPassword"
+    }
+  }
 
   buildTypes {
     debug {
       packageNameSuffix ".debug"
       versionNameSuffix "-debug"
     }
+    release {
+      signingConfig signingConfigs.release
+    }
+    beta.initWith(buildTypes.release)
+    beta {
+      versionNameSuffix "-beta"
+    }
+    sourceSets.beta.setRoot('src/release')
+
+    applicationVariants.all { variant ->
+      apk = variant.packageApplication.outputFile;
+      newName = apk.name.replace(".apk", "-v${defaultConfig.versionName}-${versionBuild}.apk");
+      newName = newName.replace("app", "${defaultConfig.packageName}");
+      variant.packageApplication.outputFile = new File(apk.parentFile, newName);
+      if (variant.zipAlign) {
+        variant.zipAlign.outputFile = new File(apk.parentFile, newName.replace("-unaligned", ""));
+      }
+    }
   }
 
   defaultConfig {
     minSdkVersion 16
     targetSdkVersion 19
+    packageName "com.f2prateek.couchpotato"
+    versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+    versionName "${versionMajor}.${versionMinor}.${versionPatch}"
     buildConfig """\
           public static final boolean RELEASE = !DEBUG;
         """
+  }
+}
+
+task askForPasswords << {
+  def storePassword = new String(System.console().readLine("\n\$ Enter keystore password: "))
+  def keyPassword = new String(System.console().readLine("\n\$ Enter key alias password: "))
+  android.signingConfigs.release.storePassword = storePassword
+  android.signingConfigs.release.keyPassword = keyPassword
+}
+
+tasks.whenTaskAdded { theTask ->
+  if (theTask.name.equals("validateReleaseSigning")) {
+    theTask.dependsOn "askForPasswords"
   }
 }
 
