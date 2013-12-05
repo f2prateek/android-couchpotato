@@ -27,7 +27,7 @@ import android.widget.LinearLayout;
 import butterknife.InjectView;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.model.moviedb.Casts;
-import com.f2prateek.couchpotato.model.moviedb.Configuration;
+import com.f2prateek.couchpotato.model.moviedb.MovieDbConfiguration;
 import com.f2prateek.couchpotato.ui.widgets.AvatarTextView;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
@@ -43,7 +43,7 @@ import javax.inject.Provider;
 public class MovieCrewFragment extends BaseFragment {
 
   @InjectView(R.id.movie_cast_and_crew) LinearLayout movie_cast;
-  @Inject Provider<Configuration> configurationProvider;
+  @Inject Provider<MovieDbConfiguration> configurationProvider;
   private ArrayList<Casts.Crew> crew;
   private static final StyleSpan boldSpan = new StyleSpan(android.graphics.Typeface.BOLD);
 

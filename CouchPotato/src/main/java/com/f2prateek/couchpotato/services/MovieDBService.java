@@ -17,8 +17,8 @@
 package com.f2prateek.couchpotato.services;
 
 import android.content.Intent;
-import com.f2prateek.couchpotato.model.moviedb.Configuration;
 import com.f2prateek.couchpotato.model.moviedb.MovieDBMovie;
+import com.f2prateek.couchpotato.model.moviedb.MovieDbConfiguration;
 import java.util.HashMap;
 import javax.inject.Inject;
 
@@ -41,12 +41,12 @@ public class MovieDBService extends BaseApiService {
     return START_REDELIVER_INTENT;
   }
 
-  private class GetConfigurationTask extends SaveableDataEventTask<Configuration> {
+  private class GetConfigurationTask extends SaveableDataEventTask<MovieDbConfiguration> {
     public GetConfigurationTask() {
-      super(Configuration.class);
+      super(MovieDbConfiguration.class);
     }
 
-    @Override public Configuration get() {
+    @Override public MovieDbConfiguration get() {
       return movieDBApi.get_configuration();
     }
   }

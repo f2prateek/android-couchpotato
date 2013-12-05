@@ -36,8 +36,8 @@ import android.widget.TextView;
 import butterknife.InjectView;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.model.couchpotato.movie.CouchPotatoMovie;
-import com.f2prateek.couchpotato.model.moviedb.Configuration;
 import com.f2prateek.couchpotato.model.moviedb.MovieDBMovie;
+import com.f2prateek.couchpotato.model.moviedb.MovieDbConfiguration;
 import com.f2prateek.couchpotato.services.MovieDBService;
 import com.f2prateek.couchpotato.ui.fragments.MovieCastFragment;
 import com.f2prateek.couchpotato.ui.fragments.MovieCrewFragment;
@@ -73,7 +73,7 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
   private Drawable actionBarBackgroundDrawable;
 
   private MovieDBMovie movieDBMovie;
-  @Inject Provider<Configuration> configurationProvider;
+  @Inject Provider<MovieDbConfiguration> configurationProvider;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {

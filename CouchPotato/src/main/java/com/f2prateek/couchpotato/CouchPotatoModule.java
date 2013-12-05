@@ -17,7 +17,7 @@
 package com.f2prateek.couchpotato;
 
 import android.content.SharedPreferences;
-import com.f2prateek.couchpotato.model.moviedb.Configuration;
+import com.f2prateek.couchpotato.model.moviedb.MovieDbConfiguration;
 import com.f2prateek.couchpotato.services.BaseApiService;
 import com.f2prateek.couchpotato.services.CouchPotatoApi;
 import com.f2prateek.couchpotato.services.CouchPotatoService;
@@ -72,9 +72,10 @@ public class CouchPotatoModule {
     return AppConstants.gson;
   }
 
-  @Provides Configuration provideConfiguration(Gson gson) {
-    FilePreference<Configuration> configurationFilePreference =
-        new FilePreference<Configuration>(gson, application.getFilesDir(), Configuration.class);
+  @Provides MovieDbConfiguration provideConfiguration(Gson gson) {
+    FilePreference<MovieDbConfiguration> configurationFilePreference =
+        new FilePreference<MovieDbConfiguration>(gson, application.getFilesDir(),
+            MovieDbConfiguration.class);
     return configurationFilePreference.get();
   }
 

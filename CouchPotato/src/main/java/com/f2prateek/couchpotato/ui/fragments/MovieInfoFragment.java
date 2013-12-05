@@ -34,9 +34,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.InjectView;
 import com.f2prateek.couchpotato.R;
-import com.f2prateek.couchpotato.model.moviedb.Configuration;
 import com.f2prateek.couchpotato.model.moviedb.Genre;
 import com.f2prateek.couchpotato.model.moviedb.MovieDBMovie;
+import com.f2prateek.couchpotato.model.moviedb.MovieDbConfiguration;
 import com.google.common.base.Joiner;
 import com.squareup.picasso.Picasso;
 import java.util.Calendar;
@@ -51,7 +51,7 @@ public class MovieInfoFragment extends BaseFragment {
   private final Joiner commaJoiner = Joiner.on(", ");
 
   // TODO : actor images, etc.
-  @Inject Configuration configuration;
+  @Inject MovieDbConfiguration movieDbConfiguration;
 
   @InjectView(R.id.movie_poster) ImageView poster;
   @InjectView(R.id.movie_title) TextView title;
@@ -112,7 +112,7 @@ public class MovieInfoFragment extends BaseFragment {
   public void bindView(MovieDBMovie movie) {
     Calendar cal = Calendar.getInstance();
     cal.setTime(movie.release_date);
-    Picasso.with(getActivity()).load(movie.getSmallPosterUrl(configuration)).into(poster);
+    Picasso.with(getActivity()).load(movie.getSmallPosterUrl(movieDbConfiguration)).into(poster);
     // TODO, use movie.release_date
     title.setText(getTitleText(movie.title, cal.get(Calendar.YEAR)));
     runtime.setText(getRuntimeText(movie.runtime));

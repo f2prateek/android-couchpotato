@@ -17,16 +17,16 @@
 package com.f2prateek.couchpotato.services;
 
 import com.f2prateek.couchpotato.model.moviedb.Casts;
-import com.f2prateek.couchpotato.model.moviedb.Configuration;
 import com.f2prateek.couchpotato.model.moviedb.Images;
 import com.f2prateek.couchpotato.model.moviedb.MovieDBMovie;
+import com.f2prateek.couchpotato.model.moviedb.MovieDbConfiguration;
 import com.f2prateek.couchpotato.model.moviedb.SimilarMovies;
 import com.f2prateek.couchpotato.model.moviedb.Trailers;
 import retrofit.http.GET;
 import retrofit.http.Path;
 
 public interface MovieDBApi {
-  @GET("/configuration") Configuration get_configuration();
+  @GET("/configuration") MovieDbConfiguration get_configuration();
 
   @GET("/movie/{id}") MovieDBMovie get_movie(@Path("id") long id);
 

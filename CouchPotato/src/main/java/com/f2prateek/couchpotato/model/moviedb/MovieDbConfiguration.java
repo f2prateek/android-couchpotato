@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Configuration {
+public class MovieDbConfiguration {
   public ImagesConfiguration images;
 
   public static class ImagesConfiguration {

@@ -46,31 +46,35 @@ public class MovieDBMovie {
   public SimilarMovies similarMovies;
   public Trailers trailers;
 
-  public String getPosterUrl(Configuration configuration) {
-    if (CollectionUtils.isEmpty(configuration.images.poster_sizes) || CollectionUtils.isEmpty(
-        images.posters)) {
+  public String getPosterUrl(MovieDbConfiguration movieDbConfiguration) {
+    if (CollectionUtils.isEmpty(movieDbConfiguration.images.poster_sizes)
+        || CollectionUtils.isEmpty(images.posters)) {
       return null;
     }
-    return configuration.images.base_url + configuration.images.poster_sizes.get(3) + images.posters
-        .get(0).file_path;
+    return movieDbConfiguration.images.base_url
+        + movieDbConfiguration.images.poster_sizes.get(3)
+        + images.posters.get(0).file_path;
   }
 
-  public String getSmallPosterUrl(Configuration configuration) {
-    if (CollectionUtils.isEmpty(configuration.images.poster_sizes) || CollectionUtils.isEmpty(
-        images.posters)) {
+  public String getSmallPosterUrl(MovieDbConfiguration movieDbConfiguration) {
+    if (CollectionUtils.isEmpty(movieDbConfiguration.images.poster_sizes)
+        || CollectionUtils.isEmpty(images.posters)) {
       return null;
     }
-    return configuration.images.base_url + configuration.images.poster_sizes.get(1) + images.posters
-        .get(0).file_path;
+    return movieDbConfiguration.images.base_url
+        + movieDbConfiguration.images.poster_sizes.get(1)
+        + images.posters.get(0).file_path;
   }
 
-  public String getBackdropUrl(Configuration configuration) {
-    if (CollectionUtils.isEmpty(configuration.images.backdrop_sizes) || CollectionUtils.isEmpty(
-        images.backdrops)) {
+  public String getBackdropUrl(MovieDbConfiguration movieDbConfiguration) {
+    if (CollectionUtils.isEmpty(movieDbConfiguration.images.backdrop_sizes)
+        || CollectionUtils.isEmpty(images.backdrops)) {
       return null;
     }
-    return configuration.images.base_url + configuration.images.backdrop_sizes.get(1) + "/" + images
-        .backdrops
+    return movieDbConfiguration.images.base_url
+        + movieDbConfiguration.images.backdrop_sizes.get(1)
+        + "/"
+        + images.backdrops
         .get(0).file_path;
   }
 
