@@ -51,7 +51,7 @@ public class CouchPotatoApplication extends Application {
   }
 
   protected List<Object> getModules() {
-    return Arrays.<Object>asList(new AndroidModule(this), new CouchPotatoModule(this));
+    return Arrays.<Object>asList(new AndroidModule(this), new CouchPotatoApplicationModule(this));
   }
 
   public void inject(Object object) {

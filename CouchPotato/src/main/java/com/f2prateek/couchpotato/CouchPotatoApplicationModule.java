@@ -56,11 +56,11 @@ import retrofit.converter.GsonConverter;
         CouchPotatoService.class, MovieDBService.class
     },
     complete = false)
-public class CouchPotatoModule {
+public class CouchPotatoApplicationModule {
 
   private final CouchPotatoApplication application;
 
-  public CouchPotatoModule(CouchPotatoApplication application) {
+  public CouchPotatoApplicationModule(CouchPotatoApplication application) {
     this.application = application;
   }
 
