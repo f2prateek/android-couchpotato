@@ -62,8 +62,8 @@
   <string name="info">info</string>
   <string name="artwork">artwork</string>
 
-  <string name="movie_cast_name_format">%1$s\nas %2$s</string>
-  <string name="movie_crew_name_format">%1$s\nin %2$s</string>
+  <string name="movie_cast_name_format">%1$s as %2$s</string>
+  <string name="movie_crew_name_format">%1$s in %2$s</string>
 
   <!-- Server Setup Activity !-->
   <string name="username">Username</string>

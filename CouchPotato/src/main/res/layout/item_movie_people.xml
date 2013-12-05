@@ -16,11 +16,10 @@
   ~ limitations under the License.
   -->
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.f2prateek.couchpotato.ui.widgets.AvatarTextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/default_padding"
     android:drawablePadding="@dimen/default_padding"
-    style="@style/TextAppearance.Movie.Cast">
-
-</TextView>
+    style="@style/TextAppearance.Movie.People"/>
