@@ -21,7 +21,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import butterknife.Views;
-import com.f2prateek.couchpotato.AppConstants;
 import com.f2prateek.couchpotato.CouchPotatoApplication;
 import com.google.gson.Gson;
 import com.squareup.otto.Bus;
@@ -33,7 +32,7 @@ import javax.inject.Inject;
  */
 public abstract class BaseFragment extends Fragment {
   @Inject Bus bus;
-  public static final Gson gson = AppConstants.gson;
+  @Inject Gson gson;
   protected Context activityContext;
 
   @Override public void onCreate(Bundle savedInstanceState) {

@@ -38,6 +38,7 @@ import com.f2prateek.couchpotato.model.moviedb.Genre;
 import com.f2prateek.couchpotato.model.moviedb.MovieDBMovie;
 import com.f2prateek.couchpotato.model.moviedb.MovieDbConfiguration;
 import com.google.common.base.Joiner;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import java.util.Calendar;
 import java.util.List;
@@ -72,7 +73,7 @@ public class MovieInfoFragment extends BaseFragment {
   private MovieDBMovie movie;
 
   /** Create a new instance of MovieInfoFragment */
-  public static MovieInfoFragment newInstance(MovieDBMovie movie) {
+  public static MovieInfoFragment newInstance(Gson gson, MovieDBMovie movie) {
     MovieInfoFragment f = new MovieInfoFragment();
     Bundle args = new Bundle();
     args.putString("movie", gson.toJson(movie));

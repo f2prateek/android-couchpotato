@@ -29,6 +29,7 @@ import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.model.moviedb.Casts;
 import com.f2prateek.couchpotato.model.moviedb.MovieDbConfiguration;
 import com.f2prateek.couchpotato.ui.widgets.AvatarTextView;
+import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
 import java.lang.reflect.Type;
@@ -48,7 +49,7 @@ public class MovieCastFragment extends BaseFragment {
   private static final StyleSpan boldSpan = new StyleSpan(android.graphics.Typeface.BOLD);
 
   /** Create a new instance of MovieCastFragment */
-  public static MovieCastFragment newInstance(ArrayList<Casts.Cast> cast) {
+  public static MovieCastFragment newInstance(Gson gson, ArrayList<Casts.Cast> cast) {
     MovieCastFragment f = new MovieCastFragment();
     Bundle args = new Bundle();
     args.putString("cast", gson.toJson(cast));

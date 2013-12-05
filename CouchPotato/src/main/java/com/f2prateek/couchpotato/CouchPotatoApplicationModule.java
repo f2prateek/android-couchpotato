@@ -38,6 +38,7 @@ import com.f2prateek.couchpotato.ui.fragments.MovieCrewFragment;
 import com.f2prateek.couchpotato.ui.fragments.MovieInfoFragment;
 import com.f2prateek.couchpotato.ui.fragments.SimpleMovieGridFragment;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.squareup.otto.Bus;
 import dagger.Module;
 import dagger.Provides;
@@ -69,7 +70,7 @@ public class CouchPotatoApplicationModule {
   }
 
   @Provides @Singleton Gson provideGson() {
-    return AppConstants.gson;
+    return new GsonBuilder().setDateFormat("yyyy-mm-dd").create();
   }
 
   @Provides MovieDbConfiguration provideConfiguration(Gson gson) {

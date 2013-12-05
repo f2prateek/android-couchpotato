@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
-import com.f2prateek.couchpotato.AppConstants;
 import com.f2prateek.couchpotato.CouchPotatoApplication;
 import com.f2prateek.couchpotato.util.Ln;
 import com.f2prateek.couchpotato.util.SafeAsyncTask;
@@ -31,7 +30,7 @@ import javax.inject.Inject;
 
 public abstract class BaseApiService extends Service {
   @Inject Bus bus;
-  public static final Gson gson = AppConstants.gson;
+  @Inject Gson gson;
   private static final Handler MAIN_THREAD = new Handler(Looper.getMainLooper());
 
   @Override public void onCreate() {

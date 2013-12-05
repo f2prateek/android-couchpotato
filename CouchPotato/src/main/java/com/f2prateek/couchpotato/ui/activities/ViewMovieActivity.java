@@ -46,6 +46,7 @@ import com.f2prateek.couchpotato.ui.widgets.AspectRatioImageView;
 import com.f2prateek.couchpotato.ui.widgets.NotifyingScrollView;
 import com.f2prateek.couchpotato.ui.widgets.PagerSlidingTabStrip;
 import com.f2prateek.couchpotato.util.CollectionUtils;
+import com.google.gson.Gson;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 import javax.inject.Inject;
@@ -137,9 +138,12 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
   public static class MovieInfoAdapter extends FragmentPagerAdapter {
     private final Context context;
     private final MovieDBMovie movieDBMovie;
+    private final Gson gson;
 
-    public MovieInfoAdapter(FragmentManager fm, Context context, MovieDBMovie movieDBMovie) {
+    public MovieInfoAdapter(FragmentManager fm, Gson gson, Context context,
+        MovieDBMovie movieDBMovie) {
       super(fm);
+      this.gson = gson;
       this.context = context;
       this.movieDBMovie = movieDBMovie;
     }
@@ -147,13 +151,13 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
     @Override public Fragment getItem(int position) {
       switch (position) {
         case CREW_FRAGMENT_NUM:
-          return MovieCrewFragment.newInstance(movieDBMovie.casts.crew);
+          return MovieCrewFragment.newInstance(gson, movieDBMovie.casts.crew);
         case CAST_FRAGMENT_NUM:
-          return MovieCastFragment.newInstance(movieDBMovie.casts.cast);
+          return MovieCastFragment.newInstance(gson, movieDBMovie.casts.cast);
         case INFO_FRAGMENT_NUM:
-          return MovieInfoFragment.newInstance(movieDBMovie);
+          return MovieInfoFragment.newInstance(gson, movieDBMovie);
         case ARTWORK_FRAGMENT_NUM:
-          return MovieCastFragment.newInstance(movieDBMovie.casts.cast);
+          return MovieCastFragment.newInstance(gson, movieDBMovie.casts.cast);
         default:
           return null;
       }
@@ -219,7 +223,7 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
       movie_tagline.setText(movie.tagline);
     }
     // TODO : figure out height issue, currently VP height is fixed, make it dynamic
-    movie_info_pager.setAdapter(new MovieInfoAdapter(getFragmentManager(), this, movie));
+    movie_info_pager.setAdapter(new MovieInfoAdapter(getFragmentManager(), gson, this, movie));
     movie_info_pager.setCurrentItem(2);
     tabStrip.setViewPager(movie_info_pager);
   }
