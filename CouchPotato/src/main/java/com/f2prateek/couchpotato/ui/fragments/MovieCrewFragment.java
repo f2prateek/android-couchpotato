@@ -16,8 +16,6 @@
 
 package com.f2prateek.couchpotato.ui.fragments;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -26,15 +24,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import butterknife.InjectView;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.model.moviedb.Casts;
 import com.f2prateek.couchpotato.model.moviedb.Configuration;
-import com.f2prateek.couchpotato.ui.widgets.RoundedAvatarDrawable;
+import com.f2prateek.couchpotato.ui.widgets.AvatarTextView;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import javax.inject.Inject;
@@ -80,24 +76,11 @@ public class MovieCrewFragment extends BaseFragment {
   }
 
   private View getViewForCrew(Casts.Crew person) {
-    final TextView textView = (TextView) LayoutInflater.from(activityContext)
-        .inflate(R.layout.item_movie_cast_and_crew, null);
+    final AvatarTextView textView = (AvatarTextView) LayoutInflater.from(activityContext)
+        .inflate(R.layout.item_movie_people, null);
     textView.setText(getText(activityContext.getString(R.string.movie_crew_name_format), person));
     String imageUrl = person.getImage(configurationProvider.get());
-    Picasso.with(activityContext).load(imageUrl).into(new Target() {
-      @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom loadedFrom) {
-        textView.setCompoundDrawablesWithIntrinsicBounds(new RoundedAvatarDrawable(bitmap), null,
-            null, null);
-      }
-
-      @Override public void onBitmapFailed(Drawable drawable) {
-
-      }
-
-      @Override public void onPrepareLoad(Drawable drawable) {
-
-      }
-    });
+    Picasso.with(activityContext).load(imageUrl).into(textView);
     return textView;
   }
 

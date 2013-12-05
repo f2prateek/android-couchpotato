@@ -75,16 +75,11 @@
   <style name="TextAppearance.Movie.Genre">
   </style>
 
-  <style name="TextAppearance.Movie.Cast">
+  <style name="TextAppearance.Movie.People">
     <item name="android:textSize">@dimen/text_size_medium</item>
-    <item name="android:maxLines">2</item>
+    <item name="android:maxLines">1</item>
+    <item name="android:ellipsize">end</item>
     <item name="android:fontFamily">sans-serif-light</item>
-  </style>
-
-  <style name="TextAppearance.Movie.Directors">
-  </style>
-
-  <style name="TextAppearance.Movie.Writers">
   </style>
 
   <style name="Widget.ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
