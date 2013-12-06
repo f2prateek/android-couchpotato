@@ -47,7 +47,6 @@ import butterknife.Views;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.model.couchpotato.movie.CouchPotatoMovie;
 import com.f2prateek.couchpotato.services.CouchPotatoApi;
-import com.f2prateek.couchpotato.services.CouchPotatoService;
 import com.f2prateek.couchpotato.ui.activities.ViewMovieActivity;
 import com.f2prateek.couchpotato.ui.util.BindingListAdapter;
 import com.google.common.base.Joiner;
@@ -58,6 +57,7 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Provider;
 
 /**
  * A {@link BaseProgressGridFragment} that displays a detailed view of movies in the user's
@@ -66,7 +66,7 @@ import javax.inject.Inject;
 public class DetailedMovieGridFragment extends BaseProgressGridFragment
     implements AbsListView.MultiChoiceModeListener {
 
-  @Inject CouchPotatoApi couchPotatoApi;
+  @Inject Provider<CouchPotatoApi> couchPotatoApiProvider;
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -99,9 +99,9 @@ public class DetailedMovieGridFragment extends BaseProgressGridFragment
       showIndeterminateBar(true);
       Crouton.makeText(getActivity(), R.string.refreshing, Style.INFO).show();
     }
-    Intent intent = new Intent(activityContext, CouchPotatoService.class);
-    intent.setAction(CouchPotatoService.ACTION_GET_MOVIES);
-    activityContext.startService(intent);
+    //Intent intent = new Intent(activityContext, CouchPotatoService.class);
+    //intent.setAction(CouchPotatoService.ACTION_GET_MOVIES);
+    //activityContext.startService(intent);
   }
 
   @Override public void onViewCreated(View view, Bundle savedInstanceState) {

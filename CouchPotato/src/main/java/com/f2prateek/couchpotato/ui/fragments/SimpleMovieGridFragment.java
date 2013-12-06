@@ -34,18 +34,20 @@ import butterknife.InjectView;
 import butterknife.Views;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.model.couchpotato.movie.CouchPotatoMovie;
+import com.f2prateek.couchpotato.model.couchpotato.movie.MovieListResponse;
 import com.f2prateek.couchpotato.services.CouchPotatoApi;
-import com.f2prateek.couchpotato.services.CouchPotatoService;
 import com.f2prateek.couchpotato.ui.activities.ViewMovieActivity;
 import com.f2prateek.couchpotato.ui.util.BindingListAdapter;
 import com.f2prateek.couchpotato.ui.widgets.AspectRatioImageView;
-import com.squareup.otto.Subscribe;
+import com.f2prateek.couchpotato.util.RetrofitErrorHandler;
 import com.squareup.picasso.Picasso;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
-import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * A {@link com.f2prateek.couchpotato.ui.fragments.BaseProgressGridFragment} that displays a
@@ -53,7 +55,7 @@ import javax.inject.Inject;
  * library.
  */
 public class SimpleMovieGridFragment extends BaseProgressGridFragment
-    implements AbsListView.MultiChoiceModeListener {
+    implements AbsListView.MultiChoiceModeListener, Callback<MovieListResponse> {
 
   @Inject CouchPotatoApi couchPotatoApi;
 
@@ -88,9 +90,7 @@ public class SimpleMovieGridFragment extends BaseProgressGridFragment
       showIndeterminateBar(true);
       Crouton.makeText(getActivity(), R.string.refreshing, Style.INFO).show();
     }
-    Intent intent = new Intent(activityContext, CouchPotatoService.class);
-    intent.setAction(CouchPotatoService.ACTION_GET_MOVIES);
-    activityContext.startService(intent);
+    couchPotatoApi.movie_list(this);
   }
 
   @Override public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -113,10 +113,13 @@ public class SimpleMovieGridFragment extends BaseProgressGridFragment
     startActivity(movieIntent);
   }
 
-  @Subscribe
-  public void onMoviesReceived(ArrayList<CouchPotatoMovie> movies) {
-    ListAdapter adapter = new DetailedMovieAdapter(activityContext, movies);
+  @Override public void success(MovieListResponse movieListResponse, Response response) {
+    ListAdapter adapter = new DetailedMovieAdapter(activityContext, movieListResponse.movies);
     setGridAdapter(adapter);
+  }
+
+  @Override public void failure(RetrofitError error) {
+    RetrofitErrorHandler.showError(getActivity(), error);
   }
 
   @Override public boolean onCreateActionMode(ActionMode mode, Menu menu) {

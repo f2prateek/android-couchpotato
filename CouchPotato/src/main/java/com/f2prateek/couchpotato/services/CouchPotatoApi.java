@@ -32,6 +32,7 @@ import com.f2prateek.couchpotato.model.couchpotato.movie.MovieGetResponse;
 import com.f2prateek.couchpotato.model.couchpotato.movie.MovieListResponse;
 import com.f2prateek.couchpotato.model.couchpotato.movie.MovieRefreshResponse;
 import com.f2prateek.couchpotato.model.couchpotato.movie.search.MovieSearchResponse;
+import retrofit.Callback;
 import retrofit.client.Response;
 import retrofit.http.GET;
 import retrofit.http.Query;
@@ -39,46 +40,49 @@ import retrofit.http.Query;
 public interface CouchPotatoApi {
 
   // app
-  @GET("/app.available") AppAvailableResponse app_available();
+  @GET("/app.available") void app_available(Callback<AppAvailableResponse> cb);
 
-  @GET("/app.restart") Response app_restart();
+  @GET("/app.restart") void app_restart(Callback<Response> cb);
 
-  @GET("/app.shutdown") Response app_shutdown();
+  @GET("/app.shutdown") void app_shutdown(Callback<Response> cb);
 
-  @GET("/app.version") AppVersionResponse app_version();
+  @GET("/app.version") void app_version(Callback<AppVersionResponse> cb);
 
   // directory
-  @GET("/directory.list") DirectoryListResponse directory_list();
+  @GET("/directory.list") void directory_list(Callback<DirectoryListResponse> cb);
 
   // file
-  @GET("/file.types") FileTypesResponse file_types();
+  @GET("/file.types") void file_types(Callback<FileTypesResponse> cb);
 
   // logging
-  @GET("/logging.clear") LoggingClearResponse logging_clear();
+  @GET("/logging.clear") void logging_clear(Callback<LoggingClearResponse> cb);
 
-  @GET("/logging.get") LoggingGetResponse logging_get(@Query("id") long id);
+  @GET("/logging.get") void logging_get(@Query("id") long id, Callback<LoggingGetResponse> cb);
 
-  @GET("/logging.log") LoggingLogResponse logging_log();
+  @GET("/logging.log") void logging_log(Callback<LoggingLogResponse> cb);
 
-  @GET("/logging.partial") LoggingPartialResponse logging_partial();
+  @GET("/logging.partial") void logging_partial(Callback<LoggingPartialResponse> cb);
 
   // movie
-  @GET("/movie.add") MovieAddResponse movie_add(@Query("profile_id") String profile_id,
-      @Query("identifier") String identifier, @Query("title") String title);
+  @GET("/movie.add")
+  void movie_add(@Query("profile_id") String profile_id, @Query("identifier") String identifier,
+      @Query("title") String title, Callback<MovieAddResponse> cb);
 
-  @GET("/movie.list") MovieListResponse movie_list();
+  @GET("/movie.list") void movie_list(Callback<MovieListResponse> cb);
 
-  @GET("/movie.get") MovieGetResponse movie_get(@Query("id") long id);
+  @GET("/movie.get") void movie_get(@Query("id") long id, Callback<MovieGetResponse> cb);
 
-  @GET("/movie.refresh") MovieRefreshResponse movie_refresh(@Query("id") long id);
+  @GET("/movie.refresh")
+  void movie_refresh(@Query("id") long id, Callback<MovieRefreshResponse> cb);
 
-  @GET("/movie.search") MovieSearchResponse movie_search(@Query("q") String query);
+  @GET("/movie.search")
+  void movie_search(@Query("q") String query, Callback<MovieSearchResponse> cb);
 
   // manage
-  @GET("/manage.progress") ManageProgressResponse manage_progress();
+  @GET("/manage.progress") void manage_progress(Callback<ManageProgressResponse> cb);
 
-  @GET("/manage.update") ManageUpdateResponse manage_update();
+  @GET("/manage.update") void manage_update(Callback<ManageUpdateResponse> cb);
 
   // profile
-  @GET("/profile.list") ProfileListResponse profile_list();
+  @GET("/profile.list") void profile_list(Callback<ProfileListResponse> cb);
 }

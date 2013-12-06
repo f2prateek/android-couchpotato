@@ -31,12 +31,13 @@ import com.f2prateek.couchpotato.ui.fragments.DetailedMovieGridFragment;
 import com.f2prateek.couchpotato.ui.fragments.SimpleMovieGridFragment;
 import com.f2prateek.couchpotato.ui.widgets.SwipeableActionBarTabsAdapter;
 import javax.inject.Inject;
+import javax.inject.Provider;
 
 /** The top level activity that is shown first to the user. */
 public class MainActivity extends BaseAuthenticatedActivity {
 
   @InjectView(R.id.pager) ViewPager viewPager;
-  @Inject CouchPotatoApi couchPotatoApi;
+  @Inject Provider<CouchPotatoApi> couchPotatoApiProvider;
 
   private SwipeableActionBarTabsAdapter tabsAdapter;
   private SearchView searchView;

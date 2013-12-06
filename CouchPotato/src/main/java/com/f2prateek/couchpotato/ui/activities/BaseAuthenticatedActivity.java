@@ -32,7 +32,7 @@ public class BaseAuthenticatedActivity extends BaseActivity {
     super.onCreate(savedInstanceState);
 
     if (!AccountUtils.isAuthenticated(userConfig)) {
-      Ln.d("exiting:" + " isAuthenticated=" + AccountUtils.isAuthenticated(userConfig));
+      Ln.d("exiting: user not authenticated");
       AccountUtils.startAuthenticationFlow(this);
       finish();
     }

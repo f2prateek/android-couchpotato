@@ -21,7 +21,6 @@ import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Query;
 
-/** To login */
 public interface CouchPotatoLoginApi {
   @GET("/getkey") void get_key(@Query("p") String password, @Query("u") String username,
       Callback<GetKeyResponse> cb);

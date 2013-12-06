@@ -95,8 +95,7 @@ public class ServerSetupActivity extends BaseActivity implements Callback<GetKey
       userConfig.setHostScheme(getText(scheme));
       userConfig.setHostUrl(getText(host));
       userConfig.setPort(Integer.parseInt(getText(port)));
-      String server_url = userConfig.getUnauthenticatedServerUrl();
-      getApiKey(server_url, getText(username), getText(password));
+      getApiKey(getText(username), getText(password));
     } else {
       // Show a message to the user, the fields themselves
       Crouton.makeText(this, R.string.invalid_entries, Style.ALERT).show();
@@ -121,11 +120,13 @@ public class ServerSetupActivity extends BaseActivity implements Callback<GetKey
   }
 
   // Get the API key from the server
-  private void getApiKey(String server_url, String username, String password) {
+  private void getApiKey(String username, String password) {
     showIndeterminateBar(true);
-    CouchPotatoLoginApi api =
-        new RestAdapter.Builder().setServer(server_url).build().create(CouchPotatoLoginApi.class);
-    api.get_key(md5(password), md5(username), this);
+    // We don't inject this directly since couchPotatoServer is updated only in this line before.
+    RestAdapter restAdapter =
+        new RestAdapter.Builder().setServer(userConfig.getServerUrl()).build();
+    CouchPotatoLoginApi couchPotatoLoginApi = restAdapter.create(CouchPotatoLoginApi.class);
+    couchPotatoLoginApi.get_key(md5(password), md5(username), this);
   }
 
   private static String getText(TextView textView) {

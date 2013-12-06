@@ -18,14 +18,12 @@ package com.f2prateek.couchpotato.util;
 
 import android.content.Context;
 import android.content.Intent;
-import android.text.TextUtils;
 import com.f2prateek.couchpotato.UserConfig;
 import com.f2prateek.couchpotato.ui.activities.ServerSetupActivity;
 
 public class AccountUtils {
-
   public static boolean isAuthenticated(final UserConfig userConfig) {
-    return !TextUtils.isEmpty(userConfig.getApiKey());
+    return !userConfig.isEmpty();
   }
 
   public static void startAuthenticationFlow(final Context context) {

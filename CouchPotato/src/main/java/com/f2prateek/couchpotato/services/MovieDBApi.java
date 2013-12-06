@@ -22,19 +22,21 @@ import com.f2prateek.couchpotato.model.moviedb.MovieDBMovie;
 import com.f2prateek.couchpotato.model.moviedb.MovieDbConfiguration;
 import com.f2prateek.couchpotato.model.moviedb.SimilarMovies;
 import com.f2prateek.couchpotato.model.moviedb.Trailers;
+import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Path;
 
 public interface MovieDBApi {
-  @GET("/configuration") MovieDbConfiguration get_configuration();
+  @GET("/configuration") void get_configuration(Callback<MovieDbConfiguration> cb);
 
-  @GET("/movie/{id}") MovieDBMovie get_movie(@Path("id") long id);
+  @GET("/movie/{id}") void get_movie(@Path("id") long id, Callback<MovieDBMovie> cb);
 
-  @GET("/movie/{id}/casts") Casts get_movie_cast(@Path("id") long id);
+  @GET("/movie/{id}/casts") void get_movie_cast(@Path("id") long id, Callback<Casts> cb);
 
-  @GET("/movie/{id}/images") Images get_movie_images(@Path("id") long id);
+  @GET("/movie/{id}/images") void get_movie_images(@Path("id") long id, Callback<Images> cb);
 
-  @GET("/movie/{id}/trailers") Trailers get_movie_trailers(@Path("id") long id);
+  @GET("/movie/{id}/trailers") void get_movie_trailers(@Path("id") long id, Callback<Trailers> cb);
 
-  @GET("/movie/{id}/similar_movies") SimilarMovies get_movie_similar(@Path("id") long id);
+  @GET("/movie/{id}/similar_movies")
+  void get_movie_similar(@Path("id") long id, Callback<SimilarMovies> cb);
 }

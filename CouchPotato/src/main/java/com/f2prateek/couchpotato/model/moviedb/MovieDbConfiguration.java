@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class MovieDbConfiguration {
+  public long timestamp;
   public ImagesConfiguration images;
 
   public static class ImagesConfiguration {
@@ -39,6 +40,11 @@ public class MovieDbConfiguration {
   // Convert from set to list
   static ArrayList<String> setToList(Set<String> set) {
     return new ArrayList<String>(set);
+  }
+
+  /* Return true if we should update. Returns true if now is at least a week later than the timestamp */
+  public boolean shouldUpdate(long now) {
+    return (now - timestamp) < 604800000;
   }
 }
 

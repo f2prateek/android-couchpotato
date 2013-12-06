@@ -36,9 +36,11 @@ import android.widget.TextView;
 import butterknife.InjectView;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.model.couchpotato.movie.CouchPotatoMovie;
+import com.f2prateek.couchpotato.model.couchpotato.movie.MovieRefreshResponse;
 import com.f2prateek.couchpotato.model.moviedb.MovieDBMovie;
 import com.f2prateek.couchpotato.model.moviedb.MovieDbConfiguration;
-import com.f2prateek.couchpotato.services.MovieDBService;
+import com.f2prateek.couchpotato.services.CouchPotatoApi;
+import com.f2prateek.couchpotato.services.MovieDBApi;
 import com.f2prateek.couchpotato.ui.fragments.MovieCastFragment;
 import com.f2prateek.couchpotato.ui.fragments.MovieCrewFragment;
 import com.f2prateek.couchpotato.ui.fragments.MovieInfoFragment;
@@ -46,17 +48,21 @@ import com.f2prateek.couchpotato.ui.widgets.AspectRatioImageView;
 import com.f2prateek.couchpotato.ui.widgets.NotifyingScrollView;
 import com.f2prateek.couchpotato.ui.widgets.PagerSlidingTabStrip;
 import com.f2prateek.couchpotato.util.CollectionUtils;
+import com.f2prateek.couchpotato.util.Ln;
+import com.f2prateek.couchpotato.util.RetrofitErrorHandler;
 import com.google.gson.Gson;
-import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 import javax.inject.Inject;
 import javax.inject.Provider;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * An activity to show a single {@link com.f2prateek.couchpotato.model.moviedb.MovieDBMovie}. This
  * is a CouchPotatoMovie available in the user's library.
  */
-public class ViewMovieActivity extends BaseAuthenticatedActivity {
+public class ViewMovieActivity extends BaseAuthenticatedActivity implements Callback<MovieDBMovie> {
 
   public static final String MOVIE_KEY = "ViewMovieActivity.MOVIE_KEY";
 
@@ -74,7 +80,11 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
   private Drawable actionBarBackgroundDrawable;
 
   private MovieDBMovie movieDBMovie;
+  private CouchPotatoMovie couchPotatoMovie;
+
   @Inject Provider<MovieDbConfiguration> configurationProvider;
+  @Inject MovieDBApi movieDBApi;
+  @Inject CouchPotatoApi couchPotatoApi;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -83,12 +93,9 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
     getActionBar().setDisplayHomeAsUpEnabled(true);
     getActionBar().setDisplayShowHomeEnabled(false);
 
-    CouchPotatoMovie couchPotatoMovie =
+    couchPotatoMovie =
         gson.fromJson(getIntent().getExtras().getString(MOVIE_KEY), CouchPotatoMovie.class);
-    Intent intent = new Intent(this, MovieDBService.class);
-    intent.setAction(MovieDBService.ACTION_GET_MOVIE);
-    intent.putExtra(MovieDBService.EXTRA_MOVIE_ID, couchPotatoMovie.library.info.tmdb_id);
-    startService(intent);
+    movieDBApi.get_movie(couchPotatoMovie.library.info.tmdb_id, this);
 
     setContentView(R.layout.activity_movie);
     setUpFancyScroll(getResources().getColor(R.color.transparent_action_bar_color));
@@ -187,10 +194,10 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
    * Refresh the CouchPotatoMovie from the server.
    */
   private void refreshMovie() {
-    /*
     couchPotatoApi.movie_refresh(couchPotatoMovie.id, new Callback<MovieRefreshResponse>() {
 
-      @Override public void success(MovieRefreshResponse movieRefreshResponse, Response response) {
+      @Override
+      public void success(MovieRefreshResponse movieRefreshResponse, Response response) {
         Ln.d("Refreshed CouchPotatoMovie: " + String.valueOf(movieRefreshResponse.success));
       }
 
@@ -199,13 +206,15 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
         RetrofitErrorHandler.showError(ViewMovieActivity.this, retrofitError);
       }
     });
-  */
   }
 
-  @Subscribe
-  public void onMovieReceived(MovieDBMovie movieDBMovie) {
+  @Override public void success(MovieDBMovie movieDBMovie, Response response) {
     this.movieDBMovie = movieDBMovie;
     refreshView(movieDBMovie);
+  }
+
+  @Override public void failure(RetrofitError error) {
+    RetrofitErrorHandler.showError(this, error);
   }
 
   public void refreshView(MovieDBMovie movie) {

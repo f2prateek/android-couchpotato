@@ -17,6 +17,7 @@
 package com.f2prateek.couchpotato;
 
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 
 public class UserConfig {
 
@@ -30,12 +31,19 @@ public class UserConfig {
   private String apiKey;
   private int port;
 
-  // COnvencience to read from shared Preferences
-  public UserConfig(SharedPreferences sharedPreferences) {
-    this.hostScheme = sharedPreferences.getString(KEY_HOST_SCHEME, "http");
-    this.hostUrl = sharedPreferences.getString(KEY_HOST_URL, null);
-    this.apiKey = sharedPreferences.getString(KEY_API_KEY, null);
-    this.port = sharedPreferences.getInt(KEY_HOST_PORT, 5050);
+  public UserConfig(String hostScheme, String hostUrl, String apiKey, int port) {
+    this.hostScheme = hostScheme;
+    this.hostUrl = hostUrl;
+    this.apiKey = apiKey;
+    this.port = port;
+  }
+
+  public static UserConfig fromSharedPreferences(SharedPreferences sharedPreferences) {
+    String hostScheme = sharedPreferences.getString(KEY_HOST_SCHEME, "http");
+    String hostUrl = sharedPreferences.getString(KEY_HOST_URL, null);
+    String apiKey = sharedPreferences.getString(KEY_API_KEY, null);
+    int port = sharedPreferences.getInt(KEY_HOST_PORT, 5050);
+    return new UserConfig(hostScheme, hostUrl, apiKey, port);
   }
 
   public void save(SharedPreferences sharedPreferences) {
@@ -79,14 +87,19 @@ public class UserConfig {
     this.port = port;
   }
 
+  /* Get the complete url for which a CouchPotato instance runs on. */
   public String getServerUrl() {
-    // TODO : perform validation?
+    return hostScheme + "://" + hostUrl + ":" + port;
+  }
+
+  /* Get the complete url for which a CouchPotato instance runs on. */
+  public String getAuthenticatedServerUrl() {
     return hostScheme + "://" + hostUrl + ":" + port + "/api" + "/" + apiKey;
   }
 
-  public String getUnauthenticatedServerUrl() {
-    // TODO : perform validation?
-    return hostScheme + "://" + hostUrl + ":" + port;
+  /* Check if this is empty */
+  public boolean isEmpty() {
+    return TextUtils.isEmpty(hostUrl) || TextUtils.isEmpty(apiKey);
   }
 
   @Override public String toString() {

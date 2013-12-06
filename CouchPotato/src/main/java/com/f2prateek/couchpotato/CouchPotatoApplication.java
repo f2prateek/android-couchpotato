@@ -17,21 +17,33 @@
 package com.f2prateek.couchpotato;
 
 import android.app.Application;
-import android.content.Intent;
 import com.crashlytics.android.Crashlytics;
-import com.f2prateek.couchpotato.services.MovieDBService;
+import com.f2prateek.couchpotato.model.moviedb.MovieDbConfiguration;
+import com.f2prateek.couchpotato.services.FilePreference;
+import com.f2prateek.couchpotato.services.MovieDBApi;
+import com.f2prateek.couchpotato.util.Ln;
 import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import dagger.ObjectGraph;
 import java.util.Arrays;
 import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Provider;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
-public class CouchPotatoApplication extends Application {
+public class CouchPotatoApplication extends Application implements Callback<MovieDbConfiguration> {
   private ObjectGraph applicationGraph;
+
+  @Inject Provider<MovieDBApi> movieDBApiProvider;
+  @Inject Gson gson;
 
   @Override public void onCreate() {
     super.onCreate();
     applicationGraph = ObjectGraph.create(getModules().toArray());
+    applicationGraph.inject(this);
 
     Picasso.with(this).setDebugging(BuildConfig.DEBUG);
     GoogleAnalytics.getInstance(this).setDryRun(BuildConfig.DEBUG);
@@ -41,13 +53,7 @@ public class CouchPotatoApplication extends Application {
       Crashlytics.start(this);
     }
 
-    getMovieDbConfiguration();
-  }
-
-  private void getMovieDbConfiguration() {
-    Intent intent = new Intent(this, MovieDBService.class);
-    intent.setAction(MovieDBService.ACTION_GET_CONFIGURATION);
-    startService(intent);
+    movieDBApiProvider.get().get_configuration(this);
   }
 
   protected List<Object> getModules() {
@@ -56,5 +62,20 @@ public class CouchPotatoApplication extends Application {
 
   public void inject(Object object) {
     applicationGraph.inject(object);
+  }
+
+  public ObjectGraph getApplicationGraph() {
+    return applicationGraph;
+  }
+
+  @Override public void success(MovieDbConfiguration movieDbConfiguration, Response response) {
+    movieDbConfiguration.timestamp = System.currentTimeMillis();
+    FilePreference<MovieDbConfiguration> configurationFilePreference =
+        new FilePreference<MovieDbConfiguration>(gson, getFilesDir(), MovieDbConfiguration.class);
+    configurationFilePreference.save(movieDbConfiguration);
+  }
+
+  @Override public void failure(RetrofitError error) {
+    Ln.e(error);
   }
 }
