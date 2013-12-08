@@ -73,6 +73,7 @@ android {
     beta.initWith(buildTypes.release)
     beta {
       versionNameSuffix "-beta"
+      debuggable true
     }
     sourceSets.beta.setRoot('src/release')
 
@@ -126,5 +127,8 @@ android.applicationVariants.all { variant ->
   checkstyle.classpath = project.fileTree(variant.javaCompile.destinationDir)
   checkstyle.exclude('**/BuildConfig.java')
   checkstyle.exclude('**/R.java')
+  checkstyle.exclude('**/Ln.java')
+  checkstyle.exclude('**/SafeAsyncTask.java')
+  checkstyle.exclude('**/Strings.java')
   project.tasks.getByName("check").dependsOn checkstyle
 }
