@@ -1,17 +1,17 @@
 /*
  * Copyright 2013 Prateek Srivastava (@f2prateek)
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
  */
 
 package com.f2prateek.couchpotato.ui.fragments;
@@ -49,7 +49,7 @@ import javax.inject.Inject;
  */
 public class MovieInfoFragment extends BaseFragment {
 
-  private final Joiner commaJoiner = Joiner.on(", ");
+  private static final Joiner commaJoiner = Joiner.on(", ");
 
   // TODO : actor images, etc.
   @Inject MovieDbConfiguration movieDbConfiguration;
@@ -83,7 +83,6 @@ public class MovieInfoFragment extends BaseFragment {
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
     movie = gson.fromJson(getArguments().getString("movie"), MovieDBMovie.class);
 
     Resources resources = getResources();
@@ -91,8 +90,8 @@ public class MovieInfoFragment extends BaseFragment {
     runtimeTextFormat = resources.getString(R.string.runtime_text_format);
     ratingTextFormat = resources.getString(R.string.rating_text_format);
     boldSpan = new StyleSpan(android.graphics.Typeface.BOLD);
-    mediumSizeSpan =
-        new TextAppearanceSpan(getActivity(), android.R.style.TextAppearance_DeviceDefault_Medium);
+    mediumSizeSpan = new TextAppearanceSpan(activityContext,
+        android.R.style.TextAppearance_DeviceDefault_Medium);
     starSpan = new ImageSpan(BitmapFactory.decodeResource(resources, R.drawable.ic_action_star_0));
     labelSpan = new ImageSpan(BitmapFactory.decodeResource(resources, R.drawable.ic_action_tags));
 
@@ -113,11 +112,10 @@ public class MovieInfoFragment extends BaseFragment {
   public void bindView(MovieDBMovie movie) {
     Calendar cal = Calendar.getInstance();
     cal.setTime(movie.release_date);
-    Picasso.with(getActivity()).load(movie.getSmallPosterUrl(movieDbConfiguration)).into(poster);
+    Picasso.with(activityContext).load(movie.getSmallPosterUrl(movieDbConfiguration)).into(poster);
     // TODO, use movie.release_date
     title.setText(getTitleText(movie.title, cal.get(Calendar.YEAR)));
     runtime.setText(getRuntimeText(movie.runtime));
-
     rating.setText(getRatingText(movie.vote_average));
     genres.setText(getGenreText(movie.genres));
     plot.setText(movie.overview);

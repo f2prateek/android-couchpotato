@@ -24,10 +24,9 @@
       android:orientation="vertical"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:padding="@dimen/default_padding"
-      android:id="@+id/movie_info">
+      android:padding="@dimen/default_padding">
 
-    <include layout="@layout/detailed_movie_info"/>
+  <include layout="@layout/detailed_movie_info"/>
 
     <TextView android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,4 +42,5 @@
         style="@style/TextAppearance.Plot"/>
 
   </LinearLayout>
+
 </ScrollView>
