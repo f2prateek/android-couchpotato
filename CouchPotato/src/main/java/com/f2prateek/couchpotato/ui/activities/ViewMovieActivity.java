@@ -1,17 +1,17 @@
 /*
  * Copyright 2013 Prateek Srivastava (@f2prateek)
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
  */
 
 package com.f2prateek.couchpotato.ui.activities;
@@ -20,10 +20,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -31,7 +28,6 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import butterknife.InjectView;
 import com.f2prateek.couchpotato.R;
@@ -43,7 +39,6 @@ import com.f2prateek.couchpotato.ui.fragments.MovieCastFragment;
 import com.f2prateek.couchpotato.ui.fragments.MovieCrewFragment;
 import com.f2prateek.couchpotato.ui.fragments.MovieInfoFragment;
 import com.f2prateek.couchpotato.ui.widgets.AspectRatioImageView;
-import com.f2prateek.couchpotato.ui.widgets.NotifyingScrollView;
 import com.f2prateek.couchpotato.ui.widgets.PagerSlidingTabStrip;
 import com.f2prateek.couchpotato.util.CollectionUtils;
 import com.google.gson.Gson;
@@ -65,13 +60,10 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
   private static final int INFO_FRAGMENT_NUM = 2;
   private static final int ARTWORK_FRAGMENT_NUM = 3;
 
-  @InjectView(R.id.scroll_view) NotifyingScrollView notifyingScrollView;
   @InjectView(R.id.movie_backdrop) AspectRatioImageView movie_backdrop;
   @InjectView(R.id.movie_tagline) TextView movie_tagline;
   @InjectView(R.id.movie_info_pager) ViewPager movie_info_pager;
   @InjectView(R.id.tabs) PagerSlidingTabStrip tabStrip;
-
-  private Drawable actionBarBackgroundDrawable;
 
   private MovieDBMovie movieDBMovie;
   @Inject Provider<MovieDbConfiguration> configurationProvider;
@@ -91,7 +83,6 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
     startService(intent);
 
     setContentView(R.layout.activity_movie);
-    setUpFancyScroll(getResources().getColor(R.color.transparent_action_bar_color));
     tabStrip.setIndicatorColor(getResources().getColor(R.color.transparent_action_bar_color));
   }
 
@@ -227,42 +218,4 @@ public class ViewMovieActivity extends BaseAuthenticatedActivity {
     movie_info_pager.setCurrentItem(2);
     tabStrip.setViewPager(movie_info_pager);
   }
-
-  // ViewFX
-  public void setUpFancyScroll(int color) {
-    actionBarBackgroundDrawable = new ColorDrawable(color);
-    actionBarBackgroundDrawable.setAlpha(0);
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-      actionBarBackgroundDrawable.setCallback(drawableCallback);
-    }
-    getActionBar().setBackgroundDrawable(actionBarBackgroundDrawable);
-
-    notifyingScrollView.setOnScrollChangedListener(onScrollChangedListener);
-  }
-
-  private NotifyingScrollView.OnScrollChangedListener onScrollChangedListener =
-      new NotifyingScrollView.OnScrollChangedListener() {
-        public void onScrollChanged(ScrollView who, int l, int t, int oldl, int oldt) {
-          final int headerHeight =
-              findViewById(R.id.movie_backdrop).getHeight() - getActionBar().getHeight();
-          final float ratio = (float) Math.min(Math.max(t, 0), headerHeight) / headerHeight;
-          final int newAlpha = (int) (ratio * 255);
-          actionBarBackgroundDrawable.setAlpha(newAlpha);
-        }
-      };
-
-  private Drawable.Callback drawableCallback = new Drawable.Callback() {
-    @Override
-    public void invalidateDrawable(Drawable who) {
-      getActionBar().setBackgroundDrawable(who);
-    }
-
-    @Override
-    public void scheduleDrawable(Drawable who, Runnable what, long when) {
-    }
-
-    @Override
-    public void unscheduleDrawable(Drawable who, Runnable what) {
-    }
-  };
 }
