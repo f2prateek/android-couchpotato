@@ -1,17 +1,17 @@
 /*
  * Copyright 2013 Prateek Srivastava (@f2prateek)
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
  */
 
 package com.f2prateek.couchpotato.ui.fragments;
@@ -98,8 +98,7 @@ public class SimpleMovieGridFragment extends BaseProgressGridFragment
     GridView gridView = getGridView();
     gridView.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
     gridView.setNumColumns(GridView.AUTO_FIT);
-    gridView.setColumnWidth(
-        getResources().getDimensionPixelOffset(R.dimen.simple_movie_grid_width));
+    gridView.setColumnWidth(getResources().getDimensionPixelOffset(R.dimen.simple_movie_grid_width));
     gridView.setFastScrollEnabled(true);
     gridView.setDrawSelectorOnTop(true);
     gridView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
@@ -160,7 +159,11 @@ public class SimpleMovieGridFragment extends BaseProgressGridFragment
 
     @Override public void bindView(CouchPotatoMovie movie, View view) {
       ViewHolder holder = (ViewHolder) view.getTag();
-      Picasso.with(getContext()).load(movie.getPosterUrl()).fit().centerCrop().into(holder.poster);
+      Picasso.with(activityContext)
+          .load(movie.getPosterUrl())
+          .fit()
+          .centerCrop()
+          .into(holder.poster);
     }
 
     class ViewHolder {

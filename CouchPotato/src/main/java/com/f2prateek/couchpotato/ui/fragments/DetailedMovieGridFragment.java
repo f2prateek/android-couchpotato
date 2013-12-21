@@ -202,7 +202,7 @@ public class DetailedMovieGridFragment extends BaseProgressGridFragment
 
     @Override public void bindView(CouchPotatoMovie movie, View view) {
       ViewHolder holder = (ViewHolder) view.getTag();
-      Picasso.with(getContext()).load(movie.getPosterUrl()).into(holder.poster);
+      Picasso.with(activityContext).load(movie.getPosterUrl()).into(holder.poster);
       holder.title
           .setText(getTitleText(movie.library.titles.get(0).title, movie.library.info.year));
       holder.runtime.setText(getRuntimeText(movie.library.info.runtime));
