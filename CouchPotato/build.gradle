@@ -4,7 +4,7 @@ buildscript {
     maven { url 'http://download.crashlytics.com/maven' }
   }
   dependencies {
-    classpath group: 'com.android.tools.build', name: 'gradle', version: '0.6.+'
+    classpath group: 'com.android.tools.build', name: 'gradle', version: '0.7.+'
     classpath group: 'com.crashlytics.tools.gradle', name: 'crashlytics-gradle', version: '1.+'
   }
 }
@@ -49,7 +49,11 @@ def versionBuild = 0
 
 android {
   compileSdkVersion 19
-  buildToolsVersion '19'
+  buildToolsVersion '19.0.1'
+
+  packagingOptions {
+    exclude 'META-INF/services/javax.annotation.processing.Processor'
+  }
 
   testBuildType "debug"
 
@@ -94,9 +98,6 @@ android {
     packageName "com.f2prateek.couchpotato"
     versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
     versionName "${versionMajor}.${versionMinor}.${versionPatch}"
-    buildConfig """\
-          public static final boolean RELEASE = !DEBUG;
-        """
   }
 }
 
