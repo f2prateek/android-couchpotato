@@ -36,7 +36,8 @@
         app:aspectRatio="0.667"
         app:dominantMeasurement="width"/>
 
-    <TextView android:id="@+id/movie_tagline"
+    <TextView
+        android:id="@+id/movie_tagline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -53,7 +54,8 @@
       android:layout_height="48dp"/>
 
   <android.support.v4.view.ViewPager android:id="@+id/movie_info_pager"
-      android:layout_height="500dp"
+      android:layout_weight="1"
+      android:layout_height="0dp"
       android:layout_width="match_parent"/>
 
 </LinearLayout>
