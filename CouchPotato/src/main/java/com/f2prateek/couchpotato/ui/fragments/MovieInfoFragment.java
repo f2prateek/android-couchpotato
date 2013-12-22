@@ -25,7 +25,7 @@ import butterknife.InjectView;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.model.moviedb.MovieDBMovie;
 import com.f2prateek.couchpotato.model.moviedb.MovieDbConfiguration;
-import com.f2prateek.couchpotato.ui.widgets.MovieInfoView;
+import com.f2prateek.couchpotato.ui.views.MovieInfoView;
 import com.google.gson.Gson;
 import javax.inject.Inject;
 
