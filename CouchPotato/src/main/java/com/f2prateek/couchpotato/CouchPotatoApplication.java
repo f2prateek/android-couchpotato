@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Prateek Srivastava (@f2prateek)
+ * Copyright 2014 Prateek Srivastava (@f2prateek)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -20,18 +20,26 @@ import android.app.Application;
 import android.content.Intent;
 import com.crashlytics.android.Crashlytics;
 import com.f2prateek.couchpotato.services.MovieDBService;
+import com.f2prateek.ln.Ln;
+import com.f2prateek.ln.LnInterface;
 import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.squareup.picasso.Picasso;
 import dagger.ObjectGraph;
 import java.util.Arrays;
 import java.util.List;
+import javax.inject.Inject;
 
 public class CouchPotatoApplication extends Application {
+
+  @Inject LnInterface lnInterface;
+
   private ObjectGraph applicationGraph;
 
   @Override public void onCreate() {
     super.onCreate();
     applicationGraph = ObjectGraph.create(getModules().toArray());
+    applicationGraph.inject(this);
+    Ln.set(lnInterface);
 
     Picasso.with(this).setDebugging(BuildConfig.DEBUG);
     GoogleAnalytics.getInstance(this).setDryRun(BuildConfig.DEBUG);

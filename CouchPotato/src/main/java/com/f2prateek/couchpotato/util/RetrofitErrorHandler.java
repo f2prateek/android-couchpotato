@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Prateek Srivastava (@f2prateek)
+ * Copyright 2014 Prateek Srivastava (@f2prateek)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package com.f2prateek.couchpotato.util;
 
 import android.app.Activity;
 import com.f2prateek.couchpotato.R;
+import com.f2prateek.ln.Ln;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import java.net.SocketTimeoutException;

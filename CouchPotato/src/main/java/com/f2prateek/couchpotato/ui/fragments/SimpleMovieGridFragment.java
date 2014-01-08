@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Prateek Srivastava (@f2prateek)
+ * Copyright 2014 Prateek Srivastava (@f2prateek)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -98,7 +98,8 @@ public class SimpleMovieGridFragment extends BaseProgressGridFragment
     GridView gridView = getGridView();
     gridView.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
     gridView.setNumColumns(GridView.AUTO_FIT);
-    gridView.setColumnWidth(getResources().getDimensionPixelOffset(R.dimen.simple_movie_grid_width));
+    gridView.setColumnWidth(
+        getResources().getDimensionPixelOffset(R.dimen.simple_movie_grid_width));
     gridView.setFastScrollEnabled(true);
     gridView.setDrawSelectorOnTop(true);
     gridView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);

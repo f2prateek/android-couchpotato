@@ -21,28 +21,53 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
   <com.jakewharton.scalpel.ScalpelFrameLayout
       android:id="@+id/scalpel"
       android:layout_width="match_parent"
       android:layout_height="match_parent"/>
+
   <LinearLayout
-      android:id="@+id/scalpel_drawer"
+      android:id="@+id/dev_drawer"
       android:orientation="vertical"
-      android:layout_width="220dp"
+      android:layout_width="256dp"
       android:layout_height="match_parent"
       android:layout_gravity="end"
-      android:padding="16dp"
-      android:background="#ff444444">
+      android:paddingLeft="16dp"
+      android:paddingRight="16dp"
+      android:paddingTop="?android:actionBarSize"
+      android:background="@android:color/background_light">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/scalpel"
+        style="?android:attr/listSeparatorTextViewStyle"/>
+
     <Switch
         android:id="@+id/scalpel_enabled"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Scalpel"/>
+        android:text="@string/scalpel"/>
+
     <CheckBox
         android:id="@+id/scalpel_draw_views"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Draw Views"/>
+        android:text="@string/draw_views"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/logging"
+        style="?android:attr/listSeparatorTextViewStyle"/>
+
+    <Spinner
+        android:id="@+id/log_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
   </LinearLayout>
+
 </android.support.v4.widget.DrawerLayout>

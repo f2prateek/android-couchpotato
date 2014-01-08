@@ -23,17 +23,24 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Spinner;
 import android.widget.Switch;
+import butterknife.InjectView;
+import butterknife.Views;
 import com.f2prateek.couchpotato.R;
+import com.f2prateek.ln.Ln;
 import com.jakewharton.scalpel.ScalpelFrameLayout;
 
 public class ScalpelDrawer extends DrawerLayout {
 
-  private ScalpelFrameLayout scalpelView;
-  private Switch enabledSwitch;
-  private CheckBox drawViews;
+  @InjectView(R.id.scalpel) ScalpelFrameLayout scalpelView;
+  @InjectView(R.id.scalpel_enabled) Switch enabledSwitch;
+  @InjectView(R.id.scalpel_draw_views) CheckBox drawViews;
+  @InjectView(R.id.log_spinner) Spinner logSpinner;
 
   public ScalpelDrawer(Context context) {
     super(context);
@@ -59,12 +66,11 @@ public class ScalpelDrawer extends DrawerLayout {
   }
 
   private void init() {
-    LayoutInflater inflater =
-        (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    addView(inflater.inflate(R.layout.scalpel_drawer, null));
-    scalpelView = (ScalpelFrameLayout) findViewById(R.id.scalpel);
-    enabledSwitch = (Switch) findViewById(R.id.scalpel_enabled);
-    drawViews = (CheckBox) findViewById(R.id.scalpel_draw_views);
+    LayoutInflater inflater = LayoutInflater.from(getContext());
+    addView(inflater.inflate(R.layout.dev_drawer, null));
+
+    Views.inject(this);
+
     enabledSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         scalpelView.setLayerInteractionEnabled(isChecked);
@@ -76,6 +82,24 @@ public class ScalpelDrawer extends DrawerLayout {
     drawViews.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         scalpelView.setDrawViews(isChecked);
+      }
+    });
+
+    ArrayAdapter<CharSequence> adapter =
+        ArrayAdapter.createFromResource(getContext(), R.array.ln_level_array,
+            android.R.layout.simple_spinner_item);
+    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    logSpinner.setAdapter(adapter);
+    logSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+      @Override
+      public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        int level = position + 2; // log levels start at 2 but our adapter starts at 0
+        Ln.setLoggingLevel(level);
+        Ln.d("Log level set to %s", Ln.logLevelToString(level));
+      }
+
+      @Override public void onNothingSelected(AdapterView<?> parent) {
+
       }
     });
   }
