@@ -38,17 +38,13 @@
       android:paddingTop="?android:actionBarSize"
       android:background="@android:color/background_light">
 
-    <TextView
+    <Switch
+        android:id="@+id/scalpel_enabled"
+        android:layout_gravity="left"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/scalpel"
         style="?android:attr/listSeparatorTextViewStyle"/>
-
-    <Switch
-        android:id="@+id/scalpel_enabled"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/scalpel"/>
 
     <CheckBox
         android:id="@+id/scalpel_draw_views"
