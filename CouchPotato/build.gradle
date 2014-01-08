@@ -35,6 +35,7 @@ dependencies {
     exclude module: 'support-v4'
     compile group: 'com.android.support', name: 'support-v4', version: '18.0.+'
   }
+  compile group: 'com.jakewharton.scalpel', name: 'scalpel', version: '1.1.+'
   compile group: 'com.squareup.okhttp', name: 'okhttp', version: '1.2.+'
   compile group: 'com.squareup.dagger', name: 'dagger-compiler', version: '1.1.+'
   instrumentTestCompile group: 'com.squareup', name: 'fest-android', version: '1.0.+'
