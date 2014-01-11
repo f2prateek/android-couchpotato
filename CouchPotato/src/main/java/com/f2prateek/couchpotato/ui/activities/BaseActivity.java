@@ -22,7 +22,7 @@ import android.view.Window;
 import butterknife.Views;
 import com.f2prateek.couchpotato.BuildConfig;
 import com.f2prateek.couchpotato.CouchPotatoApplication;
-import com.f2prateek.couchpotato.dev.ScalpelDrawer;
+import com.f2prateek.couchpotato.dev.DevDrawer;
 import com.f2prateek.dart.Dart;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.gson.Gson;
@@ -75,8 +75,8 @@ public abstract class BaseActivity extends Activity {
     super.onPostCreate(savedInstanceState);
     if (BuildConfig.DEBUG) {
       // prepare for surgery
-      ScalpelDrawer scalpelDrawer = new ScalpelDrawer(this);
-      scalpelDrawer.wrapInside(this);
+      DevDrawer devDrawer = new DevDrawer(this);
+      devDrawer.wrapInside(this);
     }
   }
 

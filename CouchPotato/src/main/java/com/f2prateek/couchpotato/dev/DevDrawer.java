@@ -35,24 +35,24 @@ import com.f2prateek.couchpotato.R;
 import com.f2prateek.ln.Ln;
 import com.jakewharton.scalpel.ScalpelFrameLayout;
 
-public class ScalpelDrawer extends DrawerLayout {
+public class DevDrawer extends DrawerLayout {
 
   @InjectView(R.id.scalpel) ScalpelFrameLayout scalpelView;
   @InjectView(R.id.scalpel_enabled) Switch enabledSwitch;
   @InjectView(R.id.scalpel_draw_views) CheckBox drawViews;
   @InjectView(R.id.log_spinner) Spinner logSpinner;
 
-  public ScalpelDrawer(Context context) {
+  public DevDrawer(Context context) {
     super(context);
     init();
   }
 
-  public ScalpelDrawer(Context context, AttributeSet attrs) {
+  public DevDrawer(Context context, AttributeSet attrs) {
     super(context, attrs);
     init();
   }
 
-  public ScalpelDrawer(Context context, AttributeSet attrs, int defStyle) {
+  public DevDrawer(Context context, AttributeSet attrs, int defStyle) {
     super(context, attrs, defStyle);
     init();
   }
