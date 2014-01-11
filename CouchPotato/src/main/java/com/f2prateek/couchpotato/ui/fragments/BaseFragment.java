@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.view.View;
 import butterknife.Views;
 import com.f2prateek.couchpotato.CouchPotatoApplication;
+import com.f2prateek.dart.Dart;
 import com.google.gson.Gson;
 import com.squareup.otto.Bus;
 import javax.inject.Inject;
@@ -39,6 +40,7 @@ public abstract class BaseFragment extends Fragment {
     super.onCreate(savedInstanceState);
     // Perform injection so that when this call returns all dependencies will be available for use.
     ((CouchPotatoApplication) getActivity().getApplication()).inject(this);
+    Dart.inject(this);
     activityContext = getActivity();
   }
 

@@ -113,3 +113,4 @@ local.properties
 #Sensitive data
 CouchPotato/src/release
 CouchPotato/keystore
+*crashlytics_export_strings

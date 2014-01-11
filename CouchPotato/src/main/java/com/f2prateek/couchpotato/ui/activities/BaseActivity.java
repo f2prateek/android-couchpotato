@@ -23,6 +23,7 @@ import butterknife.Views;
 import com.f2prateek.couchpotato.BuildConfig;
 import com.f2prateek.couchpotato.CouchPotatoApplication;
 import com.f2prateek.couchpotato.dev.ScalpelDrawer;
+import com.f2prateek.dart.Dart;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.gson.Gson;
 import com.squareup.otto.Bus;
@@ -41,6 +42,8 @@ public abstract class BaseActivity extends Activity {
     super.onCreate(savedInstanceState);
     // Perform injection so that when this call returns all dependencies will be available for use.
     ((CouchPotatoApplication) getApplication()).inject(this);
+
+    Dart.inject(this);
 
     // All activities will require this
     requestWindowFeature(Window.FEATURE_PROGRESS);
