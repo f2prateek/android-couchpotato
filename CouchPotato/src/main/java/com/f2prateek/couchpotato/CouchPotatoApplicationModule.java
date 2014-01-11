@@ -16,7 +16,10 @@
 
 package com.f2prateek.couchpotato;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.preference.PreferenceManager;
 import com.f2prateek.couchpotato.model.moviedb.MovieDbConfiguration;
 import com.f2prateek.couchpotato.services.BaseApiService;
 import com.f2prateek.couchpotato.services.CouchPotatoApi;
@@ -24,21 +27,6 @@ import com.f2prateek.couchpotato.services.CouchPotatoService;
 import com.f2prateek.couchpotato.services.FilePreference;
 import com.f2prateek.couchpotato.services.MovieDBApi;
 import com.f2prateek.couchpotato.services.MovieDBService;
-import com.f2prateek.couchpotato.ui.activities.BaseActivity;
-import com.f2prateek.couchpotato.ui.activities.BaseAuthenticatedActivity;
-import com.f2prateek.couchpotato.ui.activities.MainActivity;
-import com.f2prateek.couchpotato.ui.activities.ServerSetupActivity;
-import com.f2prateek.couchpotato.ui.activities.ViewMovieActivity;
-import com.f2prateek.couchpotato.ui.fragments.BaseFragment;
-import com.f2prateek.couchpotato.ui.fragments.BaseProgressFragment;
-import com.f2prateek.couchpotato.ui.fragments.BaseProgressGridFragment;
-import com.f2prateek.couchpotato.ui.fragments.DetailedMovieGridFragment;
-import com.f2prateek.couchpotato.ui.fragments.MovieCastFragment;
-import com.f2prateek.couchpotato.ui.fragments.MovieCrewFragment;
-import com.f2prateek.couchpotato.ui.fragments.MovieInfoFragment;
-import com.f2prateek.couchpotato.ui.fragments.SimpleMovieGridFragment;
-import com.f2prateek.ln.DebugLn;
-import com.f2prateek.ln.LnInterface;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.otto.Bus;
@@ -51,14 +39,11 @@ import retrofit.converter.GsonConverter;
 
 @Module(
     injects = {
-        CouchPotatoApplication.class, BaseActivity.class, BaseAuthenticatedActivity.class,
-        MainActivity.class, ViewMovieActivity.class, BaseFragment.class, BaseProgressFragment.class,
-        BaseProgressGridFragment.class, DetailedMovieGridFragment.class,
-        SimpleMovieGridFragment.class, ServerSetupActivity.class, MovieCastFragment.class,
-        MovieCrewFragment.class, MovieInfoFragment.class, BaseApiService.class,
-        CouchPotatoService.class, MovieDBService.class
+        CouchPotatoApplication.class,
+        // Service
+        BaseApiService.class, CouchPotatoService.class, MovieDBService.class
     },
-    complete = false)
+    library = true)
 public class CouchPotatoApplicationModule {
 
   private final CouchPotatoApplication application;
@@ -69,11 +54,6 @@ public class CouchPotatoApplicationModule {
 
   @Provides @Singleton Bus provideOttoBus() {
     return new Bus();
-  }
-
-  @Provides @Singleton LnInterface provideLnInterface() {
-    // TODO : should be in BuildTypeModule
-    return DebugLn.from(application);
   }
 
   @Provides @Singleton Gson provideGson() {
@@ -108,5 +88,17 @@ public class CouchPotatoApplicationModule {
         .setRequestInterceptor(movieDbRequestInterceptor)
         .build()
         .create(MovieDBApi.class);
+  }
+
+  @Provides @Singleton @ForApplication Context provideApplicationContext() {
+    return application;
+  }
+
+  @Provides @Singleton SharedPreferences provideSharePreferences(@ForApplication Context context) {
+    return PreferenceManager.getDefaultSharedPreferences(context);
+  }
+
+  @Provides @Singleton Resources provideResources(@ForApplication Context context) {
+    return context.getResources();
   }
 }

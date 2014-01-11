@@ -35,7 +35,7 @@ public abstract class BaseApiService extends Service {
 
   @Override public void onCreate() {
     super.onCreate();
-    ((CouchPotatoApplication) getApplication()).inject(this);
+    ((CouchPotatoApplication) getApplication()).getApplicationGraph().inject(this);
     bus.register(this);
   }
 

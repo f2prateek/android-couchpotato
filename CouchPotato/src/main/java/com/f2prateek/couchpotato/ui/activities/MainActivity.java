@@ -36,7 +36,6 @@ import javax.inject.Inject;
 public class MainActivity extends BaseAuthenticatedActivity {
 
   @InjectView(R.id.pager) ViewPager viewPager;
-  @Inject CouchPotatoApi couchPotatoApi;
 
   private SwipeableActionBarTabsAdapter tabsAdapter;
   private SearchView searchView;

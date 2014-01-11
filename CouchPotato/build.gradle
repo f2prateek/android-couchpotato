@@ -19,10 +19,11 @@ dependencies {
     maven { url 'http://download.crashlytics.com/maven' }
   }
 
+  compile fileTree(dir: 'libs', include: '*.jar')
+
   compile group: 'com.android.support', name: 'support-v4', version: '18.0.+'
   compile group: 'com.android.support', name: 'support-v13', version: '18.0.+'
   compile group: 'com.crashlytics.android', name: 'crashlytics', version: '1.+'
-  compile fileTree(dir: 'libs', include: '*.jar')
 
   compile group: 'com.jakewharton', name: 'butterknife', version: '3.0.+'
   compile group: 'com.squareup', name: 'tape', version: '1.1.+'
@@ -31,7 +32,7 @@ dependencies {
   compile group: 'com.squareup.dagger', name: 'dagger', version: '1.1.+'
   compile group: 'com.squareup.retrofit', name: 'retrofit', version: '1.2.+'
   compile group: 'com.google.guava', name: 'guava', version: '15.+'
-  compile group: 'de.keyboardsurfer.android.widget', name: 'crouton', version: '1.8.+'
+  compile 'de.keyboardsurfer.android.widget:crouton:1.8.2@aar'
   compile group: 'com.f2prateek.ln', name: 'ln', version: '1.1.+'
   compile group: 'com.f2prateek.dart', name: 'dart', version: '1.0.+'
   compile group: 'com.jakewharton.scalpel', name: 'scalpel', version: '1.1.+'

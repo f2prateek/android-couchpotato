@@ -20,27 +20,25 @@ import android.app.Application;
 import android.content.Intent;
 import com.crashlytics.android.Crashlytics;
 import com.f2prateek.couchpotato.services.MovieDBService;
+import com.f2prateek.ln.DebugLn;
 import com.f2prateek.ln.Ln;
 import com.f2prateek.ln.LnInterface;
 import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.squareup.picasso.Picasso;
 import dagger.ObjectGraph;
-import java.util.Arrays;
-import java.util.List;
 import javax.inject.Inject;
 
 public class CouchPotatoApplication extends Application {
-
-  @Inject LnInterface lnInterface;
 
   private ObjectGraph applicationGraph;
 
   @Override public void onCreate() {
     super.onCreate();
-    applicationGraph = ObjectGraph.create(getModules().toArray());
-    applicationGraph.inject(this);
-    Ln.set(lnInterface);
 
+    applicationGraph = ObjectGraph.create(getModules());
+    applicationGraph.inject(this);
+
+    Ln.set(DebugLn.from(this));
     Picasso.with(this).setDebugging(BuildConfig.DEBUG);
     GoogleAnalytics.getInstance(this).setDryRun(BuildConfig.DEBUG);
 
@@ -57,11 +55,13 @@ public class CouchPotatoApplication extends Application {
     startService(intent);
   }
 
-  protected List<Object> getModules() {
-    return Arrays.<Object>asList(new AndroidModule(this), new CouchPotatoApplicationModule(this));
+  protected Object[] getModules() {
+    return new Object[] {
+        new CouchPotatoApplicationModule(this)
+    };
   }
 
-  public void inject(Object object) {
-    applicationGraph.inject(object);
+  public ObjectGraph getApplicationGraph() {
+    return applicationGraph;
   }
 }

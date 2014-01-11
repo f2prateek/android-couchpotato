@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Window;
 import butterknife.Views;
+import com.f2prateek.couchpotato.ActivityModule;
 import com.f2prateek.couchpotato.BuildConfig;
 import com.f2prateek.couchpotato.CouchPotatoApplication;
 import com.f2prateek.couchpotato.dev.DevDrawer;
@@ -27,6 +28,7 @@ import com.f2prateek.dart.Dart;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.gson.Gson;
 import com.squareup.otto.Bus;
+import dagger.ObjectGraph;
 import javax.inject.Inject;
 
 /**
@@ -38,10 +40,14 @@ public abstract class BaseActivity extends Activity {
   @Inject public Bus bus;
   @Inject public Gson gson;
 
+  private ObjectGraph activityGraph;
+
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    activityGraph =
+        ((CouchPotatoApplication) getApplication()).getApplicationGraph().plus(getModules());
     // Perform injection so that when this call returns all dependencies will be available for use.
-    ((CouchPotatoApplication) getApplication()).inject(this);
+    activityGraph.inject(this);
 
     Dart.inject(this);
 
@@ -84,6 +90,16 @@ public abstract class BaseActivity extends Activity {
   public void onStop() {
     EasyTracker.getInstance(this).activityStop(this);
     super.onStop();
+  }
+
+  protected Object[] getModules() {
+    return new Object[] {
+        new ActivityModule(this)
+    };
+  }
+
+  public void inject(Object object) {
+    activityGraph.inject(object);
   }
 
   protected void showIndeterminateBar(boolean show) {

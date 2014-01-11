@@ -30,7 +30,7 @@ public class UserConfig {
   private String apiKey;
   private int port;
 
-  // Convencience to read from shared Preferences
+  // Convenience to read from shared Preferences
   public UserConfig(SharedPreferences sharedPreferences) {
     this.hostScheme = sharedPreferences.getString(KEY_HOST_SCHEME, "http");
     this.hostUrl = sharedPreferences.getString(KEY_HOST_URL, null);

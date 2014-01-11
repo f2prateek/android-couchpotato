@@ -21,7 +21,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import butterknife.Views;
-import com.f2prateek.couchpotato.CouchPotatoApplication;
+import com.f2prateek.couchpotato.ForActivity;
+import com.f2prateek.couchpotato.ui.activities.BaseActivity;
 import com.f2prateek.dart.Dart;
 import com.google.gson.Gson;
 import com.squareup.otto.Bus;
@@ -34,14 +35,13 @@ import javax.inject.Inject;
 public abstract class BaseFragment extends Fragment {
   @Inject Bus bus;
   @Inject Gson gson;
-  protected Context activityContext;
+  @Inject @ForActivity Context activityContext;
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     // Perform injection so that when this call returns all dependencies will be available for use.
-    ((CouchPotatoApplication) getActivity().getApplication()).inject(this);
+    ((BaseActivity) getActivity()).inject(this);
     Dart.inject(this);
-    activityContext = getActivity();
   }
 
   @Override public void onResume() {
