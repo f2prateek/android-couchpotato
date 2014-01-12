@@ -18,6 +18,7 @@ package com.f2prateek.couchpotato;
 
 import android.app.Application;
 import android.content.Intent;
+import android.util.Log;
 import com.crashlytics.android.Crashlytics;
 import com.f2prateek.couchpotato.services.MovieDBService;
 import com.f2prateek.ln.DebugLn;
@@ -36,12 +37,14 @@ public class CouchPotatoApplication extends Application {
     applicationGraph = ObjectGraph.create(getModules());
     applicationGraph.inject(this);
 
-    Ln.set(DebugLn.from(this));
     Picasso.with(this).setDebugging(BuildConfig.DEBUG);
     GoogleAnalytics.getInstance(this).setDryRun(BuildConfig.DEBUG);
 
-    if (!BuildConfig.DEBUG) {
+    if (BuildConfig.DEBUG) {
+      Ln.set(DebugLn.from(this));
+    } else {
       Crashlytics.start(this);
+      Ln.set(new CrashlyticsLn(getPackageName(), Log.VERBOSE));
     }
 
     getMovieDbConfiguration();
