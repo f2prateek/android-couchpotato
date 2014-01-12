@@ -27,50 +27,57 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"/>
 
-  <LinearLayout
-      android:id="@+id/dev_drawer"
-      android:orientation="vertical"
+  <ScrollView
       android:layout_width="256dp"
-      android:layout_height="match_parent"
-      android:layout_gravity="end"
-      android:paddingLeft="16dp"
-      android:paddingRight="16dp"
-      android:paddingTop="?android:actionBarSize"
-      android:background="@android:color/background_light">
+      android:layout_height="match_parent">
 
-    <Switch
-        android:id="@+id/scalpel_enabled"
-        android:layout_gravity="left"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/dev_drawer"
+        android:orientation="vertical"
+        android:layout_width="256dp"
         android:layout_height="wrap_content"
-        android:text="@string/scalpel"
-        style="?android:attr/listSeparatorTextViewStyle"/>
+        android:layout_gravity="end"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="?android:actionBarSize"
+        android:background="@android:color/background_light">
 
-    <CheckBox
-        android:id="@+id/scalpel_draw_views"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/draw_views"/>
+      <Switch
+          android:id="@+id/scalpel_enabled"
+          android:layout_gravity="left"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/scalpel"
+          style="?android:attr/listSeparatorTextViewStyle"/>
 
-    <CheckBox
-        android:id="@+id/scalpel_draw_ids"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/draw_ids"/>
+      <CheckBox
+          android:id="@+id/scalpel_draw_views"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:text="@string/draw_views"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/logging"
-        style="?android:attr/listSeparatorTextViewStyle"/>
+      <CheckBox
+          android:id="@+id/scalpel_draw_ids"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:text="@string/draw_ids"/>
 
-    <Spinner
-        android:id="@+id/log_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/logging"
+          style="?android:attr/listSeparatorTextViewStyle"/>
 
-  </LinearLayout>
+      <Spinner
+          android:id="@+id/log_spinner"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+  </ScrollView>
+
 
 </android.support.v4.widget.DrawerLayout>
