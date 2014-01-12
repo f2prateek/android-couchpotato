@@ -22,11 +22,15 @@ import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import com.f2prateek.couchpotato.model.moviedb.MovieDbConfiguration;
 import com.f2prateek.couchpotato.services.BaseApiService;
-import com.f2prateek.couchpotato.services.CouchPotatoApi;
 import com.f2prateek.couchpotato.services.CouchPotatoService;
 import com.f2prateek.couchpotato.services.FilePreference;
 import com.f2prateek.couchpotato.services.MovieDBApi;
 import com.f2prateek.couchpotato.services.MovieDBService;
+import com.f2prateek.couchpotato.services.couchpotato.CouchPotatoAppApi;
+import com.f2prateek.couchpotato.services.couchpotato.CouchPotatoLoggingApi;
+import com.f2prateek.couchpotato.services.couchpotato.CouchPotatoManageApi;
+import com.f2prateek.couchpotato.services.couchpotato.CouchPotatoMiscApi;
+import com.f2prateek.couchpotato.services.couchpotato.CouchPotatoMovieApi;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.otto.Bus;
@@ -71,10 +75,34 @@ public class CouchPotatoApplicationModule {
     return new UserConfig(sharedPreferences);
   }
 
-  @Provides CouchPotatoApi provideCouchPotatoApi(UserConfig userConfig) {
-    return new RestAdapter.Builder().setServer(userConfig.getServerUrl())
-        .build()
-        .create(CouchPotatoApi.class);
+  @Provides @Singleton @CouchPotato
+  RestAdapter provideCouchPotatoRestAdapter(UserConfig userConfig) {
+    return new RestAdapter.Builder().setServer(userConfig.getServerUrl()).build();
+  }
+
+  @Provides @Singleton
+  CouchPotatoAppApi provideCouchPotatoAppApi(@CouchPotato RestAdapter restAdapter) {
+    return restAdapter.create(CouchPotatoAppApi.class);
+  }
+
+  @Provides @Singleton
+  CouchPotatoLoggingApi provideCouchPotatoLoggingApi(@CouchPotato RestAdapter restAdapter) {
+    return restAdapter.create(CouchPotatoLoggingApi.class);
+  }
+
+  @Provides @Singleton
+  CouchPotatoManageApi provideCouchPotatoManageApi(@CouchPotato RestAdapter restAdapter) {
+    return restAdapter.create(CouchPotatoManageApi.class);
+  }
+
+  @Provides @Singleton
+  CouchPotatoMiscApi provideCouchPotatoMiscApi(@CouchPotato RestAdapter restAdapter) {
+    return restAdapter.create(CouchPotatoMiscApi.class);
+  }
+
+  @Provides @Singleton
+  CouchPotatoMovieApi provideCouchPotatoMovieApi(@CouchPotato RestAdapter restAdapter) {
+    return restAdapter.create(CouchPotatoMovieApi.class);
   }
 
   @Provides MovieDBApi provideMovieDBApi(Gson gson) {

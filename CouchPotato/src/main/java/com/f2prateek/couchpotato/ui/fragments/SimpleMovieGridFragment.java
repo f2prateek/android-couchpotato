@@ -34,7 +34,6 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.model.couchpotato.movie.CouchPotatoMovie;
-import com.f2prateek.couchpotato.services.CouchPotatoApi;
 import com.f2prateek.couchpotato.services.CouchPotatoService;
 import com.f2prateek.couchpotato.ui.activities.ViewMovieActivity;
 import com.f2prateek.couchpotato.ui.util.BindingListAdapter;
@@ -45,7 +44,6 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import java.util.ArrayList;
 import java.util.List;
-import javax.inject.Inject;
 
 /**
  * A {@link com.f2prateek.couchpotato.ui.fragments.BaseProgressGridFragment} that displays a
@@ -54,8 +52,6 @@ import javax.inject.Inject;
  */
 public class SimpleMovieGridFragment extends BaseProgressGridFragment
     implements AbsListView.MultiChoiceModeListener {
-
-  @Inject CouchPotatoApi couchPotatoApi;
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

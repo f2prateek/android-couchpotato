@@ -22,6 +22,11 @@ import com.f2prateek.couchpotato.model.couchpotato.app.AppAvailableResponse;
 import com.f2prateek.couchpotato.model.couchpotato.movie.CouchPotatoMovie;
 import com.f2prateek.couchpotato.model.couchpotato.movie.MovieGetResponse;
 import com.f2prateek.couchpotato.model.couchpotato.movie.MovieListResponse;
+import com.f2prateek.couchpotato.services.couchpotato.CouchPotatoAppApi;
+import com.f2prateek.couchpotato.services.couchpotato.CouchPotatoLoggingApi;
+import com.f2prateek.couchpotato.services.couchpotato.CouchPotatoManageApi;
+import com.f2prateek.couchpotato.services.couchpotato.CouchPotatoMiscApi;
+import com.f2prateek.couchpotato.services.couchpotato.CouchPotatoMovieApi;
 import java.util.List;
 import javax.inject.Inject;
 import retrofit.client.Response;
@@ -37,7 +42,11 @@ public class CouchPotatoService extends BaseApiService {
 
   public static final String EXTRA_MOVIE_ID = "CouchPotatoService.EXTRA_MOVIE_ID";
 
-  @Inject CouchPotatoApi couchPotatoApi;
+  @Inject CouchPotatoAppApi couchPotatoAppApi;
+  @Inject CouchPotatoLoggingApi couchPotatoLoggingApi;
+  @Inject CouchPotatoManageApi couchPotatoManageApi;
+  @Inject CouchPotatoMiscApi couchPotatoMiscApi;
+  @Inject CouchPotatoMovieApi couchPotatoMovieApi;
 
   @Override public int onStartCommand(Intent intent, int flags, int startId) {
     if (ACTION_GET_MOVIES.equals(intent.getAction())) {
@@ -60,7 +69,7 @@ public class CouchPotatoService extends BaseApiService {
   private class GetMoviesTask extends DataEventTask<List<CouchPotatoMovie>> {
 
     @Override public List<CouchPotatoMovie> call() throws Exception {
-      MovieListResponse response = couchPotatoApi.movie_list();
+      MovieListResponse response = couchPotatoMovieApi.list();
       if (response.success) {
         return response.movies;
       } else {
@@ -77,7 +86,7 @@ public class CouchPotatoService extends BaseApiService {
     }
 
     @Override public CouchPotatoMovie call() throws Exception {
-      MovieGetResponse response = couchPotatoApi.movie_get(id);
+      MovieGetResponse response = couchPotatoMovieApi.get(id);
       if (response.success) {
         return response.movie;
       } else {
@@ -88,19 +97,19 @@ public class CouchPotatoService extends BaseApiService {
 
   private class GetAppAvailableTask extends DataEventTask<AppAvailableResponse> {
     @Override public AppAvailableResponse call() throws Exception {
-      return couchPotatoApi.app_available();
+      return couchPotatoAppApi.available();
     }
   }
 
   private class AppRestartTask extends DataEventTask<Response> {
     @Override public Response call() throws Exception {
-      return couchPotatoApi.app_restart();
+      return couchPotatoAppApi.restart();
     }
   }
 
   private class AppShutdownTask extends DataEventTask<Response> {
     @Override public Response call() throws Exception {
-      return couchPotatoApi.app_shutdown();
+      return couchPotatoAppApi.shutdown();
     }
   }
 
@@ -110,7 +119,7 @@ public class CouchPotatoService extends BaseApiService {
     }
 
     @Override public DirectoryListResponse get() {
-      return couchPotatoApi.directory_list();
+      return couchPotatoMiscApi.directory_list();
     }
   }
 }
