@@ -90,6 +90,7 @@
   </string-array>
   <string name="scalpel">Scalpel</string>
   <string name="draw_views">Draw Views</string>
+  <string name="draw_ids">Draw Ids</string>
   <string name="logging">Logging</string>
 
 </resources>

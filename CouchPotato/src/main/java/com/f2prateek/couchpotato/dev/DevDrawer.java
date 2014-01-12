@@ -40,6 +40,7 @@ public class DevDrawer extends DrawerLayout {
   @InjectView(R.id.scalpel) ScalpelFrameLayout scalpelView;
   @InjectView(R.id.scalpel_enabled) Switch scalpelSwitch;
   @InjectView(R.id.scalpel_draw_views) CheckBox drawViews;
+  @InjectView(R.id.scalpel_draw_ids) CheckBox drawIds;
   @InjectView(R.id.log_spinner) Spinner logSpinner;
 
   public DevDrawer(Context context) {
@@ -74,7 +75,10 @@ public class DevDrawer extends DrawerLayout {
     scalpelSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         scalpelView.setLayerInteractionEnabled(isChecked);
+        scalpelView.setDrawViews(drawViews.isChecked());
+        scalpelView.setDrawIds(drawIds.isChecked());
         drawViews.setEnabled(isChecked);
+        drawIds.setEnabled(isChecked);
       }
     });
     drawViews.setChecked(true);
@@ -82,6 +86,13 @@ public class DevDrawer extends DrawerLayout {
     drawViews.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         scalpelView.setDrawViews(isChecked);
+      }
+    });
+    drawIds.setChecked(true);
+    drawIds.setEnabled(false);
+    drawIds.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        scalpelView.setDrawIds(isChecked);
       }
     });
 
