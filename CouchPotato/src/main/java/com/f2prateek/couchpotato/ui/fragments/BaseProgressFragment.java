@@ -22,7 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
-import butterknife.Views;
+import butterknife.ButterKnife;
 import com.f2prateek.couchpotato.R;
 
 /**
@@ -51,8 +51,7 @@ public abstract class BaseProgressFragment extends BaseFragment {
   /** Attach to view once the view hierarchy has been created. */
   @Override
   public void onViewCreated(View view, Bundle savedInstanceState) {
-    // Skip this call since we don't want view injection
-    // super.onViewCreated(view, savedInstanceState);
+    super.onViewCreated(view, savedInstanceState);
     ensureContent();
   }
 
@@ -116,7 +115,7 @@ public abstract class BaseProgressFragment extends BaseFragment {
     } else {
       throw new IllegalStateException("Can't be used with a custom content view");
     }
-    Views.inject(view);
+    ButterKnife.inject(this, view);
   }
 
   /**

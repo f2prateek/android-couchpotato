@@ -22,11 +22,9 @@ import com.crashlytics.android.Crashlytics;
 import com.f2prateek.couchpotato.services.MovieDBService;
 import com.f2prateek.ln.DebugLn;
 import com.f2prateek.ln.Ln;
-import com.f2prateek.ln.LnInterface;
 import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.squareup.picasso.Picasso;
 import dagger.ObjectGraph;
-import javax.inject.Inject;
 
 public class CouchPotatoApplication extends Application {
 

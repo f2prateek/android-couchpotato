@@ -42,8 +42,8 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.Views;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.model.couchpotato.movie.CouchPotatoMovie;
 import com.f2prateek.couchpotato.services.CouchPotatoApi;
@@ -261,7 +261,7 @@ public class DetailedMovieGridFragment extends BaseProgressGridFragment
       @InjectView(R.id.movie_genres) TextView genres;
 
       ViewHolder(View view) {
-        Views.inject(this, view);
+        ButterKnife.inject(this, view);
       }
     }
   }

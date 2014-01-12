@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.model.moviedb.Casts;
@@ -73,6 +74,7 @@ public class MovieCastFragment extends BaseFragment {
 
   @Override public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
+    ButterKnife.inject(this, view);
     movieCast.setAdapter(new CastAdapter(activityContext, cast));
   }
 

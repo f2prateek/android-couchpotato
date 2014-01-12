@@ -26,11 +26,9 @@ import android.view.MenuItem;
 import android.widget.SearchView;
 import butterknife.InjectView;
 import com.f2prateek.couchpotato.R;
-import com.f2prateek.couchpotato.services.CouchPotatoApi;
 import com.f2prateek.couchpotato.ui.fragments.DetailedMovieGridFragment;
 import com.f2prateek.couchpotato.ui.fragments.SimpleMovieGridFragment;
 import com.f2prateek.couchpotato.ui.widgets.SwipeableActionBarTabsAdapter;
-import javax.inject.Inject;
 
 /** The top level activity that is shown first to the user. */
 public class MainActivity extends BaseAuthenticatedActivity {

@@ -29,8 +29,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.Switch;
+import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.Views;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.ln.Ln;
 import com.jakewharton.scalpel.ScalpelFrameLayout;
@@ -69,7 +69,7 @@ public class DevDrawer extends DrawerLayout {
     LayoutInflater inflater = LayoutInflater.from(getContext());
     addView(inflater.inflate(R.layout.dev_drawer, null));
 
-    Views.inject(this);
+    ButterKnife.inject(this);
 
     enabledSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

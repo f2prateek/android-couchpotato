@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.model.moviedb.MovieDBMovie;
@@ -62,6 +63,7 @@ public class MovieInfoFragment extends BaseFragment {
 
   @Override public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
+    ButterKnife.inject(this, view);
     movieInfoContainer.setMovie(movie, movieDbConfiguration);
     plot.setText(movie.overview);
   }

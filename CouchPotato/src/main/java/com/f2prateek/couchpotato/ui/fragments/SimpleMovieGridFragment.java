@@ -30,8 +30,8 @@ import android.widget.AbsListView;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.Views;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.model.couchpotato.movie.CouchPotatoMovie;
 import com.f2prateek.couchpotato.services.CouchPotatoApi;
@@ -171,7 +171,7 @@ public class SimpleMovieGridFragment extends BaseProgressGridFragment
       @InjectView(R.id.movie_poster) AspectRatioImageView poster;
 
       ViewHolder(View view) {
-        Views.inject(this, view);
+        ButterKnife.inject(this, view);
       }
     }
   }

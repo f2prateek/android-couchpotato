@@ -32,8 +32,8 @@ import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.Views;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.model.moviedb.Genre;
 import com.f2prateek.couchpotato.model.moviedb.MovieDBMovie;
@@ -72,7 +72,7 @@ public class MovieInfoView extends RelativeLayout {
     LayoutInflater inflater =
         (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     inflater.inflate(R.layout.detailed_movie_info, this, true);
-    Views.inject(this);
+    ButterKnife.inject(this);
 
     if (titleTextFormat == null) {
       // These resources only need to be initialized once.

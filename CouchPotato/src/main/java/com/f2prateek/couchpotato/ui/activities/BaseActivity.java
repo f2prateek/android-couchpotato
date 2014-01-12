@@ -19,7 +19,7 @@ package com.f2prateek.couchpotato.ui.activities;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Window;
-import butterknife.Views;
+import butterknife.ButterKnife;
 import com.f2prateek.couchpotato.ActivityModule;
 import com.f2prateek.couchpotato.BuildConfig;
 import com.f2prateek.couchpotato.CouchPotatoApplication;
@@ -63,7 +63,7 @@ public abstract class BaseActivity extends Activity {
   @Override public void setContentView(int layoutResID) {
     super.setContentView(layoutResID);
     // Perform "view injection"
-    Views.inject(this);
+    ButterKnife.inject(this);
   }
 
   @Override protected void onResume() {

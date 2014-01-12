@@ -19,8 +19,6 @@ package com.f2prateek.couchpotato.ui.fragments;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
-import butterknife.Views;
 import com.f2prateek.couchpotato.ForActivity;
 import com.f2prateek.couchpotato.ui.activities.BaseActivity;
 import com.f2prateek.dart.Dart;
@@ -57,10 +55,5 @@ public abstract class BaseFragment extends Fragment {
   protected void showIndeterminateBar(boolean show) {
     getActivity().setProgressBarIndeterminate(show);
     getActivity().setProgressBarVisibility(show);
-  }
-
-  @Override public void onViewCreated(View view, Bundle savedInstanceState) {
-    super.onViewCreated(view, savedInstanceState);
-    Views.inject(this, view);
   }
 }
