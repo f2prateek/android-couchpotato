@@ -38,7 +38,7 @@ import com.jakewharton.scalpel.ScalpelFrameLayout;
 public class DevDrawer extends DrawerLayout {
 
   @InjectView(R.id.scalpel) ScalpelFrameLayout scalpelView;
-  @InjectView(R.id.scalpel_enabled) Switch enabledSwitch;
+  @InjectView(R.id.scalpel_enabled) Switch scalpelSwitch;
   @InjectView(R.id.scalpel_draw_views) CheckBox drawViews;
   @InjectView(R.id.log_spinner) Spinner logSpinner;
 
@@ -71,7 +71,7 @@ public class DevDrawer extends DrawerLayout {
 
     ButterKnife.inject(this);
 
-    enabledSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    scalpelSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         scalpelView.setLayerInteractionEnabled(isChecked);
         drawViews.setEnabled(isChecked);
