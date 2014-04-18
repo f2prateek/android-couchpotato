@@ -6,6 +6,6 @@ import com.f2prateek.couchpotato.R;
 public class MainActivity extends BaseActivity {
 
   @Override protected void inflateLayout(ViewGroup container) {
-    getLayoutInflater().inflate(R.layout.discover_gallery, container);
+    getLayoutInflater().inflate(R.layout.explore_movies_grid, container);
   }
 }

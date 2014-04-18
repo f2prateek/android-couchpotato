@@ -21,7 +21,7 @@ import java.util.List;
 import javax.inject.Inject;
 import rx.Subscription;
 
-public class DiscoverGalleryView extends BetterViewAnimator {
+public class ExploreMoviesView extends BetterViewAnimator {
 
   @InjectView(R.id.gallery_grid) AbsListView galleryView;
 
@@ -31,7 +31,7 @@ public class DiscoverGalleryView extends BetterViewAnimator {
   private final GalleryAdapter adapter;
   private Subscription request;
 
-  public DiscoverGalleryView(Context context, AttributeSet attrs) {
+  public ExploreMoviesView(Context context, AttributeSet attrs) {
     super(context, attrs);
     CouchPotatoApplication.get(context).inject(this);
 
@@ -88,11 +88,11 @@ public class DiscoverGalleryView extends BetterViewAnimator {
     }
 
     @Override public View newView(LayoutInflater inflater, int position, ViewGroup container) {
-      return inflater.inflate(R.layout.discover_gallery_item, container, false);
+      return inflater.inflate(R.layout.explore_movies_grid_item, container, false);
     }
 
     @Override public void bindView(TMDbMovieMinified item, int position, View view) {
-      ((DiscoverGalleryItemView) view).bindTo(item, picasso);
+      ((ExploreMoviesItemView) view).bindTo(item, picasso);
     }
   }
 }

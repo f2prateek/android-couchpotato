@@ -11,11 +11,11 @@ import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.moviedb.model.TMDbMovieMinified;
 import com.squareup.picasso.Picasso;
 
-public class DiscoverGalleryItemView extends FrameLayout {
+public class ExploreMoviesItemView extends FrameLayout {
   @InjectView(R.id.gallery_item_image) ImageView image;
   @InjectView(R.id.gallery_item_title) TextView title;
 
-  public DiscoverGalleryItemView(Context context, AttributeSet attrs) {
+  public ExploreMoviesItemView(Context context, AttributeSet attrs) {
     super(context, attrs);
   }
 
