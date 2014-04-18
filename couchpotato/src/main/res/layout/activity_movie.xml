@@ -36,15 +36,30 @@
           android:layout_height="@dimen/movie_header_height"
           android:orientation="vertical"/>
 
-      <LinearLayout
+      <FrameLayout
+          android:id="@+id/movie_primary"
           android:layout_width="match_parent"
-          android:layout_height="500dp"
-          android:background="@android:color/holo_purple"/>
+          android:layout_height="250dp"/>
 
-      <LinearLayout
+      <FrameLayout
+          android:id="@+id/movie_primary_accent"
           android:layout_width="match_parent"
-          android:layout_height="500dp"
-          android:background="@android:color/holo_red_dark"/>
+          android:layout_height="250dp"/>
+
+      <FrameLayout
+          android:id="@+id/movie_secondary"
+          android:layout_width="match_parent"
+          android:layout_height="250dp"/>
+
+      <FrameLayout
+          android:id="@+id/movie_secondary_accent"
+          android:layout_width="match_parent"
+          android:layout_height="250dp"/>
+
+      <FrameLayout
+          android:id="@+id/movie_tertiary_accent"
+          android:layout_width="match_parent"
+          android:layout_height="250dp"/>
 
     </LinearLayout>
 

@@ -19,6 +19,7 @@ package com.f2prateek.couchpotato.ui;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -27,19 +28,27 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import butterknife.InjectView;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.TMDbDatabase;
 import com.f2prateek.couchpotato.data.api.moviedb.model.TMDbMovieMinified;
+import com.f2prateek.couchpotato.data.rx.EndlessObserver;
+import com.f2prateek.couchpotato.ui.colorizer.ColorScheme;
 import com.f2prateek.couchpotato.ui.misc.AlphaForegroundColorSpan;
 import com.f2prateek.couchpotato.ui.widget.KenBurnsView;
 import com.f2prateek.couchpotato.ui.widget.NotifyingScrollView;
 import com.f2prateek.dart.InjectExtra;
-import com.f2prateek.ln.Ln;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import java.io.IOException;
 import javax.inject.Inject;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 public class MovieActivity extends BaseActivity
     implements NotifyingScrollView.OnScrollChangedListener {
@@ -53,6 +62,12 @@ public class MovieActivity extends BaseActivity
   @InjectView(R.id.movie_header_image) KenBurnsView movieHeaderBackground;
   @InjectView(R.id.movie_header_logo) ImageView movieHeaderLogo;
   @InjectView(R.id.movie_scroll_container) NotifyingScrollView scrollView;
+
+  @InjectView(R.id.movie_primary) FrameLayout moviePrimary;
+  @InjectView(R.id.movie_primary_accent) FrameLayout moviePrimaryAccent;
+  @InjectView(R.id.movie_secondary) FrameLayout movieSecondary;
+  @InjectView(R.id.movie_secondary_accent) FrameLayout movieSecondaryAccent;
+  @InjectView(R.id.movie_tertiary_accent) FrameLayout movieTertiaryAccent;
 
   @Inject TMDbDatabase tmDbDatabase;
   @Inject Picasso picasso;
@@ -79,11 +94,48 @@ public class MovieActivity extends BaseActivity
     super.onCreate(savedInstanceState);
 
     spannableString = new SpannableString(movie.title);
-    picasso.load(movie.poster).fit().centerCrop().into(movieHeaderLogo);
+    picasso.load(movie.poster).fit().centerCrop().into(movieHeaderLogo, new Callback() {
+      @Override public void onSuccess() {
+        updateColorScheme();
+      }
+
+      @Override public void onError() {
+
+      }
+    });
     movieHeaderBackground.loadImages(picasso, movie.backdrop, movie.backdrop);
 
     init();
     setupFancyScroll();
+  }
+
+  private void updateColorScheme() {
+    Observable.from(picasso)
+        .map(new Func1<Picasso, Bitmap>() {
+          @Override public Bitmap call(Picasso picasso) {
+            try {
+              return picasso.load(movie.poster).get();
+            } catch (IOException e) {
+              throw new RuntimeException(e);
+            }
+          }
+        })
+        .map(new Func1<Bitmap, ColorScheme>() {
+          @Override public ColorScheme call(Bitmap bitmap) {
+            return ColorScheme.fromBitmap(bitmap);
+          }
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new EndlessObserver<ColorScheme>() {
+          @Override public void onNext(ColorScheme colorScheme) {
+            moviePrimary.setBackgroundColor(colorScheme.getPrimaryText());
+            moviePrimaryAccent.setBackgroundColor(colorScheme.getPrimaryAccent());
+            movieSecondary.setBackgroundColor(colorScheme.getSecondaryText());
+            movieSecondaryAccent.setBackgroundColor(colorScheme.getSecondaryAccent());
+            movieTertiaryAccent.setBackgroundColor(colorScheme.getTertiaryAccent());
+          }
+        });
   }
 
   @Override protected void inflateLayout(ViewGroup container) {
@@ -175,7 +227,6 @@ public class MovieActivity extends BaseActivity
   }
 
   @Override public void onScrollChanged(ScrollView who, int l, int t, int oldl, int oldt) {
-    Ln.d("onScrollChanged");
     int scrollY = who.getScrollY();
     movieHeader.setTranslationY(Math.max(-scrollY, minHeaderTranslation));
     float ratio = clamp(movieHeader.getTranslationY() / minHeaderTranslation, 0.0f, 1.0f);

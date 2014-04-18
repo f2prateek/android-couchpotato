@@ -13,7 +13,7 @@
 
   <!-- Movie Activity -->
   <dimen name="movie_header_height">288dp</dimen>
-  <dimen name="movie_header_logo_width">64dp</dimen>
-  <dimen name="movie_header_logo_height">96dp</dimen>
+  <dimen name="movie_header_logo_width">128dp</dimen>
+  <dimen name="movie_header_logo_height">192dp</dimen>
 
 </resources>
