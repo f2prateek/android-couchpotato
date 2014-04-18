@@ -19,6 +19,7 @@ package com.f2prateek.couchpotato.ui;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.ViewGroup;
+import butterknife.ButterKnife;
 import com.f2prateek.couchpotato.CouchPotatoApplication;
 import javax.inject.Inject;
 
@@ -33,6 +34,8 @@ public abstract class BaseActivity extends Activity {
 
     // Inflate into our container
     inflateLayout(appContainer.get(this, app));
+
+    ButterKnife.inject(this);
   }
 
   protected abstract void inflateLayout(ViewGroup container);

@@ -6,5 +6,6 @@
   <color name="white">#fff</color>
 
   <color name="background">@color/dark_black</color>
+  <color name="drawer_background">#e222</color>
 
 </resources>

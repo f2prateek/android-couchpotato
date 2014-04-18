@@ -51,7 +51,7 @@ android {
   }
 
   defaultConfig {
-    minSdkVersion 14
+    minSdkVersion 16
     targetSdkVersion 19
 
     packageName "com.f2prateek.couchpotato"

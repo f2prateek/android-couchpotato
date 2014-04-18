@@ -168,7 +168,7 @@ public class DebugAppContainer implements AppContainer {
     ContextualDebugActions contextualActions = new ContextualDebugActions(this, debugActions);
     content.setOnHierarchyChangeListener(HierarchyTreeChangeListener.wrap(contextualActions));
 
-    drawerLayout.setDrawerShadow(R.drawable.debug_drawer_shadow, Gravity.END);
+    drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, Gravity.END);
     drawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
       @Override public void onDrawerOpened(View drawerView) {
         refreshPicassoStats();

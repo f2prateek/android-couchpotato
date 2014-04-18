@@ -67,7 +67,7 @@
       android:layout_gravity="start|end"
       android:text="Contextual Actions"
       android:visibility="gone"
-      style="@style/Widget.CouchPotato.DebugDrawer.Header"/>
+      style="@style/Widget.CouchPotato.Drawer.Header"/>
 
   <LinearLayout
       android:id="@+id/debug_contextual_list"
@@ -80,7 +80,7 @@
   <TextView
       android:layout_gravity="start|end|center_vertical"
       android:text="Logging"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Title"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Title"/>
 
   <Spinner
       android:id="@+id/debug_network_logging"
@@ -92,12 +92,12 @@
       android:layout_columnSpan="2"
       android:layout_gravity="start|end"
       android:text="User Interface"
-      style="@style/Widget.CouchPotato.DebugDrawer.Header"/>
+      style="@style/Widget.CouchPotato.Drawer.Header"/>
 
   <TextView
       android:layout_gravity="start|end|center_vertical"
       android:text="Animations"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Title"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Title"/>
 
   <Spinner
       android:id="@+id/debug_ui_animation_speed"
@@ -106,41 +106,41 @@
   <TextView
       android:layout_gravity="start|end|center_vertical"
       android:text="Pixel Grid"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Title"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Title"/>
 
   <Switch
       android:id="@+id/debug_ui_pixel_grid"
       android:layout_gravity="start|center_vertical"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget"/>
 
   <TextView
       android:layout_gravity="start|end|center_vertical"
       android:text="Pixel Scale"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Title"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Title"/>
 
   <Switch
       android:id="@+id/debug_ui_pixel_ratio"
       android:layout_gravity="start|center_vertical"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget"/>
 
   <TextView
       android:layout_gravity="start|end|center_vertical"
       android:text="Scalpel"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Title"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Title"/>
 
   <Switch
       android:id="@+id/debug_ui_scalpel"
       android:layout_gravity="start|center_vertical"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget"/>
 
   <TextView
       android:layout_gravity="start|end|center_vertical"
       android:text="Wireframe"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Title"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Title"/>
   <Switch
       android:id="@+id/debug_ui_scalpel_wireframe"
       android:layout_gravity="start|center_vertical"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget"/>
 
   <!-- BUILD INFORMATION SECTION -->
 
@@ -148,43 +148,43 @@
       android:layout_columnSpan="2"
       android:layout_gravity="start|end"
       android:text="Build Information"
-      style="@style/Widget.CouchPotato.DebugDrawer.Header"/>
+      style="@style/Widget.CouchPotato.Drawer.Header"/>
 
   <TextView
       android:layout_gravity="start|end|center_vertical"
       android:text="Name"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Title"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Title"/>
   <TextView
       android:id="@+id/debug_build_name"
       android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Value"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Value"/>
 
   <TextView
       android:layout_gravity="start|end|center_vertical"
       android:text="Code"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Title"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Title"/>
   <TextView
       android:id="@+id/debug_build_code"
       android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Value"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Value"/>
 
   <TextView
       android:layout_gravity="start|end|center_vertical"
       android:text="SHA"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Title"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Title"/>
   <TextView
       android:id="@+id/debug_build_sha"
       android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Value"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Value"/>
 
   <TextView
       android:layout_gravity="start|end|center_vertical"
       android:text="Date"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Title"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Title"/>
   <TextView
       android:id="@+id/debug_build_date"
       android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Value"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Value"/>
 
   <!-- DEVICE INFORMATION SECTION -->
 
@@ -192,61 +192,61 @@
       android:layout_columnSpan="2"
       android:layout_gravity="start|end"
       android:text="Device Information"
-      style="@style/Widget.CouchPotato.DebugDrawer.Header"/>
+      style="@style/Widget.CouchPotato.Drawer.Header"/>
 
   <TextView
       android:layout_gravity="start|end|center_vertical"
       android:text="Make"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Title"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Title"/>
   <TextView
       android:id="@+id/debug_device_make"
       android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Value"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Value"/>
 
   <TextView
       android:layout_gravity="start|end|center_vertical"
       android:text="Model"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Title"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Title"/>
   <TextView
       android:id="@+id/debug_device_model"
       android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Value"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Value"/>
 
   <TextView
       android:layout_gravity="start|end|center_vertical"
       android:text="Resolution"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Title"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Title"/>
   <TextView
       android:id="@+id/debug_device_resolution"
       android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Value"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Value"/>
 
   <TextView
       android:layout_gravity="start|end|center_vertical"
       android:text="Density"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Title"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Title"/>
   <TextView
       android:id="@+id/debug_device_density"
       android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Value"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Value"/>
 
   <TextView
       android:layout_gravity="start|end|center_vertical"
       android:text="Release"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Title"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Title"/>
   <TextView
       android:id="@+id/debug_device_release"
       android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Value"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Value"/>
 
   <TextView
       android:layout_gravity="start|end|center_vertical"
       android:text="API"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Title"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Title"/>
   <TextView
       android:id="@+id/debug_device_api"
       android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Value"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Value"/>
 
   <!-- PICASSO SECTION -->
 
@@ -254,95 +254,95 @@
       android:layout_columnSpan="2"
       android:layout_gravity="start|end"
       android:text="Picasso"
-      style="@style/Widget.CouchPotato.DebugDrawer.Header"/>
+      style="@style/Widget.CouchPotato.Drawer.Header"/>
 
   <TextView
       android:layout_gravity="start|end|center_vertical"
       android:text="Indicators"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Title"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Title"/>
   <Switch
       android:id="@+id/debug_picasso_indicators"
       android:layout_gravity="start|center_vertical"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget"/>
 
   <TextView
       android:layout_gravity="start|end|center_vertical"
       android:text="Cache"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Title"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Title"/>
   <TextView
       android:id="@+id/debug_picasso_cache_size"
       android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Value"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Value"/>
 
   <TextView
       android:layout_gravity="start|end|center_vertical"
       android:text="   Hits"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Title"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Title"/>
   <TextView
       android:id="@+id/debug_picasso_cache_hit"
       android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Value"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Value"/>
 
   <TextView
       android:layout_gravity="start|end|center_vertical"
       android:text="   Misses"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Title"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Title"/>
   <TextView
       android:id="@+id/debug_picasso_cache_miss"
       android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Value"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Value"/>
 
   <TextView
       android:layout_gravity="start|end|center_vertical"
       android:text="Decoded"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Title"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Title"/>
   <TextView
       android:id="@+id/debug_picasso_decoded"
       android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Value"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Value"/>
 
   <TextView
       android:layout_gravity="start|end|center_vertical"
       android:text="   Total"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Title"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Title"/>
   <TextView
       android:id="@+id/debug_picasso_decoded_total"
       android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Value"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Value"/>
   <TextView
       android:layout_gravity="start|end|center_vertical"
       android:text="   Average"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Title"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Title"/>
   <TextView
       android:id="@+id/debug_picasso_decoded_avg"
       android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Value"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Value"/>
 
   <TextView
       android:layout_gravity="start|end|center_vertical"
       android:text="Transformed"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Title"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Title"/>
   <TextView
       android:id="@+id/debug_picasso_transformed"
       android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Value"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Value"/>
 
   <TextView
       android:layout_gravity="start|end|center_vertical"
       android:text="   Total"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Title"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Title"/>
   <TextView
       android:id="@+id/debug_picasso_transformed_total"
       android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Value"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Value"/>
 
   <TextView
       android:layout_gravity="start|end|center_vertical"
       android:text="   Average"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Title"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Title"/>
   <TextView
       android:id="@+id/debug_picasso_transformed_avg"
       android:layout_gravity="start|end|center_vertical"
-      style="@style/Widget.CouchPotato.DebugDrawer.RowWidget.Value"/>
+      style="@style/Widget.CouchPotato.Drawer.RowWidget.Value"/>
 
 </GridLayout>
