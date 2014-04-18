@@ -66,7 +66,7 @@ public class MoviesGrid extends BetterViewAnimator {
         if (adapter.getCount() == 0) return; // No items
 
         int lastVisibleItem = visibleItemCount + firstVisibleItem;
-        if (lastVisibleItem >= totalItemCount - LOAD_THRESHOLD && !loading.get()) {
+        if (lastVisibleItem >= totalItemCount - LOAD_THRESHOLD) {
           fetch();
         }
       }
@@ -74,6 +74,7 @@ public class MoviesGrid extends BetterViewAnimator {
   }
 
   private void fetch() {
+    if (loading.get()) return;
     loading.set(true);
     request = database.getPopularMovies(page.getAndIncrement(),
         new EndlessObserver<List<TMDbMovieMinified>>() {

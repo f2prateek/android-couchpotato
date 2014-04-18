@@ -46,7 +46,7 @@ public class NavigationDrawer extends GridLayout {
     Ln.d("Library Clicked");
   }
 
-  @OnClick(R.id.tmdb_explore) public void onExploreClicked() {
+  @OnClick(R.id.tmdb_popular) public void onExploreClicked() {
     Ln.d("Explore Clicked");
   }
 }

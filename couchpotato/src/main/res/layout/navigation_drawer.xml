@@ -71,10 +71,10 @@
       android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/tmdb_explore"
+        android:id="@+id/tmdb_popular"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/explore"
+        android:text="@string/popular"
         android:gravity="left|center_vertical"
         android:drawableLeft="@drawable/ic_action_ticket"
         android:drawablePadding="2dp"

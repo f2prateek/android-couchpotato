@@ -108,6 +108,7 @@ android.applicationVariants.all { variant ->
   checkstyle.exclude('**/*\$\$*.java')
   // Space Needed after opening parenthesis?
   checkstyle.exclude('**/ForegroundAspectRatioImageView.java')
+  checkstyle.exclude('**/MedianCutQuantizer.java')
   project.tasks.getByName("check").dependsOn checkstyle
 
   def apk = variant.packageApplication.outputFile;
