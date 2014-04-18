@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.f2prateek.couchpotato.ui.DiscoverGalleryItemView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/gallery_item_background">
+
+  <com.f2prateek.couchpotato.ui.widget.ForegroundAspectRatioImageView
+      android:id="@+id/gallery_item_image"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:foreground="@drawable/image_overlay"
+      android:clickable="true"
+      app:aspectRatioEnabled="true"
+      app:aspectRatio="1.5"
+      app:dominantMeasurement="width"
+      tools:src="#f00"/>
+
+  <TextView
+      android:id="@+id/gallery_item_title"
+      android:layout_width="match_parent"
+      android:layout_height="48dp"
+      android:layout_gravity="bottom"
+      android:gravity="bottom"
+      android:background="@drawable/gradient_overlay"
+      android:padding="6dp"
+      android:singleLine="true"
+      android:ellipsize="end"
+      tools:text="This Is The Title"
+      style="@style/Widget.CouchPotato.GalleryImage"/>
+
+</com.f2prateek.couchpotato.ui.DiscoverGalleryItemView>
