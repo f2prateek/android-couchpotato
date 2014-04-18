@@ -6,7 +6,7 @@ import javax.inject.Singleton;
 
 @Module(
     injects = {
-        MainActivity.class, ExploreMoviesView.class, NavigationDrawer.class, MovieActivity.class
+        MainActivity.class, MoviesGrid.class, NavigationDrawer.class, MovieActivity.class
     },
     complete = false,
     library = true)

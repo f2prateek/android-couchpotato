@@ -15,7 +15,7 @@ public class MainActivity extends BaseActivity {
     super.onCreate(savedInstanceState);
 
     // Start in Explore
-    getLayoutInflater().inflate(R.layout.explore_movies_grid, content);
+    getLayoutInflater().inflate(R.layout.movies_grid, content);
   }
 
   @Override protected void inflateLayout(ViewGroup container) {

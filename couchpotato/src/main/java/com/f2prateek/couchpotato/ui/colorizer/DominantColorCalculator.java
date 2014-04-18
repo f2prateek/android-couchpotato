@@ -23,8 +23,6 @@ import java.util.Comparator;
 
 class DominantColorCalculator {
 
-  private static final String LOG_TAG = DominantColorCalculator.class.getSimpleName();
-
   private static final int NUM_COLORS = 10;
 
   private static final int PRIMARY_TEXT_MIN_CONTRAST = 135;
