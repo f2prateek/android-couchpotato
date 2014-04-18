@@ -2,6 +2,7 @@ package com.f2prateek.couchpotato;
 
 import android.app.Application;
 import com.f2prateek.couchpotato.data.DataModule;
+import com.f2prateek.couchpotato.ui.UiModule;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;

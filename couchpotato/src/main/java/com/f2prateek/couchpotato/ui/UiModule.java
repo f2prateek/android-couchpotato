@@ -1,9 +1,5 @@
-package com.f2prateek.couchpotato;
+package com.f2prateek.couchpotato.ui;
 
-import com.f2prateek.couchpotato.ui.ActivityHierarchyServer;
-import com.f2prateek.couchpotato.ui.AppContainer;
-import com.f2prateek.couchpotato.ui.DiscoverGalleryView;
-import com.f2prateek.couchpotato.ui.MainActivity;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
