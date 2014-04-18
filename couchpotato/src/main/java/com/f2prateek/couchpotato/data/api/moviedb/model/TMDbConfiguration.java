@@ -45,5 +45,10 @@ public class TMDbConfiguration {
     public String getPosterUrl(String path) {
       return baseUrl + posterSizes.get(2) + path;
     }
+
+    /** Get a backdrop. */
+    public String getBackdropUrl(String path) {
+      return baseUrl + backdropSizes.get(0) + path;
+    }
   }
 }

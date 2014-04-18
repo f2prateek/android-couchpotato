@@ -32,7 +32,8 @@ public class TMDbDatabase {
         .subscribe(observer);
   }
 
-  private Observable<List<TMDbMovieMinified>> popularMovies(final TMDbConfiguration tmDbConfiguration) {
+  private Observable<List<TMDbMovieMinified>> popularMovies(
+      final TMDbConfiguration tmDbConfiguration) {
     return tmDbService.popular() //
         .map(new Func1<DiscoverMoviesResponse, List<TMDbMovieMinified>>() {
           @Override public List<TMDbMovieMinified> call(DiscoverMoviesResponse response) {
@@ -54,6 +55,13 @@ public class TMDbDatabase {
           @Override public TMDbMovieMinified call(TMDbMovieMinified tmDbMovieMinified) {
             tmDbMovieMinified.poster =
                 tmDbConfiguration.images.getPosterUrl(tmDbMovieMinified.poster);
+            return tmDbMovieMinified;
+          }
+        }) //
+        .map(new Func1<TMDbMovieMinified, TMDbMovieMinified>() {
+          @Override public TMDbMovieMinified call(TMDbMovieMinified tmDbMovieMinified) {
+            tmDbMovieMinified.backdrop =
+                tmDbConfiguration.images.getBackdropUrl(tmDbMovieMinified.backdrop);
             return tmDbMovieMinified;
           }
         }) //
