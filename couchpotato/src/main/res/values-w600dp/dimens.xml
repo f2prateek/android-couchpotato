@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <!--
   ~ Copyright 2014 Prateek Srivastava (@f2prateek)
   ~
@@ -16,7 +14,10 @@
   ~ limitations under the License.
   -->
 
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:state_pressed="true" android:drawable="@drawable/image_overlay_pressed"/>
-  <item android:drawable="@android:color/transparent"/>
-</selector>
+<resources>
+
+  <!-- Customization of dimensions originally defined in res/values/dimens.xml for screens with
+        more than 600dp of available width. This would include 7" devices in portrait -->
+  <dimen name="grid_column_width">192dp</dimen>
+
+</resources>
