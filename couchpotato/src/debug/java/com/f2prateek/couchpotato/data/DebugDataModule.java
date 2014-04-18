@@ -22,6 +22,7 @@ import com.f2prateek.couchpotato.data.prefs.IntPreference;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
+import retrofit.RestAdapter;
 
 @Module(
     complete = false,
@@ -35,6 +36,7 @@ public final class DebugDataModule {
   private static final boolean DEFAULT_SCALPEL_ENABLED = false; // No crazy 3D view tree.
   private static final boolean DEFAULT_SCALPEL_WIREFRAME_ENABLED = false; // Draw views by default.
   private static final boolean DEFAULT_SEEN_DEBUG_DRAWER = false; // Show debug drawer first time.
+  private static final int DEFAULT_NETWORK_LOGGING_LEVEL = RestAdapter.LogLevel.NONE.ordinal();
 
   @Provides @Singleton @AnimationSpeed IntPreference provideAnimationSpeed(
       SharedPreferences preferences) {
@@ -72,5 +74,10 @@ public final class DebugDataModule {
       SharedPreferences preferences) {
     return new BooleanPreference(preferences, "debug_scalpel_wireframe_drawer",
         DEFAULT_SCALPEL_WIREFRAME_ENABLED);
+  }
+
+  @Provides @Singleton @NetworkLoggingLevel IntPreference provideNetworkLogginLevel(
+      SharedPreferences preferences) {
+    return new IntPreference(preferences, "network_logging_level", DEFAULT_NETWORK_LOGGING_LEVEL);
   }
 }

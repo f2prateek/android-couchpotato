@@ -19,12 +19,13 @@ public class TMDbDatabase {
     this.tmDbService = tmDbService;
   }
 
-  public Subscription getPopularMovies(final Observer<List<TMDbMovieMinified>> observer) {
+  public Subscription getPopularMovies(final int page,
+      final Observer<List<TMDbMovieMinified>> observer) {
     return tmDbService.configuration()
         .flatMap(new Func1<TMDbConfiguration, Observable<List<TMDbMovieMinified>>>() {
           @Override public Observable<List<TMDbMovieMinified>> call(
               TMDbConfiguration tmDbConfiguration) {
-            return popularMovies(tmDbConfiguration);
+            return popularMovies(page, tmDbConfiguration);
           }
         })
         .subscribeOn(Schedulers.io())
@@ -32,9 +33,9 @@ public class TMDbDatabase {
         .subscribe(observer);
   }
 
-  private Observable<List<TMDbMovieMinified>> popularMovies(
+  private Observable<List<TMDbMovieMinified>> popularMovies(final int page,
       final TMDbConfiguration tmDbConfiguration) {
-    return tmDbService.popular() //
+    return tmDbService.popular(page) //
         .map(new Func1<DiscoverMoviesResponse, List<TMDbMovieMinified>>() {
           @Override public List<TMDbMovieMinified> call(DiscoverMoviesResponse response) {
             return response.results;

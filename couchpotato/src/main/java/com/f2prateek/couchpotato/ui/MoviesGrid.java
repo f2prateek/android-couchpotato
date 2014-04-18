@@ -16,14 +16,21 @@ import com.f2prateek.couchpotato.data.rx.EndlessObserver;
 import com.f2prateek.couchpotato.ui.misc.BindableAdapter;
 import com.f2prateek.couchpotato.ui.widget.BetterViewAnimator;
 import com.squareup.picasso.Picasso;
-import java.util.Collections;
+import hugo.weaving.DebugLog;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.inject.Inject;
 import rx.Subscription;
 
 public class MoviesGrid extends BetterViewAnimator {
 
-  @InjectView(R.id.gallery_grid) AbsListView galleryView;
+  private static final int LOAD_THRESHOLD = 4;
+  private final AtomicInteger page = new AtomicInteger(1);
+  private final AtomicBoolean loading = new AtomicBoolean(false);
+
+  @InjectView(R.id.gallery_grid) AbsListView grid;
 
   @Inject Picasso picasso;
   @Inject TMDbDatabase database;
@@ -41,18 +48,42 @@ public class MoviesGrid extends BetterViewAnimator {
   @Override protected void onFinishInflate() {
     super.onFinishInflate();
     ButterKnife.inject(this);
-    galleryView.setAdapter(adapter);
+    grid.setAdapter(adapter);
   }
 
   @Override protected void onAttachedToWindow() {
     super.onAttachedToWindow();
 
-    request = database.getPopularMovies(new EndlessObserver<List<TMDbMovieMinified>>() {
-      @Override public void onNext(List<TMDbMovieMinified> movies) {
-        adapter.replaceWith(movies);
-        setDisplayedChild(galleryView);
+    fetch();
+
+    grid.setOnScrollListener(new AbsListView.OnScrollListener() {
+      @Override public void onScrollStateChanged(AbsListView view, int scrollState) {
+        // ignore
+      }
+
+      @Override public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
+          int totalItemCount) {
+        if (adapter.getCount() == 0) return; // No items
+
+        int lastVisibleItem = visibleItemCount + firstVisibleItem;
+        if (lastVisibleItem >= totalItemCount - LOAD_THRESHOLD && !loading.get()) {
+          fetch();
+        }
       }
     });
+  }
+
+  private void fetch() {
+    loading.set(true);
+    request = database.getPopularMovies(page.getAndIncrement(),
+        new EndlessObserver<List<TMDbMovieMinified>>() {
+          @Override public void onNext(List<TMDbMovieMinified> movies) {
+            adapter.add(movies);
+            setDisplayedChild(grid);
+            loading.set(false);
+          }
+        }
+    );
   }
 
   @Override protected void onDetachedFromWindow() {
@@ -61,7 +92,7 @@ public class MoviesGrid extends BetterViewAnimator {
   }
 
   static class GalleryAdapter extends BindableAdapter<TMDbMovieMinified> {
-    private List<TMDbMovieMinified> movies = Collections.emptyList();
+    private List<TMDbMovieMinified> movies = new ArrayList<>();
 
     private final Picasso picasso;
 
@@ -70,8 +101,9 @@ public class MoviesGrid extends BetterViewAnimator {
       this.picasso = picasso;
     }
 
-    public void replaceWith(List<TMDbMovieMinified> movies) {
-      this.movies = movies;
+    @DebugLog
+    public void add(List<TMDbMovieMinified> movies) {
+      this.movies.addAll(movies);
       notifyDataSetChanged();
     }
 

@@ -39,6 +39,7 @@ import com.f2prateek.couchpotato.BuildConfig;
 import com.f2prateek.couchpotato.CouchPotatoApplication;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.AnimationSpeed;
+import com.f2prateek.couchpotato.data.NetworkLoggingLevel;
 import com.f2prateek.couchpotato.data.PicassoDebugging;
 import com.f2prateek.couchpotato.data.PixelGridEnabled;
 import com.f2prateek.couchpotato.data.PixelRatioEnabled;
@@ -78,6 +79,7 @@ public class DebugAppContainer implements AppContainer {
   private static final DateFormat DATE_DISPLAY_FORMAT = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
 
   private final Picasso picasso;
+  private final IntPreference networkLoggingLevel;
   private final IntPreference animationSpeed;
   private final BooleanPreference picassoDebugging;
   private final BooleanPreference pixelGridEnabled;
@@ -91,7 +93,9 @@ public class DebugAppContainer implements AppContainer {
   Activity activity;
   Context drawerContext;
 
-  @Inject public DebugAppContainer(Picasso picasso, @AnimationSpeed IntPreference animationSpeed,
+  @Inject public DebugAppContainer(Picasso picasso,
+      @NetworkLoggingLevel IntPreference networkLoggingLevel,
+      @AnimationSpeed IntPreference animationSpeed,
       @PicassoDebugging BooleanPreference picassoDebugging,
       @PixelGridEnabled BooleanPreference pixelGridEnabled,
       @PixelRatioEnabled BooleanPreference pixelRatioEnabled,
@@ -99,6 +103,7 @@ public class DebugAppContainer implements AppContainer {
       @ScalpelWireframeEnabled BooleanPreference scalpelWireframeEnabled,
       @SeenDebugDrawer BooleanPreference seenDebugDrawer, RestAdapter restAdapter) {
     this.picasso = picasso;
+    this.networkLoggingLevel = networkLoggingLevel;
     this.scalpelEnabled = scalpelEnabled;
     this.scalpelWireframeEnabled = scalpelWireframeEnabled;
     this.seenDebugDrawer = seenDebugDrawer;
@@ -199,7 +204,7 @@ public class DebugAppContainer implements AppContainer {
     // We use the JSON rest adapter as the source of truth for the log level.
     final EnumAdapter<LogLevel> loggingAdapter = new EnumAdapter<>(activity, LogLevel.class);
     networkLoggingView.setAdapter(loggingAdapter);
-    networkLoggingView.setSelection(restAdapter.getLogLevel().ordinal());
+    networkLoggingView.setSelection(networkLoggingLevel.get());
     networkLoggingView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
       @Override
       public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
@@ -207,6 +212,7 @@ public class DebugAppContainer implements AppContainer {
         if (selected != restAdapter.getLogLevel()) {
           Ln.d("Setting logging level to %s", selected);
           restAdapter.setLogLevel(selected);
+          networkLoggingLevel.set(selected.ordinal());
         } else {
           Ln.d("Ignoring re-selection of logging level " + selected);
         }
