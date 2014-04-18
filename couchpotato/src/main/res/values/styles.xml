@@ -4,11 +4,34 @@
   </style>
 
   <!-- Base application theme. -->
-  <style name="Theme.CouchPotato" parent="android:Theme.Holo.NoActionBar">
-    <item name="android:windowContentOverlay">@null</item>
-    <item name="android:windowActionBarOverlay">true</item>
+  <style name="Theme.CouchPotato" parent="android:Theme.Holo">
     <item name="android:windowBackground">@drawable/app_background</item>
     <item name="android:progressBarStyle">@style/Widget.CouchPotato.ProgressBar</item>
+  </style>
+
+  <style name="Theme.CouchPotato.NoActionBar">
+    <item name="android:windowActionBar">false</item>
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:windowContentOverlay">@null</item>
+    <item name="android:windowActionBarOverlay">true</item>
+  </style>
+
+  <style name="Theme.CouchPotato.TransparentActionBar">
+    <item name="android:actionBarStyle">@style/ActionBar.Solid.CouchPotato.Transparent</item>
+    <item name="android:windowActionBarOverlay">true</item>
+    <item name="android:windowContentOverlay">@null</item>
+  </style>
+
+  <style name="ActionBar.Solid.CouchPotato.Transparent"
+      parent="@android:style/Widget.Holo.ActionBar.Solid">
+    <item name="android:background">@null</item>
+    <item name="android:displayOptions">homeAsUp|showHome|showTitle</item>
+    <item name="android:titleTextStyle">@style/ActionBarStyle.Transparent.TitleTextStyle</item>
+  </style>
+
+  <style name="ActionBarStyle.Transparent.TitleTextStyle"
+      parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+    <item name="android:textColor">@android:color/white</item>
   </style>
 
   <style name="Widget.CouchPotato.ProgressBar" parent="None">

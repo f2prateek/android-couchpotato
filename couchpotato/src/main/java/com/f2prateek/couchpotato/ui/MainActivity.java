@@ -14,7 +14,7 @@ public class MainActivity extends BaseActivity {
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    // Start in explore
+    // Start in Explore
     getLayoutInflater().inflate(R.layout.explore_movies_grid, content);
   }
 

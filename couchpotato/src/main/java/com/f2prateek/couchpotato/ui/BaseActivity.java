@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import com.f2prateek.couchpotato.CouchPotatoApplication;
+import com.f2prateek.dart.Dart;
 import javax.inject.Inject;
 
 public abstract class BaseActivity extends Activity {
@@ -36,6 +37,7 @@ public abstract class BaseActivity extends Activity {
     inflateLayout(appContainer.get(this, app));
 
     ButterKnife.inject(this);
+    Dart.inject(this);
   }
 
   protected abstract void inflateLayout(ViewGroup container);

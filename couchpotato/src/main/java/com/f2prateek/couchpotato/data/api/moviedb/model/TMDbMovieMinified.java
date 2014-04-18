@@ -16,9 +16,11 @@
 
 package com.f2prateek.couchpotato.data.api.moviedb.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
-public class TMDbMovieMinified {
+public class TMDbMovieMinified implements Parcelable {
   public boolean adult;
 
   @SerializedName("backdrop_path")
@@ -40,4 +42,48 @@ public class TMDbMovieMinified {
 
   @SerializedName("vote_count")
   public long voteCount;
+
+  protected TMDbMovieMinified(Parcel in) {
+    adult = in.readByte() != 0x00;
+    backdrop = in.readString();
+    id = in.readLong();
+    originalTitle = in.readString();
+    poster = in.readString();
+    popularity = in.readFloat();
+    title = in.readString();
+    voteAverage = in.readFloat();
+    voteCount = in.readLong();
+  }
+
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeByte((byte) (adult ? 0x01 : 0x00));
+    dest.writeString(backdrop);
+    dest.writeLong(id);
+    dest.writeString(originalTitle);
+    dest.writeString(poster);
+    dest.writeFloat(popularity);
+    dest.writeString(title);
+    dest.writeFloat(voteAverage);
+    dest.writeLong(voteCount);
+  }
+
+  @SuppressWarnings("unused")
+  public static final Parcelable.Creator<TMDbMovieMinified> CREATOR =
+      new Parcelable.Creator<TMDbMovieMinified>() {
+        @Override
+        public TMDbMovieMinified createFromParcel(Parcel in) {
+          return new TMDbMovieMinified(in);
+        }
+
+        @Override
+        public TMDbMovieMinified[] newArray(int size) {
+          return new TMDbMovieMinified[size];
+        }
+      };
 }

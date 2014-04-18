@@ -25,7 +25,7 @@
       android:layout_height="48dp"
       android:layout_gravity="bottom"
       android:gravity="bottom"
-      android:background="@drawable/gradient_overlay"
+      android:background="@drawable/text_background_gradient"
       android:padding="6dp"
       android:singleLine="true"
       android:ellipsize="end"

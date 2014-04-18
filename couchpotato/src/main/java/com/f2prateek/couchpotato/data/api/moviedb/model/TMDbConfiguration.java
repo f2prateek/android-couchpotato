@@ -48,7 +48,7 @@ public class TMDbConfiguration {
 
     /** Get a backdrop. */
     public String getBackdropUrl(String path) {
-      return baseUrl + backdropSizes.get(0) + path;
+      return baseUrl + backdropSizes.get(1) + path;
     }
   }
 }
