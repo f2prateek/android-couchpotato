@@ -87,6 +87,8 @@ dependencies {
 
   debugCompile 'com.jakewharton.madge:madge:1.1.+'
   debugCompile 'com.jakewharton.scalpel:scalpel:1.1.+'
+
+  compile 'com.android.support:support-v4:19.0.+'
 }
 
 checkstyle {
@@ -102,7 +104,10 @@ android.applicationVariants.all { variant ->
   checkstyle.classpath = project.fileTree(variant.javaCompile.destinationDir)
   checkstyle.exclude('**/BuildConfig.java')
   checkstyle.exclude('**/R.java')
-  checkstyle.exclude('**/*\$\$*.java') // Dagger, ButterKnife, Dart
+  // Dagger, ButterKnife, Dart
+  checkstyle.exclude('**/*\$\$*.java')
+  // Space Needed after opening parenthesis?
+  checkstyle.exclude('**/ForegroundAspectRatioImageView.java')
   project.tasks.getByName("check").dependsOn checkstyle
 
   def apk = variant.packageApplication.outputFile;

@@ -120,12 +120,14 @@ public class ForegroundAspectRatioImageView extends ImageView {
     }
   }
 
+  private void resetForegroundBounds(int width, int height) {
+    foreground.setBounds(0, 0, width, height);
+    invalidate();
+  }
+
   @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    if (foreground != null) {
-      foreground.setBounds(0, 0, getMeasuredWidth(), getMeasuredHeight());
-      invalidate();
-    }
+    if (foreground != null) resetForegroundBounds(getMeasuredWidth(), getMeasuredHeight());
 
     if (aspectRatioEnabled) {
       int newWidth;
@@ -194,17 +196,12 @@ public class ForegroundAspectRatioImageView extends ImageView {
 
   @Override protected void onSizeChanged(int w, int h, int oldw, int oldh) {
     super.onSizeChanged(w, h, oldw, oldh);
-    if (foreground != null) {
-      foreground.setBounds(0, 0, w, h);
-      invalidate();
-    }
+    if (foreground != null) resetForegroundBounds(w, h);
   }
 
   @Override public void draw(Canvas canvas) {
     super.draw(canvas);
 
-    if (foreground != null) {
-      foreground.draw(canvas);
-    }
+    if (foreground != null) foreground.draw(canvas);
   }
 }
