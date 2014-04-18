@@ -1,0 +1,99 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath 'com.android.tools.build:gradle:0.9.+'
+    classpath 'com.jakewharton.hugo:hugo-plugin:1.0.+'
+  }
+}
+
+apply plugin: 'android'
+apply plugin: 'checkstyle'
+apply plugin: 'hugo'
+
+def versionMajor = 1
+def versionMinor = 0
+def versionPatch = 0
+// bump for dogfood builds, public betas, etc.
+def versionBuild = 0
+
+def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
+def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
+
+android {
+  compileSdkVersion 19
+  buildToolsVersion '19.0.3'
+
+  packagingOptions {
+    exclude 'META-INF/services/javax.annotation.processing.Processor'
+  }
+
+  lintOptions {
+    abortOnError false
+  }
+
+  testBuildType "debug"
+
+  signingConfigs {
+    release
+  }
+
+  buildTypes {
+    debug {
+      packageNameSuffix ".debug"
+      versionNameSuffix "-debug"
+    }
+    release {
+      // signingConfig signingConfigs.release
+      runProguard false
+    }
+  }
+
+  defaultConfig {
+    minSdkVersion 14
+    targetSdkVersion 19
+
+    packageName "com.f2prateek.couchpotato"
+    versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+    versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+
+    buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
+    buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_7
+    targetCompatibility JavaVersion.VERSION_1_7
+  }
+}
+
+dependencies {
+  compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+checkstyle {
+  configFile project.file('../checkstyle.xml')
+  showViolations true
+}
+
+android.applicationVariants.all { variant ->
+  def name = variant.buildType.name
+  def checkstyle = project.tasks.create "checkstyle${name.capitalize()}", Checkstyle
+  checkstyle.dependsOn variant.javaCompile
+  checkstyle.source variant.javaCompile.source
+  checkstyle.classpath = project.fileTree(variant.javaCompile.destinationDir)
+  checkstyle.exclude('**/BuildConfig.java')
+  checkstyle.exclude('**/R.java')
+  checkstyle.exclude('**/*\$\$*.java') // Dagger, ButterKnife, Dart
+  project.tasks.getByName("check").dependsOn checkstyle
+
+  def apk = variant.packageApplication.outputFile;
+  def newName = apk.name.replace(".apk",
+      "-v${android.defaultConfig.versionName}-${versionBuild}.apk");
+  newName = newName.replace("app", "${android.defaultConfig.packageName}");
+  variant.packageApplication.outputFile = new File(apk.parentFile, newName);
+  if (variant.zipAlign) {
+    variant.zipAlign.outputFile = new File(apk.parentFile, newName.replace("-unaligned", ""));
+  }
+}
