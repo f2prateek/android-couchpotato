@@ -1,8 +1,30 @@
 <resources>
 
+  <style name="None">
+  </style>
+
   <!-- Base application theme. -->
-  <style name="AppTheme" parent="android:Theme.Holo">
-    <!-- Customize your theme here. -->
+  <style name="Theme.CouchPotato" parent="android:Theme.Holo.NoActionBar">
+    <item name="android:windowContentOverlay">@null</item>
+    <item name="android:windowActionBarOverlay">true</item>
+    <item name="android:windowBackground">@drawable/app_background</item>
+    <item name="android:progressBarStyle">@style/Widget.CouchPotato.ProgressBar</item>
+  </style>
+
+  <style name="Widget.CouchPotato.ProgressBar" parent="None">
+    <item name="android:indeterminateDrawable">@drawable/indeterminate_progress</item>
+    <item name="android:indeterminateOnly">true</item>
+    <item name="android:indeterminateBehavior">repeat</item>
+    <item name="android:indeterminateDuration">900</item>
+    <item name="android:minWidth">32dp</item>
+    <item name="android:maxWidth">32dp</item>
+    <item name="android:minHeight">32dp</item>
+    <item name="android:maxHeight">32dp</item>
+  </style>
+
+  <style name="Widget.CouchPotato.GalleryImage" parent="None">
+    <item name="android:textColor">@color/white</item>
+    <item name="android:textSize">15sp</item>
   </style>
 
 </resources>
