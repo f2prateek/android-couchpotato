@@ -26,7 +26,7 @@ public class BetterViewAnimator extends ViewAnimator {
     super(context, attrs);
   }
 
-  public void setDisplayedChild(View view) {
+  public void setDisplayedChildView(View view) {
     setDisplayedChildId(view.getId());
   }
 

@@ -18,24 +18,31 @@ package com.f2prateek.couchpotato.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import com.f2prateek.couchpotato.CouchPotatoApplication;
+import com.f2prateek.couchpotato.Events;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.moviedb.model.TMDbMovieMinified;
+import com.squareup.otto.Bus;
 import com.squareup.picasso.Picasso;
+import javax.inject.Inject;
 
 public class MoviesGridItemView extends FrameLayout {
   @InjectView(R.id.gallery_item_image) ImageView image;
   @InjectView(R.id.gallery_item_title) TextView title;
 
+  @Inject Bus bus;
   TMDbMovieMinified movie;
 
   public MoviesGridItemView(Context context, AttributeSet attrs) {
     super(context, attrs);
+    CouchPotatoApplication.get(context).inject(this);
   }
 
   @Override protected void onFinishInflate() {
@@ -49,7 +56,7 @@ public class MoviesGridItemView extends FrameLayout {
     title.setText(movie.title);
   }
 
-  @OnClick(R.id.gallery_item_image) public void onImageClicked() {
-    getContext().startActivity(MovieActivity.createIntent(getContext(), movie));
+  @OnClick(R.id.gallery_item_image) public void onImageClicked(View view) {
+    bus.post(new Events.OnMovieClickedEvent(view, movie));
   }
 }

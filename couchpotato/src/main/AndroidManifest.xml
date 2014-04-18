@@ -39,6 +39,7 @@
 
     <activity
         android:name=".ui.MovieActivity"
+        android:label=""
         android:theme="@style/Theme.CouchPotato.TransparentActionBar"/>
 
   </application>

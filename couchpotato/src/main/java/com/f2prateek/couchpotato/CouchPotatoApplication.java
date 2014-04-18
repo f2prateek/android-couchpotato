@@ -49,6 +49,7 @@ public class CouchPotatoApplication extends Application {
     applicationGraph.inject(this);
   }
 
+  @DebugLog
   public void inject(Object o) {
     applicationGraph.inject(o);
   }

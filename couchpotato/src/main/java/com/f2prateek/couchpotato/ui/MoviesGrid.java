@@ -96,7 +96,7 @@ public class MoviesGrid extends BetterViewAnimator {
         new EndlessObserver<List<TMDbMovieMinified>>() {
           @Override public void onNext(List<TMDbMovieMinified> movies) {
             adapter.add(movies);
-            setDisplayedChild(grid);
+            setDisplayedChildView(grid);
             loading.set(false);
           }
         }

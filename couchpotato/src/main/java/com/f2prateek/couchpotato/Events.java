@@ -14,25 +14,20 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato.ui;
+package com.f2prateek.couchpotato;
 
-import dagger.Module;
-import dagger.Provides;
-import javax.inject.Singleton;
+import android.view.View;
+import com.f2prateek.couchpotato.data.api.moviedb.model.TMDbMovieMinified;
 
-@Module(
-    injects = {
-        MainActivity.class, MoviesGrid.class, MoviesGridItemView.class, NavigationDrawer.class,
-        MovieActivity.class
-    },
-    complete = false,
-    library = true)
-public class UiModule {
-  @Provides @Singleton AppContainer provideAppContainer() {
-    return AppContainer.DEFAULT;
-  }
+public class Events {
 
-  @Provides @Singleton ActivityHierarchyServer provideActivityHierarchyServer() {
-    return ActivityHierarchyServer.NONE;
+  public static class OnMovieClickedEvent {
+    public final View source;
+    public final TMDbMovieMinified movie;
+
+    public OnMovieClickedEvent(View source, TMDbMovieMinified movie) {
+      this.source = source;
+      this.movie = movie;
+    }
   }
 }
