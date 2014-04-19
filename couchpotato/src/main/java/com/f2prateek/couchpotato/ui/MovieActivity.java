@@ -125,7 +125,6 @@ public class MovieActivity extends BaseActivity
     super.onCreate(savedInstanceState);
 
     spannableString = new SpannableString(movie.title);
-    picasso.load(movie.poster).fit().centerCrop().into(moviePoster);
     movieBackdrop.loadImages(picasso, movie.backdrop, movie.backdrop);
 
     // Only run the animation if we're coming from the parent activity, not if
@@ -195,6 +194,9 @@ public class MovieActivity extends BaseActivity
             scrollView.animate().setDuration(duration / 2).
                 translationY(0).alpha(1).
                 setInterpolator(sDecelerator);
+
+            // Fade in the poster
+            picasso.load(movie.poster).fit().centerCrop().into(moviePoster);
           }
         });
   }
@@ -229,6 +231,7 @@ public class MovieActivity extends BaseActivity
     }
 
     // First, slide/fade content out of the way
+    moviePoster.animate().alpha(0).setDuration(duration / 2).setInterpolator(sAccelerator);
     scrollView.animate().translationY(-scrollView.getHeight()).alpha(0).
         setDuration(duration / 2).setInterpolator(sAccelerator).
         withEndAction(new Runnable() {
