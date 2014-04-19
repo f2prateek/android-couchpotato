@@ -139,8 +139,57 @@ public class MovieActivity extends BaseActivity
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    spannableString = new SpannableString(minifiedMovie.getTitle());
     picasso.load(minifiedMovie.getPosterPath()).fit().centerCrop().into(moviePoster);
+
+    // Only run the animation if we're coming from the parent activity, not if
+    // we're recreated automatically by the window manager (e.g., device rotation)
+    if (savedInstanceState == null) {
+      ViewTreeObserver observer = moviePoster.getViewTreeObserver();
+      observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+
+        @Override
+        public boolean onPreDraw() {
+          moviePoster.getViewTreeObserver().removeOnPreDrawListener(this);
+
+          // Figure out where the thumbnail and full size versions are, relative
+          // to the screen and each other
+          int[] screenLocation = new int[2];
+          moviePoster.getLocationOnScreen(screenLocation);
+          mLeftDelta = thumbnailLeft - screenLocation[0];
+          mTopDelta = thumbnailTop - screenLocation[1];
+
+          // Scale factors to make the large version the same size as the thumbnail
+          mWidthScale = (float) thumbnailWidth / moviePoster.getWidth();
+          mHeightScale = (float) thumbnailHeight / moviePoster.getHeight();
+
+          runEnterAnimation();
+
+          return true;
+        }
+      });
+    }
+
+    init();
+  }
+
+  private void init() {
+    spannableString = new SpannableString(minifiedMovie.getTitle());
+    smoothInterpolator = new AccelerateDecelerateInterpolator();
+    headerHeight = getResources().getDimensionPixelSize(R.dimen.movie_header_height);
+    minHeaderTranslation = -headerHeight + getActionBarHeight();
+    actionBarTitleColor = getResources().getColor(android.R.color.white);
+    alphaForegroundColorSpan = new AlphaForegroundColorSpan(actionBarTitleColor);
+
+    ActionBar actionBar = getActionBar();
+    actionBar.setDisplayHomeAsUpEnabled(true);
+    setTitleAlpha(0);
+
+    scrollView.setOnScrollChangedListener(this);
+
+    movieTitle.setText(minifiedMovie.getTitle());
+    movieBackdrop.load(picasso, minifiedMovie.getBackdropPath());
+
+    updateColorScheme();
 
     tmDbDatabase.getMovie(minifiedMovie.getId(), new EndlessObserver<Movie>() {
       @Override public void onNext(Movie movie) {
@@ -176,36 +225,6 @@ public class MovieActivity extends BaseActivity
         Ln.d(credits);
       }
     });
-
-    // Only run the animation if we're coming from the parent activity, not if
-    // we're recreated automatically by the window manager (e.g., device rotation)
-    if (savedInstanceState == null) {
-      ViewTreeObserver observer = moviePoster.getViewTreeObserver();
-      observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-
-        @Override
-        public boolean onPreDraw() {
-          moviePoster.getViewTreeObserver().removeOnPreDrawListener(this);
-
-          // Figure out where the thumbnail and full size versions are, relative
-          // to the screen and each other
-          int[] screenLocation = new int[2];
-          moviePoster.getLocationOnScreen(screenLocation);
-          mLeftDelta = thumbnailLeft - screenLocation[0];
-          mTopDelta = thumbnailTop - screenLocation[1];
-
-          // Scale factors to make the large version the same size as the thumbnail
-          mWidthScale = (float) thumbnailWidth / moviePoster.getWidth();
-          mHeightScale = (float) thumbnailHeight / moviePoster.getHeight();
-
-          runEnterAnimation();
-
-          return true;
-        }
-      });
-    } else {
-      init();
-    }
   }
 
   @Override protected void inflateLayout(ViewGroup container) {
@@ -231,7 +250,6 @@ public class MovieActivity extends BaseActivity
 
     // We'll fade the content in later
     scrollView.setAlpha(0);
-    movieBackdrop.load(picasso, minifiedMovie.getBackdropPath());
     movieBackdrop.setAlpha(0);
 
     // Animate scale and translation to go from thumbnail to full size
@@ -241,7 +259,6 @@ public class MovieActivity extends BaseActivity
         setInterpolator(sDecelerator).
         withEndAction(new Runnable() {
           public void run() {
-            init();
             // Animate the content in after the image animation is done
             scrollView.animate().setDuration(HALF_ANIMATION_DURATION).alpha(1).
                 setInterpolator(sDecelerator);
@@ -249,24 +266,6 @@ public class MovieActivity extends BaseActivity
                 setInterpolator(sDecelerator);
           }
         });
-  }
-
-  private void init() {
-    smoothInterpolator = new AccelerateDecelerateInterpolator();
-    headerHeight = getResources().getDimensionPixelSize(R.dimen.movie_header_height);
-    minHeaderTranslation = -headerHeight + getActionBarHeight();
-    actionBarTitleColor = getResources().getColor(android.R.color.white);
-    alphaForegroundColorSpan = new AlphaForegroundColorSpan(actionBarTitleColor);
-
-    ActionBar actionBar = getActionBar();
-    actionBar.setDisplayHomeAsUpEnabled(true);
-    setTitleAlpha(0);
-
-    scrollView.setOnScrollChangedListener(this);
-
-    movieTitle.setText(minifiedMovie.getTitle());
-
-    updateColorScheme();
   }
 
   /**

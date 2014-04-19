@@ -133,7 +133,6 @@ public class KenBurnsView extends FrameLayout {
   @Override
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
-    startKenBurnsAnimation();
   }
 
   @Override
@@ -159,6 +158,7 @@ public class KenBurnsView extends FrameLayout {
     this.images = Arrays.asList(image);
     loadImage(activeImageView, image);
     loadImage(inactiveImageView, image);
+    startKenBurnsAnimation();
   }
 
   public void update(List<String> images) {
