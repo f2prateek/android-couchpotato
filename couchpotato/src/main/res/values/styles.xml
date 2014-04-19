@@ -41,6 +41,7 @@
   <style name="ActionBar.Solid.CouchPotato.Transparent"
       parent="@android:style/Widget.Holo.ActionBar.Solid">
     <item name="android:background">@null</item>
+    <item name="android:icon">@drawable/ic_transparent</item>
     <item name="android:displayOptions">homeAsUp|showHome|showTitle</item>
     <item name="android:titleTextStyle">@style/ActionBarStyle.Transparent.TitleTextStyle</item>
   </style>

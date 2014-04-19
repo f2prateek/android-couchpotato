@@ -357,8 +357,6 @@ public class MovieActivity extends BaseActivity
 
     ActionBar actionBar = getActionBar();
     actionBar.setDisplayHomeAsUpEnabled(true);
-    // Use a drawable resource so we can match the dimensions to the movie poster
-    actionBar.setIcon(R.drawable.ic_transparent);
     setTitleAlpha(0);
 
     scrollView.setOnScrollChangedListener(this);
