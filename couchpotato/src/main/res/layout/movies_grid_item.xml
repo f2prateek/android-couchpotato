@@ -31,7 +31,7 @@
       android:foreground="@drawable/image_overlay"
       android:clickable="true"
       app:aspectRatioEnabled="true"
-      app:aspectRatio="0.6667"
+      app:aspectRatio="1.5"
       app:dominantMeasurement="width"
       tools:src="#f00"/>
 

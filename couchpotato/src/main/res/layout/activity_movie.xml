@@ -25,7 +25,8 @@
   <com.f2prateek.couchpotato.ui.widget.NotifyingScrollView
       android:id="@+id/movie_scroll_container"
       android:layout_width="match_parent"
-      android:layout_height="match_parent">
+      android:layout_height="match_parent"
+      android:scrollbars="none">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -76,17 +77,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <ImageView
-        android:id="@+id/movie_header_poster"
-        android:layout_width="@dimen/movie_header_logo_width"
-        android:layout_height="@dimen/movie_header_logo_height"
-        android:layout_gravity="bottom|right"/>
-
     <View
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/actionbar_background_gradient"/>
 
   </FrameLayout>
+
+  <ImageView
+      android:id="@+id/movie_header_poster"
+      android:layout_width="@dimen/movie_header_logo_width"
+      android:layout_height="@dimen/movie_header_logo_height"
+      android:layout_gravity="center"/>
 
 </FrameLayout>

@@ -65,7 +65,9 @@ public class MovieActivity extends BaseActivity
   private static final String ARGS_THUMBNAIL_WIDTH = "thumbnail_width";
   private static final String ARGS_THUMBNAIL_HEIGHT = "thumbnail_height";
 
-  private static final int ANIM_DURATION = 500;
+  private static final int ANIMATION_DURATION = 500; // 500ms
+  private static final int HALF_ANIMATION_DURATION = ANIMATION_DURATION / 2;
+
   private static final TimeInterpolator sDecelerator = new DecelerateInterpolator();
   private static final TimeInterpolator sAccelerator = new AccelerateInterpolator();
 
@@ -81,18 +83,16 @@ public class MovieActivity extends BaseActivity
   @InjectView(R.id.movie_header_backdrop) KenBurnsView movieBackdrop;
   @InjectView(R.id.movie_header_poster) ImageView moviePoster;
   @InjectView(R.id.movie_scroll_container) NotifyingScrollView scrollView;
-
-  @InjectView(R.id.root) FrameLayout root;
-  int mLeftDelta;
-  int mTopDelta;
-  float mWidthScale;
-  float mHeightScale;
-
   @InjectView(R.id.movie_primary) FrameLayout moviePrimary;
   @InjectView(R.id.movie_primary_accent) FrameLayout moviePrimaryAccent;
   @InjectView(R.id.movie_secondary) FrameLayout movieSecondary;
   @InjectView(R.id.movie_secondary_accent) FrameLayout movieSecondaryAccent;
   @InjectView(R.id.movie_tertiary_accent) FrameLayout movieTertiaryAccent;
+
+  int mLeftDelta;
+  int mTopDelta;
+  float mWidthScale;
+  float mHeightScale;
 
   @Inject TMDbDatabase tmDbDatabase;
   @Inject Picasso picasso;
@@ -102,8 +102,8 @@ public class MovieActivity extends BaseActivity
   private int headerHeight;
   private int minHeaderTranslation;
   private AccelerateDecelerateInterpolator smoothInterpolator;
-  private RectF rectF1 = new RectF();
-  private RectF rectF2 = new RectF();
+  private RectF sourceRect = new RectF();
+  private RectF targetRect = new RectF();
   private AlphaForegroundColorSpan alphaForegroundColorSpan;
   private SpannableString spannableString;
   private TypedValue typedValue = new TypedValue();
@@ -125,28 +125,28 @@ public class MovieActivity extends BaseActivity
     super.onCreate(savedInstanceState);
 
     spannableString = new SpannableString(movie.title);
-    movieBackdrop.loadImages(picasso, movie.backdrop, movie.backdrop);
+    picasso.load(movie.poster).fit().centerCrop().into(moviePoster);
 
     // Only run the animation if we're coming from the parent activity, not if
     // we're recreated automatically by the window manager (e.g., device rotation)
     if (savedInstanceState == null) {
-      ViewTreeObserver observer = movieHeader.getViewTreeObserver();
+      ViewTreeObserver observer = moviePoster.getViewTreeObserver();
       observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
 
         @Override
         public boolean onPreDraw() {
-          movieHeader.getViewTreeObserver().removeOnPreDrawListener(this);
+          moviePoster.getViewTreeObserver().removeOnPreDrawListener(this);
 
           // Figure out where the thumbnail and full size versions are, relative
           // to the screen and each other
           int[] screenLocation = new int[2];
-          movieHeader.getLocationOnScreen(screenLocation);
+          moviePoster.getLocationOnScreen(screenLocation);
           mLeftDelta = thumbnailLeft - screenLocation[0];
           mTopDelta = thumbnailTop - screenLocation[1];
 
           // Scale factors to make the large version the same size as the thumbnail
-          mWidthScale = (float) thumbnailWidth / movieHeader.getWidth();
-          mHeightScale = (float) thumbnailHeight / movieHeader.getHeight();
+          mWidthScale = (float) thumbnailWidth / moviePoster.getWidth();
+          mHeightScale = (float) thumbnailHeight / moviePoster.getHeight();
 
           runEnterAnimation();
 
@@ -165,38 +165,34 @@ public class MovieActivity extends BaseActivity
    * drops down.
    */
   public void runEnterAnimation() {
-    final long duration = ANIM_DURATION;
-
     // Set starting values for properties we're going to animate. These
     // values scale and position the full size version down to the thumbnail
     // size/location, from which we'll animate it back up
-    movieHeader.setPivotX(0);
-    movieHeader.setPivotY(0);
-    movieHeader.setScaleX(mWidthScale);
-    movieHeader.setScaleY(mHeightScale);
-    movieHeader.setTranslationX(mLeftDelta);
-    movieHeader.setTranslationY(mTopDelta);
+    moviePoster.setPivotX(0);
+    moviePoster.setPivotY(0);
+    moviePoster.setScaleX(mWidthScale);
+    moviePoster.setScaleY(mHeightScale);
+    moviePoster.setTranslationX(mLeftDelta);
+    moviePoster.setTranslationY(mTopDelta);
 
     // We'll fade the content in later
     scrollView.setAlpha(0);
+    movieBackdrop.loadImages(picasso, movie.backdrop, movie.backdrop);
+    movieBackdrop.setAlpha(0);
 
     // Animate scale and translation to go from thumbnail to full size
-    movieHeader.animate().setDuration(duration).
+    moviePoster.animate().setDuration(ANIMATION_DURATION).
         scaleX(1).scaleY(1).
         translationX(0).translationY(0).
         setInterpolator(sDecelerator).
         withEndAction(new Runnable() {
           public void run() {
             init();
-            // Animate the content in after the image animation
-            // is done. Slide and fade in from underneath the picture.
-            scrollView.setTranslationY(-scrollView.getHeight());
-            scrollView.animate().setDuration(duration / 2).
-                translationY(0).alpha(1).
+            // Animate the content in after the image animation is done
+            scrollView.animate().setDuration(HALF_ANIMATION_DURATION).alpha(1).
                 setInterpolator(sDecelerator);
-
-            // Fade in the poster
-            picasso.load(movie.poster).fit().centerCrop().into(moviePoster);
+            movieBackdrop.animate().setDuration(HALF_ANIMATION_DURATION).alpha(1).
+                setInterpolator(sDecelerator);
           }
         });
   }
@@ -210,8 +206,6 @@ public class MovieActivity extends BaseActivity
    * when we actually switch activities)
    */
   public void runExitAnimation(final Runnable endAction) {
-    final long duration = ANIM_DURATION;
-
     // No need to set initial values for the reverse animation; the image is at the
     // starting size/location that we want to start from. Just animate to the
     // thumbnail size/location that we retrieved earlier
@@ -221,8 +215,8 @@ public class MovieActivity extends BaseActivity
     // whatever's actually in the center
     final boolean fadeOut;
     if (getResources().getConfiguration().orientation != originalOrientation) {
-      movieHeader.setPivotX(movieHeader.getWidth() / 2);
-      movieHeader.setPivotY(movieHeader.getHeight() / 2);
+      moviePoster.setPivotX(moviePoster.getWidth() / 2);
+      moviePoster.setPivotY(moviePoster.getHeight() / 2);
       mLeftDelta = 0;
       mTopDelta = 0;
       fadeOut = true;
@@ -231,18 +225,22 @@ public class MovieActivity extends BaseActivity
     }
 
     // First, slide/fade content out of the way
-    moviePoster.animate().alpha(0).setDuration(duration / 2).setInterpolator(sAccelerator);
-    scrollView.animate().translationY(-scrollView.getHeight()).alpha(0).
-        setDuration(duration / 2).setInterpolator(sAccelerator).
+    movieBackdrop.animate()
+        .alpha(0)
+        .setDuration(HALF_ANIMATION_DURATION)
+        .setInterpolator(sAccelerator);
+    setTitleAlpha(0);
+    scrollView.animate().alpha(0).
+        setDuration(HALF_ANIMATION_DURATION).setInterpolator(sAccelerator).
         withEndAction(new Runnable() {
           public void run() {
             // Animate image back to thumbnail size/location
-            movieHeader.animate().setDuration(duration).
+            moviePoster.animate().setDuration(HALF_ANIMATION_DURATION).
                 scaleX(mWidthScale).scaleY(mHeightScale).
                 translationX(mLeftDelta).translationY(mTopDelta).
                 withEndAction(endAction);
             if (fadeOut) {
-              movieHeader.animate().alpha(0);
+              moviePoster.animate().alpha(0);
             }
           }
         });
@@ -306,7 +304,7 @@ public class MovieActivity extends BaseActivity
 
     TransitionDrawable drawable = new TransitionDrawable(layers);
     view.setBackground(drawable);
-    drawable.startTransition(ANIM_DURATION / 2);
+    drawable.startTransition(ANIMATION_DURATION);
   }
 
   @Override protected void inflateLayout(ViewGroup container) {
@@ -322,9 +320,8 @@ public class MovieActivity extends BaseActivity
 
     ActionBar actionBar = getActionBar();
     actionBar.setDisplayHomeAsUpEnabled(true);
-    // Use a drawable resource so we can have the righ
+    // Use a drawable resource so we can match the dimensions to the movie poster
     actionBar.setIcon(R.drawable.ic_transparent);
-    actionBar.setTitle(spannableString);
     setTitleAlpha(0);
 
     scrollView.setOnScrollChangedListener(this);
@@ -365,27 +362,26 @@ public class MovieActivity extends BaseActivity
 
   /**
    * Interpolate between two views.
-   * This will animate view1 to somewhere between view1 and view2 depending on the interpolation
+   * This will translate source to somewhere between source and target depending on the
+   * interpolation
    * value.
    * Used to translate the logo to the action bar icon.
    *
    * @param interpolation 'progress' of the interpolation
    */
-  private void interpolate(View view1, View view2, float interpolation) {
-    getOnScreenRect(rectF1, view1);
-    getOnScreenRect(rectF2, view2);
+  private void interpolate(View source, View target, float interpolation) {
+    getOnScreenRect(sourceRect, source);
+    getOnScreenRect(targetRect, target);
 
-    float scaleX = 1.0F + interpolation * (rectF2.width() / rectF1.width() - 1.0F);
-    float scaleY = 1.0F + interpolation * (rectF2.height() / rectF1.height() - 1.0F);
-    float translationX =
-        0.5F * (interpolation * (rectF2.left + rectF2.right - rectF1.left - rectF1.right));
-    float translationY =
-        0.5F * (interpolation * (rectF2.top + rectF2.bottom - rectF1.top - rectF1.bottom));
+    float scaleX = 1.0F + interpolation * (targetRect.width() / sourceRect.width() - 1.0F);
+    float scaleY = 1.0F + interpolation * (targetRect.height() / sourceRect.height() - 1.0F);
+    float translationX = interpolation * (targetRect.left - sourceRect.left);
+    float translationY = interpolation * (targetRect.top - sourceRect.top);
 
-    view1.setTranslationX(translationX);
-    view1.setTranslationY(translationY - movieHeader.getTranslationY());
-    view1.setScaleX(scaleX);
-    view1.setScaleY(scaleY);
+    source.setTranslationX(translationX);
+    source.setTranslationY(translationY);
+    source.setScaleX(scaleX);
+    source.setScaleY(scaleY);
   }
 
   /**
