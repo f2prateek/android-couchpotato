@@ -18,7 +18,10 @@ package com.f2prateek.couchpotato.data;
 
 import com.f2prateek.couchpotato.data.api.tmdb.TMDbService;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Configuration;
+import com.f2prateek.couchpotato.data.api.tmdb.model.Credits;
+import com.f2prateek.couchpotato.data.api.tmdb.model.Images;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MinifiedMovie;
+import com.f2prateek.couchpotato.data.api.tmdb.model.Movie;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MovieCollectionResponse;
 import java.util.List;
 import rx.Observable;
@@ -30,19 +33,30 @@ import rx.schedulers.Schedulers;
 
 public class TMDbDatabase {
   private final TMDbService tmDbService;
+  private Observable<Configuration> configurationObservable;
 
   public TMDbDatabase(TMDbService tmDbService) {
     this.tmDbService = tmDbService;
   }
 
+  // Fetch the configuration and cache it future use.
+  public Observable<Configuration> getConfiguration() {
+    if (configurationObservable == null) {
+      configurationObservable = tmDbService.configuration();
+    }
+    return configurationObservable.cache();
+  }
+
   public Subscription getPopularMovies(final int page,
       final Observer<List<MinifiedMovie>> observer) {
-    return tmDbService.configuration()
+    return getConfiguration() //
         .flatMap(new Func1<Configuration, Observable<List<MinifiedMovie>>>() {
-          @Override public Observable<List<MinifiedMovie>> call(Configuration configuration) {
-            return popularMovies(page, configuration);
-          }
-        })
+                   @Override public Observable<List<MinifiedMovie>> call(
+                       Configuration configuration) {
+                     return popularMovies(page, configuration);
+                   }
+                 }
+        )
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(observer);
@@ -51,6 +65,111 @@ public class TMDbDatabase {
   private Observable<List<MinifiedMovie>> popularMovies(final int page,
       final Configuration configuration) {
     return tmDbService.popular(page) //
+        .map(new Func1<MovieCollectionResponse, List<MinifiedMovie>>() {
+          @Override public List<MinifiedMovie> call(MovieCollectionResponse response) {
+            return response.getResults();
+          }
+        }) //
+        .flatMap(new Func1<List<MinifiedMovie>, Observable<MinifiedMovie>>() {
+          @Override public Observable<MinifiedMovie> call(List<MinifiedMovie> movies) {
+            return Observable.from(movies);
+          }
+        }) //
+        .filter(new Func1<MinifiedMovie, Boolean>() {
+          @Override public Boolean call(MinifiedMovie movie) {
+            // TODO: control in preferences
+            return !movie.isAdult();
+          }
+        }) //
+        .map(new Func1<MinifiedMovie, MinifiedMovie>() {
+          @Override public MinifiedMovie call(MinifiedMovie movie) {
+            movie.setConfiguration(configuration);
+            return movie;
+          }
+        }) //
+        .toList();
+  }
+
+  public Subscription getMovie(final long id, final Observer<Movie> observer) {
+    return getConfiguration() //
+        .flatMap(new Func1<Configuration, Observable<Movie>>() {
+          @Override public Observable<Movie> call(Configuration configuration) {
+            return movie(id, configuration);
+          }
+        }) //
+        .subscribeOn(Schedulers.io()) //
+        .observeOn(AndroidSchedulers.mainThread()) //
+        .subscribe(observer);
+  }
+
+  private Observable<Movie> movie(final long id, final Configuration configuration) {
+    return tmDbService.movie(id) //
+        .map(new Func1<Movie, Movie>() {
+          @Override public Movie call(Movie movie) {
+            movie.setConfiguration(configuration);
+            return movie;
+          }
+        });
+  }
+
+  public Subscription getMovieImages(final long id, final Observer<Images> observer) {
+    return getConfiguration() //
+        .flatMap(new Func1<Configuration, Observable<Images>>() {
+          @Override public Observable<Images> call(Configuration configuration) {
+            return images(id, configuration);
+          }
+        }) //
+        .subscribeOn(Schedulers.io()) //
+        .observeOn(AndroidSchedulers.mainThread()) //
+        .subscribe(observer);
+  }
+
+  private Observable<Images> images(final long id, final Configuration configuration) {
+    return tmDbService.movieImages(id).map(new Func1<Images, Images>() {
+      @Override public Images call(Images images) {
+        images.setConfiguration(configuration);
+        return images;
+      }
+    });
+  }
+
+  public Subscription getMovieCredits(final long id, final Observer<Credits> observer) {
+    return getConfiguration() //
+        .flatMap(new Func1<Configuration, Observable<Credits>>() {
+          @Override public Observable<Credits> call(Configuration configuration) {
+            return credits(id, configuration);
+          }
+        }) //
+        .subscribeOn(Schedulers.io()) //
+        .observeOn(AndroidSchedulers.mainThread()) //
+        .subscribe(observer);
+  }
+
+  private Observable<Credits> credits(final long id, final Configuration configuration) {
+    return tmDbService.movieCredits(id).map(new Func1<Credits, Credits>() {
+      @Override public Credits call(Credits credits) {
+        credits.setConfiguration(configuration);
+        return credits;
+      }
+    });
+  }
+
+  public Subscription getSimilarMovies(final long id,
+      final Observer<List<MinifiedMovie>> observer) {
+    return getConfiguration() //
+        .flatMap(new Func1<Configuration, Observable<List<MinifiedMovie>>>() {
+          @Override public Observable<List<MinifiedMovie>> call(Configuration configuration) {
+            return similarMovies(id, configuration);
+          }
+        }) //
+        .subscribeOn(Schedulers.io()) //
+        .observeOn(AndroidSchedulers.mainThread()) //
+        .subscribe(observer);
+  }
+
+  private Observable<List<MinifiedMovie>> similarMovies(final long id,
+      final Configuration configuration) {
+    return tmDbService.movieSimilar(id) //
         .map(new Func1<MovieCollectionResponse, List<MinifiedMovie>>() {
           @Override public List<MinifiedMovie> call(MovieCollectionResponse response) {
             return response.getResults();

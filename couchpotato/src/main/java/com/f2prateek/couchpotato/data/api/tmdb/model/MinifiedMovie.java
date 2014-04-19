@@ -20,7 +20,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
-public class MinifiedMovie implements Parcelable {
+public class MinifiedMovie implements Parcelable, Configuration.Configurable {
 
   private static final String FIELD_ID = "id";
   private static final String FIELD_ORIGINAL_TITLE = "original_title";
@@ -98,16 +98,14 @@ public class MinifiedMovie implements Parcelable {
     return popularity;
   }
 
-  /**
-   * Update any image fields with the given configuration.
-   */
+  @Override
   public void setConfiguration(Configuration configuration) {
-    posterPath = configuration.getImage().getBaseUrl()
-        + configuration.getImage().getPosterSizes().get(2)
-        + posterPath;
-    backdropPath = configuration.getImage().getBaseUrl()
-        + configuration.getImage().getBackdropSizes().get(1)
-        + backdropPath;
+    posterPath = configuration.getImageSizes().getBaseUrl() + configuration.getImageSizes()
+        .getPosterSizes()
+        .get(2) + posterPath;
+    backdropPath = configuration.getImageSizes().getBaseUrl() + configuration.getImageSizes()
+        .getBackdropSizes()
+        .get(1) + backdropPath;
   }
 
   @Override

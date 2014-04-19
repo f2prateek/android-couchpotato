@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Movie implements Parcelable {
+public class Movie implements Parcelable, Configuration.Configurable {
 
   private static final String FIELD_TAGLINE = "tagline";
   private static final String FIELD_BACKDROP_PATH = "backdrop_path";
@@ -173,6 +173,11 @@ public class Movie implements Parcelable {
 
   public int getRuntime() {
     return runtime;
+  }
+
+  @Override
+  public void setConfiguration(Configuration configuration) {
+    // todo : implement
   }
 
   @Override

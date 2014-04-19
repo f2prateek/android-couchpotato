@@ -40,15 +40,20 @@ import android.widget.ScrollView;
 import butterknife.InjectView;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.TMDbDatabase;
+import com.f2prateek.couchpotato.data.api.tmdb.model.Credits;
+import com.f2prateek.couchpotato.data.api.tmdb.model.Images;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MinifiedMovie;
+import com.f2prateek.couchpotato.data.api.tmdb.model.Movie;
 import com.f2prateek.couchpotato.data.rx.EndlessObserver;
 import com.f2prateek.couchpotato.ui.colorizer.ColorScheme;
 import com.f2prateek.couchpotato.ui.misc.AlphaForegroundColorSpan;
 import com.f2prateek.couchpotato.ui.widget.KenBurnsView;
 import com.f2prateek.couchpotato.ui.widget.NotifyingScrollView;
 import com.f2prateek.dart.InjectExtra;
+import com.f2prateek.ln.Ln;
 import com.squareup.picasso.Picasso;
 import java.io.IOException;
+import java.util.List;
 import javax.inject.Inject;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -71,7 +76,7 @@ public class MovieActivity extends BaseActivity
   private static final TimeInterpolator sDecelerator = new DecelerateInterpolator();
   private static final TimeInterpolator sAccelerator = new AccelerateInterpolator();
 
-  @InjectExtra(ARGS_MOVIE) MinifiedMovie movie;
+  @InjectExtra(ARGS_MOVIE) MinifiedMovie minifiedMovie;
   @InjectExtra(ARGS_THUMBNAIL_LEFT) int thumbnailLeft;
   @InjectExtra(ARGS_THUMBNAIL_TOP) int thumbnailTop;
   @InjectExtra(ARGS_THUMBNAIL_WIDTH) int thumbnailWidth;
@@ -124,8 +129,34 @@ public class MovieActivity extends BaseActivity
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    spannableString = new SpannableString(movie.getTitle());
-    picasso.load(movie.getPosterPath()).fit().centerCrop().into(moviePoster);
+    spannableString = new SpannableString(minifiedMovie.getTitle());
+    picasso.load(minifiedMovie.getPosterPath()).fit().centerCrop().into(moviePoster);
+
+    tmDbDatabase.getMovie(minifiedMovie.getId(), new EndlessObserver<Movie>() {
+      @Override public void onNext(Movie movie) {
+        Ln.d(movie);
+      }
+    });
+
+    tmDbDatabase.getMovieImages(minifiedMovie.getId(), new EndlessObserver<Images>() {
+      @Override public void onNext(Images images) {
+        Ln.d(images);
+      }
+    });
+
+    tmDbDatabase.getSimilarMovies(minifiedMovie.getId(),
+        new EndlessObserver<List<MinifiedMovie>>() {
+          @Override public void onNext(List<MinifiedMovie> similarMovies) {
+            Ln.d(similarMovies);
+          }
+        }
+    );
+
+    tmDbDatabase.getMovieCredits(minifiedMovie.getId(), new EndlessObserver<Credits>() {
+      @Override public void onNext(Credits credits) {
+        Ln.d(credits);
+      }
+    });
 
     // Only run the animation if we're coming from the parent activity, not if
     // we're recreated automatically by the window manager (e.g., device rotation)
@@ -177,7 +208,8 @@ public class MovieActivity extends BaseActivity
 
     // We'll fade the content in later
     scrollView.setAlpha(0);
-    movieBackdrop.loadImages(picasso, movie.getBackdropPath(), movie.getBackdropPath());
+    movieBackdrop.loadImages(picasso, minifiedMovie.getBackdropPath(),
+        minifiedMovie.getBackdropPath());
     movieBackdrop.setAlpha(0);
 
     // Animate scale and translation to go from thumbnail to full size
@@ -269,7 +301,7 @@ public class MovieActivity extends BaseActivity
   }
 
   private void updateColorScheme() {
-    Observable.from(movie.getPosterPath())
+    Observable.from(minifiedMovie.getPosterPath())
         .map(new Func1<String, Bitmap>() {
           @Override public Bitmap call(String url) {
             try {

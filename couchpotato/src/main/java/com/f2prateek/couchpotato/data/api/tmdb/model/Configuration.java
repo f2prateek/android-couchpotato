@@ -13,7 +13,11 @@ public class Configuration implements Parcelable {
   @SerializedName(FIELD_CHANGE_KEYS)
   private List<String> changeKeys;
   @SerializedName(FIELD_IMAGES)
-  private Image image;
+  private ImageSizes imageSizes;
+
+  public interface Configurable {
+    void setConfiguration(Configuration configuration);
+  }
 
   public Configuration() {
 
@@ -23,13 +27,13 @@ public class Configuration implements Parcelable {
     return changeKeys;
   }
 
-  public Image getImage() {
-    return image;
+  public ImageSizes getImageSizes() {
+    return imageSizes;
   }
 
   public Configuration(Parcel in) {
     in.readArrayList(String.class.getClassLoader());
-    image = in.readParcelable(Image.class.getClassLoader());
+    imageSizes = in.readParcelable(ImageSizes.class.getClassLoader());
   }
 
   @Override
@@ -51,11 +55,11 @@ public class Configuration implements Parcelable {
   @Override
   public void writeToParcel(Parcel dest, int flags) {
     dest.writeList(changeKeys);
-    dest.writeParcelable(image, flags);
+    dest.writeParcelable(imageSizes, flags);
   }
 
   @Override
   public String toString() {
-    return "changeKeys = " + changeKeys + ", image = " + image;
+    return "changeKeys = " + changeKeys + ", image = " + imageSizes;
   }
 }

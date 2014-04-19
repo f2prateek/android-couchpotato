@@ -5,7 +5,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
-public class Image implements Parcelable {
+public class ImageSizes implements Parcelable {
 
   private static final String FIELD_POSTER_SIZES = "poster_sizes";
   private static final String FIELD_BACKDROP_SIZES = "backdrop_sizes";
@@ -30,7 +30,7 @@ public class Image implements Parcelable {
   @SerializedName(FIELD_LOGO_SIZES)
   private List<String> logoSizes;
 
-  public Image() {
+  public ImageSizes() {
 
   }
 
@@ -62,7 +62,7 @@ public class Image implements Parcelable {
     return logoSizes;
   }
 
-  public Image(Parcel in) {
+  public ImageSizes(Parcel in) {
     in.readArrayList(String.class.getClassLoader());
     in.readArrayList(String.class.getClassLoader());
     in.readArrayList(String.class.getClassLoader());
@@ -77,15 +77,16 @@ public class Image implements Parcelable {
     return 0;
   }
 
-  public static final Parcelable.Creator<Image> CREATOR = new Parcelable.Creator<Image>() {
-    public Image createFromParcel(Parcel in) {
-      return new Image(in);
-    }
+  public static final Parcelable.Creator<ImageSizes> CREATOR =
+      new Parcelable.Creator<ImageSizes>() {
+        public ImageSizes createFromParcel(Parcel in) {
+          return new ImageSizes(in);
+        }
 
-    public Image[] newArray(int size) {
-      return new Image[size];
-    }
-  };
+        public ImageSizes[] newArray(int size) {
+          return new ImageSizes[size];
+        }
+      };
 
   @Override
   public void writeToParcel(Parcel dest, int flags) {
