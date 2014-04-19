@@ -271,11 +271,11 @@ public class MovieActivity extends BaseActivity
   }
 
   private void updateColorScheme() {
-    Observable.from(picasso)
-        .map(new Func1<Picasso, Bitmap>() {
-          @Override public Bitmap call(Picasso picasso) {
+    Observable.from(movie.poster)
+        .map(new Func1<String, Bitmap>() {
+          @Override public Bitmap call(String url) {
             try {
-              return picasso.load(movie.poster).get();
+              return picasso.load(url).get();
             } catch (IOException e) {
               throw new RuntimeException(e);
             }
