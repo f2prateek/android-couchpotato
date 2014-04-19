@@ -156,7 +156,6 @@ public class MovieActivity extends BaseActivity
       });
     } else {
       init();
-      setupFancyScroll();
     }
   }
 
@@ -190,7 +189,6 @@ public class MovieActivity extends BaseActivity
         withEndAction(new Runnable() {
           public void run() {
             init();
-            setupFancyScroll();
             // Animate the content in after the image animation
             // is done. Slide and fade in from underneath the picture.
             scrollView.setTranslationY(-scrollView.getHeight());
@@ -245,7 +243,6 @@ public class MovieActivity extends BaseActivity
             }
           }
         });
-
   }
 
   /**
@@ -319,9 +316,7 @@ public class MovieActivity extends BaseActivity
     minHeaderTranslation = -headerHeight + getActionBarHeight();
     actionBarTitleColor = getResources().getColor(android.R.color.white);
     alphaForegroundColorSpan = new AlphaForegroundColorSpan(actionBarTitleColor);
-  }
 
-  private void setupFancyScroll() {
     ActionBar actionBar = getActionBar();
     actionBar.setDisplayHomeAsUpEnabled(true);
     // Use a drawable resource so we can have the righ
