@@ -78,8 +78,8 @@ public class MovieActivity extends BaseActivity
 
   @InjectView(android.R.id.home) ImageView actionBarIconView;
   @InjectView(R.id.movie_header) View movieHeader;
-  @InjectView(R.id.movie_header_image) KenBurnsView movieHeaderBackground;
-  @InjectView(R.id.movie_header_logo) ImageView movieHeaderLogo;
+  @InjectView(R.id.movie_header_backdrop) KenBurnsView movieBackdrop;
+  @InjectView(R.id.movie_header_poster) ImageView moviePoster;
   @InjectView(R.id.movie_scroll_container) NotifyingScrollView scrollView;
 
   @InjectView(R.id.root) FrameLayout root;
@@ -125,8 +125,8 @@ public class MovieActivity extends BaseActivity
     super.onCreate(savedInstanceState);
 
     spannableString = new SpannableString(movie.title);
-    picasso.load(movie.poster).fit().centerCrop().into(movieHeaderLogo);
-    movieHeaderBackground.loadImages(picasso, movie.backdrop, movie.backdrop);
+    picasso.load(movie.poster).fit().centerCrop().into(moviePoster);
+    movieBackdrop.loadImages(picasso, movie.backdrop, movie.backdrop);
 
     // Only run the animation if we're coming from the parent activity, not if
     // we're recreated automatically by the window manager (e.g., device rotation)
@@ -230,7 +230,7 @@ public class MovieActivity extends BaseActivity
       fadeOut = false;
     }
 
-    // First, slide/fade text out of the way
+    // First, slide/fade content out of the way
     scrollView.animate().translationY(-scrollView.getHeight()).alpha(0).
         setDuration(duration / 2).setInterpolator(sAccelerator).
         withEndAction(new Runnable() {
@@ -245,6 +245,7 @@ public class MovieActivity extends BaseActivity
             }
           }
         });
+
   }
 
   /**
@@ -401,7 +402,7 @@ public class MovieActivity extends BaseActivity
     int scrollY = who.getScrollY();
     movieHeader.setTranslationY(Math.max(-scrollY, minHeaderTranslation));
     float ratio = clamp(movieHeader.getTranslationY() / minHeaderTranslation, 0.0f, 1.0f);
-    interpolate(movieHeaderLogo, actionBarIconView, smoothInterpolator.getInterpolation(ratio));
+    interpolate(moviePoster, actionBarIconView, smoothInterpolator.getInterpolation(ratio));
     float alpha = clamp(5.0F * ratio - 4.0F, 0.0F, 1.0F);
     setTitleAlpha(alpha);
   }

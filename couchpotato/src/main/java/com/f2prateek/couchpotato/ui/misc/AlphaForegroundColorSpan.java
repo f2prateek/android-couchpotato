@@ -54,7 +54,7 @@ public class AlphaForegroundColorSpan extends ForegroundColorSpan {
 
   private int getAlphaColor() {
     int foregroundColor = getForegroundColor();
-    return Color.argb((int) (alpha * 255), Color.red(foregroundColor),
-        Color.green(foregroundColor), Color.blue(foregroundColor));
+    return Color.argb((int) (alpha * 255), Color.red(foregroundColor), Color.green(foregroundColor),
+        Color.blue(foregroundColor));
   }
 }

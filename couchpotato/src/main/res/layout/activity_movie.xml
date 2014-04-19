@@ -72,12 +72,12 @@
       android:layout_height="@dimen/movie_header_height">
 
     <com.f2prateek.couchpotato.ui.widget.KenBurnsView
-        android:id="@+id/movie_header_image"
+        android:id="@+id/movie_header_backdrop"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
     <ImageView
-        android:id="@+id/movie_header_logo"
+        android:id="@+id/movie_header_poster"
         android:layout_width="@dimen/movie_header_logo_width"
         android:layout_height="@dimen/movie_header_logo_height"
         android:layout_gravity="bottom|right"/>
