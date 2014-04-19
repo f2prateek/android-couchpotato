@@ -17,15 +17,15 @@
 package com.f2prateek.couchpotato;
 
 import android.view.View;
-import com.f2prateek.couchpotato.data.api.moviedb.model.TMDbMovieMinified;
+import com.f2prateek.couchpotato.data.api.tmdb.model.MinifiedMovie;
 
 public class Events {
 
   public static class OnMovieClickedEvent {
     public final View source;
-    public final TMDbMovieMinified movie;
+    public final MinifiedMovie movie;
 
-    public OnMovieClickedEvent(View source, TMDbMovieMinified movie) {
+    public OnMovieClickedEvent(View source, MinifiedMovie movie) {
       this.source = source;
       this.movie = movie;
     }

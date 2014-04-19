@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato.data.api.moviedb;
+package com.f2prateek.couchpotato.data.api.tmdb;
 
 import retrofit.RequestInterceptor;
 

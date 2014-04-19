@@ -16,10 +16,10 @@
 
 package com.f2prateek.couchpotato.data;
 
-import com.f2prateek.couchpotato.data.api.moviedb.TMDbService;
-import com.f2prateek.couchpotato.data.api.moviedb.model.DiscoverMoviesResponse;
-import com.f2prateek.couchpotato.data.api.moviedb.model.TMDbConfiguration;
-import com.f2prateek.couchpotato.data.api.moviedb.model.TMDbMovieMinified;
+import com.f2prateek.couchpotato.data.api.tmdb.TMDbService;
+import com.f2prateek.couchpotato.data.api.tmdb.model.Configuration;
+import com.f2prateek.couchpotato.data.api.tmdb.model.MinifiedMovie;
+import com.f2prateek.couchpotato.data.api.tmdb.model.MovieCollectionResponse;
 import java.util.List;
 import rx.Observable;
 import rx.Observer;
@@ -36,12 +36,11 @@ public class TMDbDatabase {
   }
 
   public Subscription getPopularMovies(final int page,
-      final Observer<List<TMDbMovieMinified>> observer) {
+      final Observer<List<MinifiedMovie>> observer) {
     return tmDbService.configuration()
-        .flatMap(new Func1<TMDbConfiguration, Observable<List<TMDbMovieMinified>>>() {
-          @Override public Observable<List<TMDbMovieMinified>> call(
-              TMDbConfiguration tmDbConfiguration) {
-            return popularMovies(page, tmDbConfiguration);
+        .flatMap(new Func1<Configuration, Observable<List<MinifiedMovie>>>() {
+          @Override public Observable<List<MinifiedMovie>> call(Configuration configuration) {
+            return popularMovies(page, configuration);
           }
         })
         .subscribeOn(Schedulers.io())
@@ -49,37 +48,29 @@ public class TMDbDatabase {
         .subscribe(observer);
   }
 
-  private Observable<List<TMDbMovieMinified>> popularMovies(final int page,
-      final TMDbConfiguration tmDbConfiguration) {
+  private Observable<List<MinifiedMovie>> popularMovies(final int page,
+      final Configuration configuration) {
     return tmDbService.popular(page) //
-        .map(new Func1<DiscoverMoviesResponse, List<TMDbMovieMinified>>() {
-          @Override public List<TMDbMovieMinified> call(DiscoverMoviesResponse response) {
-            return response.results;
+        .map(new Func1<MovieCollectionResponse, List<MinifiedMovie>>() {
+          @Override public List<MinifiedMovie> call(MovieCollectionResponse response) {
+            return response.getResults();
           }
         }) //
-        .flatMap(new Func1<List<TMDbMovieMinified>, Observable<TMDbMovieMinified>>() {
-          @Override public Observable<TMDbMovieMinified> call(List<TMDbMovieMinified> movies) {
+        .flatMap(new Func1<List<MinifiedMovie>, Observable<MinifiedMovie>>() {
+          @Override public Observable<MinifiedMovie> call(List<MinifiedMovie> movies) {
             return Observable.from(movies);
           }
         }) //
-        .filter(new Func1<TMDbMovieMinified, Boolean>() {
-          @Override public Boolean call(TMDbMovieMinified tmDbMovie) {
+        .filter(new Func1<MinifiedMovie, Boolean>() {
+          @Override public Boolean call(MinifiedMovie movie) {
             // TODO: control in preferences
-            return !tmDbMovie.adult;
+            return !movie.isAdult();
           }
         }) //
-        .map(new Func1<TMDbMovieMinified, TMDbMovieMinified>() {
-          @Override public TMDbMovieMinified call(TMDbMovieMinified tmDbMovieMinified) {
-            tmDbMovieMinified.poster =
-                tmDbConfiguration.images.getPosterUrl(tmDbMovieMinified.poster);
-            return tmDbMovieMinified;
-          }
-        }) //
-        .map(new Func1<TMDbMovieMinified, TMDbMovieMinified>() {
-          @Override public TMDbMovieMinified call(TMDbMovieMinified tmDbMovieMinified) {
-            tmDbMovieMinified.backdrop =
-                tmDbConfiguration.images.getBackdropUrl(tmDbMovieMinified.backdrop);
-            return tmDbMovieMinified;
+        .map(new Func1<MinifiedMovie, MinifiedMovie>() {
+          @Override public MinifiedMovie call(MinifiedMovie movie) {
+            movie.setConfiguration(configuration);
+            return movie;
           }
         }) //
         .toList();

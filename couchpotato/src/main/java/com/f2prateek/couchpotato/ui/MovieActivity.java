@@ -40,7 +40,7 @@ import android.widget.ScrollView;
 import butterknife.InjectView;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.TMDbDatabase;
-import com.f2prateek.couchpotato.data.api.moviedb.model.TMDbMovieMinified;
+import com.f2prateek.couchpotato.data.api.tmdb.model.MinifiedMovie;
 import com.f2prateek.couchpotato.data.rx.EndlessObserver;
 import com.f2prateek.couchpotato.ui.colorizer.ColorScheme;
 import com.f2prateek.couchpotato.ui.misc.AlphaForegroundColorSpan;
@@ -71,7 +71,7 @@ public class MovieActivity extends BaseActivity
   private static final TimeInterpolator sDecelerator = new DecelerateInterpolator();
   private static final TimeInterpolator sAccelerator = new AccelerateInterpolator();
 
-  @InjectExtra(ARGS_MOVIE) TMDbMovieMinified movie;
+  @InjectExtra(ARGS_MOVIE) MinifiedMovie movie;
   @InjectExtra(ARGS_THUMBNAIL_LEFT) int thumbnailLeft;
   @InjectExtra(ARGS_THUMBNAIL_TOP) int thumbnailTop;
   @InjectExtra(ARGS_THUMBNAIL_WIDTH) int thumbnailWidth;
@@ -108,7 +108,7 @@ public class MovieActivity extends BaseActivity
   private SpannableString spannableString;
   private TypedValue typedValue = new TypedValue();
 
-  public static Intent createIntent(Context context, TMDbMovieMinified movie, int left, int top,
+  public static Intent createIntent(Context context, MinifiedMovie movie, int left, int top,
       int width, int height, int orientation) {
     Intent intent = new Intent(context, MovieActivity.class);
     intent.putExtra(ARGS_MOVIE, movie);
@@ -124,8 +124,8 @@ public class MovieActivity extends BaseActivity
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    spannableString = new SpannableString(movie.title);
-    picasso.load(movie.poster).fit().centerCrop().into(moviePoster);
+    spannableString = new SpannableString(movie.getTitle());
+    picasso.load(movie.getPosterPath()).fit().centerCrop().into(moviePoster);
 
     // Only run the animation if we're coming from the parent activity, not if
     // we're recreated automatically by the window manager (e.g., device rotation)
@@ -177,7 +177,7 @@ public class MovieActivity extends BaseActivity
 
     // We'll fade the content in later
     scrollView.setAlpha(0);
-    movieBackdrop.loadImages(picasso, movie.backdrop, movie.backdrop);
+    movieBackdrop.loadImages(picasso, movie.getBackdropPath(), movie.getBackdropPath());
     movieBackdrop.setAlpha(0);
 
     // Animate scale and translation to go from thumbnail to full size
@@ -269,7 +269,7 @@ public class MovieActivity extends BaseActivity
   }
 
   private void updateColorScheme() {
-    Observable.from(movie.poster)
+    Observable.from(movie.getPosterPath())
         .map(new Func1<String, Bitmap>() {
           @Override public Bitmap call(String url) {
             try {

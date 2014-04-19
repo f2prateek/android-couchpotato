@@ -16,7 +16,7 @@
 
 package com.f2prateek.couchpotato.data.api;
 
-import com.f2prateek.couchpotato.data.api.moviedb.TMDbApiModule;
+import com.f2prateek.couchpotato.data.api.tmdb.TMDbApiModule;
 import dagger.Module;
 
 @Module(

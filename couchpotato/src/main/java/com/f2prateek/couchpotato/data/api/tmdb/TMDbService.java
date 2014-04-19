@@ -14,19 +14,16 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato.data.api.moviedb.model;
+package com.f2prateek.couchpotato.data.api.tmdb;
 
-import com.google.gson.annotations.SerializedName;
-import java.util.List;
+import com.f2prateek.couchpotato.data.api.tmdb.model.Configuration;
+import com.f2prateek.couchpotato.data.api.tmdb.model.MovieCollectionResponse;
+import retrofit.http.GET;
+import retrofit.http.Query;
+import rx.Observable;
 
-public class DiscoverMoviesResponse {
-  public int page;
+public interface TMDbService {
+  @GET("/movie/popular") Observable<MovieCollectionResponse> popular(@Query("page") int page);
 
-  @SerializedName("total_pages")
-  public long pageCount;
-
-  @SerializedName("total_results")
-  public long resultCount;
-
-  public List<TMDbMovieMinified> results;
+  @GET("/configuration") Observable<Configuration> configuration();
 }

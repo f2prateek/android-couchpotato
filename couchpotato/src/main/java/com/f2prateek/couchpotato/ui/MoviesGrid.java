@@ -27,7 +27,7 @@ import butterknife.InjectView;
 import com.f2prateek.couchpotato.CouchPotatoApplication;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.TMDbDatabase;
-import com.f2prateek.couchpotato.data.api.moviedb.model.TMDbMovieMinified;
+import com.f2prateek.couchpotato.data.api.tmdb.model.MinifiedMovie;
 import com.f2prateek.couchpotato.data.rx.EndlessObserver;
 import com.f2prateek.couchpotato.ui.misc.BindableAdapter;
 import com.f2prateek.couchpotato.ui.widget.BetterViewAnimator;
@@ -93,8 +93,8 @@ public class MoviesGrid extends BetterViewAnimator {
     if (loading.get()) return;
     loading.set(true);
     request = database.getPopularMovies(page.getAndIncrement(),
-        new EndlessObserver<List<TMDbMovieMinified>>() {
-          @Override public void onNext(List<TMDbMovieMinified> movies) {
+        new EndlessObserver<List<MinifiedMovie>>() {
+          @Override public void onNext(List<MinifiedMovie> movies) {
             adapter.add(movies);
             setDisplayedChildView(grid);
             loading.set(false);
@@ -108,8 +108,8 @@ public class MoviesGrid extends BetterViewAnimator {
     super.onDetachedFromWindow();
   }
 
-  static class GalleryAdapter extends BindableAdapter<TMDbMovieMinified> {
-    private List<TMDbMovieMinified> movies = new ArrayList<>();
+  static class GalleryAdapter extends BindableAdapter<MinifiedMovie> {
+    private List<MinifiedMovie> movies = new ArrayList<>();
 
     private final Picasso picasso;
 
@@ -119,7 +119,7 @@ public class MoviesGrid extends BetterViewAnimator {
     }
 
     @DebugLog
-    public void add(List<TMDbMovieMinified> movies) {
+    public void add(List<MinifiedMovie> movies) {
       this.movies.addAll(movies);
       notifyDataSetChanged();
     }
@@ -128,7 +128,7 @@ public class MoviesGrid extends BetterViewAnimator {
       return movies.size();
     }
 
-    @Override public TMDbMovieMinified getItem(int position) {
+    @Override public MinifiedMovie getItem(int position) {
       return movies.get(position);
     }
 
@@ -140,7 +140,7 @@ public class MoviesGrid extends BetterViewAnimator {
       return inflater.inflate(R.layout.movies_grid_item, container, false);
     }
 
-    @Override public void bindView(TMDbMovieMinified item, int position, View view) {
+    @Override public void bindView(MinifiedMovie item, int position, View view) {
       ((MoviesGridItemView) view).bindTo(item, picasso);
     }
   }
