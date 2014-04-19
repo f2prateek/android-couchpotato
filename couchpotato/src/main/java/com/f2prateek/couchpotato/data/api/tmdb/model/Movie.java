@@ -59,7 +59,7 @@ public class Movie implements Parcelable, Configuration.Configurable {
   @SerializedName(FIELD_ORIGINAL_TITLE)
   private String originalTitle;
   @SerializedName(FIELD_BELONGS_TO_COLLECTION)
-  private String belongsToCollection;
+  private MovieCollection belongsToCollection;
   @SerializedName(FIELD_ID)
   private long id;
   @SerializedName(FIELD_HOMEPAGE)
@@ -135,7 +135,7 @@ public class Movie implements Parcelable, Configuration.Configurable {
     return originalTitle;
   }
 
-  public String getBelongsToCollection() {
+  public MovieCollection getBelongsToCollection() {
     return belongsToCollection;
   }
 
@@ -175,9 +175,8 @@ public class Movie implements Parcelable, Configuration.Configurable {
     return runtime;
   }
 
-  @Override
-  public void setConfiguration(Configuration configuration) {
-    // todo : implement
+  @Override public void setConfiguration(Configuration configuration) {
+    // todo: implement
   }
 
   @Override
@@ -209,7 +208,7 @@ public class Movie implements Parcelable, Configuration.Configurable {
     in.readTypedList(spokenLanguages, SpokenLanguage.CREATOR);
     revenue = in.readInt();
     originalTitle = in.readString();
-    belongsToCollection = in.readString();
+    belongsToCollection = in.readParcelable(MovieCollection.class.getClassLoader());
     id = in.readLong();
     homepage = in.readString();
     productionCountries = new ArrayList<ProductionCountry>();
@@ -253,7 +252,7 @@ public class Movie implements Parcelable, Configuration.Configurable {
     dest.writeTypedList(spokenLanguages);
     dest.writeInt(revenue);
     dest.writeString(originalTitle);
-    dest.writeString(belongsToCollection);
+    dest.writeParcelable(belongsToCollection, flags);
     dest.writeLong(id);
     dest.writeString(homepage);
     dest.writeTypedList(productionCountries);

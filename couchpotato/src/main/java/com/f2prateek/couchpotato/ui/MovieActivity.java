@@ -16,6 +16,8 @@
 
 package com.f2prateek.couchpotato.ui;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
 import android.app.ActionBar;
 import android.content.Context;
@@ -27,6 +29,7 @@ import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.util.Property;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +39,9 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import butterknife.InjectView;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.TMDbDatabase;
@@ -50,6 +55,7 @@ import com.f2prateek.couchpotato.ui.colorizer.ColorScheme;
 import com.f2prateek.couchpotato.ui.misc.AlphaForegroundColorSpan;
 import com.f2prateek.couchpotato.ui.widget.KenBurnsView;
 import com.f2prateek.couchpotato.ui.widget.NotifyingScrollView;
+import com.f2prateek.couchpotato.util.Strings;
 import com.f2prateek.dart.InjectExtra;
 import com.f2prateek.ln.Ln;
 import com.squareup.picasso.Picasso;
@@ -90,7 +96,9 @@ public class MovieActivity extends BaseActivity
   @InjectView(R.id.movie_header_backdrop) KenBurnsView movieBackdrop;
   @InjectView(R.id.movie_header_poster) ImageView moviePoster;
   @InjectView(R.id.movie_scroll_container) NotifyingScrollView scrollView;
-  @InjectView(R.id.movie_primary) FrameLayout moviePrimary;
+  @InjectView(R.id.movie_heading) LinearLayout movieHeading;
+  @InjectView(R.id.movie_title) TextView movieTitle;
+  @InjectView(R.id.movie_tagline) TextView movieTagline;
   @InjectView(R.id.movie_primary_accent) FrameLayout moviePrimaryAccent;
   @InjectView(R.id.movie_secondary) FrameLayout movieSecondary;
   @InjectView(R.id.movie_secondary_accent) FrameLayout movieSecondaryAccent;
@@ -137,6 +145,11 @@ public class MovieActivity extends BaseActivity
     tmDbDatabase.getMovie(minifiedMovie.getId(), new EndlessObserver<Movie>() {
       @Override public void onNext(Movie movie) {
         Ln.d(movie);
+        if (Strings.isBlank(movie.getTagline())) {
+          movieTagline.setVisibility(View.GONE);
+        } else {
+          movieTagline.setText(movie.getTagline());
+        }
       }
     });
 
@@ -195,6 +208,10 @@ public class MovieActivity extends BaseActivity
     }
   }
 
+  @Override protected void inflateLayout(ViewGroup container) {
+    getLayoutInflater().inflate(R.layout.activity_movie, container);
+  }
+
   /**
    * The enter animation scales the picture in from its previous thumbnail
    * size/location, colorizing it in parallel. In parallel, the background of the
@@ -232,6 +249,24 @@ public class MovieActivity extends BaseActivity
                 setInterpolator(sDecelerator);
           }
         });
+  }
+
+  private void init() {
+    smoothInterpolator = new AccelerateDecelerateInterpolator();
+    headerHeight = getResources().getDimensionPixelSize(R.dimen.movie_header_height);
+    minHeaderTranslation = -headerHeight + getActionBarHeight();
+    actionBarTitleColor = getResources().getColor(android.R.color.white);
+    alphaForegroundColorSpan = new AlphaForegroundColorSpan(actionBarTitleColor);
+
+    ActionBar actionBar = getActionBar();
+    actionBar.setDisplayHomeAsUpEnabled(true);
+    setTitleAlpha(0);
+
+    scrollView.setOnScrollChangedListener(this);
+
+    movieTitle.setText(minifiedMovie.getTitle());
+
+    updateColorScheme();
   }
 
   /**
@@ -325,18 +360,21 @@ public class MovieActivity extends BaseActivity
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new EndlessObserver<ColorScheme>() {
           @Override public void onNext(ColorScheme colorScheme) {
-            animateBackgroundColor(moviePrimary, colorScheme.getPrimaryText());
-            animateBackgroundColor(moviePrimaryAccent, colorScheme.getPrimaryAccent());
+            animateBackgroundColor(movieHeading, colorScheme.getPrimaryAccent());
+            animateTextColor(movieTitle, colorScheme.getPrimaryText());
+            animateTextColor(movieTagline, colorScheme.getPrimaryText());
+
+            animateBackgroundColor(moviePrimaryAccent, colorScheme.getTertiaryAccent());
             animateBackgroundColor(movieSecondary, colorScheme.getSecondaryText());
             animateBackgroundColor(movieSecondaryAccent, colorScheme.getSecondaryAccent());
-            animateBackgroundColor(movieTertiaryAccent, colorScheme.getTertiaryAccent());
+            animateBackgroundColor(movieTertiaryAccent, colorScheme.getPrimaryAccent());
           }
         });
   }
 
   private void animateBackgroundColor(View view, int endColor) {
     ColorDrawable layers[] = new ColorDrawable[2];
-    layers[0] = new ColorDrawable(getResources().getColor(R.color.background));
+    layers[0] = new ColorDrawable(getResources().getColor(android.R.color.transparent));
     layers[1] = new ColorDrawable(endColor);
 
     TransitionDrawable drawable = new TransitionDrawable(layers);
@@ -344,23 +382,24 @@ public class MovieActivity extends BaseActivity
     drawable.startTransition(ANIMATION_DURATION);
   }
 
-  @Override protected void inflateLayout(ViewGroup container) {
-    getLayoutInflater().inflate(R.layout.activity_movie, container);
-  }
+  private void animateTextColor(TextView textView, int endColor) {
+    final Property<TextView, Integer> property =
+        new Property<TextView, Integer>(int.class, "textColor") {
+          @Override
+          public Integer get(TextView object) {
+            return object.getCurrentTextColor();
+          }
 
-  private void init() {
-    smoothInterpolator = new AccelerateDecelerateInterpolator();
-    headerHeight = getResources().getDimensionPixelSize(R.dimen.movie_header_height);
-    minHeaderTranslation = -headerHeight + getActionBarHeight();
-    actionBarTitleColor = getResources().getColor(android.R.color.white);
-    alphaForegroundColorSpan = new AlphaForegroundColorSpan(actionBarTitleColor);
-
-    ActionBar actionBar = getActionBar();
-    actionBar.setDisplayHomeAsUpEnabled(true);
-    setTitleAlpha(0);
-
-    scrollView.setOnScrollChangedListener(this);
-    updateColorScheme();
+          @Override
+          public void set(TextView object, Integer value) {
+            object.setTextColor(value);
+          }
+        };
+    final ObjectAnimator animator = ObjectAnimator.ofInt(textView, property, endColor);
+    animator.setDuration(ANIMATION_DURATION);
+    animator.setEvaluator(new ArgbEvaluator());
+    animator.setInterpolator(sDecelerator);
+    animator.start();
   }
 
   public int getActionBarHeight() {

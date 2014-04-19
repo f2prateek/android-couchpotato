@@ -18,6 +18,7 @@
 
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -38,10 +39,34 @@
           android:layout_height="@dimen/movie_header_height"
           android:orientation="vertical"/>
 
-      <FrameLayout
-          android:id="@+id/movie_primary"
+      <LinearLayout
+          android:id="@+id/movie_heading"
           android:layout_width="match_parent"
-          android:layout_height="250dp"/>
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/movie_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="32sp"
+            android:fontFamily="sans-serif-light"
+            android:ellipsize="end"
+            android:padding="@dimen/holo_gap"
+            android:gravity="center"
+            tools:text="Captain America: The Winder Soldier"/>
+
+        <TextView
+            android:id="@+id/movie_tagline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:fontFamily="sans-serif-thin"
+            android:padding="@dimen/holo_gap"
+            tools:text="In heroes we trust."/>
+
+      </LinearLayout>
 
       <FrameLayout
           android:id="@+id/movie_primary_accent"

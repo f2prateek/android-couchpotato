@@ -38,6 +38,10 @@
     <item name="android:windowContentOverlay">@null</item>
   </style>
 
+  <style name="Theme.CouchPotato.TransparentActionBar.MovieActivity">
+    <item name="android:windowBackground">@android:color/transparent</item>
+  </style>
+
   <style name="ActionBar.Solid.CouchPotato.Transparent"
       parent="@android:style/Widget.Holo.ActionBar.Solid">
     <item name="android:background">@null</item>
