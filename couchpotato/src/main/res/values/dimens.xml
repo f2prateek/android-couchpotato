@@ -22,7 +22,7 @@
   <dimen name="holo_gap">8dp</dimen>
 
   <!-- Width of the grid columns.. -->
-  <dimen name="grid_column_width">128dp</dimen>
+  <dimen name="grid_column_width">120dp</dimen>
 
   <!-- Width of the navigation drawer. -->
   <dimen name="drawer_width">240dp</dimen>

@@ -16,15 +16,18 @@
 
 package com.f2prateek.couchpotato.ui;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -83,6 +86,8 @@ public class MovieActivity extends BaseActivity
 
   private static final TimeInterpolator sDecelerator = new DecelerateInterpolator();
   private static final TimeInterpolator sAccelerator = new AccelerateInterpolator();
+  private static final AccelerateDecelerateInterpolator smoothInterpolator =
+      new AccelerateDecelerateInterpolator();
 
   @InjectExtra(ARGS_MOVIE) MinifiedMovie minifiedMovie;
   @InjectExtra(ARGS_THUMBNAIL_LEFT) int thumbnailLeft;
@@ -104,25 +109,23 @@ public class MovieActivity extends BaseActivity
   @InjectView(R.id.movie_secondary_accent) FrameLayout movieSecondaryAccent;
   @InjectView(R.id.movie_tertiary_accent) FrameLayout movieTertiaryAccent;
 
-  int mLeftDelta;
-  int mTopDelta;
-  float mWidthScale;
-  float mHeightScale;
-
   @Inject TMDbDatabase tmDbDatabase;
   @Inject Picasso picasso;
 
   private int actionBarTitleColor;
   private int actionBarHeight;
-  private int headerHeight;
   private int minHeaderTranslation;
-  private AccelerateDecelerateInterpolator smoothInterpolator;
-  private RectF sourceRect = new RectF();
-  private RectF targetRect = new RectF();
+  private RectF tempRect1 = new RectF();
+  private RectF tempRect2 = new RectF();
   private AlphaForegroundColorSpan alphaForegroundColorSpan;
   private SpannableString spannableString;
-  private TypedValue typedValue = new TypedValue();
+  private int posterLeftDelta; // distance from left of poster to left of thumbnail
+  private int posterTopDelta; // distance from top of poster to top of thumbnail
+  private float posterWidthScale; // ratio of poster width to thumbnail width
+  private float posterHeightScale; // ratio of poster height to thumbnail width
+  private Drawable transparentDrawable; // lazily cached drawable to animate background of a view
 
+  /** Create an intent to launch this activity. */
   public static Intent createIntent(Context context, MinifiedMovie movie, int left, int top,
       int width, int height, int orientation) {
     Intent intent = new Intent(context, MovieActivity.class);
@@ -136,59 +139,79 @@ public class MovieActivity extends BaseActivity
   }
 
   @Override
-  public void onCreate(Bundle savedInstanceState) {
+  public void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
     picasso.load(minifiedMovie.getPosterPath()).fit().centerCrop().into(moviePoster);
 
-    // Only run the animation if we're coming from the parent activity, not if
-    // we're recreated automatically by the window manager (e.g., device rotation)
-    if (savedInstanceState == null) {
-      ViewTreeObserver observer = moviePoster.getViewTreeObserver();
-      observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+    ViewTreeObserver observer = moviePoster.getViewTreeObserver();
+    observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+      @Override
+      public boolean onPreDraw() {
+        moviePoster.getViewTreeObserver().removeOnPreDrawListener(this);
+        // Only run the animation if we're coming from the parent activity, not if
+        // we're recreated automatically by the window manager (e.g., device rotation)
+        // Figure out where the thumbnail and full size versions are, relative
+        // to the screen and each other, and scale factors to make the large version the same size
+        // as the thumbnail
+        int[] posterLocation = new int[2];
+        moviePoster.getLocationOnScreen(posterLocation);
 
-        @Override
-        public boolean onPreDraw() {
-          moviePoster.getViewTreeObserver().removeOnPreDrawListener(this);
+        if (savedInstanceState == null) {
+          posterLeftDelta = thumbnailLeft - posterLocation[0];
+          posterTopDelta = thumbnailTop - posterLocation[1];
+          posterWidthScale = (float) thumbnailWidth / moviePoster.getWidth();
+          posterHeightScale = (float) thumbnailHeight / moviePoster.getHeight();
+        } else {
+          // reset the scroll position since the poster will be animated to the center, and not
+          // interpolated by the old scroll to somewhere on the screen
+          scrollView.setScrollY(0);
 
-          // Figure out where the thumbnail and full size versions are, relative
-          // to the screen and each other
-          int[] screenLocation = new int[2];
-          moviePoster.getLocationOnScreen(screenLocation);
-          mLeftDelta = thumbnailLeft - screenLocation[0];
-          mTopDelta = thumbnailTop - screenLocation[1];
-
-          // Scale factors to make the large version the same size as the thumbnail
-          mWidthScale = (float) thumbnailWidth / moviePoster.getWidth();
-          mHeightScale = (float) thumbnailHeight / moviePoster.getHeight();
-
-          runEnterAnimation();
-
-          return true;
+          // don't overwrite the global extras, we'll need them if the activity is recreated
+          // into it's original orientation to scale back to the thumbnail
+          posterLeftDelta = savedInstanceState.getInt(ARGS_THUMBNAIL_LEFT) - posterLocation[0];
+          posterTopDelta = savedInstanceState.getInt(ARGS_THUMBNAIL_TOP) - posterLocation[1];
+          posterWidthScale =
+              (float) savedInstanceState.getInt(ARGS_THUMBNAIL_WIDTH) / moviePoster.getWidth();
+          posterHeightScale =
+              (float) savedInstanceState.getInt(ARGS_THUMBNAIL_HEIGHT) / moviePoster.getHeight();
         }
-      });
-    }
+
+        runEnterAnimation();
+        return true;
+      }
+    });
 
     init();
+    bindMovie();
   }
 
+  @Override protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    int[] posterLocation = new int[2];
+    moviePoster.getLocationOnScreen(posterLocation);
+    outState.putInt(ARGS_THUMBNAIL_LEFT, posterLocation[0]);
+    outState.putInt(ARGS_THUMBNAIL_TOP, posterLocation[1]);
+    outState.putInt(ARGS_THUMBNAIL_WIDTH, moviePoster.getWidth());
+    outState.putInt(ARGS_THUMBNAIL_HEIGHT, moviePoster.getHeight());
+  }
+
+  /** Set up views and effects. */
   private void init() {
-    spannableString = new SpannableString(minifiedMovie.getTitle());
-    smoothInterpolator = new AccelerateDecelerateInterpolator();
-    headerHeight = getResources().getDimensionPixelSize(R.dimen.movie_header_height);
+    int headerHeight = getResources().getDimensionPixelSize(R.dimen.movie_header_height);
     minHeaderTranslation = -headerHeight + getActionBarHeight();
     actionBarTitleColor = getResources().getColor(android.R.color.white);
-    alphaForegroundColorSpan = new AlphaForegroundColorSpan(actionBarTitleColor);
-
-    ActionBar actionBar = getActionBar();
-    actionBar.setDisplayHomeAsUpEnabled(true);
-    setTitleAlpha(0);
-
+    getActionBar().setDisplayHomeAsUpEnabled(true);
+    getActionBar().setIcon(R.drawable.ic_transparent);
     scrollView.setOnScrollChangedListener(this);
+    alphaForegroundColorSpan = new AlphaForegroundColorSpan(actionBarTitleColor);
+  }
 
+  /** Bind data to the views. */
+  private void bindMovie() {
+    spannableString = new SpannableString(minifiedMovie.getTitle());
     movieTitle.setText(minifiedMovie.getTitle());
     movieBackdrop.load(picasso, minifiedMovie.getBackdropPath());
-
     updateColorScheme();
 
     tmDbDatabase.getMovie(minifiedMovie.getId(), new EndlessObserver<Movie>() {
@@ -201,7 +224,6 @@ public class MovieActivity extends BaseActivity
         }
       }
     });
-
     tmDbDatabase.getMovieImages(minifiedMovie.getId(), new EndlessObserver<Images>() {
       @Override public void onNext(Images images) {
         List<String> backdrops = new ArrayList<>();
@@ -211,7 +233,6 @@ public class MovieActivity extends BaseActivity
         movieBackdrop.update(backdrops);
       }
     });
-
     tmDbDatabase.getSimilarMovies(minifiedMovie.getId(),
         new EndlessObserver<List<MinifiedMovie>>() {
           @Override public void onNext(List<MinifiedMovie> similarMovies) {
@@ -219,7 +240,6 @@ public class MovieActivity extends BaseActivity
           }
         }
     );
-
     tmDbDatabase.getMovieCredits(minifiedMovie.getId(), new EndlessObserver<Credits>() {
       @Override public void onNext(Credits credits) {
         Ln.d(credits);
@@ -227,118 +247,7 @@ public class MovieActivity extends BaseActivity
     });
   }
 
-  @Override protected void inflateLayout(ViewGroup container) {
-    getLayoutInflater().inflate(R.layout.activity_movie, container);
-  }
-
-  /**
-   * The enter animation scales the picture in from its previous thumbnail
-   * size/location, colorizing it in parallel. In parallel, the background of the
-   * activity is fading in. When the pictue is in place, the text description
-   * drops down.
-   */
-  public void runEnterAnimation() {
-    // Set starting values for properties we're going to animate. These
-    // values scale and position the full size version down to the thumbnail
-    // size/location, from which we'll animate it back up
-    moviePoster.setPivotX(0);
-    moviePoster.setPivotY(0);
-    moviePoster.setScaleX(mWidthScale);
-    moviePoster.setScaleY(mHeightScale);
-    moviePoster.setTranslationX(mLeftDelta);
-    moviePoster.setTranslationY(mTopDelta);
-
-    // We'll fade the content in later
-    scrollView.setAlpha(0);
-    movieBackdrop.setAlpha(0);
-
-    // Animate scale and translation to go from thumbnail to full size
-    moviePoster.animate().setDuration(ANIMATION_DURATION).
-        scaleX(1).scaleY(1).
-        translationX(0).translationY(0).
-        setInterpolator(sDecelerator).
-        withEndAction(new Runnable() {
-          public void run() {
-            // Animate the content in after the image animation is done
-            scrollView.animate().setDuration(HALF_ANIMATION_DURATION).alpha(1).
-                setInterpolator(sDecelerator);
-            movieBackdrop.animate().setDuration(HALF_ANIMATION_DURATION).alpha(1).
-                setInterpolator(sDecelerator);
-          }
-        });
-  }
-
-  /**
-   * The exit animation is basically a reverse of the enter animation, except that if
-   * the orientation has changed we simply scale the picture back into the center of
-   * the screen.
-   *
-   * @param endAction This action gets run after the animation completes (this is
-   * when we actually switch activities)
-   */
-  public void runExitAnimation(final Runnable endAction) {
-    // No need to set initial values for the reverse animation; the image is at the
-    // starting size/location that we want to start from. Just animate to the
-    // thumbnail size/location that we retrieved earlier
-
-    // Caveat: configuration change invalidates thumbnail positions; just animate
-    // the scale around the center. Also, fade it out since it won't match up with
-    // whatever's actually in the center
-    final boolean fadeOut;
-    if (getResources().getConfiguration().orientation != originalOrientation) {
-      moviePoster.setPivotX(moviePoster.getWidth() / 2);
-      moviePoster.setPivotY(moviePoster.getHeight() / 2);
-      mLeftDelta = 0;
-      mTopDelta = 0;
-      fadeOut = true;
-    } else {
-      fadeOut = false;
-    }
-
-    // First, slide/fade content out of the way
-    movieBackdrop.animate()
-        .alpha(0)
-        .setDuration(HALF_ANIMATION_DURATION)
-        .setInterpolator(sAccelerator);
-    setTitleAlpha(0);
-    scrollView.animate().alpha(0).
-        setDuration(HALF_ANIMATION_DURATION).setInterpolator(sAccelerator).
-        withEndAction(new Runnable() {
-          public void run() {
-            // Animate image back to thumbnail size/location
-            moviePoster.animate().setDuration(HALF_ANIMATION_DURATION).
-                scaleX(mWidthScale).scaleY(mHeightScale).
-                translationX(mLeftDelta).translationY(mTopDelta).
-                withEndAction(endAction);
-            if (fadeOut) {
-              moviePoster.animate().alpha(0);
-            }
-          }
-        });
-  }
-
-  /**
-   * Overriding this method allows us to run our exit animation first, then exiting
-   * the activity when it is complete.
-   */
-  @Override
-  public void onBackPressed() {
-    runExitAnimation(new Runnable() {
-      public void run() {
-        // *Now* go ahead and exit the activity
-        finish();
-      }
-    });
-  }
-
-  @Override
-  public void finish() {
-    super.finish();
-
-    // override transitions to skip the standard window animations
-    overridePendingTransition(0, 0);
-  }
-
+  /** Use the movie's poster to find a color scheme and update our views accordingly. */
   private void updateColorScheme() {
     Observable.from(minifiedMovie.getPosterPath())
         .map(new Func1<String, Bitmap>() {
@@ -362,7 +271,6 @@ public class MovieActivity extends BaseActivity
             animateBackgroundColor(movieHeading, colorScheme.getPrimaryAccent());
             animateTextColor(movieTitle, colorScheme.getPrimaryText());
             animateTextColor(movieTagline, colorScheme.getPrimaryText());
-
             animateBackgroundColor(moviePrimaryAccent, colorScheme.getTertiaryAccent());
             animateBackgroundColor(movieSecondary, colorScheme.getSecondaryText());
             animateBackgroundColor(movieSecondaryAccent, colorScheme.getSecondaryAccent());
@@ -371,29 +279,139 @@ public class MovieActivity extends BaseActivity
         });
   }
 
-  private void animateBackgroundColor(View view, int endColor) {
-    ColorDrawable layers[] = new ColorDrawable[2];
-    layers[0] = new ColorDrawable(getResources().getColor(android.R.color.transparent));
-    layers[1] = new ColorDrawable(endColor);
+  @Override protected void inflateLayout(ViewGroup container) {
+    getLayoutInflater().inflate(R.layout.activity_movie, container);
+  }
 
+  /**
+   * The enter animation scales the picture in from its previous thumbnail
+   * size/location, colorizing it in parallel. In parallel, the background of the
+   * activity is fading in. When the pictue is in place, the text description
+   * drops down.
+   */
+  public void runEnterAnimation() {
+    // Set starting values for properties we're going to animate. These
+    // values scale and position the full size version down to the thumbnail
+    // size/location, from which we'll animate it back up
+    moviePoster.setPivotX(0);
+    moviePoster.setPivotY(0);
+    moviePoster.setScaleX(posterWidthScale);
+    moviePoster.setScaleY(posterHeightScale);
+    moviePoster.setTranslationX(posterLeftDelta);
+    moviePoster.setTranslationY(posterTopDelta);
+
+    // We'll fade the content in later
+    scrollView.setAlpha(0);
+    movieBackdrop.setAlpha(0);
+
+    // Animate scale and translation to go from thumbnail to full size
+    moviePoster.animate().setDuration(ANIMATION_DURATION).
+        scaleX(1).scaleY(1).
+        translationX(0).translationY(0).
+        setInterpolator(sDecelerator).
+        withEndAction(new Runnable() {
+          public void run() {
+            // Animate the content in after the image animation is done
+            scrollView.animate().setDuration(HALF_ANIMATION_DURATION).alpha(1).
+                setInterpolator(sDecelerator);
+            movieBackdrop.animate().setDuration(HALF_ANIMATION_DURATION).alpha(1).
+                setInterpolator(sDecelerator);
+          }
+        });
+  }
+
+  /**
+   * Overriding this method allows us to run our exit animation first, then exiting
+   * the activity when it is complete.
+   */
+  @Override
+  public void onBackPressed() {
+    runExitAnimation(new Runnable() {
+      public void run() {
+        finish();
+        // override transitions to skip the standard window animations
+        overridePendingTransition(0, 0);
+      }
+    });
+  }
+
+  /**
+   * The exit animation is basically a reverse of the enter animation, except that if
+   * the orientation has changed we simply scale the picture back into the center of
+   * the screen.
+   *
+   * @param endAction This action gets run after the animation completes (this is
+   * when we actually switch activities)
+   */
+  public void runExitAnimation(final Runnable endAction) {
+    // No need to set initial values for the reverse animation; the image is at the
+    // starting size/location that we want to start from. Just animate to the
+    // thumbnail size/location that we retrieved earlier
+    // Caveat: Configuration change invalidates thumbnail positions; just animate
+    // the scale around the center. Also, fade it out since it won't match up with
+    // whatever is actually in the center
+    final boolean fadeOut;
+    if (getResources().getConfiguration().orientation != originalOrientation) {
+      moviePoster.setPivotX(moviePoster.getWidth() / 2);
+      moviePoster.setPivotY(moviePoster.getHeight() / 2);
+      posterLeftDelta = 0;
+      posterTopDelta = 0;
+      fadeOut = true;
+    } else {
+      fadeOut = false;
+    }
+
+    // First, slide/fade content out of the way
+    AnimatorSet animatorSet = new AnimatorSet();
+    animatorSet.setDuration(HALF_ANIMATION_DURATION);
+    animatorSet.setInterpolator(sAccelerator);
+    animatorSet.playTogether(ObjectAnimator.ofFloat(movieBackdrop, "alpha", 1.0f, 0.0f),
+        ObjectAnimator.ofFloat(scrollView, "alpha", 1.0f, 0.0f));
+    animatorSet.addListener(new AnimatorListenerAdapter() {
+      @Override public void onAnimationEnd(Animator animation) {
+        super.onAnimationEnd(animation);
+        // Animate image back to thumbnail size/location
+        moviePoster.animate().setDuration(HALF_ANIMATION_DURATION).
+            scaleX(posterWidthScale).scaleY(posterHeightScale).
+            translationX(posterLeftDelta).translationY(posterTopDelta).
+            withEndAction(endAction);
+        if (fadeOut) {
+          moviePoster.animate().alpha(0);
+        }
+      }
+    });
+    animatorSet.start();
+  }
+
+  private void animateBackgroundColor(View view, int endColor) {
+    Drawable layers[] = new Drawable[2];
+    if (transparentDrawable == null) {
+      transparentDrawable = new ColorDrawable(getResources().getColor(android.R.color.transparent));
+    }
+    layers[0] = transparentDrawable;
+    layers[1] = new ColorDrawable(endColor);
     TransitionDrawable drawable = new TransitionDrawable(layers);
     view.setBackground(drawable);
     drawable.startTransition(ANIMATION_DURATION);
   }
 
-  private void animateTextColor(TextView textView, int endColor) {
-    final Property<TextView, Integer> property =
-        new Property<TextView, Integer>(int.class, "textColor") {
-          @Override
-          public Integer get(TextView object) {
-            return object.getCurrentTextColor();
-          }
+  /**
+   * Property to let us animate the text color.
+   */
+  final Property<TextView, Integer> property =
+      new Property<TextView, Integer>(int.class, "textColor") {
+        @Override
+        public Integer get(TextView object) {
+          return object.getCurrentTextColor();
+        }
 
-          @Override
-          public void set(TextView object, Integer value) {
-            object.setTextColor(value);
-          }
-        };
+        @Override
+        public void set(TextView object, Integer value) {
+          object.setTextColor(value);
+        }
+      };
+
+  private void animateTextColor(TextView textView, int endColor) {
     final ObjectAnimator animator = ObjectAnimator.ofInt(textView, property, endColor);
     animator.setDuration(ANIMATION_DURATION);
     animator.setEvaluator(new ArgbEvaluator());
@@ -402,12 +420,13 @@ public class MovieActivity extends BaseActivity
   }
 
   public int getActionBarHeight() {
+    // Check if we have it already.
     if (actionBarHeight != 0) return actionBarHeight;
 
+    TypedValue typedValue = new TypedValue();
     getTheme().resolveAttribute(android.R.attr.actionBarSize, typedValue, true);
     actionBarHeight =
         TypedValue.complexToDimensionPixelSize(typedValue.data, getResources().getDisplayMetrics());
-
     return actionBarHeight;
   }
 
@@ -435,21 +454,21 @@ public class MovieActivity extends BaseActivity
 
   /**
    * Interpolate between two views.
-   * This will translate source to somewhere between source and target depending on the
+   * This will translate source to somewhere between source and destination depending on the
    * interpolation
    * value.
    * Used to translate the logo to the action bar icon.
    *
    * @param interpolation 'progress' of the interpolation
    */
-  private void interpolate(View source, View target, float interpolation) {
-    getOnScreenRect(sourceRect, source);
-    getOnScreenRect(targetRect, target);
+  private void interpolate(View source, View destination, float interpolation) {
+    getOnScreenRect(tempRect1, source);
+    getOnScreenRect(tempRect2, destination);
 
-    float scaleX = 1.0F + interpolation * (targetRect.width() / sourceRect.width() - 1.0F);
-    float scaleY = 1.0F + interpolation * (targetRect.height() / sourceRect.height() - 1.0F);
-    float translationX = interpolation * (targetRect.left - sourceRect.left);
-    float translationY = interpolation * (targetRect.top - sourceRect.top);
+    float scaleX = 1.0F + interpolation * (tempRect2.width() / tempRect1.width() - 1.0F);
+    float scaleY = 1.0F + interpolation * (tempRect2.height() / tempRect1.height() - 1.0F);
+    float translationX = interpolation * (tempRect2.left - tempRect1.left);
+    float translationY = interpolation * (tempRect2.top - tempRect1.top);
 
     source.setTranslationX(translationX);
     source.setTranslationY(translationY);
