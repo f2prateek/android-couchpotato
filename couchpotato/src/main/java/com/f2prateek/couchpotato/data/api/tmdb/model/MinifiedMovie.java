@@ -100,12 +100,8 @@ public class MinifiedMovie implements Parcelable, Configuration.Configurable {
 
   @Override
   public void setConfiguration(Configuration configuration) {
-    posterPath = configuration.getImageSizes().getBaseUrl() + configuration.getImageSizes()
-        .getPosterSizes()
-        .get(2) + posterPath;
-    backdropPath = configuration.getImageSizes().getBaseUrl() + configuration.getImageSizes()
-        .getBackdropSizes()
-        .get(1) + backdropPath;
+    posterPath = configuration.getPosterUrl(posterPath);
+    backdropPath = configuration.getBackdropUrl(backdropPath);
   }
 
   @Override

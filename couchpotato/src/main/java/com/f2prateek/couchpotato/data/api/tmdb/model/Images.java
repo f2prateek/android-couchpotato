@@ -37,7 +37,12 @@ public class Images implements Parcelable, Configuration.Configurable {
 
   @Override
   public void setConfiguration(Configuration configuration) {
-    // todo: implement
+    for (Poster poster : posters) {
+      poster.setConfiguration(configuration);
+    }
+    for (Backdrop backdrop : backdrops) {
+      backdrop.setConfiguration(configuration);
+    }
   }
 
   @Override

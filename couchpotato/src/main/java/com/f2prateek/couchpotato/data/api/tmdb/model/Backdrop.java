@@ -62,7 +62,7 @@ public class Backdrop implements Parcelable, Configuration.Configurable {
   }
 
   @Override public void setConfiguration(Configuration configuration) {
-    // todo: implement
+    filePath = configuration.getBackdropUrl(filePath);
   }
 
   public Backdrop(Parcel in) {

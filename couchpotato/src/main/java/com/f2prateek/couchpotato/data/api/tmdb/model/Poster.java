@@ -69,7 +69,7 @@ public class Poster implements Parcelable, Configuration.Configurable {
   }
 
   @Override public void setConfiguration(Configuration configuration) {
-    // todo: implement
+    filePath = configuration.getPosterUrl(filePath);
   }
 
   @Override

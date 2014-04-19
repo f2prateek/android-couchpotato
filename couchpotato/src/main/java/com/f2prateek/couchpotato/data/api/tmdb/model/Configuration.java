@@ -31,6 +31,14 @@ public class Configuration implements Parcelable {
     return imageSizes;
   }
 
+  public String getPosterUrl(String posterPath) {
+    return getImageSizes().getBaseUrl() + getImageSizes().getPosterSizes().get(2) + posterPath;
+  }
+
+  public String getBackdropUrl(String backdropPath) {
+    return getImageSizes().getBaseUrl() + getImageSizes().getBackdropSizes().get(1) + backdropPath;
+  }
+
   public Configuration(Parcel in) {
     in.readArrayList(String.class.getClassLoader());
     imageSizes = in.readParcelable(ImageSizes.class.getClassLoader());

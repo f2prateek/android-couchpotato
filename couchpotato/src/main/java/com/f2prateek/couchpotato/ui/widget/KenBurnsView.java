@@ -25,29 +25,37 @@ import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import com.f2prateek.couchpotato.R;
 import com.squareup.picasso.Picasso;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
-import static butterknife.ButterKnife.findById;
-
 public class KenBurnsView extends FrameLayout {
-  private final Handler handler;
-  private ImageView[] imageViews;
-  private int activeImageIndex = -1;
+
+  private static final int SWAP_DURATION = 10000;
+  private static final int FADE_DURATION = 500;
+  private static final float MAX_SCALE_FACTOR = 1.5F;
+  private static final float MIN_SCALE_FACTOR = 1.2F;
 
   private final Random random = new Random();
-  private int swapMs = 10000;
-  private int fadeInOutMs = 400;
+  private final Handler handler = new Handler();
 
-  private float maxScaleFactor = 1.5F;
-  private float minScaleFactor = 1.2F;
+  @InjectView(R.id.image0) ImageView activeImageView;
+  @InjectView(R.id.image1) ImageView inactiveImageView;
 
-  private Runnable mSwapImageRunnable = new Runnable() {
+  private List<String> images;
+  private int currentImageIndex = 0;
+
+  private Picasso picasso;
+
+  private Runnable swapImageRunnable = new Runnable() {
     @Override
     public void run() {
       swapImage();
-      handler.postDelayed(mSwapImageRunnable, swapMs - fadeInOutMs * 2);
+      handler.postDelayed(this, SWAP_DURATION - FADE_DURATION * 2);
     }
   };
 
@@ -61,30 +69,50 @@ public class KenBurnsView extends FrameLayout {
 
   public KenBurnsView(Context context, AttributeSet attrs, int defStyle) {
     super(context, attrs, defStyle);
-    handler = new Handler();
   }
 
   private void swapImage() {
-    if (activeImageIndex == -1) {
-      activeImageIndex = 1;
-      animate(imageViews[activeImageIndex]);
-      return;
-    }
+    // Swap our active and inactive image views for transition
+    final ImageView swapper = inactiveImageView;
+    inactiveImageView = activeImageView;
+    activeImageView = swapper;
 
-    int inactiveIndex = activeImageIndex;
-    activeImageIndex = (1 + activeImageIndex) % imageViews.length;
+    // Load the current image
+    activeImageView.bringToFront();
+    loadImage(activeImageView, images.get(currentImageIndex));
+    currentImageIndex = (1 + currentImageIndex) % images.size();
 
-    final ImageView activeImageView = imageViews[activeImageIndex];
-    activeImageView.setAlpha(0.0f);
-    ImageView inactiveImageView = imageViews[inactiveIndex];
-
+    // Animate the active ImageView
     animate(activeImageView);
 
+    // Fade in the active ImageView and fade out the inactive ImageView
     AnimatorSet animatorSet = new AnimatorSet();
-    animatorSet.setDuration(fadeInOutMs);
+    animatorSet.setDuration(FADE_DURATION);
     animatorSet.playTogether(ObjectAnimator.ofFloat(inactiveImageView, "alpha", 1.0f, 0.0f),
         ObjectAnimator.ofFloat(activeImageView, "alpha", 0.0f, 1.0f));
     animatorSet.start();
+  }
+
+  /**
+   * Triggers the KenBurns Animation.
+   */
+  public void animate(View view) {
+    float fromScale = pickScale();
+    float toScale = pickScale();
+    float fromTranslationX = pickTranslation(view.getWidth(), fromScale);
+    float fromTranslationY = pickTranslation(view.getHeight(), fromScale);
+    float toTranslationX = pickTranslation(view.getWidth(), toScale);
+    float toTranslationY = pickTranslation(view.getHeight(), toScale);
+    start(view, SWAP_DURATION, fromScale, toScale, fromTranslationX, fromTranslationY,
+        toTranslationX, toTranslationY);
+  }
+
+  private float pickScale() {
+    return MIN_SCALE_FACTOR + random.nextFloat() * (MAX_SCALE_FACTOR - MIN_SCALE_FACTOR);
+  }
+
+  private float pickTranslation(int value, float ratio) {
+    return value * (ratio - 1.0f) * (random.nextFloat() - 0.5f);
   }
 
   private void start(View view, long duration, float fromScale, float toScale,
@@ -102,26 +130,6 @@ public class KenBurnsView extends FrameLayout {
     propertyAnimator.start();
   }
 
-  private float pickScale() {
-    return this.minScaleFactor + this.random.nextFloat() * (this.maxScaleFactor
-        - this.minScaleFactor);
-  }
-
-  private float pickTranslation(int value, float ratio) {
-    return value * (ratio - 1.0f) * (this.random.nextFloat() - 0.5f);
-  }
-
-  public void animate(View view) {
-    float fromScale = pickScale();
-    float toScale = pickScale();
-    float fromTranslationX = pickTranslation(view.getWidth(), fromScale);
-    float fromTranslationY = pickTranslation(view.getHeight(), fromScale);
-    float toTranslationX = pickTranslation(view.getWidth(), toScale);
-    float toTranslationY = pickTranslation(view.getHeight(), toScale);
-    start(view, this.swapMs, fromScale, toScale, fromTranslationX, fromTranslationY, toTranslationX,
-        toTranslationY);
-  }
-
   @Override
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
@@ -131,25 +139,36 @@ public class KenBurnsView extends FrameLayout {
   @Override
   protected void onDetachedFromWindow() {
     super.onDetachedFromWindow();
-    handler.removeCallbacks(mSwapImageRunnable);
+    handler.removeCallbacks(swapImageRunnable);
   }
 
   private void startKenBurnsAnimation() {
-    handler.post(mSwapImageRunnable);
+    handler.post(swapImageRunnable);
   }
 
   @Override
   protected void onFinishInflate() {
     super.onFinishInflate();
-
     inflate(getContext(), R.layout.kenburns_view, this);
-    imageViews = new ImageView[2];
-    imageViews[0] = findById(this, R.id.image0);
-    imageViews[1] = findById(this, R.id.image1);
+    ButterKnife.inject(this);
   }
 
-  public void loadImages(Picasso picasso, String image1, String image2) {
-    picasso.load(image1).fit().centerCrop().into(imageViews[0]);
-    picasso.load(image2).fit().centerCrop().into(imageViews[1]);
+  /** Initial load of images, we only have one image that we can display. */
+  public void load(Picasso picasso, String image) {
+    this.picasso = picasso;
+    this.images = Arrays.asList(image);
+    loadImage(activeImageView, image);
+    loadImage(inactiveImageView, image);
+  }
+
+  public void update(List<String> images) {
+    this.images = images;
+    if (images.size() > 1) {
+      currentImageIndex = 1;
+    }
+  }
+
+  private void loadImage(ImageView imageView, String image) {
+    picasso.load(image).fit().noFade().centerCrop().into(imageView);
   }
 }

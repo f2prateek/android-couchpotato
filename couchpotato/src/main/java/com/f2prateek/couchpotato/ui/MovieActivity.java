@@ -40,6 +40,7 @@ import android.widget.ScrollView;
 import butterknife.InjectView;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.TMDbDatabase;
+import com.f2prateek.couchpotato.data.api.tmdb.model.Backdrop;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Credits;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Images;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MinifiedMovie;
@@ -53,6 +54,7 @@ import com.f2prateek.dart.InjectExtra;
 import com.f2prateek.ln.Ln;
 import com.squareup.picasso.Picasso;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import rx.Observable;
@@ -140,7 +142,11 @@ public class MovieActivity extends BaseActivity
 
     tmDbDatabase.getMovieImages(minifiedMovie.getId(), new EndlessObserver<Images>() {
       @Override public void onNext(Images images) {
-        Ln.d(images);
+        List<String> backdrops = new ArrayList<>();
+        for (Backdrop backdrop : images.getBackdrops()) {
+          backdrops.add(backdrop.getFilePath());
+        }
+        movieBackdrop.update(backdrops);
       }
     });
 
@@ -208,8 +214,7 @@ public class MovieActivity extends BaseActivity
 
     // We'll fade the content in later
     scrollView.setAlpha(0);
-    movieBackdrop.loadImages(picasso, minifiedMovie.getBackdropPath(),
-        minifiedMovie.getBackdropPath());
+    movieBackdrop.load(picasso, minifiedMovie.getBackdropPath());
     movieBackdrop.setAlpha(0);
 
     // Animate scale and translation to go from thumbnail to full size
