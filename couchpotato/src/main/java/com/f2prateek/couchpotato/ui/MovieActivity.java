@@ -167,7 +167,13 @@ public class MovieActivity extends BaseActivity
           posterTopDelta = thumbnailTop - posterLocation[1];
           posterWidthScale = (float) thumbnailWidth / moviePoster.getWidth();
           posterHeightScale = (float) thumbnailHeight / moviePoster.getHeight();
-          runEnterAnimation();
+          runEnterAnimation(new Runnable() {
+            @Override public void run() {
+              // Defer binding until after animation is done
+              init();
+              bindMovie(true);
+            }
+          });
           return true;
         }
       });
@@ -175,10 +181,9 @@ public class MovieActivity extends BaseActivity
       // Just scroll up, otherwise the poster view will be out of sync with the scrollView
       // Setting scrollY directly does not work
       ObjectAnimator.ofInt(scrollView, "scrollY", 0).start();
+      init();
+      bindMovie(false);
     }
-
-    init();
-    bindMovie();
   }
 
   /** Set up views and effects. */
@@ -194,7 +199,7 @@ public class MovieActivity extends BaseActivity
 
   /**
    * Bind the data needed to run animations. Load the minimum of data needed so we can quickly
-   * run the animation. See {@link #bindMovie()}.
+   * run the animation. See {@link #bindMovie(boolean)}.
    */
   private void initialBindData() {
     picasso.load(minifiedMovie.getPosterPath()).fit().centerCrop().into(moviePoster);
@@ -202,10 +207,10 @@ public class MovieActivity extends BaseActivity
   }
 
   /** Bind data to the views. Some data might already be bound in {@link #initialBindData()}. */
-  private void bindMovie() {
+  private void bindMovie(boolean animate) {
     spannableString = new SpannableString(minifiedMovie.getTitle());
     movieBackdrop.load(picasso, minifiedMovie.getBackdropPath());
-    updateColorScheme();
+    updateColorScheme(animate);
 
     tmDbDatabase.getMovie(minifiedMovie.getId(), new EndlessObserver<Movie>() {
       @Override public void onNext(Movie movie) {
@@ -243,7 +248,7 @@ public class MovieActivity extends BaseActivity
   }
 
   /** Use the movie's poster to find a color scheme and update our views accordingly. */
-  private void updateColorScheme() {
+  private void updateColorScheme(final boolean animate) {
     Observable.from(minifiedMovie.getPosterPath())
         .map(new Func1<String, Bitmap>() {
           @Override public Bitmap call(String url) {
@@ -263,13 +268,23 @@ public class MovieActivity extends BaseActivity
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new EndlessObserver<ColorScheme>() {
           @Override public void onNext(ColorScheme colorScheme) {
-            animateBackgroundColor(movieHeading, colorScheme.getPrimaryAccent());
-            animateTextColor(movieTitle, colorScheme.getPrimaryText());
-            animateTextColor(movieTagline, colorScheme.getPrimaryText());
-            animateBackgroundColor(moviePrimaryAccent, colorScheme.getTertiaryAccent());
-            animateBackgroundColor(movieSecondary, colorScheme.getSecondaryText());
-            animateBackgroundColor(movieSecondaryAccent, colorScheme.getSecondaryAccent());
-            animateBackgroundColor(movieTertiaryAccent, colorScheme.getPrimaryAccent());
+            if (animate) {
+              animateBackgroundColor(movieHeading, colorScheme.getPrimaryAccent());
+              animateTextColor(movieTitle, colorScheme.getPrimaryText());
+              animateTextColor(movieTagline, colorScheme.getPrimaryText());
+              animateBackgroundColor(moviePrimaryAccent, colorScheme.getTertiaryAccent());
+              animateBackgroundColor(movieSecondary, colorScheme.getSecondaryText());
+              animateBackgroundColor(movieSecondaryAccent, colorScheme.getSecondaryAccent());
+              animateBackgroundColor(movieTertiaryAccent, colorScheme.getPrimaryAccent());
+            } else {
+              movieHeading.setBackgroundColor(colorScheme.getPrimaryAccent());
+              movieTitle.setTextColor(colorScheme.getPrimaryText());
+              movieTagline.setTextColor(colorScheme.getPrimaryText());
+              moviePrimaryAccent.setBackgroundColor(colorScheme.getTertiaryAccent());
+              movieSecondary.setBackgroundColor(colorScheme.getSecondaryText());
+              movieSecondaryAccent.setBackgroundColor(colorScheme.getSecondaryAccent());
+              movieTertiaryAccent.setBackgroundColor(colorScheme.getPrimaryAccent());
+            }
           }
         });
   }
@@ -284,7 +299,7 @@ public class MovieActivity extends BaseActivity
    * activity is fading in. When the pictue is in place, the text description
    * drops down.
    */
-  public void runEnterAnimation() {
+  public void runEnterAnimation(final Runnable endAction) {
     // Set starting values for properties we're going to animate. These
     // values scale and position the full size version down to the thumbnail
     // size/location, from which we'll animate it back up
@@ -310,7 +325,7 @@ public class MovieActivity extends BaseActivity
           public void run() {
             // Animate the content in after the image animation is done
             scrollView.animate().setDuration(HALF_ANIMATION_DURATION).alpha(1).
-                setInterpolator(sDecelerator);
+                setInterpolator(sDecelerator).withEndAction(endAction);
             movieBackdrop.animate().setDuration(HALF_ANIMATION_DURATION).alpha(1).
                 setInterpolator(sDecelerator);
             movieTitle.setTranslationY(-movieTitle.getHeight());
