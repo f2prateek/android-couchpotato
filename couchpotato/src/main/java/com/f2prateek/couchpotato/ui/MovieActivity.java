@@ -105,7 +105,7 @@ public class MovieActivity extends BaseActivity
   @InjectView(R.id.movie_heading) LinearLayout movieHeading;
   @InjectView(R.id.movie_title) TextView movieTitle;
   @InjectView(R.id.movie_tagline) TextView movieTagline;
-  @InjectView(R.id.movie_primary_accent) FrameLayout moviePrimaryAccent;
+  @InjectView(R.id.movie_plot) TextView moviePlot;
   @InjectView(R.id.movie_secondary) FrameLayout movieSecondary;
   @InjectView(R.id.movie_secondary_accent) FrameLayout movieSecondaryAccent;
   @InjectView(R.id.movie_tertiary_accent) FrameLayout movieTertiaryAccent;
@@ -215,10 +215,13 @@ public class MovieActivity extends BaseActivity
     tmDbDatabase.getMovie(minifiedMovie.getId(), new EndlessObserver<Movie>() {
       @Override public void onNext(Movie movie) {
         Ln.d(movie);
-        if (Strings.isBlank(movie.getTagline())) {
-          movieTagline.setVisibility(View.GONE);
-        } else {
+        if (!Strings.isBlank(movie.getTagline())) {
+          movieTagline.setVisibility(View.VISIBLE);
           movieTagline.setText(movie.getTagline());
+        }
+        if (!Strings.isBlank(movie.getOverview())) {
+          moviePlot.setVisibility(View.VISIBLE);
+          moviePlot.setText(movie.getOverview());
         }
       }
     });
@@ -268,23 +271,15 @@ public class MovieActivity extends BaseActivity
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new EndlessObserver<ColorScheme>() {
           @Override public void onNext(ColorScheme colorScheme) {
-            if (animate) {
-              animateBackgroundColor(movieHeading, colorScheme.getPrimaryAccent());
-              animateTextColor(movieTitle, colorScheme.getPrimaryText());
-              animateTextColor(movieTagline, colorScheme.getPrimaryText());
-              animateBackgroundColor(moviePrimaryAccent, colorScheme.getTertiaryAccent());
-              animateBackgroundColor(movieSecondary, colorScheme.getSecondaryText());
-              animateBackgroundColor(movieSecondaryAccent, colorScheme.getSecondaryAccent());
-              animateBackgroundColor(movieTertiaryAccent, colorScheme.getPrimaryAccent());
-            } else {
-              movieHeading.setBackgroundColor(colorScheme.getPrimaryAccent());
-              movieTitle.setTextColor(colorScheme.getPrimaryText());
-              movieTagline.setTextColor(colorScheme.getPrimaryText());
-              moviePrimaryAccent.setBackgroundColor(colorScheme.getTertiaryAccent());
-              movieSecondary.setBackgroundColor(colorScheme.getSecondaryText());
-              movieSecondaryAccent.setBackgroundColor(colorScheme.getSecondaryAccent());
-              movieTertiaryAccent.setBackgroundColor(colorScheme.getPrimaryAccent());
-            }
+            long duration = animate ? ANIMATION_DURATION : 0;
+            animateBackgroundColor(movieHeading, colorScheme.getPrimaryAccent(), duration);
+            animateTextColor(movieTitle, colorScheme.getPrimaryText(), duration);
+            animateTextColor(movieTagline, colorScheme.getPrimaryText(), duration);
+            animateTextColor(moviePlot, colorScheme.getPrimaryText(), duration);
+            animateBackgroundColor(movieSecondary, colorScheme.getSecondaryText(), duration);
+            animateBackgroundColor(movieSecondaryAccent, colorScheme.getSecondaryAccent(),
+                duration);
+            animateBackgroundColor(movieTertiaryAccent, colorScheme.getTertiaryAccent(), duration);
           }
         });
   }
@@ -313,8 +308,6 @@ public class MovieActivity extends BaseActivity
     // We'll fade the content in later
     scrollView.setAlpha(0);
     movieBackdrop.setAlpha(0);
-    movieTitle.setAlpha(0);
-    movieTagline.setAlpha(0);
 
     // Animate scale and translation to go from thumbnail to full size
     moviePoster.animate().setDuration(ANIMATION_DURATION).
@@ -327,14 +320,6 @@ public class MovieActivity extends BaseActivity
             scrollView.animate().setDuration(HALF_ANIMATION_DURATION).alpha(1).
                 setInterpolator(sDecelerator).withEndAction(endAction);
             movieBackdrop.animate().setDuration(HALF_ANIMATION_DURATION).alpha(1).
-                setInterpolator(sDecelerator);
-            movieTitle.setTranslationY(-movieTitle.getHeight());
-            movieTitle.animate().setDuration(HALF_ANIMATION_DURATION).
-                translationY(0).alpha(1).
-                setInterpolator(sDecelerator);
-            movieTagline.setTranslationY(movieTagline.getHeight());
-            movieTagline.animate().setDuration(HALF_ANIMATION_DURATION).
-                translationY(0).alpha(1).
                 setInterpolator(sDecelerator);
           }
         });
@@ -403,7 +388,7 @@ public class MovieActivity extends BaseActivity
     animatorSet.start();
   }
 
-  private void animateBackgroundColor(View view, int endColor) {
+  private void animateBackgroundColor(View view, int endColor, long animationDuration) {
     Drawable layers[] = new Drawable[2];
     if (transparentDrawable == null) {
       transparentDrawable = new ColorDrawable(getResources().getColor(android.R.color.transparent));
@@ -412,7 +397,7 @@ public class MovieActivity extends BaseActivity
     layers[1] = new ColorDrawable(endColor);
     TransitionDrawable drawable = new TransitionDrawable(layers);
     view.setBackground(drawable);
-    drawable.startTransition(ANIMATION_DURATION);
+    drawable.startTransition((int) animationDuration);
   }
 
   /**
@@ -431,9 +416,9 @@ public class MovieActivity extends BaseActivity
         }
       };
 
-  private void animateTextColor(TextView textView, int endColor) {
+  private void animateTextColor(TextView textView, int endColor, long animationDuration) {
     final ObjectAnimator animator = ObjectAnimator.ofInt(textView, property, endColor);
-    animator.setDuration(ANIMATION_DURATION);
+    animator.setDuration(animationDuration);
     animator.setEvaluator(new ArgbEvaluator());
     animator.setInterpolator(sDecelerator);
     animator.start();

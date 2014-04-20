@@ -43,6 +43,7 @@
           android:id="@+id/movie_heading"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:animateLayoutChanges="true"
           android:orientation="vertical">
 
         <TextView
@@ -50,11 +51,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="32sp"
-            android:fontFamily="sans-serif-light"
             android:ellipsize="end"
-            android:padding="@dimen/holo_gap"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/holo_gap_half"
+            android:paddingBottom="@dimen/holo_gap_half"
             android:gravity="center"
-            tools:text="Captain America: The Winder Soldier"/>
+            tools:text="Fight Club"/>
 
         <TextView
             android:id="@+id/movie_tagline"
@@ -62,16 +65,31 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:gravity="center"
+            android:fontFamily="sans-serif-light"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/holo_gap_half"
+            android:paddingBottom="@dimen/holo_gap_half"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:visibility="gone"
+            tools:visibility="visible"
+            tools:text="How much can you know about yourself if you've never been in a fight?"/>
+
+        <TextView
+            android:id="@+id/movie_plot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:gravity="center"
             android:fontFamily="sans-serif-thin"
-            android:padding="@dimen/holo_gap"
-            tools:text="In heroes we trust."/>
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/holo_gap_half"
+            android:paddingBottom="@dimen/holo_gap_half"
+            android:visibility="gone"
+            tools:visibility="visible"
+            tools:text="A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy. Their concept catches on, with underground fight clubs forming in every town, until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion."/>
 
       </LinearLayout>
-
-      <FrameLayout
-          android:id="@+id/movie_primary_accent"
-          android:layout_width="match_parent"
-          android:layout_height="250dp"/>
 
       <FrameLayout
           android:id="@+id/movie_secondary"

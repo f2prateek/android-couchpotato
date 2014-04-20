@@ -20,6 +20,7 @@
   <dimen name="activity_vertical_margin">16dp</dimen>
 
   <dimen name="holo_gap">8dp</dimen>
+  <dimen name="holo_gap_half">4dp</dimen>
 
   <!-- Width of the grid columns.. -->
   <dimen name="grid_column_width">120dp</dimen>
