@@ -28,6 +28,7 @@ import android.graphics.Bitmap;
 import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -98,7 +99,8 @@ public class MovieActivity extends BaseActivity
   @InjectExtra(ARGS_ORIENTATION) int originalOrientation;
 
   @InjectView(android.R.id.home) ImageView actionBarIconView;
-  @InjectView(R.id.movie_header) View movieHeader;
+  @InjectView(R.id.movie_header) FrameLayout movieHeader;
+  @InjectView(R.id.movie_header_gradient) View movieHeaderGradient;
   @InjectView(R.id.movie_header_backdrop) KenBurnsView movieBackdrop;
   @InjectView(R.id.movie_header_poster) ImageView moviePoster;
   @InjectView(R.id.movie_scroll_container) NotifyingScrollView scrollView;
@@ -190,10 +192,14 @@ public class MovieActivity extends BaseActivity
   private void init() {
     int headerHeight = getResources().getDimensionPixelSize(R.dimen.movie_header_height);
     minHeaderTranslation = -headerHeight + getActionBarHeight();
-    actionBarTitleColor = getResources().getColor(android.R.color.white);
     getActionBar().setDisplayHomeAsUpEnabled(true);
     getActionBar().setIcon(R.drawable.ic_transparent);
     scrollView.setOnScrollChangedListener(this);
+    setActionBarTitleColor(getResources().getColor(R.color.white));
+  }
+
+  private void setActionBarTitleColor(int color) {
+    actionBarTitleColor = color;
     alphaForegroundColorSpan = new AlphaForegroundColorSpan(actionBarTitleColor);
   }
 
@@ -280,8 +286,32 @@ public class MovieActivity extends BaseActivity
             animateBackgroundColor(movieSecondaryAccent, colorScheme.getSecondaryAccent(),
                 duration);
             animateBackgroundColor(movieTertiaryAccent, colorScheme.getTertiaryAccent(), duration);
+
+            setActionBarTitleColor(colorScheme.getPrimaryText());
+
+            int[] colors = new int[2];
+            colors[0] = colorScheme.getPrimaryAccent();
+            colors[1] = getResources().getColor(android.R.color.transparent);
+            GradientDrawable gradientDrawable =
+                new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, colors);
+            Drawable layers[] = new Drawable[2];
+            layers[0] = getTransparentDrawable();
+            layers[1] = gradientDrawable;
+            TransitionDrawable drawable = new TransitionDrawable(layers);
+            // Simply setting a foreground drawable on movieHeader doesn't let us control the
+            // height of the gradient, so set it in a view whose height is defined in the layout
+            movieHeaderGradient.setBackground(drawable);
+            drawable.startTransition(ANIMATION_DURATION);
+            moviePoster.bringToFront();
           }
         });
+  }
+
+  private Drawable getTransparentDrawable() {
+    if (transparentDrawable == null) {
+      transparentDrawable = new ColorDrawable(getResources().getColor(android.R.color.transparent));
+    }
+    return transparentDrawable;
   }
 
   @Override protected void inflateLayout(ViewGroup container) {
@@ -390,10 +420,7 @@ public class MovieActivity extends BaseActivity
 
   private void animateBackgroundColor(View view, int endColor, long animationDuration) {
     Drawable layers[] = new Drawable[2];
-    if (transparentDrawable == null) {
-      transparentDrawable = new ColorDrawable(getResources().getColor(android.R.color.transparent));
-    }
-    layers[0] = transparentDrawable;
+    layers[0] = getTransparentDrawable();
     layers[1] = new ColorDrawable(endColor);
     TransitionDrawable drawable = new TransitionDrawable(layers);
     view.setBackground(drawable);
