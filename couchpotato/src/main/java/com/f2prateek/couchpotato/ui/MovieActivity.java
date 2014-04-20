@@ -292,26 +292,24 @@ public class MovieActivity extends BaseActivity
             int[] colors = new int[2];
             colors[0] = colorScheme.getPrimaryAccent();
             colors[1] = getResources().getColor(android.R.color.transparent);
-            GradientDrawable gradientDrawable =
-                new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, colors);
-            Drawable layers[] = new Drawable[2];
-            layers[0] = getTransparentDrawable();
-            layers[1] = gradientDrawable;
-            TransitionDrawable drawable = new TransitionDrawable(layers);
+            TransitionDrawable drawable = animateToDrawable(
+                new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, colors));
             // Simply setting a foreground drawable on movieHeader doesn't let us control the
             // height of the gradient, so set it in a view whose height is defined in the layout
             movieHeaderGradient.setBackground(drawable);
             drawable.startTransition(ANIMATION_DURATION);
-            moviePoster.bringToFront();
           }
         });
   }
 
-  private Drawable getTransparentDrawable() {
+  private TransitionDrawable animateToDrawable(Drawable drawable) {
+    Drawable layers[] = new Drawable[2];
     if (transparentDrawable == null) {
       transparentDrawable = new ColorDrawable(getResources().getColor(android.R.color.transparent));
     }
-    return transparentDrawable;
+    layers[0] = transparentDrawable;
+    layers[1] = drawable;
+    return new TransitionDrawable(layers);
   }
 
   @Override protected void inflateLayout(ViewGroup container) {
@@ -419,10 +417,7 @@ public class MovieActivity extends BaseActivity
   }
 
   private void animateBackgroundColor(View view, int endColor, long animationDuration) {
-    Drawable layers[] = new Drawable[2];
-    layers[0] = getTransparentDrawable();
-    layers[1] = new ColorDrawable(endColor);
-    TransitionDrawable drawable = new TransitionDrawable(layers);
+    TransitionDrawable drawable = animateToDrawable(new ColorDrawable(endColor));
     view.setBackground(drawable);
     drawable.startTransition((int) animationDuration);
   }
