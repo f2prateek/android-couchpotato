@@ -142,7 +142,8 @@ public class MovieActivity extends BaseActivity
   public void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    picasso.load(minifiedMovie.getPosterPath()).fit().centerCrop().into(moviePoster);
+    // Load the initial data we want for animations
+    initialBindData();
 
     ViewTreeObserver observer = moviePoster.getViewTreeObserver();
     observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -207,10 +208,18 @@ public class MovieActivity extends BaseActivity
     alphaForegroundColorSpan = new AlphaForegroundColorSpan(actionBarTitleColor);
   }
 
-  /** Bind data to the views. */
+  /**
+   * Bind the data needed to run animations. Load the minimum of data needed so we can quickly
+   * run the animation. See {@link #bindMovie()}.
+   */
+  private void initialBindData() {
+    picasso.load(minifiedMovie.getPosterPath()).fit().centerCrop().into(moviePoster);
+    movieTitle.setText(minifiedMovie.getTitle());
+  }
+
+  /** Bind data to the views. Some data might already be bound in {@link #initialBindData()}. */
   private void bindMovie() {
     spannableString = new SpannableString(minifiedMovie.getTitle());
-    movieTitle.setText(minifiedMovie.getTitle());
     movieBackdrop.load(picasso, minifiedMovie.getBackdropPath());
     updateColorScheme();
 
@@ -303,6 +312,8 @@ public class MovieActivity extends BaseActivity
     // We'll fade the content in later
     scrollView.setAlpha(0);
     movieBackdrop.setAlpha(0);
+    movieTitle.setAlpha(0);
+    movieTagline.setAlpha(0);
 
     // Animate scale and translation to go from thumbnail to full size
     moviePoster.animate().setDuration(ANIMATION_DURATION).
@@ -315,6 +326,14 @@ public class MovieActivity extends BaseActivity
             scrollView.animate().setDuration(HALF_ANIMATION_DURATION).alpha(1).
                 setInterpolator(sDecelerator);
             movieBackdrop.animate().setDuration(HALF_ANIMATION_DURATION).alpha(1).
+                setInterpolator(sDecelerator);
+            movieTitle.setTranslationY(-movieTitle.getHeight());
+            movieTitle.animate().setDuration(HALF_ANIMATION_DURATION).
+                translationY(0).alpha(1).
+                setInterpolator(sDecelerator);
+            movieTagline.setTranslationY(movieTagline.getHeight());
+            movieTagline.animate().setDuration(HALF_ANIMATION_DURATION).
+                translationY(0).alpha(1).
                 setInterpolator(sDecelerator);
           }
         });
