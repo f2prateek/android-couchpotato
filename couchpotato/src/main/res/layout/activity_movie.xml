@@ -16,7 +16,7 @@
   ~ limitations under the License.
   -->
 
-<RelativeLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
@@ -113,7 +113,7 @@
       android:id="@+id/movie_header_poster"
       android:layout_width="@dimen/movie_header_logo_width"
       android:layout_height="@dimen/movie_header_logo_height"
-      android:layout_centerHorizontal="true"
-      android:layout_alignBottom="@+id/movie_header"/>
+      android:layout_marginTop="48dp"
+      android:layout_gravity="center_horizontal|top"/>
 
-</RelativeLayout>
+</FrameLayout>
