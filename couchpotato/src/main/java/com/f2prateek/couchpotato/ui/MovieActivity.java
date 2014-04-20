@@ -145,56 +145,37 @@ public class MovieActivity extends BaseActivity
     // Load the initial data we want for animations
     initialBindData();
 
-    ViewTreeObserver observer = moviePoster.getViewTreeObserver();
-    observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-      @Override
-      public boolean onPreDraw() {
-        moviePoster.getViewTreeObserver().removeOnPreDrawListener(this);
-        // Only run the animation if we're coming from the parent activity, not if
-        // we're recreated automatically by the window manager (e.g., device rotation)
-        // Figure out where the thumbnail and full size versions are, relative
-        // to the screen and each other, and scale factors to make the large version the same size
-        // as the thumbnail
-        int[] posterLocation = new int[2];
-        moviePoster.getLocationOnScreen(posterLocation);
+    // Set the pivots regardless of whether we run the animation or not
+    moviePoster.setPivotX(0);
+    moviePoster.setPivotY(0);
 
-        if (savedInstanceState == null) {
+    // Only run the animation if we're coming from the parent activity, not if
+    // we're recreated automatically by the window manager (e.g., device rotation)
+    if (savedInstanceState == null) {
+      ViewTreeObserver observer = moviePoster.getViewTreeObserver();
+      observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+        @Override
+        public boolean onPreDraw() {
+          moviePoster.getViewTreeObserver().removeOnPreDrawListener(this);
+          // Figure out where the thumbnail and full size versions are, relative
+          // to the screen and each other, and scale factors to make the large version the same size
+          // as the thumbnail
+          int[] posterLocation = new int[2];
+          moviePoster.getLocationOnScreen(posterLocation);
           posterLeftDelta = thumbnailLeft - posterLocation[0];
           posterTopDelta = thumbnailTop - posterLocation[1];
           posterWidthScale = (float) thumbnailWidth / moviePoster.getWidth();
           posterHeightScale = (float) thumbnailHeight / moviePoster.getHeight();
-        } else {
-          // reset the scroll position since the poster will be animated to the center, and not
-          // interpolated by the old scroll to somewhere on the screen
-          scrollView.setScrollY(0);
-
-          // don't overwrite the global extras, we'll need them if the activity is recreated
-          // into it's original orientation to scale back to the thumbnail
-          posterLeftDelta = savedInstanceState.getInt(ARGS_THUMBNAIL_LEFT) - posterLocation[0];
-          posterTopDelta = savedInstanceState.getInt(ARGS_THUMBNAIL_TOP) - posterLocation[1];
-          posterWidthScale =
-              (float) savedInstanceState.getInt(ARGS_THUMBNAIL_WIDTH) / moviePoster.getWidth();
-          posterHeightScale =
-              (float) savedInstanceState.getInt(ARGS_THUMBNAIL_HEIGHT) / moviePoster.getHeight();
+          runEnterAnimation();
+          return true;
         }
-
-        runEnterAnimation();
-        return true;
-      }
-    });
+      });
+    } else {
+      ObjectAnimator.ofInt(scrollView, "scrollY", scrollView.getScrollY(), 0).start();
+    }
 
     init();
     bindMovie();
-  }
-
-  @Override protected void onSaveInstanceState(Bundle outState) {
-    super.onSaveInstanceState(outState);
-    int[] posterLocation = new int[2];
-    moviePoster.getLocationOnScreen(posterLocation);
-    outState.putInt(ARGS_THUMBNAIL_LEFT, posterLocation[0]);
-    outState.putInt(ARGS_THUMBNAIL_TOP, posterLocation[1]);
-    outState.putInt(ARGS_THUMBNAIL_WIDTH, moviePoster.getWidth());
-    outState.putInt(ARGS_THUMBNAIL_HEIGHT, moviePoster.getHeight());
   }
 
   /** Set up views and effects. */
