@@ -52,7 +52,10 @@ public class MoviesGridItemView extends FrameLayout {
 
   public void bindTo(MinifiedMovie movie, Picasso picasso) {
     this.movie = movie;
-    picasso.load(movie.getPosterPath()).fit().centerCrop().into(image);
+    picasso.load(movie.getPosterPath())
+        .fit()
+        .centerCrop()
+        .into(image);
     title.setText(movie.getTitle());
   }
 

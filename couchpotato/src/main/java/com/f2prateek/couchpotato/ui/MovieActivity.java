@@ -58,6 +58,7 @@ import com.f2prateek.couchpotato.ui.colorizer.ColorScheme;
 import com.f2prateek.couchpotato.ui.misc.AlphaForegroundColorSpan;
 import com.f2prateek.couchpotato.ui.widget.KenBurnsView;
 import com.f2prateek.couchpotato.ui.widget.NotifyingScrollView;
+import com.f2prateek.couchpotato.util.CollectionUtils;
 import com.f2prateek.couchpotato.util.Strings;
 import com.f2prateek.dart.InjectExtra;
 import com.f2prateek.ln.Ln;
@@ -171,7 +172,9 @@ public class MovieActivity extends BaseActivity
         }
       });
     } else {
-      ObjectAnimator.ofInt(scrollView, "scrollY", scrollView.getScrollY(), 0).start();
+      // Just scroll up, otherwise the poster view will be out of sync with the scrollView
+      // Setting scrollY directly does not work
+      ObjectAnimator.ofInt(scrollView, "scrollY", 0).start();
     }
 
     init();
@@ -216,11 +219,13 @@ public class MovieActivity extends BaseActivity
     });
     tmDbDatabase.getMovieImages(minifiedMovie.getId(), new EndlessObserver<Images>() {
       @Override public void onNext(Images images) {
-        List<String> backdrops = new ArrayList<>();
-        for (Backdrop backdrop : images.getBackdrops()) {
-          backdrops.add(backdrop.getFilePath());
+        if (!CollectionUtils.isNullOrEmpty(images.getBackdrops())) {
+          List<String> backdrops = new ArrayList<>();
+          for (Backdrop backdrop : images.getBackdrops()) {
+            backdrops.add(backdrop.getFilePath());
+          }
+          movieBackdrop.update(backdrops);
         }
-        movieBackdrop.update(backdrops);
       }
     });
     tmDbDatabase.getSimilarMovies(minifiedMovie.getId(),

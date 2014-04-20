@@ -2,6 +2,7 @@ package com.f2prateek.couchpotato.data.api.tmdb.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.f2prateek.couchpotato.util.Strings;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
@@ -9,6 +10,9 @@ public class Configuration implements Parcelable {
 
   private static final String FIELD_CHANGE_KEYS = "change_keys";
   private static final String FIELD_IMAGES = "images";
+
+  private static final String PLACEHOLDER =
+      "http://parmeter.net/tech/wp-content/uploads/2012/09/logo.png";
 
   @SerializedName(FIELD_CHANGE_KEYS)
   private List<String> changeKeys;
@@ -32,10 +36,16 @@ public class Configuration implements Parcelable {
   }
 
   public String getPosterUrl(String posterPath) {
+    if (Strings.isBlank(posterPath)) {
+      return PLACEHOLDER;
+    }
     return getImageSizes().getBaseUrl() + getImageSizes().getPosterSizes().get(2) + posterPath;
   }
 
   public String getBackdropUrl(String backdropPath) {
+    if (Strings.isBlank(backdropPath)) {
+      return PLACEHOLDER;
+    }
     return getImageSizes().getBaseUrl() + getImageSizes().getBackdropSizes().get(1) + backdropPath;
   }
 
