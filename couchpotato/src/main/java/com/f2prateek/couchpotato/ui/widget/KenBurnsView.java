@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Random;
 
 public class KenBurnsView extends FrameLayout {
-
   private static final int SWAP_DURATION = 10000;
   private static final int FADE_DURATION = 500;
   private static final float MAX_SCALE_FACTOR = 1.5F;
@@ -48,7 +47,6 @@ public class KenBurnsView extends FrameLayout {
 
   private List<String> images;
   private int currentImageIndex = 0;
-
   private Picasso picasso;
 
   private Runnable swapImageRunnable = new Runnable() {
@@ -77,8 +75,7 @@ public class KenBurnsView extends FrameLayout {
     inactiveImageView = activeImageView;
     activeImageView = swapper;
 
-    // Load the current image
-    activeImageView.bringToFront();
+    // show the active view
     loadImage(activeImageView, images.get(currentImageIndex));
     currentImageIndex = (1 + currentImageIndex) % images.size();
 
@@ -156,8 +153,6 @@ public class KenBurnsView extends FrameLayout {
   public void load(Picasso picasso, String image) {
     this.picasso = picasso;
     this.images = Arrays.asList(image);
-    loadImage(activeImageView, image);
-    loadImage(inactiveImageView, image);
     startKenBurnsAnimation();
   }
 
@@ -169,6 +164,6 @@ public class KenBurnsView extends FrameLayout {
   }
 
   private void loadImage(ImageView imageView, String image) {
-    picasso.load(image).fit().noFade().centerCrop().into(imageView);
+    picasso.load(image).fit().centerCrop().noFade().into(imageView);
   }
 }
