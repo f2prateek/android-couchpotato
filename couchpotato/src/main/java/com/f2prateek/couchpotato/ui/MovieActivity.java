@@ -86,9 +86,9 @@ public class MovieActivity extends BaseActivity
   private static final int ANIMATION_DURATION = 500; // 500ms
   private static final int HALF_ANIMATION_DURATION = ANIMATION_DURATION / 2;
 
-  private static final TimeInterpolator sDecelerator = new DecelerateInterpolator();
-  private static final TimeInterpolator sAccelerator = new AccelerateInterpolator();
-  private static final AccelerateDecelerateInterpolator smoothInterpolator =
+  private final TimeInterpolator decelerateInterpolator = new DecelerateInterpolator();
+  private final TimeInterpolator accelerateInterpolator = new AccelerateInterpolator();
+  private final AccelerateDecelerateInterpolator smoothInterpolator =
       new AccelerateDecelerateInterpolator();
 
   @InjectExtra(ARGS_MOVIE) MinifiedMovie minifiedMovie;
@@ -126,7 +126,6 @@ public class MovieActivity extends BaseActivity
   private int posterTopDelta; // distance from top of poster to top of thumbnail
   private float posterWidthScale; // ratio of poster width to thumbnail width
   private float posterHeightScale; // ratio of poster height to thumbnail width
-  private Drawable transparentDrawable; // lazily cached drawable to animate background of a view
 
   /** Create an intent to launch this activity. */
   public static Intent createIntent(Context context, MinifiedMovie movie, int left, int top,
@@ -182,7 +181,7 @@ public class MovieActivity extends BaseActivity
     } else {
       // Just scroll up, otherwise the poster view will be out of sync with the scrollView
       // Setting scrollY directly does not work
-      ObjectAnimator.ofInt(scrollView, "scrollY", 0).start();
+      ObjectAnimator.ofInt(scrollView, "scrollY", 0).setDuration(HALF_ANIMATION_DURATION).start();
       init();
       bindMovie(false);
     }
@@ -278,37 +277,40 @@ public class MovieActivity extends BaseActivity
         .subscribe(new EndlessObserver<ColorScheme>() {
           @Override public void onNext(ColorScheme colorScheme) {
             long duration = animate ? ANIMATION_DURATION : 0;
-            animateBackgroundColor(movieHeading, colorScheme.getPrimaryAccent(), duration);
+            int transparent = getResources().getColor(android.R.color.transparent);
+            animateBackgroundColor(movieHeading, transparent, colorScheme.getPrimaryAccent(),
+                duration);
             animateTextColor(movieTitle, colorScheme.getPrimaryText(), duration);
             animateTextColor(movieTagline, colorScheme.getPrimaryText(), duration);
             animateTextColor(moviePlot, colorScheme.getPrimaryText(), duration);
-            animateBackgroundColor(movieSecondary, colorScheme.getSecondaryText(), duration);
-            animateBackgroundColor(movieSecondaryAccent, colorScheme.getSecondaryAccent(),
+            animateBackgroundColor(movieSecondary, transparent, colorScheme.getSecondaryText(),
                 duration);
-            animateBackgroundColor(movieTertiaryAccent, colorScheme.getTertiaryAccent(), duration);
+            animateBackgroundColor(movieSecondaryAccent, transparent,
+                colorScheme.getSecondaryAccent(), duration);
+            animateBackgroundColor(movieTertiaryAccent, transparent,
+                colorScheme.getTertiaryAccent(), duration);
 
             setActionBarTitleColor(colorScheme.getPrimaryText());
 
             int[] colors = new int[2];
             colors[0] = colorScheme.getPrimaryAccent();
             colors[1] = getResources().getColor(android.R.color.transparent);
-            TransitionDrawable drawable = animateToDrawable(
-                new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, colors));
+            GradientDrawable gradientDrawable =
+                new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, colors);
             // Simply setting a foreground drawable on movieHeader doesn't let us control the
             // height of the gradient, so set it in a view whose height is defined in the layout
-            movieHeaderGradient.setBackground(drawable);
-            drawable.startTransition(ANIMATION_DURATION);
+            // instead
+            movieHeaderGradient.setAlpha(0f);
+            movieHeaderGradient.setBackground(gradientDrawable);
+            movieHeaderGradient.animate().alpha(1).setDuration(duration);
           }
         });
   }
 
-  private TransitionDrawable animateToDrawable(Drawable drawable) {
+  private TransitionDrawable animateToDrawable(Drawable start, Drawable end) {
     Drawable layers[] = new Drawable[2];
-    if (transparentDrawable == null) {
-      transparentDrawable = new ColorDrawable(getResources().getColor(android.R.color.transparent));
-    }
-    layers[0] = transparentDrawable;
-    layers[1] = drawable;
+    layers[0] = start;
+    layers[1] = end;
     return new TransitionDrawable(layers);
   }
 
@@ -341,14 +343,14 @@ public class MovieActivity extends BaseActivity
     moviePoster.animate().setDuration(ANIMATION_DURATION).
         scaleX(1).scaleY(1).
         translationX(0).translationY(0).
-        setInterpolator(sDecelerator).
+        setInterpolator(decelerateInterpolator).
         withEndAction(new Runnable() {
           public void run() {
             // Animate the content in after the image animation is done
             scrollView.animate().setDuration(HALF_ANIMATION_DURATION).alpha(1).
-                setInterpolator(sDecelerator).withEndAction(endAction);
+                setInterpolator(decelerateInterpolator).withEndAction(endAction);
             movieBackdrop.animate().setDuration(HALF_ANIMATION_DURATION).alpha(1).
-                setInterpolator(sDecelerator);
+                setInterpolator(decelerateInterpolator);
           }
         });
   }
@@ -397,14 +399,16 @@ public class MovieActivity extends BaseActivity
     // First, slide/fade content out of the way
     AnimatorSet animatorSet = new AnimatorSet();
     animatorSet.setDuration(HALF_ANIMATION_DURATION);
-    animatorSet.setInterpolator(sAccelerator);
+    animatorSet.setInterpolator(accelerateInterpolator);
     animatorSet.playTogether(ObjectAnimator.ofFloat(movieBackdrop, "alpha", 1.0f, 0.0f),
-        ObjectAnimator.ofFloat(scrollView, "alpha", 1.0f, 0.0f));
+        ObjectAnimator.ofFloat(scrollView, "alpha", 1.0f, 0.0f),
+        ObjectAnimator.ofFloat(movieHeaderGradient, "alpha", 1.0f, 0.0f));
+
     animatorSet.addListener(new AnimatorListenerAdapter() {
       @Override public void onAnimationEnd(Animator animation) {
         super.onAnimationEnd(animation);
         // Animate image back to thumbnail size/location
-        moviePoster.animate().setDuration(HALF_ANIMATION_DURATION).
+        moviePoster.animate().setDuration(ANIMATION_DURATION).
             scaleX(posterWidthScale).scaleY(posterHeightScale).
             translationX(posterLeftDelta).translationY(posterTopDelta).
             withEndAction(endAction);
@@ -416,17 +420,11 @@ public class MovieActivity extends BaseActivity
     animatorSet.start();
   }
 
-  private void animateBackgroundColor(View view, int endColor, long animationDuration) {
-    TransitionDrawable drawable = animateToDrawable(new ColorDrawable(endColor));
-    view.setBackground(drawable);
-    drawable.startTransition((int) animationDuration);
-  }
-
   /**
    * Property to let us animate the text color.
    */
-  final Property<TextView, Integer> property =
-      new Property<TextView, Integer>(int.class, "textColor") {
+  final Property<TextView, Integer> textColorProperty =
+      new Property<TextView, Integer>(Integer.class, "textColor") {
         @Override
         public Integer get(TextView object) {
           return object.getCurrentTextColor();
@@ -439,10 +437,34 @@ public class MovieActivity extends BaseActivity
       };
 
   private void animateTextColor(TextView textView, int endColor, long animationDuration) {
-    final ObjectAnimator animator = ObjectAnimator.ofInt(textView, property, endColor);
+    final ObjectAnimator animator = ObjectAnimator.ofInt(textView, textColorProperty, endColor);
     animator.setDuration(animationDuration);
     animator.setEvaluator(new ArgbEvaluator());
-    animator.setInterpolator(sDecelerator);
+    animator.setInterpolator(decelerateInterpolator);
+    animator.start();
+  }
+
+  // make sure to set a color drawable on the view first
+  final Property<View, Integer> backgroundColorProperty =
+      new Property<View, Integer>(Integer.class, "backgroundColor") {
+        @Override
+        public Integer get(View object) {
+          return ((ColorDrawable) object.getBackground()).getColor();
+        }
+
+        @Override
+        public void set(View object, Integer value) {
+          object.setBackgroundColor(value);
+        }
+      };
+
+  private void animateBackgroundColor(View view, int startColor, int endColor,
+      long animationDuration) {
+    view.setBackgroundColor(startColor);
+    final ObjectAnimator animator = ObjectAnimator.ofInt(view, backgroundColorProperty, endColor);
+    animator.setDuration(animationDuration);
+    animator.setEvaluator(new ArgbEvaluator());
+    animator.setInterpolator(decelerateInterpolator);
     animator.start();
   }
 
