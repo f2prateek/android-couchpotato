@@ -140,7 +140,7 @@ public class MoviesGrid extends BetterViewAnimator {
     }
 
     @Override public void bindView(MinifiedMovie item, int position, View view) {
-      ((MoviesGridItemView) view).bindTo(item, picasso);
+      ((MoviesGridItemView) view).bindTo(item);
     }
   }
 }
