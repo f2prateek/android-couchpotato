@@ -17,6 +17,9 @@
 package com.f2prateek.couchpotato.ui;
 
 import android.content.Context;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.TypefaceSpan;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -35,6 +38,8 @@ public class MovieCrewItem extends FrameLayout {
 
   @Inject Picasso picasso;
 
+  private final TypefaceSpan span = new TypefaceSpan("sans-serif-condensed");
+
   public MovieCrewItem(Context context, AttributeSet attrs) {
     super(context, attrs);
     CouchPotatoApplication.get(context).inject(this);
@@ -47,6 +52,12 @@ public class MovieCrewItem extends FrameLayout {
 
   public void bindTo(Cast cast) {
     picasso.load(cast.getProfilePath()).fit().centerCrop().into(image);
-    name.setText(cast.getName());
+
+    String text =
+        getResources().getString(R.string.credit_name_format, cast.getName(), cast.getCharacter());
+    SpannableString spannableString = new SpannableString(text);
+    spannableString.setSpan(span, text.indexOf(cast.getCharacter()), text.length(),
+        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    name.setText(spannableString);
   }
 }

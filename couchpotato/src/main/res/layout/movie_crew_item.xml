@@ -41,9 +41,9 @@
       android:gravity="bottom"
       android:background="@drawable/text_background_gradient"
       android:padding="6dp"
-      android:singleLine="true"
+      android:lines="2"
       android:ellipsize="end"
-      tools:text="This Is The Title"
+      tools:text="Peter Jackson\nas Director"
       style="@style/Widget.CouchPotato.Poster"/>
 
 </com.f2prateek.couchpotato.ui.MovieCrewItem>
