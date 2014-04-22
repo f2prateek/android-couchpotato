@@ -15,77 +15,77 @@ public class Cast implements Parcelable, Configuration.Configurable {
   private static final String FIELD_NAME = "name";
 
   @SerializedName(FIELD_ID)
-  private long mId;
+  private long id;
   @SerializedName(FIELD_CAST_ID)
-  private int mCastId;
+  private int castId;
   @SerializedName(FIELD_ORDER)
-  private int mOrder;
+  private int order;
   @SerializedName(FIELD_PROFILE_PATH)
-  private String mProfilePath;
+  private String profilePath;
   @SerializedName(FIELD_CHARACTER)
-  private String mCharacter;
+  private String character;
   @SerializedName(FIELD_CREDIT_ID)
-  private String mCreditId;
+  private String creditId;
   @SerializedName(FIELD_NAME)
-  private String mName;
+  private String name;
 
   public Cast() {
 
   }
 
   public long getId() {
-    return mId;
+    return id;
   }
 
   public int getCastId() {
-    return mCastId;
+    return castId;
   }
 
   public int getOrder() {
-    return mOrder;
+    return order;
   }
 
   public String getProfilePath() {
-    return mProfilePath;
+    return profilePath;
   }
 
   public String getCharacter() {
-    return mCharacter;
+    return character;
   }
 
   public String getCreditId() {
-    return mCreditId;
+    return creditId;
   }
 
   public String getName() {
-    return mName;
+    return name;
   }
 
   @Override public void setConfiguration(Configuration configuration) {
-    mProfilePath = configuration.getProfileImage(mProfilePath);
+    profilePath = configuration.getProfileImage(profilePath);
   }
 
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof Cast) {
-      return ((Cast) obj).getId() == mId;
+      return ((Cast) obj).getId() == id;
     }
     return false;
   }
 
   @Override
   public int hashCode() {
-    return ((Long) mId).hashCode();
+    return ((Long) id).hashCode();
   }
 
   public Cast(Parcel in) {
-    mId = in.readLong();
-    mCastId = in.readInt();
-    mOrder = in.readInt();
-    mProfilePath = in.readString();
-    mCharacter = in.readString();
-    mCreditId = in.readString();
-    mName = in.readString();
+    id = in.readLong();
+    castId = in.readInt();
+    order = in.readInt();
+    profilePath = in.readString();
+    character = in.readString();
+    creditId = in.readString();
+    name = in.readString();
   }
 
   @Override
@@ -105,30 +105,30 @@ public class Cast implements Parcelable, Configuration.Configurable {
 
   @Override
   public void writeToParcel(Parcel dest, int flags) {
-    dest.writeLong(mId);
-    dest.writeInt(mCastId);
-    dest.writeInt(mOrder);
-    dest.writeString(mProfilePath);
-    dest.writeString(mCharacter);
-    dest.writeString(mCreditId);
-    dest.writeString(mName);
+    dest.writeLong(id);
+    dest.writeInt(castId);
+    dest.writeInt(order);
+    dest.writeString(profilePath);
+    dest.writeString(character);
+    dest.writeString(creditId);
+    dest.writeString(name);
   }
 
   @Override
   public String toString() {
     return "id = "
-        + mId
+        + id
         + ", castId = "
-        + mCastId
+        + castId
         + ", order = "
-        + mOrder
+        + order
         + ", profilePath = "
-        + mProfilePath
+        + profilePath
         + ", character = "
-        + mCharacter
+        + character
         + ", creditId = "
-        + mCreditId
+        + creditId
         + ", name = "
-        + mName;
+        + name;
   }
 }

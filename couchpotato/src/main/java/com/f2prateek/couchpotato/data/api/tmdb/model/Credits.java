@@ -13,34 +13,34 @@ public class Credits implements Parcelable, Configuration.Configurable {
   private static final String FIELD_CAST = "cast";
 
   @SerializedName(FIELD_ID)
-  private long mId;
+  private long id;
   @SerializedName(FIELD_CREW)
-  private List<Crew> mCrews;
+  private List<Crew> crews;
   @SerializedName(FIELD_CAST)
-  private List<Cast> mCasts;
+  private List<Cast> casts;
 
   public Credits() {
 
   }
 
   public long getId() {
-    return mId;
+    return id;
   }
 
   public List<Crew> getCrews() {
-    return mCrews;
+    return crews;
   }
 
   public List<Cast> getCasts() {
-    return mCasts;
+    return casts;
   }
 
   @Override
   public void setConfiguration(Configuration configuration) {
-    for (Crew crew : mCrews) {
+    for (Crew crew : crews) {
       crew.setConfiguration(configuration);
     }
-    for (Cast cast : mCasts) {
+    for (Cast cast : casts) {
       cast.setConfiguration(configuration);
     }
   }
@@ -49,22 +49,22 @@ public class Credits implements Parcelable, Configuration.Configurable {
   public boolean equals(Object obj) {
     if (obj == this) return true;
     if (obj instanceof Credits) {
-      return ((Credits) obj).getId() == mId;
+      return ((Credits) obj).getId() == id;
     }
     return false;
   }
 
   @Override
   public int hashCode() {
-    return ((Long) mId).hashCode();
+    return ((Long) id).hashCode();
   }
 
   public Credits(Parcel in) {
-    mId = in.readLong();
-    mCrews = new ArrayList<Crew>();
-    in.readTypedList(mCrews, Crew.CREATOR);
-    mCasts = new ArrayList<Cast>();
-    in.readTypedList(mCasts, Cast.CREATOR);
+    id = in.readLong();
+    crews = new ArrayList<Crew>();
+    in.readTypedList(crews, Crew.CREATOR);
+    casts = new ArrayList<Cast>();
+    in.readTypedList(casts, Cast.CREATOR);
   }
 
   @Override
@@ -84,13 +84,13 @@ public class Credits implements Parcelable, Configuration.Configurable {
 
   @Override
   public void writeToParcel(Parcel dest, int flags) {
-    dest.writeLong(mId);
-    dest.writeTypedList(mCrews);
-    dest.writeTypedList(mCasts);
+    dest.writeLong(id);
+    dest.writeTypedList(crews);
+    dest.writeTypedList(casts);
   }
 
   @Override
   public String toString() {
-    return "id = " + mId + ", crews = " + mCrews + ", casts = " + mCasts;
+    return "id = " + id + ", crews = " + crews + ", casts = " + casts;
   }
 }

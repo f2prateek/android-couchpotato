@@ -14,70 +14,70 @@ public class Crew implements Parcelable, Configuration.Configurable {
   private static final String FIELD_JOB = "job";
 
   @SerializedName(FIELD_ID)
-  private long mId;
+  private long id;
   @SerializedName(FIELD_DEPARTMENT)
-  private String mDepartment;
+  private String department;
   @SerializedName(FIELD_PROFILE_PATH)
-  private String mProfilePath;
+  private String profilePath;
   @SerializedName(FIELD_CREDIT_ID)
-  private String mCreditId;
+  private String creditId;
   @SerializedName(FIELD_NAME)
-  private String mName;
+  private String name;
   @SerializedName(FIELD_JOB)
-  private String mJob;
+  private String job;
 
   public Crew() {
 
   }
 
   public long getId() {
-    return mId;
+    return id;
   }
 
   public String getDepartment() {
-    return mDepartment;
+    return department;
   }
 
   public String getProfilePath() {
-    return mProfilePath;
+    return profilePath;
   }
 
   public String getCreditId() {
-    return mCreditId;
+    return creditId;
   }
 
   public String getName() {
-    return mName;
+    return name;
   }
 
   public String getJob() {
-    return mJob;
+    return job;
   }
 
   @Override public void setConfiguration(Configuration configuration) {
-    mProfilePath = configuration.getProfileImage(mProfilePath);
+    profilePath = configuration.getProfileImage(profilePath);
   }
 
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof Crew) {
-      return ((Crew) obj).getId() == mId;
+      return ((Crew) obj).getId() == id;
     }
     return false;
   }
 
   @Override
   public int hashCode() {
-    return ((Long) mId).hashCode();
+    return ((Long) id).hashCode();
   }
 
   public Crew(Parcel in) {
-    mId = in.readLong();
-    mDepartment = in.readString();
-    mProfilePath = in.readString();
-    mCreditId = in.readString();
-    mName = in.readString();
-    mJob = in.readString();
+    id = in.readLong();
+    department = in.readString();
+    profilePath = in.readString();
+    creditId = in.readString();
+    name = in.readString();
+    job = in.readString();
   }
 
   @Override
@@ -97,27 +97,27 @@ public class Crew implements Parcelable, Configuration.Configurable {
 
   @Override
   public void writeToParcel(Parcel dest, int flags) {
-    dest.writeLong(mId);
-    dest.writeString(mDepartment);
-    dest.writeString(mProfilePath);
-    dest.writeString(mCreditId);
-    dest.writeString(mName);
-    dest.writeString(mJob);
+    dest.writeLong(id);
+    dest.writeString(department);
+    dest.writeString(profilePath);
+    dest.writeString(creditId);
+    dest.writeString(name);
+    dest.writeString(job);
   }
 
   @Override
   public String toString() {
     return "id = "
-        + mId
+        + id
         + ", department = "
-        + mDepartment
+        + department
         + ", profilePath = "
-        + mProfilePath
+        + profilePath
         + ", creditId = "
-        + mCreditId
+        + creditId
         + ", name = "
-        + mName
+        + name
         + ", job = "
-        + mJob;
+        + job;
   }
 }
