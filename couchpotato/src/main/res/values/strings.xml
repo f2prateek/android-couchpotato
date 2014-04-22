@@ -22,6 +22,6 @@
   <string name="library">Library</string>
   <string name="popular">Popular</string>
 
-  <string name="credit_name_format">%1$s\nas %2$s</string>
+  <string name="crew_name_display_format">%1$s\nas %2$s</string>
 
 </resources>

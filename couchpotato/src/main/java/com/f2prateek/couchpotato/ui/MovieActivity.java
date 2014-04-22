@@ -52,6 +52,7 @@ import com.f2prateek.couchpotato.data.TMDbDatabase;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Backdrop;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Cast;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Credits;
+import com.f2prateek.couchpotato.data.api.tmdb.model.Crew;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Images;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MinifiedMovie;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Movie;
@@ -107,6 +108,7 @@ public class MovieActivity extends BaseActivity
   @InjectView(R.id.movie_header_poster) ImageView moviePoster;
   @InjectView(R.id.similar_movies_container) LinearLayout similarMoviesContainer;
   @InjectView(R.id.movie_cast_container) LinearLayout movieCastContainer;
+  @InjectView(R.id.movie_crew_container) LinearLayout movieCrewContainer;
   @InjectView(R.id.movie_scroll_container) NotifyingScrollView scrollView;
   @InjectView(R.id.movie_heading) LinearLayout movieHeading;
   @InjectView(R.id.movie_title) TextView movieTitle;
@@ -283,6 +285,19 @@ public class MovieActivity extends BaseActivity
           child.setLayoutParams(params);
           movieCastContainer.addView(child);
           child.bindTo(cast);
+        }
+
+        if (CollectionUtils.isNullOrEmpty(credits.getCrews())) {
+          movieCastContainer.setVisibility(View.GONE);
+          return;
+        }
+        for (Crew crew : credits.getCrews()) {
+          MovieCrewItem child =
+              (MovieCrewItem) getLayoutInflater().inflate(R.layout.movie_crew_item,
+                  movieCrewContainer, false);
+          child.setLayoutParams(params);
+          movieCrewContainer.addView(child);
+          child.bindTo(crew);
         }
       }
     });

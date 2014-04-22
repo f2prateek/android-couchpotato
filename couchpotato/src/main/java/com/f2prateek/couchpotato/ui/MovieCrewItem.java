@@ -29,11 +29,12 @@ import butterknife.InjectView;
 import com.f2prateek.couchpotato.CouchPotatoApplication;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Cast;
+import com.f2prateek.couchpotato.data.api.tmdb.model.Crew;
 import com.squareup.picasso.Picasso;
 import javax.inject.Inject;
 
 public class MovieCrewItem extends FrameLayout {
-  @InjectView(R.id.crew_profile) ImageView image;
+  @InjectView(R.id.crew_profile) ImageView profile;
   @InjectView(R.id.crew_name) TextView name;
 
   @Inject Picasso picasso;
@@ -51,12 +52,19 @@ public class MovieCrewItem extends FrameLayout {
   }
 
   public void bindTo(Cast cast) {
-    picasso.load(cast.getProfilePath()).fit().centerCrop().into(image);
+    bindTo(cast.getProfilePath(), cast.getName(), cast.getCharacter());
+  }
 
-    String text =
-        getResources().getString(R.string.credit_name_format, cast.getName(), cast.getCharacter());
+  public void bindTo(Crew crew) {
+    bindTo(crew.getProfilePath(), crew.getName(), crew.getJob());
+  }
+
+  private void bindTo(String imageUrl, String crew, String role) {
+    picasso.load(imageUrl).fit().centerCrop().into(profile);
+
+    String text = getResources().getString(R.string.crew_name_display_format, crew, role);
     SpannableString spannableString = new SpannableString(text);
-    spannableString.setSpan(span, text.indexOf(cast.getCharacter()), text.length(),
+    spannableString.setSpan(span, text.indexOf(role), text.length(),
         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     name.setText(spannableString);
   }
