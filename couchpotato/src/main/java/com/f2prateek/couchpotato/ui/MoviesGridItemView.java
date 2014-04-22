@@ -25,23 +25,18 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import com.f2prateek.couchpotato.CouchPotatoApplication;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MinifiedMovie;
 import com.squareup.picasso.Picasso;
-import javax.inject.Inject;
 
 public class MoviesGridItemView extends FrameLayout {
   @InjectView(R.id.gallery_item_image) ImageView image;
   @InjectView(R.id.gallery_item_title) TextView title;
 
-  @Inject Picasso picasso;
-
   private MinifiedMovie movie;
 
   public MoviesGridItemView(Context context, AttributeSet attrs) {
     super(context, attrs);
-    CouchPotatoApplication.get(context).inject(this);
   }
 
   @Override protected void onFinishInflate() {
@@ -49,7 +44,7 @@ public class MoviesGridItemView extends FrameLayout {
     ButterKnife.inject(this);
   }
 
-  public void bindTo(MinifiedMovie movie) {
+  public void bindTo(MinifiedMovie movie, Picasso picasso) {
     this.movie = movie;
     picasso.load(movie.getPosterPath()).fit().centerCrop().into(image);
     title.setText(movie.getTitle());
