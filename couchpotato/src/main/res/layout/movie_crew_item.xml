@@ -25,14 +25,13 @@
     android:background="@drawable/poster_background">
 
   <com.f2prateek.couchpotato.ui.widget.ForegroundAspectRatioImageView
-      android:id="@+id/crew_poster"
+      android:id="@+id/crew_profile"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:clickable="true"
       app:aspectRatioEnabled="true"
       app:aspectRatio="1.5"
       app:dominantMeasurement="width"
-      android:src="#f00"/>
+      tools:src="#f00"/>
 
   <TextView
       android:id="@+id/crew_name"

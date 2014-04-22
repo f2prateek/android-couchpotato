@@ -26,15 +26,11 @@ import butterknife.InjectView;
 import com.f2prateek.couchpotato.CouchPotatoApplication;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Cast;
-import com.f2prateek.ln.Ln;
 import com.squareup.picasso.Picasso;
 import javax.inject.Inject;
 
-/**
- * A view to show a person appearing in a movie's credits.
- */
 public class MovieCrewItem extends FrameLayout {
-  @InjectView(R.id.crew_poster) ImageView poster;
+  @InjectView(R.id.crew_profile) ImageView image;
   @InjectView(R.id.crew_name) TextView name;
 
   @Inject Picasso picasso;
@@ -50,13 +46,7 @@ public class MovieCrewItem extends FrameLayout {
   }
 
   public void bindTo(Cast cast) {
-    picasso.load(cast.getProfilePath()).fit().centerCrop().into(poster);
+    picasso.load(cast.getProfilePath()).fit().centerCrop().into(image);
     name.setText(cast.getName());
-  }
-
-  @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    Ln.d("Poster width = %s, Poster height = %s", poster.getWidth(), poster.getHeight());
-    Ln.d("Text width = %s", name.getWidth());
   }
 }
