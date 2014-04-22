@@ -19,8 +19,8 @@ package com.f2prateek.couchpotato.ui;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -29,26 +29,32 @@ import com.f2prateek.couchpotato.CouchPotatoApplication;
 import com.f2prateek.couchpotato.Events;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MinifiedMovie;
+import com.f2prateek.ln.Ln;
 import com.squareup.otto.Bus;
 import com.squareup.picasso.Picasso;
 import javax.inject.Inject;
 
-public class MoviesGridItemView extends FrameLayout {
-  @InjectView(R.id.gallery_item_image) ImageView image;
-  @InjectView(R.id.gallery_item_title) TextView title;
+/**
+ * Same as {@link MovieGridItem}, but measured by height, not
+ * width.
+ */
+public class MovieScrollItem extends RelativeLayout {
+  @InjectView(R.id.movie_poster) ImageView image;
+  @InjectView(R.id.movie_title) TextView title;
 
   @Inject Bus bus;
   @Inject Picasso picasso;
 
   private MinifiedMovie movie;
 
-  public MoviesGridItemView(Context context, AttributeSet attrs) {
+  public MovieScrollItem(Context context, AttributeSet attrs) {
     super(context, attrs);
     CouchPotatoApplication.get(context).inject(this);
   }
 
   @Override protected void onFinishInflate() {
     super.onFinishInflate();
+    Ln.d("Inflating MovieScrollItem");
     ButterKnife.inject(this);
   }
 
@@ -58,7 +64,7 @@ public class MoviesGridItemView extends FrameLayout {
     title.setText(movie.getTitle());
   }
 
-  @OnClick(R.id.gallery_item_image) public void onImageClicked(View view) {
+  @OnClick(R.id.movie_poster) public void onImageClicked(View view) {
     // We can't simply start the animation from here since we need to be able to override the
     // normal activity animations
     int[] screenLocation = new int[2];

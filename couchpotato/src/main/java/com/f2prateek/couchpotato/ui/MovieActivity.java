@@ -46,6 +46,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import butterknife.InjectView;
+import com.f2prateek.couchpotato.Events;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.TMDbDatabase;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Backdrop;
@@ -62,6 +63,7 @@ import com.f2prateek.couchpotato.util.CollectionUtils;
 import com.f2prateek.couchpotato.util.Strings;
 import com.f2prateek.dart.InjectExtra;
 import com.f2prateek.ln.Ln;
+import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -102,6 +104,7 @@ public class MovieActivity extends BaseActivity
   @InjectView(R.id.movie_header_gradient) View movieHeaderGradient;
   @InjectView(R.id.movie_header_backdrop) KenBurnsView movieBackdrop;
   @InjectView(R.id.movie_header_poster) ImageView moviePoster;
+  @InjectView(R.id.similar_movies_container) LinearLayout similarMoviesContainer;
   @InjectView(R.id.movie_scroll_container) NotifyingScrollView scrollView;
   @InjectView(R.id.movie_heading) LinearLayout movieHeading;
   @InjectView(R.id.movie_title) TextView movieTitle;
@@ -244,7 +247,15 @@ public class MovieActivity extends BaseActivity
     tmDbDatabase.getSimilarMovies(minifiedMovie.getId(),
         new EndlessObserver<List<MinifiedMovie>>() {
           @Override public void onNext(List<MinifiedMovie> similarMovies) {
-            Ln.d(similarMovies);
+            if (CollectionUtils.isNullOrEmpty(similarMovies)) {
+              return;
+            }
+            for (int i = 0; i < similarMovies.size(); i++) {
+              getLayoutInflater().inflate(R.layout.scroll_movie_item, similarMoviesContainer);
+
+              MovieScrollItem view = (MovieScrollItem) similarMoviesContainer.getChildAt(i);
+              view.bindTo(similarMovies.get(i));
+            }
           }
         }
     );
@@ -535,5 +546,16 @@ public class MovieActivity extends BaseActivity
 
     movieHeaderGradient.setAlpha(alpha);
     movieHeaderGradient.setBackground(gradientDrawable);
+  }
+
+  @Subscribe public void onMovieClicked(Events.OnMovieClickedEvent event) {
+    int orientation = getResources().getConfiguration().orientation;
+
+    startActivity(MovieActivity.createIntent(this, event.movie, event.left, event.top, event.width,
+            event.height, orientation)
+    );
+
+    // Override transitions: we don't want the normal window animations
+    overridePendingTransition(0, 0);
   }
 }

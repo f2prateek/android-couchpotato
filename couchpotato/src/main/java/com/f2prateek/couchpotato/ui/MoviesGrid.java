@@ -136,11 +136,11 @@ public class MoviesGrid extends BetterViewAnimator {
     }
 
     @Override public View newView(LayoutInflater inflater, int position, ViewGroup container) {
-      return inflater.inflate(R.layout.movies_grid_item, container, false);
+      return inflater.inflate(R.layout.grid_movie_item, container, false);
     }
 
     @Override public void bindView(MinifiedMovie item, int position, View view) {
-      ((MoviesGridItemView) view).bindTo(item);
+      ((MovieGridItem) view).bindTo(item);
     }
   }
 }
