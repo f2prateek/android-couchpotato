@@ -11,8 +11,11 @@ public class Configuration implements Parcelable {
   private static final String FIELD_CHANGE_KEYS = "change_keys";
   private static final String FIELD_IMAGES = "images";
 
-  private static final String PLACEHOLDER =
+  private static final String POSTER_PLACEHOLDER =
       "http://parmeter.net/tech/wp-content/uploads/2012/09/logo.png";
+
+  private static final String AVATAR_PLACEHOLDER =
+      "https://secure.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=500";
 
   @SerializedName(FIELD_CHANGE_KEYS)
   private List<String> changeKeys;
@@ -37,21 +40,21 @@ public class Configuration implements Parcelable {
 
   public String getProfileImage(String profilePath) {
     if (Strings.isBlank(profilePath)) {
-      return PLACEHOLDER;
+      return AVATAR_PLACEHOLDER;
     }
     return getImageSizes().getBaseUrl() + getImageSizes().getProfileSizes().get(1) + profilePath;
   }
 
   public String getPosterUrl(String posterPath) {
     if (Strings.isBlank(posterPath)) {
-      return PLACEHOLDER;
+      return POSTER_PLACEHOLDER;
     }
     return getImageSizes().getBaseUrl() + getImageSizes().getPosterSizes().get(2) + posterPath;
   }
 
   public String getBackdropUrl(String backdropPath) {
     if (Strings.isBlank(backdropPath)) {
-      return PLACEHOLDER;
+      return POSTER_PLACEHOLDER;
     }
     return getImageSizes().getBaseUrl() + getImageSizes().getBackdropSizes().get(1) + backdropPath;
   }

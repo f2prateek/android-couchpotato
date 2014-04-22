@@ -55,7 +55,7 @@ public class Crew implements Parcelable, Configuration.Configurable {
   }
 
   @Override public void setConfiguration(Configuration configuration) {
-    mProfilePath = configuration.getPosterUrl(mProfilePath);
+    mProfilePath = configuration.getProfileImage(mProfilePath);
   }
 
   @Override
