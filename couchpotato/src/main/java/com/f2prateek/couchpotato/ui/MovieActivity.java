@@ -254,9 +254,12 @@ public class MovieActivity extends BaseActivity
               return;
             }
             for (MinifiedMovie movie : similarMovies) {
-              MovieScrollItem child =
-                  (MovieScrollItem) getLayoutInflater().inflate(R.layout.scroll_movie_item,
-                      similarMoviesContainer, false);
+              MovieGridItem child =
+                  (MovieGridItem) getLayoutInflater().inflate(R.layout.grid_movie_item, null,
+                      false);
+              child.setLayoutParams(new FrameLayout.LayoutParams(
+                  getResources().getDimensionPixelOffset(R.dimen.grid_column_width),
+                  ViewGroup.LayoutParams.MATCH_PARENT));
               similarMoviesContainer.addView(child);
               child.bindTo(movie);
             }
@@ -271,8 +274,8 @@ public class MovieActivity extends BaseActivity
         }
         for (Cast cast : credits.getCasts()) {
           MoviesCreditItem child =
-              (MoviesCreditItem) getLayoutInflater().inflate(R.layout.movies_credit_item,
-                  movieCastContainer, false);
+              (MoviesCreditItem) getLayoutInflater().inflate(R.layout.movies_credit_item, null,
+                  false);
           movieCastContainer.addView(child);
           child.bindTo(cast);
         }
