@@ -26,8 +26,10 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import com.f2prateek.couchpotato.CouchPotatoApplication;
+import com.f2prateek.couchpotato.Events;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MinifiedMovie;
+import com.squareup.otto.Bus;
 import com.squareup.picasso.Picasso;
 import javax.inject.Inject;
 
@@ -35,6 +37,7 @@ public class MoviesGridItemView extends FrameLayout {
   @InjectView(R.id.gallery_item_image) ImageView image;
   @InjectView(R.id.gallery_item_title) TextView title;
 
+  @Inject Bus bus;
   @Inject Picasso picasso;
 
   private MinifiedMovie movie;
@@ -56,14 +59,6 @@ public class MoviesGridItemView extends FrameLayout {
   }
 
   @OnClick(R.id.gallery_item_image) public void onImageClicked(View view) {
-    int[] screenLocation = new int[2];
-    view.getLocationOnScreen(screenLocation);
-
-    int orientation = getResources().getConfiguration().orientation;
-
-    getContext().startActivity(
-        MovieActivity.createIntent(getContext(), movie, screenLocation[0], screenLocation[1],
-            view.getWidth(), view.getHeight(), orientation)
-    );
+    bus.post(new Events.OnMovieClickedEvent(view, movie));
   }
 }
