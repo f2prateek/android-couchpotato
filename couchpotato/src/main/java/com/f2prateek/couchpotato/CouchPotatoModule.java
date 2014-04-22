@@ -19,7 +19,6 @@ package com.f2prateek.couchpotato;
 import android.app.Application;
 import com.f2prateek.couchpotato.data.DataModule;
 import com.f2prateek.couchpotato.ui.UiModule;
-import com.squareup.otto.Bus;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
@@ -40,9 +39,5 @@ public final class CouchPotatoModule {
 
   @Provides @Singleton Application provideApplication() {
     return app;
-  }
-
-  @Provides @Singleton Bus provideBus() {
-    return new Bus();
   }
 }

@@ -20,12 +20,9 @@ import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import butterknife.InjectView;
-import com.f2prateek.couchpotato.Events;
 import com.f2prateek.couchpotato.R;
-import com.squareup.otto.Subscribe;
 
 public class MainActivity extends BaseActivity {
-
   @InjectView(R.id.navigation_drawer) NavigationDrawer navigationDrawer;
   @InjectView(R.id.content) FrameLayout content;
 
@@ -38,19 +35,5 @@ public class MainActivity extends BaseActivity {
 
   @Override protected void inflateLayout(ViewGroup container) {
     getLayoutInflater().inflate(R.layout.activity_main, container);
-  }
-
-  @Subscribe public void onMovieClicked(Events.OnMovieClickedEvent event) {
-    int[] screenLocation = new int[2];
-    event.source.getLocationOnScreen(screenLocation);
-    int orientation = getResources().getConfiguration().orientation;
-
-    startActivity(
-        MovieActivity.createIntent(this, event.movie, screenLocation[0], screenLocation[1],
-            event.source.getWidth(), event.source.getHeight(), orientation)
-    );
-
-    // Override transitions: we don't want the normal window animations
-    overridePendingTransition(0, 0);
   }
 }

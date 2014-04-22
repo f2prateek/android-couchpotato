@@ -22,12 +22,10 @@ import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import com.f2prateek.couchpotato.CouchPotatoApplication;
 import com.f2prateek.dart.Dart;
-import com.squareup.otto.Bus;
 import javax.inject.Inject;
 
 public abstract class BaseActivity extends Activity {
   @Inject AppContainer appContainer;
-  @Inject Bus bus;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -43,14 +41,4 @@ public abstract class BaseActivity extends Activity {
   }
 
   protected abstract void inflateLayout(ViewGroup container);
-
-  @Override protected void onResume() {
-    super.onResume();
-    bus.register(this);
-  }
-
-  @Override protected void onPause() {
-    super.onPause();
-    bus.unregister(this);
-  }
 }
