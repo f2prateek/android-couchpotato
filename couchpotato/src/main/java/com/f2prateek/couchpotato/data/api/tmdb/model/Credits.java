@@ -37,7 +37,12 @@ public class Credits implements Parcelable, Configuration.Configurable {
 
   @Override
   public void setConfiguration(Configuration configuration) {
-    // todo: implement
+    for (Crew crew : mCrews) {
+      crew.setConfiguration(configuration);
+    }
+    for (Cast cast : mCasts) {
+      cast.setConfiguration(configuration);
+    }
   }
 
   @Override

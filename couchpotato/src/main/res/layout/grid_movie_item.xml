@@ -22,7 +22,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/gallery_item_background">
+    android:background="@drawable/poster_background">
 
   <com.f2prateek.couchpotato.ui.widget.ForegroundAspectRatioImageView
       android:id="@+id/movie_poster"
@@ -46,6 +46,6 @@
       android:singleLine="true"
       android:ellipsize="end"
       tools:text="This Is The Title"
-      style="@style/Widget.CouchPotato.GalleryImage"/>
+      style="@style/Widget.CouchPotato.Poster"/>
 
 </com.f2prateek.couchpotato.ui.MovieGridItem>

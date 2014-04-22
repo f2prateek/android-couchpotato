@@ -16,7 +16,7 @@
   ~ limitations under the License.
   -->
 
-<com.f2prateek.couchpotato.ui.MovieScrollItem
+<com.f2prateek.couchpotato.ui.CastScrollItem
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -25,7 +25,7 @@
     android:background="@drawable/poster_background">
 
   <com.f2prateek.couchpotato.ui.widget.ForegroundAspectRatioImageView
-      android:id="@+id/movie_poster"
+      android:id="@+id/cast_image"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:foreground="@drawable/image_overlay"
@@ -36,7 +36,7 @@
       tools:src="#f00"/>
 
   <TextView
-      android:id="@+id/movie_title"
+      android:id="@+id/cast_name"
       android:layout_width="match_parent"
       android:layout_height="48dp"
       android:layout_alignLeft="@+id/movie_poster"
@@ -47,7 +47,7 @@
       android:padding="6dp"
       android:singleLine="true"
       android:ellipsize="end"
-      tools:text="This Is The Title"
+      tools:text="Peter Jakson as Director"
       style="@style/Widget.CouchPotato.Poster"/>
 
-</com.f2prateek.couchpotato.ui.MovieScrollItem>
+</com.f2prateek.couchpotato.ui.CastScrollItem>

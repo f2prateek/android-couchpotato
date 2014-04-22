@@ -35,6 +35,13 @@ public class Configuration implements Parcelable {
     return imageSizes;
   }
 
+  public String getProfileImage(String profilePath) {
+    if (Strings.isBlank(profilePath)) {
+      return PLACEHOLDER;
+    }
+    return getImageSizes().getBaseUrl() + getImageSizes().getProfileSizes().get(1) + profilePath;
+  }
+
   public String getPosterUrl(String posterPath) {
     if (Strings.isBlank(posterPath)) {
       return PLACEHOLDER;

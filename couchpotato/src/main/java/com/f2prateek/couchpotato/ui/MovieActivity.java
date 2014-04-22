@@ -50,6 +50,7 @@ import com.f2prateek.couchpotato.Events;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.TMDbDatabase;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Backdrop;
+import com.f2prateek.couchpotato.data.api.tmdb.model.Cast;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Credits;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Images;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MinifiedMovie;
@@ -105,6 +106,7 @@ public class MovieActivity extends BaseActivity
   @InjectView(R.id.movie_header_backdrop) KenBurnsView movieBackdrop;
   @InjectView(R.id.movie_header_poster) ImageView moviePoster;
   @InjectView(R.id.similar_movies_container) LinearLayout similarMoviesContainer;
+  @InjectView(R.id.movie_cast_container) LinearLayout movieCastContainer;
   @InjectView(R.id.movie_scroll_container) NotifyingScrollView scrollView;
   @InjectView(R.id.movie_heading) LinearLayout movieHeading;
   @InjectView(R.id.movie_title) TextView movieTitle;
@@ -248,20 +250,32 @@ public class MovieActivity extends BaseActivity
         new EndlessObserver<List<MinifiedMovie>>() {
           @Override public void onNext(List<MinifiedMovie> similarMovies) {
             if (CollectionUtils.isNullOrEmpty(similarMovies)) {
+              similarMoviesContainer.setVisibility(View.GONE);
               return;
             }
-            for (int i = 0; i < similarMovies.size(); i++) {
-              getLayoutInflater().inflate(R.layout.scroll_movie_item, similarMoviesContainer);
-
-              MovieScrollItem view = (MovieScrollItem) similarMoviesContainer.getChildAt(i);
-              view.bindTo(similarMovies.get(i));
+            for (MinifiedMovie movie : similarMovies) {
+              MovieScrollItem child =
+                  (MovieScrollItem) getLayoutInflater().inflate(R.layout.scroll_movie_item,
+                      similarMoviesContainer, false);
+              similarMoviesContainer.addView(child);
+              child.bindTo(movie);
             }
           }
         }
     );
     tmDbDatabase.getMovieCredits(minifiedMovie.getId(), new EndlessObserver<Credits>() {
       @Override public void onNext(Credits credits) {
-        Ln.d(credits);
+        if (CollectionUtils.isNullOrEmpty(credits.getCasts())) {
+          movieCastContainer.setVisibility(View.GONE);
+          return;
+        }
+        for (Cast cast : credits.getCasts()) {
+          CastScrollItem child =
+              (CastScrollItem) getLayoutInflater().inflate(R.layout.scroll_cast_item,
+                  movieCastContainer, false);
+          movieCastContainer.addView(child);
+          child.bindTo(cast);
+        }
       }
     });
   }

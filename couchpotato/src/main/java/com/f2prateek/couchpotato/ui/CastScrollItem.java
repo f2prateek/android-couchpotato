@@ -18,35 +18,28 @@ package com.f2prateek.couchpotato.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 import com.f2prateek.couchpotato.CouchPotatoApplication;
-import com.f2prateek.couchpotato.Events;
 import com.f2prateek.couchpotato.R;
-import com.f2prateek.couchpotato.data.api.tmdb.model.MinifiedMovie;
-import com.squareup.otto.Bus;
+import com.f2prateek.couchpotato.data.api.tmdb.model.Cast;
 import com.squareup.picasso.Picasso;
 import javax.inject.Inject;
 
 /**
- * Same as {@link MovieGridItem}, but measured by height, not
+ * Same as {@link com.f2prateek.couchpotato.ui.MovieGridItem}, but measured by height, not
  * width.
  */
-public class MovieScrollItem extends RelativeLayout {
-  @InjectView(R.id.movie_poster) ImageView image;
-  @InjectView(R.id.movie_title) TextView title;
+public class CastScrollItem extends RelativeLayout {
+  @InjectView(R.id.cast_image) ImageView image;
+  @InjectView(R.id.cast_name) TextView name;
 
-  @Inject Bus bus;
   @Inject Picasso picasso;
 
-  private MinifiedMovie movie;
-
-  public MovieScrollItem(Context context, AttributeSet attrs) {
+  public CastScrollItem(Context context, AttributeSet attrs) {
     super(context, attrs);
     CouchPotatoApplication.get(context).inject(this);
   }
@@ -56,22 +49,8 @@ public class MovieScrollItem extends RelativeLayout {
     ButterKnife.inject(this);
   }
 
-  public void bindTo(MinifiedMovie movie) {
-    this.movie = movie;
-    picasso.load(movie.getPosterPath()).fit().centerCrop().into(image);
-    title.setText(movie.getTitle());
-  }
-
-  @OnClick(R.id.movie_poster) public void onImageClicked(View view) {
-    // We can't simply start the animation from here since we need to be able to override the
-    // normal activity animations
-    int[] screenLocation = new int[2];
-    view.getLocationOnScreen(screenLocation);
-
-    int width = view.getWidth();
-    int height = view.getHeight();
-
-    bus.post(
-        new Events.OnMovieClickedEvent(movie, height, width, screenLocation[0], screenLocation[1]));
+  public void bindTo(Cast cast) {
+    picasso.load(cast.getProfilePath()).fit().centerCrop().into(image);
+    name.setText(cast.getName());
   }
 }
