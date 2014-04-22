@@ -28,6 +28,7 @@ public class ProductionCompany implements Parcelable {
 
   @Override
   public boolean equals(Object obj) {
+    if (obj == this) return true;
     if (obj instanceof ProductionCompany) {
       return ((ProductionCompany) obj).getId() == id;
     }

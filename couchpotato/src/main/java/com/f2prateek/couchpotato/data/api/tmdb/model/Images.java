@@ -47,6 +47,7 @@ public class Images implements Parcelable, Configuration.Configurable {
 
   @Override
   public boolean equals(Object obj) {
+    if (obj == this) return true;
     if (obj instanceof Images) {
       return ((Images) obj).getId() == id;
     }

@@ -74,6 +74,7 @@ public class Poster implements Parcelable, Configuration.Configurable {
 
   @Override
   public boolean equals(Object obj) {
+    if (obj == this) return true;
     if (obj instanceof Poster) {
       return ((Poster) obj).getId() == id;
     }

@@ -28,6 +28,7 @@ public class Genre implements Parcelable {
 
   @Override
   public boolean equals(Object obj) {
+    if (obj == this) return true;
     if (obj instanceof Genre) {
       return ((Genre) obj).getId() == id;
     }

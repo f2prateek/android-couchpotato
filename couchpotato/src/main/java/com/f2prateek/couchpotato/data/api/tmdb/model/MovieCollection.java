@@ -62,6 +62,7 @@ public class MovieCollection implements Parcelable, Configuration.Configurable {
 
   @Override
   public boolean equals(Object obj) {
+    if (obj == this) return true;
     if (obj instanceof MovieCollection) {
       return ((MovieCollection) obj).getId() == id;
     }

@@ -181,6 +181,7 @@ public class Movie implements Parcelable, Configuration.Configurable {
 
   @Override
   public boolean equals(Object obj) {
+    if (obj == this) return true;
     if (obj instanceof Movie) {
       return ((Movie) obj).getId() == id;
     }

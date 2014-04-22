@@ -106,6 +106,7 @@ public class MinifiedMovie implements Parcelable, Configuration.Configurable {
 
   @Override
   public boolean equals(Object obj) {
+    if (obj == this) return true;
     if (obj instanceof MinifiedMovie) {
       return ((MinifiedMovie) obj).getId() == id;
     }
