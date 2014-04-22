@@ -16,7 +16,7 @@
   ~ limitations under the License.
   -->
 
-<com.f2prateek.couchpotato.ui.CastScrollItem
+<com.f2prateek.couchpotato.ui.MoviesCreditItem
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -45,9 +45,9 @@
       android:gravity="bottom"
       android:background="@drawable/text_background_gradient"
       android:padding="6dp"
-      android:singleLine="true"
       android:ellipsize="end"
-      tools:text="Peter Jakson as Director"
+      tools:text="Peter Jakson\nas Director"
+      android:lines="2"
       style="@style/Widget.CouchPotato.Poster"/>
 
-</com.f2prateek.couchpotato.ui.CastScrollItem>
+</com.f2prateek.couchpotato.ui.MoviesCreditItem>

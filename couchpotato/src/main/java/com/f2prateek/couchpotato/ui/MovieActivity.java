@@ -270,8 +270,8 @@ public class MovieActivity extends BaseActivity
           return;
         }
         for (Cast cast : credits.getCasts()) {
-          CastScrollItem child =
-              (CastScrollItem) getLayoutInflater().inflate(R.layout.scroll_cast_item,
+          MoviesCreditItem child =
+              (MoviesCreditItem) getLayoutInflater().inflate(R.layout.movies_credit_item,
                   movieCastContainer, false);
           movieCastContainer.addView(child);
           child.bindTo(cast);

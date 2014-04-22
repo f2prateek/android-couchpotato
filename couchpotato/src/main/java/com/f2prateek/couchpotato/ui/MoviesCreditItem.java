@@ -30,16 +30,15 @@ import com.squareup.picasso.Picasso;
 import javax.inject.Inject;
 
 /**
- * Same as {@link com.f2prateek.couchpotato.ui.MovieGridItem}, but measured by height, not
- * width.
+ * A view to show a person appearing in a movie's credits.
  */
-public class CastScrollItem extends RelativeLayout {
+public class MoviesCreditItem extends RelativeLayout {
   @InjectView(R.id.cast_image) ImageView image;
   @InjectView(R.id.cast_name) TextView name;
 
   @Inject Picasso picasso;
 
-  public CastScrollItem(Context context, AttributeSet attrs) {
+  public MoviesCreditItem(Context context, AttributeSet attrs) {
     super(context, attrs);
     CouchPotatoApplication.get(context).inject(this);
   }

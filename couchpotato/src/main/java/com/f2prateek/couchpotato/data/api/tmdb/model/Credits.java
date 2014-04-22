@@ -47,6 +47,7 @@ public class Credits implements Parcelable, Configuration.Configurable {
 
   @Override
   public boolean equals(Object obj) {
+    if (obj == this) return true;
     if (obj instanceof Credits) {
       return ((Credits) obj).getId() == mId;
     }
