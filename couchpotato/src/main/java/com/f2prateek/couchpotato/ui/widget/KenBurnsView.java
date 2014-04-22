@@ -91,7 +91,7 @@ public class KenBurnsView extends FrameLayout {
   }
 
   /**
-   * Triggers the KenBurns Animation.
+   * Animate the view KenBurns style
    */
   public void animate(View view) {
     float fromScale = pickScale();

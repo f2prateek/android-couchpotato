@@ -25,11 +25,10 @@ import android.animation.TimeInterpolator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -126,6 +125,7 @@ public class MovieActivity extends BaseActivity
   private int posterTopDelta; // distance from top of poster to top of thumbnail
   private float posterWidthScale; // ratio of poster width to thumbnail width
   private float posterHeightScale; // ratio of poster height to thumbnail width
+  private int actionBarGradientColor = Color.BLACK;
 
   /** Create an intent to launch this activity. */
   public static Intent createIntent(Context context, MinifiedMovie movie, int left, int top,
@@ -292,26 +292,9 @@ public class MovieActivity extends BaseActivity
 
             setActionBarTitleColor(colorScheme.getPrimaryText());
 
-            int[] colors = new int[2];
-            colors[0] = colorScheme.getPrimaryAccent();
-            colors[1] = getResources().getColor(android.R.color.transparent);
-            GradientDrawable gradientDrawable =
-                new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, colors);
-            // Simply setting a foreground drawable on movieHeader doesn't let us control the
-            // height of the gradient, so set it in a view whose height is defined in the layout
-            // instead
-            movieHeaderGradient.setAlpha(0f);
-            movieHeaderGradient.setBackground(gradientDrawable);
-            movieHeaderGradient.animate().alpha(1).setDuration(duration);
+            actionBarGradientColor = colorScheme.getPrimaryAccent();
           }
         });
-  }
-
-  private TransitionDrawable animateToDrawable(Drawable start, Drawable end) {
-    Drawable layers[] = new Drawable[2];
-    layers[0] = start;
-    layers[1] = end;
-    return new TransitionDrawable(layers);
   }
 
   @Override protected void inflateLayout(ViewGroup container) {
@@ -540,5 +523,17 @@ public class MovieActivity extends BaseActivity
     interpolate(moviePoster, actionBarIconView, smoothInterpolator.getInterpolation(ratio));
     float alpha = clamp(5.0F * ratio - 4.0F, 0.0F, 1.0F);
     setTitleAlpha(alpha);
+    setActionBarGradient(alpha);
+  }
+
+  private void setActionBarGradient(float alpha) {
+    int[] colors = new int[2];
+    colors[0] = actionBarGradientColor;
+    colors[1] = getResources().getColor(android.R.color.transparent);
+    GradientDrawable gradientDrawable =
+        new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, colors);
+
+    movieHeaderGradient.setAlpha(alpha);
+    movieHeaderGradient.setBackground(gradientDrawable);
   }
 }
