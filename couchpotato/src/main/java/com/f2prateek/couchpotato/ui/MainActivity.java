@@ -41,13 +41,10 @@ public class MainActivity extends BaseActivity {
   }
 
   @Subscribe public void onMovieClicked(Events.OnMovieClickedEvent event) {
-    int[] screenLocation = new int[2];
-    event.source.getLocationOnScreen(screenLocation);
     int orientation = getResources().getConfiguration().orientation;
 
-    startActivity(
-        MovieActivity.createIntent(this, event.movie, screenLocation[0], screenLocation[1],
-            event.source.getWidth(), event.source.getHeight(), orientation)
+    startActivity(MovieActivity.createIntent(this, event.movie, event.left, event.top, event.width,
+            event.height, orientation)
     );
 
     // Override transitions: we don't want the normal window animations

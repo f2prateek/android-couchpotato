@@ -16,18 +16,25 @@
 
 package com.f2prateek.couchpotato;
 
-import android.view.View;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MinifiedMovie;
 
 public class Events {
 
   public static class OnMovieClickedEvent {
-    public final View source;
+    // View Attributes for Animation
+    public final int height;
+    public final int width;
+    public final int left;
+    public final int top;
+
     public final MinifiedMovie movie;
 
-    public OnMovieClickedEvent(View source, MinifiedMovie movie) {
-      this.source = source;
+    public OnMovieClickedEvent(MinifiedMovie movie, int height, int width, int left, int top) {
       this.movie = movie;
+      this.height = height;
+      this.width = width;
+      this.left = left;
+      this.top = top;
     }
   }
 }

@@ -61,6 +61,13 @@ public class MoviesGridItemView extends FrameLayout {
   @OnClick(R.id.gallery_item_image) public void onImageClicked(View view) {
     // We can't simply start the animation from here since we need to be able to override the
     // normal activity animations
-    bus.post(new Events.OnMovieClickedEvent(view, movie));
+    int[] screenLocation = new int[2];
+    view.getLocationOnScreen(screenLocation);
+
+    int width = view.getWidth();
+    int height = view.getHeight();
+
+    bus.post(
+        new Events.OnMovieClickedEvent(movie, height, width, screenLocation[0], screenLocation[1]));
   }
 }
