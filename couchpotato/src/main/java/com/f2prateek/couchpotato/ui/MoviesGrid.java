@@ -41,7 +41,6 @@ import javax.inject.Inject;
 import rx.Subscription;
 
 public class MoviesGrid extends BetterViewAnimator {
-
   private static final int LOAD_THRESHOLD = 4;
   private final AtomicInteger page = new AtomicInteger(1);
   private final AtomicBoolean loading = new AtomicBoolean(false);
@@ -141,7 +140,7 @@ public class MoviesGrid extends BetterViewAnimator {
     }
 
     @Override public void bindView(MinifiedMovie item, int position, View view) {
-      ((MoviesGridItemView) view).bindTo(item, picasso);
+      ((MoviesGridItemView) view).bindTo(item);
     }
   }
 }

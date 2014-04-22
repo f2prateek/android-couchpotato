@@ -38,7 +38,9 @@ public class MoviesGridItemView extends FrameLayout {
   @InjectView(R.id.gallery_item_title) TextView title;
 
   @Inject Bus bus;
-  MinifiedMovie movie;
+  @Inject Picasso picasso;
+
+  private MinifiedMovie movie;
 
   public MoviesGridItemView(Context context, AttributeSet attrs) {
     super(context, attrs);
@@ -50,12 +52,9 @@ public class MoviesGridItemView extends FrameLayout {
     ButterKnife.inject(this);
   }
 
-  public void bindTo(MinifiedMovie movie, Picasso picasso) {
+  public void bindTo(MinifiedMovie movie) {
     this.movie = movie;
-    picasso.load(movie.getPosterPath())
-        .fit()
-        .centerCrop()
-        .into(image);
+    picasso.load(movie.getPosterPath()).fit().centerCrop().into(image);
     title.setText(movie.getTitle());
   }
 
