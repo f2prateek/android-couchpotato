@@ -22,7 +22,7 @@ import javax.inject.Singleton;
 
 @Module(
     injects = {
-        MainActivity.class, MoviesGrid.class, MovieGridItem.class, MoviesCreditItem.class,
+        MainActivity.class, MoviesGrid.class, MovieGridItem.class, MovieCrewItem.class,
         NavigationDrawer.class, MovieActivity.class
     },
     complete = false,

@@ -253,13 +253,14 @@ public class MovieActivity extends BaseActivity
               similarMoviesContainer.setVisibility(View.GONE);
               return;
             }
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                getResources().getDimensionPixelOffset(R.dimen.poster_item_width),
+                ViewGroup.LayoutParams.MATCH_PARENT);
             for (MinifiedMovie movie : similarMovies) {
               MovieGridItem child =
-                  (MovieGridItem) getLayoutInflater().inflate(R.layout.grid_movie_item, null,
-                      false);
-              child.setLayoutParams(new FrameLayout.LayoutParams(
-                  getResources().getDimensionPixelOffset(R.dimen.grid_column_width),
-                  ViewGroup.LayoutParams.MATCH_PARENT));
+                  (MovieGridItem) getLayoutInflater().inflate(R.layout.grid_movie_item,
+                      similarMoviesContainer, false);
+              child.setLayoutParams(params);
               similarMoviesContainer.addView(child);
               child.bindTo(movie);
             }
@@ -272,10 +273,14 @@ public class MovieActivity extends BaseActivity
           movieCastContainer.setVisibility(View.GONE);
           return;
         }
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+            getResources().getDimensionPixelOffset(R.dimen.poster_item_width),
+            ViewGroup.LayoutParams.MATCH_PARENT);
         for (Cast cast : credits.getCasts()) {
-          MoviesCreditItem child =
-              (MoviesCreditItem) getLayoutInflater().inflate(R.layout.movies_credit_item, null,
-                  false);
+          MovieCrewItem child =
+              (MovieCrewItem) getLayoutInflater().inflate(R.layout.movie_crew_item,
+                  movieCastContainer, false);
+          child.setLayoutParams(params);
           movieCastContainer.addView(child);
           child.bindTo(cast);
         }
@@ -419,7 +424,7 @@ public class MovieActivity extends BaseActivity
       @Override public void onAnimationEnd(Animator animation) {
         super.onAnimationEnd(animation);
         // Animate image back to thumbnail size/location
-        moviePoster.animate().setDuration(ANIMATION_DURATION).
+        moviePoster.animate().setDuration(HALF_ANIMATION_DURATION).
             scaleX(posterWidthScale).scaleY(posterHeightScale).
             translationX(posterLeftDelta).translationY(posterTopDelta).
             withEndAction(endAction);

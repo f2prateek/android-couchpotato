@@ -18,27 +18,28 @@ package com.f2prateek.couchpotato.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.f2prateek.couchpotato.CouchPotatoApplication;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Cast;
+import com.f2prateek.ln.Ln;
 import com.squareup.picasso.Picasso;
 import javax.inject.Inject;
 
 /**
  * A view to show a person appearing in a movie's credits.
  */
-public class MoviesCreditItem extends RelativeLayout {
-  @InjectView(R.id.cast_image) ImageView image;
-  @InjectView(R.id.cast_name) TextView name;
+public class MovieCrewItem extends FrameLayout {
+  @InjectView(R.id.crew_poster) ImageView poster;
+  @InjectView(R.id.crew_name) TextView name;
 
   @Inject Picasso picasso;
 
-  public MoviesCreditItem(Context context, AttributeSet attrs) {
+  public MovieCrewItem(Context context, AttributeSet attrs) {
     super(context, attrs);
     CouchPotatoApplication.get(context).inject(this);
   }
@@ -49,7 +50,13 @@ public class MoviesCreditItem extends RelativeLayout {
   }
 
   public void bindTo(Cast cast) {
-    picasso.load(cast.getProfilePath()).fit().centerCrop().into(image);
+    picasso.load(cast.getProfilePath()).fit().centerCrop().into(poster);
     name.setText(cast.getName());
+  }
+
+  @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    Ln.d("Poster width = %s, Poster height = %s", poster.getWidth(), poster.getHeight());
+    Ln.d("Text width = %s", name.getWidth());
   }
 }

@@ -16,38 +16,35 @@
   ~ limitations under the License.
   -->
 
-<com.f2prateek.couchpotato.ui.MoviesCreditItem
+<com.f2prateek.couchpotato.ui.MovieCrewItem
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/poster_background">
 
   <com.f2prateek.couchpotato.ui.widget.ForegroundAspectRatioImageView
-      android:id="@+id/cast_image"
+      android:id="@+id/crew_poster"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:foreground="@drawable/image_overlay"
       android:clickable="true"
       app:aspectRatioEnabled="true"
-      app:aspectRatio="0.667"
-      app:dominantMeasurement="height"
-      tools:src="#f00"/>
+      app:aspectRatio="1.5"
+      app:dominantMeasurement="width"
+      android:src="#f00"/>
 
   <TextView
-      android:id="@+id/cast_name"
+      android:id="@+id/crew_name"
       android:layout_width="match_parent"
       android:layout_height="48dp"
-      android:layout_alignLeft="@+id/movie_poster"
-      android:layout_alignRight="@+id/movie_poster"
-      android:layout_alignParentBottom="true"
+      android:layout_gravity="bottom"
       android:gravity="bottom"
       android:background="@drawable/text_background_gradient"
       android:padding="6dp"
+      android:singleLine="true"
       android:ellipsize="end"
-      tools:text="Peter Jakson\nas Director"
-      android:lines="2"
+      tools:text="This Is The Title"
       style="@style/Widget.CouchPotato.Poster"/>
 
-</com.f2prateek.couchpotato.ui.MoviesCreditItem>
+</com.f2prateek.couchpotato.ui.MovieCrewItem>

@@ -32,7 +32,6 @@ import com.f2prateek.couchpotato.data.rx.EndlessObserver;
 import com.f2prateek.couchpotato.ui.misc.BindableAdapter;
 import com.f2prateek.couchpotato.ui.widget.BetterViewAnimator;
 import com.squareup.picasso.Picasso;
-import hugo.weaving.DebugLog;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -117,7 +116,6 @@ public class MoviesGrid extends BetterViewAnimator {
       this.picasso = picasso;
     }
 
-    @DebugLog
     public void add(List<MinifiedMovie> movies) {
       this.movies.addAll(movies);
       notifyDataSetChanged();
