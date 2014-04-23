@@ -32,7 +32,7 @@ public class MainActivity extends BaseActivity {
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    // Start in Explore
+    // Start in Popular
     getLayoutInflater().inflate(R.layout.movies_grid, content);
   }
 

@@ -28,7 +28,6 @@ import com.f2prateek.couchpotato.R;
 import com.f2prateek.ln.Ln;
 
 public class NavigationDrawer extends GridLayout {
-
   @InjectView(R.id.couchpotato_section) LinearLayout couchPotatoSection;
 
   public NavigationDrawer(Context context, AttributeSet attrs) {
