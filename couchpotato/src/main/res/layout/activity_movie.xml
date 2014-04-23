@@ -39,51 +39,45 @@
           android:layout_height="@dimen/movie_header_height"
           android:orientation="vertical"/>
 
-      <LinearLayout
+      <TextView
+          android:id="@+id/movie_title"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:orientation="vertical">
+          android:textSize="32sp"
+          android:ellipsize="end"
+          android:paddingRight="@dimen/activity_horizontal_margin"
+          android:paddingLeft="@dimen/activity_horizontal_margin"
+          android:paddingTop="@dimen/holo_gap_half"
+          android:paddingBottom="@dimen/holo_gap_half"
+          android:gravity="center"
+          tools:text="Fight Club"/>
 
-        <TextView
-            android:id="@+id/movie_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="32sp"
-            android:ellipsize="end"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/holo_gap_half"
-            android:paddingBottom="@dimen/holo_gap_half"
-            android:gravity="center"
-            tools:text="Fight Club"/>
+      <TextView
+          android:id="@+id/movie_tagline"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:textSize="18sp"
+          android:gravity="center"
+          android:fontFamily="sans-serif-light"
+          android:paddingRight="@dimen/activity_horizontal_margin"
+          android:paddingTop="@dimen/holo_gap_half"
+          android:paddingBottom="@dimen/holo_gap_half"
+          android:paddingLeft="@dimen/activity_horizontal_margin"
+          tools:text="How much can you know about yourself if you've never been in a fight?"/>
 
-        <TextView
-            android:id="@+id/movie_tagline"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:fontFamily="sans-serif-light"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/holo_gap_half"
-            android:paddingBottom="@dimen/holo_gap_half"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            tools:text="How much can you know about yourself if you've never been in a fight?"/>
+      <TextView
+          android:id="@+id/movie_plot"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:textSize="18sp"
+          android:gravity="center"
+          android:fontFamily="sans-serif-thin"
+          android:paddingRight="@dimen/activity_horizontal_margin"
+          android:paddingLeft="@dimen/activity_horizontal_margin"
+          android:paddingTop="@dimen/holo_gap_half"
+          android:paddingBottom="@dimen/holo_gap_half"
+          tools:text="A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy. Their concept catches on, with underground fight clubs forming in every town, until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion."/>
 
-        <TextView
-            android:id="@+id/movie_plot"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:fontFamily="sans-serif-thin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/holo_gap_half"
-            android:paddingBottom="@dimen/holo_gap_half"
-            tools:text="A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy. Their concept catches on, with underground fight clubs forming in every town, until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion."/>
-
-      </LinearLayout>
 
       <TextView
           android:id="@+id/movie_cast_header"
