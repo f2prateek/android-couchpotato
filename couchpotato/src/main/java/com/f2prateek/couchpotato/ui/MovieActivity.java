@@ -373,11 +373,13 @@ public class MovieActivity extends BaseActivity
 
             setActionBarTitleColor(colorScheme.getPrimaryText());
             actionBarGradientColor = colorScheme.getPrimaryAccent();
-            animateBackgroundColor(getWindow().getDecorView(), transparent,
-                colorScheme.getPrimaryAccent(), duration);
+            // Rather than setting the background completely on the window, set it only on the views
+            // as needed. This has two advantages - no overdraw, and for horizontal scroll views
+            // that don't fill up the width can have a distinct background to indicate a segment
             ButterKnife.apply(colorSchemedText, new ButterKnife.Action<TextView>() {
               @Override public void apply(TextView view, int index) {
                 animateTextColor(view, colorScheme.getPrimaryText(), duration);
+                animateBackgroundColor(view, transparent, colorScheme.getPrimaryAccent(), duration);
               }
             });
 
