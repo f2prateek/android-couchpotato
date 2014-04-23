@@ -45,7 +45,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.InjectViews;
 import com.f2prateek.couchpotato.Events;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.TMDbDatabase;
@@ -123,6 +125,11 @@ public class MovieActivity extends BaseActivity
   @InjectView(R.id.movie_secondary) FrameLayout movieSecondary;
   @InjectView(R.id.movie_secondary_accent) FrameLayout movieSecondaryAccent;
   @InjectView(R.id.movie_tertiary_accent) FrameLayout movieTertiaryAccent;
+
+  @InjectViews({
+      R.id.similar_movies_header, R.id.movie_cast_header, R.id.movie_crew_header,
+      R.id.movie_videos_header
+  }) List<TextView> headers;
 
   @Inject TMDbDatabase tmDbDatabase;
   @Inject Picasso picasso;
@@ -360,9 +367,9 @@ public class MovieActivity extends BaseActivity
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new EndlessObserver<ColorScheme>() {
-          @Override public void onNext(ColorScheme colorScheme) {
-            long duration = animate ? ANIMATION_DURATION : 0;
-            int transparent = getResources().getColor(android.R.color.transparent);
+          @Override public void onNext(final ColorScheme colorScheme) {
+            final long duration = animate ? ANIMATION_DURATION : 0;
+            final int transparent = getResources().getColor(android.R.color.transparent);
             animateBackgroundColor(movieHeading, transparent, colorScheme.getPrimaryAccent(),
                 duration);
             animateTextColor(movieTitle, colorScheme.getPrimaryText(), duration);
@@ -378,6 +385,18 @@ public class MovieActivity extends BaseActivity
             setActionBarTitleColor(colorScheme.getPrimaryText());
 
             actionBarGradientColor = colorScheme.getPrimaryAccent();
+
+            ButterKnife.apply(headers, new ButterKnife.Action<TextView>() {
+              @Override public void apply(TextView view, int index) {
+                animateBackgroundColor(view, transparent, colorScheme.getPrimaryAccent(),
+                    duration);
+              }
+            });
+            ButterKnife.apply(headers, new ButterKnife.Action<TextView>() {
+              @Override public void apply(TextView view, int index) {
+                animateTextColor(view, colorScheme.getPrimaryText(), duration);
+              }
+            });
           }
         });
   }
