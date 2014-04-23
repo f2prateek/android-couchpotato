@@ -87,7 +87,7 @@
       </LinearLayout>
 
       <TextView
-          android:id="@+id/movie_cast_heading"
+          android:id="@+id/movie_cast_header"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/cast"
@@ -107,7 +107,7 @@
       </HorizontalScrollView>
 
       <TextView
-          android:id="@+id/movie_crew_heading"
+          android:id="@+id/movie_crew_header"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/crew"
@@ -127,7 +127,7 @@
       </HorizontalScrollView>
 
       <TextView
-          android:id="@+id/movie_videos_heading"
+          android:id="@+id/movie_videos_header"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/videos"
@@ -147,7 +147,7 @@
       </HorizontalScrollView>
 
       <TextView
-          android:id="@+id/similar_movies_heading"
+          android:id="@+id/similar_movies_header"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/similar_movies"

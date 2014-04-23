@@ -106,9 +106,14 @@ public class MovieActivity extends BaseActivity
   @InjectView(R.id.movie_header_gradient) View movieHeaderGradient;
   @InjectView(R.id.movie_header_backdrop) KenBurnsView movieBackdrop;
   @InjectView(R.id.movie_header_poster) ImageView moviePoster;
+
+  @InjectView(R.id.similar_movies_header) View similarMoviesHeader;
   @InjectView(R.id.similar_movies_container) LinearLayout similarMoviesContainer;
+  @InjectView(R.id.movie_cast_header) View movieCastHeader;
   @InjectView(R.id.movie_cast_container) LinearLayout movieCastContainer;
+  @InjectView(R.id.movie_crew_header) View movieCrewHeader;
   @InjectView(R.id.movie_crew_container) LinearLayout movieCrewContainer;
+  @InjectView(R.id.movie_videos_header) View movieVideosHeader;
   @InjectView(R.id.movie_videos_container) LinearLayout movieVideosContainer;
   @InjectView(R.id.movie_scroll_container) NotifyingScrollView scrollView;
   @InjectView(R.id.movie_heading) LinearLayout movieHeading;
@@ -255,6 +260,7 @@ public class MovieActivity extends BaseActivity
           @Override public void onNext(List<MinifiedMovie> similarMovies) {
             if (CollectionUtils.isNullOrEmpty(similarMovies)) {
               similarMoviesContainer.setVisibility(View.GONE);
+              similarMoviesHeader.setVisibility(View.GONE);
             } else {
               FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                   getResources().getDimensionPixelOffset(R.dimen.poster_item_width),
@@ -275,6 +281,7 @@ public class MovieActivity extends BaseActivity
           @Override public void onNext(List<Video> videos) {
             if (CollectionUtils.isNullOrEmpty(videos)) {
               movieVideosContainer.setVisibility(View.GONE);
+              movieVideosHeader.setVisibility(View.GONE);
             } else {
               FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                   getResources().getDimensionPixelOffset(R.dimen.trailer_item_width),
@@ -300,6 +307,7 @@ public class MovieActivity extends BaseActivity
 
             if (CollectionUtils.isNullOrEmpty(credits.getCasts())) {
               movieCastContainer.setVisibility(View.GONE);
+              movieCastHeader.setVisibility(View.GONE);
             } else {
               for (Cast cast : credits.getCasts()) {
                 MovieCrewItem child =
@@ -313,6 +321,7 @@ public class MovieActivity extends BaseActivity
 
             if (CollectionUtils.isNullOrEmpty(credits.getCrews())) {
               movieCrewContainer.setVisibility(View.GONE);
+              movieCrewHeader.setVisibility(View.GONE);
             } else {
               for (Crew crew : credits.getCrews()) {
                 MovieCrewItem child =
