@@ -70,8 +70,6 @@
             android:paddingTop="@dimen/holo_gap_half"
             android:paddingBottom="@dimen/holo_gap_half"
             android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:visibility="gone"
-            tools:visibility="visible"
             tools:text="How much can you know about yourself if you've never been in a fight?"/>
 
         <TextView
@@ -85,8 +83,6 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/holo_gap_half"
             android:paddingBottom="@dimen/holo_gap_half"
-            android:visibility="gone"
-            tools:visibility="visible"
             tools:text="A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy. Their concept catches on, with underground fight clubs forming in every town, until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion."/>
 
       </LinearLayout>
@@ -99,8 +95,7 @@
             android:id="@+id/similar_movies_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone"/>
+            android:orientation="horizontal"/>
 
       </HorizontalScrollView>
 
@@ -112,8 +107,7 @@
             android:id="@+id/movie_cast_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone"/>
+            android:orientation="horizontal"/>
 
       </HorizontalScrollView>
 
@@ -125,8 +119,7 @@
             android:id="@+id/movie_crew_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone"/>
+            android:orientation="horizontal"/>
 
       </HorizontalScrollView>
 

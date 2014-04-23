@@ -226,12 +226,14 @@ public class MovieActivity extends BaseActivity
     tmDbDatabase.getMovie(minifiedMovie.getId(), new EndlessObserver<Movie>() {
       @Override public void onNext(Movie movie) {
         if (!Strings.isBlank(movie.getTagline())) {
-          movieTagline.setVisibility(View.VISIBLE);
           movieTagline.setText(movie.getTagline());
+        } else {
+          hide(movieTagline);
         }
         if (!Strings.isBlank(movie.getOverview())) {
-          moviePlot.setVisibility(View.VISIBLE);
           moviePlot.setText(movie.getOverview());
+        } else {
+          hide(moviePlot);
         }
       }
     });
@@ -250,7 +252,6 @@ public class MovieActivity extends BaseActivity
         new EndlessObserver<List<MinifiedMovie>>() {
           @Override public void onNext(List<MinifiedMovie> similarMovies) {
             if (!CollectionUtils.isNullOrEmpty(similarMovies)) {
-              similarMoviesContainer.setVisibility(View.VISIBLE);
               FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                   getResources().getDimensionPixelOffset(R.dimen.poster_item_width),
                   ViewGroup.LayoutParams.MATCH_PARENT);
@@ -262,6 +263,8 @@ public class MovieActivity extends BaseActivity
                 similarMoviesContainer.addView(child);
                 child.bindTo(movie);
               }
+            } else {
+              hide(similarMoviesContainer);
             }
           }
         }
@@ -273,7 +276,6 @@ public class MovieActivity extends BaseActivity
             ViewGroup.LayoutParams.MATCH_PARENT);
 
         if (!CollectionUtils.isNullOrEmpty(credits.getCasts())) {
-          movieCastContainer.setVisibility(View.VISIBLE);
           for (Cast cast : credits.getCasts()) {
             MovieCrewItem child =
                 (MovieCrewItem) getLayoutInflater().inflate(R.layout.movie_crew_item,
@@ -282,10 +284,11 @@ public class MovieActivity extends BaseActivity
             movieCastContainer.addView(child);
             child.bindTo(cast);
           }
+        } else {
+          hide(movieCastContainer);
         }
 
         if (!CollectionUtils.isNullOrEmpty(credits.getCrews())) {
-          movieCastContainer.setVisibility(View.VISIBLE);
           for (Crew crew : credits.getCrews()) {
             MovieCrewItem child =
                 (MovieCrewItem) getLayoutInflater().inflate(R.layout.movie_crew_item,
@@ -294,12 +297,21 @@ public class MovieActivity extends BaseActivity
             movieCrewContainer.addView(child);
             child.bindTo(crew);
           }
+        } else {
+          hide(movieCrewContainer);
         }
       }
     });
   }
 
-  /** Use the movie's poster to find a color scheme and update our views accordingly. */
+  private void hide(final View view) {
+    view.setVisibility(View.INVISIBLE);
+  }
+
+  /**
+   * Use the movie's poster to find a color scheme and update our views accordingly.
+   * Don't animate if we're being re-created
+   */
   private void updateColorScheme(final boolean animate) {
     Observable.from(minifiedMovie.getPosterPath())
         .map(new Func1<String, Bitmap>() {
