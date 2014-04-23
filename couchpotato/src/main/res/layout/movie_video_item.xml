@@ -42,7 +42,7 @@
       android:layout_gravity="bottom"
       android:gravity="bottom"
       android:background="@drawable/text_background_gradient"
-      android:padding="6dp"
+      android:padding="@dimen/holo_gap_half"
       android:singleLine="true"
       android:ellipsize="end"
       tools:text="This Is The Title"

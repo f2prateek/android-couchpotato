@@ -86,6 +86,14 @@
 
       </LinearLayout>
 
+      <TextView
+          android:id="@+id/movie_cast_heading"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/cast"
+          android:layout_marginLeft="@dimen/holo_gap"
+          style="@style/Widget.CouchPotato.Drawer.Header"/>
+
       <HorizontalScrollView
           android:layout_width="match_parent"
           android:layout_height="wrap_content">
@@ -97,6 +105,14 @@
             android:orientation="horizontal"/>
 
       </HorizontalScrollView>
+
+      <TextView
+          android:id="@+id/movie_crew_heading"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/crew"
+          android:layout_marginLeft="@dimen/holo_gap"
+          style="@style/Widget.CouchPotato.Drawer.Header"/>
 
       <HorizontalScrollView
           android:layout_width="match_parent"
@@ -110,6 +126,14 @@
 
       </HorizontalScrollView>
 
+      <TextView
+          android:id="@+id/movie_videos_heading"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/videos"
+          android:layout_marginLeft="@dimen/holo_gap"
+          style="@style/Widget.CouchPotato.Drawer.Header"/>
+
       <HorizontalScrollView
           android:layout_width="match_parent"
           android:layout_height="wrap_content">
@@ -121,6 +145,14 @@
             android:orientation="horizontal"/>
 
       </HorizontalScrollView>
+
+      <TextView
+          android:id="@+id/similar_movies_heading"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/similar_movies"
+          android:layout_marginLeft="@dimen/holo_gap"
+          style="@style/Widget.CouchPotato.Drawer.Header"/>
 
       <HorizontalScrollView
           android:layout_width="match_parent"
