@@ -118,7 +118,6 @@ public class MovieActivity extends BaseActivity
   @InjectView(R.id.movie_videos_header) View movieVideosHeader;
   @InjectView(R.id.movie_videos_container) LinearLayout movieVideosContainer;
   @InjectView(R.id.movie_scroll_container) NotifyingScrollView scrollView;
-  @InjectView(R.id.movie_heading) LinearLayout movieHeading;
   @InjectView(R.id.movie_title) TextView movieTitle;
   @InjectView(R.id.movie_tagline) TextView movieTagline;
   @InjectView(R.id.movie_plot) TextView moviePlot;
@@ -128,8 +127,9 @@ public class MovieActivity extends BaseActivity
 
   @InjectViews({
       R.id.similar_movies_header, R.id.movie_cast_header, R.id.movie_crew_header,
-      R.id.movie_videos_header
-  }) List<TextView> headers;
+      R.id.movie_videos_header, R.id.movie_title, R.id.movie_title, R.id.movie_plot,
+      R.id.movie_tagline
+  }) List<TextView> colorSchemedText;
 
   @Inject TMDbDatabase tmDbDatabase;
   @Inject Picasso picasso;
@@ -370,33 +370,24 @@ public class MovieActivity extends BaseActivity
           @Override public void onNext(final ColorScheme colorScheme) {
             final long duration = animate ? ANIMATION_DURATION : 0;
             final int transparent = getResources().getColor(android.R.color.transparent);
-            animateBackgroundColor(movieHeading, transparent, colorScheme.getPrimaryAccent(),
-                duration);
-            animateTextColor(movieTitle, colorScheme.getPrimaryText(), duration);
-            animateTextColor(movieTagline, colorScheme.getPrimaryText(), duration);
-            animateTextColor(moviePlot, colorScheme.getPrimaryText(), duration);
+
+            setActionBarTitleColor(colorScheme.getPrimaryText());
+            actionBarGradientColor = colorScheme.getPrimaryAccent();
+            animateBackgroundColor(getWindow().getDecorView(), transparent,
+                colorScheme.getPrimaryAccent(), duration);
+            ButterKnife.apply(colorSchemedText, new ButterKnife.Action<TextView>() {
+              @Override public void apply(TextView view, int index) {
+                animateTextColor(view, colorScheme.getPrimaryText(), duration);
+              }
+            });
+
+            // todo: only for testing colors, delete these three for later
             animateBackgroundColor(movieSecondary, transparent, colorScheme.getSecondaryText(),
                 duration);
             animateBackgroundColor(movieSecondaryAccent, transparent,
                 colorScheme.getSecondaryAccent(), duration);
             animateBackgroundColor(movieTertiaryAccent, transparent,
                 colorScheme.getTertiaryAccent(), duration);
-
-            setActionBarTitleColor(colorScheme.getPrimaryText());
-
-            actionBarGradientColor = colorScheme.getPrimaryAccent();
-
-            ButterKnife.apply(headers, new ButterKnife.Action<TextView>() {
-              @Override public void apply(TextView view, int index) {
-                animateBackgroundColor(view, transparent, colorScheme.getPrimaryAccent(),
-                    duration);
-              }
-            });
-            ButterKnife.apply(headers, new ButterKnife.Action<TextView>() {
-              @Override public void apply(TextView view, int index) {
-                animateTextColor(view, colorScheme.getPrimaryText(), duration);
-              }
-            });
           }
         });
   }
