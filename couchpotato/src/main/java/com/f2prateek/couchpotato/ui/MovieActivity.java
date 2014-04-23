@@ -225,15 +225,15 @@ public class MovieActivity extends BaseActivity
 
     tmDbDatabase.getMovie(minifiedMovie.getId(), new EndlessObserver<Movie>() {
       @Override public void onNext(Movie movie) {
-        if (!Strings.isBlank(movie.getTagline())) {
+        if (Strings.isBlank(movie.getTagline())) {
+          movieTagline.setVisibility(View.GONE);
+        } else {
           movieTagline.setText(movie.getTagline());
-        } else {
-          hide(movieTagline);
         }
-        if (!Strings.isBlank(movie.getOverview())) {
-          moviePlot.setText(movie.getOverview());
+        if (Strings.isBlank(movie.getOverview())) {
+          moviePlot.setVisibility(View.GONE);
         } else {
-          hide(moviePlot);
+          moviePlot.setText(movie.getOverview());
         }
       }
     });
@@ -251,7 +251,9 @@ public class MovieActivity extends BaseActivity
     tmDbDatabase.getSimilarMovies(minifiedMovie.getId(),
         new EndlessObserver<List<MinifiedMovie>>() {
           @Override public void onNext(List<MinifiedMovie> similarMovies) {
-            if (!CollectionUtils.isNullOrEmpty(similarMovies)) {
+            if (CollectionUtils.isNullOrEmpty(similarMovies)) {
+              similarMoviesContainer.setVisibility(View.GONE);
+            } else {
               FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                   getResources().getDimensionPixelOffset(R.dimen.poster_item_width),
                   ViewGroup.LayoutParams.MATCH_PARENT);
@@ -263,8 +265,6 @@ public class MovieActivity extends BaseActivity
                 similarMoviesContainer.addView(child);
                 child.bindTo(movie);
               }
-            } else {
-              hide(similarMoviesContainer);
             }
           }
         }
@@ -275,7 +275,9 @@ public class MovieActivity extends BaseActivity
             getResources().getDimensionPixelOffset(R.dimen.poster_item_width),
             ViewGroup.LayoutParams.MATCH_PARENT);
 
-        if (!CollectionUtils.isNullOrEmpty(credits.getCasts())) {
+        if (CollectionUtils.isNullOrEmpty(credits.getCasts())) {
+          movieCastContainer.setVisibility(View.GONE);
+        } else {
           for (Cast cast : credits.getCasts()) {
             MovieCrewItem child =
                 (MovieCrewItem) getLayoutInflater().inflate(R.layout.movie_crew_item,
@@ -284,11 +286,11 @@ public class MovieActivity extends BaseActivity
             movieCastContainer.addView(child);
             child.bindTo(cast);
           }
-        } else {
-          hide(movieCastContainer);
         }
 
-        if (!CollectionUtils.isNullOrEmpty(credits.getCrews())) {
+        if (CollectionUtils.isNullOrEmpty(credits.getCrews())) {
+          movieCrewContainer.setVisibility(View.GONE);
+        } else {
           for (Crew crew : credits.getCrews()) {
             MovieCrewItem child =
                 (MovieCrewItem) getLayoutInflater().inflate(R.layout.movie_crew_item,
@@ -297,15 +299,9 @@ public class MovieActivity extends BaseActivity
             movieCrewContainer.addView(child);
             child.bindTo(crew);
           }
-        } else {
-          hide(movieCrewContainer);
         }
       }
     });
-  }
-
-  private void hide(final View view) {
-    view.setVisibility(View.INVISIBLE);
   }
 
   /**
