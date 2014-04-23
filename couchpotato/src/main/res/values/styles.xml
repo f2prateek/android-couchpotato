@@ -81,6 +81,15 @@
     <item name="android:background">@drawable/drawer_header_divider</item>
   </style>
 
+  <style name="Widget.CouchPotato.Text.Header" parent="None">
+    <item name="android:paddingBottom">2dp</item>
+    <item name="android:textColor">?android:attr/textColorSecondary</item>
+    <item name="android:textAllCaps">true</item>
+    <item name="android:textSize">13sp</item>
+    <item name="android:layout_marginTop">16dp</item>
+    <item name="android:layout_marginBottom">2dp</item>
+  </style>
+
   <style name="Widget.CouchPotato.Drawer.RowWidget" parent="None">
     <item name="android:minHeight">26dp</item>
     <item name="android:layout_marginTop">4dp</item>

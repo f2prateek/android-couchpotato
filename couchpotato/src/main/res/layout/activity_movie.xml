@@ -92,7 +92,7 @@
           android:layout_height="wrap_content"
           android:text="@string/cast"
           android:layout_marginLeft="@dimen/holo_gap"
-          style="@style/Widget.CouchPotato.Drawer.Header"/>
+          style="@style/Widget.CouchPotato.Text.Header"/>
 
       <HorizontalScrollView
           android:layout_width="match_parent"
@@ -112,7 +112,7 @@
           android:layout_height="wrap_content"
           android:text="@string/crew"
           android:layout_marginLeft="@dimen/holo_gap"
-          style="@style/Widget.CouchPotato.Drawer.Header"/>
+          style="@style/Widget.CouchPotato.Text.Header"/>
 
       <HorizontalScrollView
           android:layout_width="match_parent"
@@ -132,7 +132,7 @@
           android:layout_height="wrap_content"
           android:text="@string/videos"
           android:layout_marginLeft="@dimen/holo_gap"
-          style="@style/Widget.CouchPotato.Drawer.Header"/>
+          style="@style/Widget.CouchPotato.Text.Header"/>
 
       <HorizontalScrollView
           android:layout_width="match_parent"
@@ -152,7 +152,7 @@
           android:layout_height="wrap_content"
           android:text="@string/similar_movies"
           android:layout_marginLeft="@dimen/holo_gap"
-          style="@style/Widget.CouchPotato.Drawer.Header"/>
+          style="@style/Widget.CouchPotato.Text.Header"/>
 
       <HorizontalScrollView
           android:layout_width="match_parent"
