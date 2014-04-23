@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Credits implements Parcelable, Configuration.Configurable {
+public class MovieCreditsResponse implements Parcelable, Configuration.Configurable {
 
   private static final String FIELD_ID = "id";
   private static final String FIELD_CREW = "crew";
@@ -19,7 +19,7 @@ public class Credits implements Parcelable, Configuration.Configurable {
   @SerializedName(FIELD_CAST)
   private List<Cast> casts;
 
-  public Credits() {
+  public MovieCreditsResponse() {
 
   }
 
@@ -48,8 +48,8 @@ public class Credits implements Parcelable, Configuration.Configurable {
   @Override
   public boolean equals(Object obj) {
     if (obj == this) return true;
-    if (obj instanceof Credits) {
-      return ((Credits) obj).getId() == id;
+    if (obj instanceof MovieCreditsResponse) {
+      return ((MovieCreditsResponse) obj).getId() == id;
     }
     return false;
   }
@@ -59,7 +59,7 @@ public class Credits implements Parcelable, Configuration.Configurable {
     return ((Long) id).hashCode();
   }
 
-  public Credits(Parcel in) {
+  public MovieCreditsResponse(Parcel in) {
     id = in.readLong();
     crews = new ArrayList<Crew>();
     in.readTypedList(crews, Crew.CREATOR);
@@ -72,15 +72,16 @@ public class Credits implements Parcelable, Configuration.Configurable {
     return 0;
   }
 
-  public static final Parcelable.Creator<Credits> CREATOR = new Parcelable.Creator<Credits>() {
-    public Credits createFromParcel(Parcel in) {
-      return new Credits(in);
-    }
+  public static final Parcelable.Creator<MovieCreditsResponse> CREATOR =
+      new Parcelable.Creator<MovieCreditsResponse>() {
+        public MovieCreditsResponse createFromParcel(Parcel in) {
+          return new MovieCreditsResponse(in);
+        }
 
-    public Credits[] newArray(int size) {
-      return new Credits[size];
-    }
-  };
+        public MovieCreditsResponse[] newArray(int size) {
+          return new MovieCreditsResponse[size];
+        }
+      };
 
   @Override
   public void writeToParcel(Parcel dest, int flags) {

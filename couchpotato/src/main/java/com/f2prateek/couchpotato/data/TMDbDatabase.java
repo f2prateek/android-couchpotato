@@ -18,11 +18,13 @@ package com.f2prateek.couchpotato.data;
 
 import com.f2prateek.couchpotato.data.api.tmdb.TMDbService;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Configuration;
-import com.f2prateek.couchpotato.data.api.tmdb.model.Credits;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Images;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MinifiedMovie;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Movie;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MovieCollectionResponse;
+import com.f2prateek.couchpotato.data.api.tmdb.model.MovieCreditsResponse;
+import com.f2prateek.couchpotato.data.api.tmdb.model.MovieVideosResponse;
+import com.f2prateek.couchpotato.data.api.tmdb.model.Video;
 import java.util.List;
 import rx.Observable;
 import rx.Observer;
@@ -133,10 +135,11 @@ public class TMDbDatabase {
     });
   }
 
-  public Subscription getMovieCredits(final long id, final Observer<Credits> observer) {
+  public Subscription getMovieCredits(final long id,
+      final Observer<MovieCreditsResponse> observer) {
     return getConfiguration() //
-        .flatMap(new Func1<Configuration, Observable<Credits>>() {
-          @Override public Observable<Credits> call(Configuration configuration) {
+        .flatMap(new Func1<Configuration, Observable<MovieCreditsResponse>>() {
+          @Override public Observable<MovieCreditsResponse> call(Configuration configuration) {
             return credits(id, configuration);
           }
         }) //
@@ -145,11 +148,33 @@ public class TMDbDatabase {
         .subscribe(observer);
   }
 
-  private Observable<Credits> credits(final long id, final Configuration configuration) {
-    return tmDbService.movieCredits(id).map(new Func1<Credits, Credits>() {
-      @Override public Credits call(Credits credits) {
-        credits.setConfiguration(configuration);
-        return credits;
+  private Observable<MovieCreditsResponse> credits(final long id,
+      final Configuration configuration) {
+    return tmDbService.movieCredits(id)
+        .map(new Func1<MovieCreditsResponse, MovieCreditsResponse>() {
+          @Override public MovieCreditsResponse call(MovieCreditsResponse movieCreditsResponse) {
+            movieCreditsResponse.setConfiguration(configuration);
+            return movieCreditsResponse;
+          }
+        });
+  }
+
+  public Subscription getVideos(final long id, final Observer<List<Video>> observer) {
+    return getConfiguration() //
+        .flatMap(new Func1<Configuration, Observable<List<Video>>>() {
+          @Override public Observable<List<Video>> call(Configuration configuration) {
+            return videos(id, configuration);
+          }
+        }) //
+        .subscribeOn(Schedulers.io()) //
+        .observeOn(AndroidSchedulers.mainThread()) //
+        .subscribe(observer);
+  }
+
+  private Observable<List<Video>> videos(final long id, final Configuration configuration) {
+    return tmDbService.movieVideos(id).map(new Func1<MovieVideosResponse, List<Video>>() {
+      @Override public List<Video> call(MovieVideosResponse movieVideosResponse) {
+        return movieVideosResponse.getResults();
       }
     });
   }

@@ -51,11 +51,12 @@ import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.TMDbDatabase;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Backdrop;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Cast;
-import com.f2prateek.couchpotato.data.api.tmdb.model.Credits;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Crew;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Images;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MinifiedMovie;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Movie;
+import com.f2prateek.couchpotato.data.api.tmdb.model.MovieCreditsResponse;
+import com.f2prateek.couchpotato.data.api.tmdb.model.Video;
 import com.f2prateek.couchpotato.data.rx.EndlessObserver;
 import com.f2prateek.couchpotato.ui.colorizer.ColorScheme;
 import com.f2prateek.couchpotato.ui.misc.AlphaForegroundColorSpan;
@@ -108,6 +109,7 @@ public class MovieActivity extends BaseActivity
   @InjectView(R.id.similar_movies_container) LinearLayout similarMoviesContainer;
   @InjectView(R.id.movie_cast_container) LinearLayout movieCastContainer;
   @InjectView(R.id.movie_crew_container) LinearLayout movieCrewContainer;
+  @InjectView(R.id.movie_videos_container) LinearLayout movieVideosContainer;
   @InjectView(R.id.movie_scroll_container) NotifyingScrollView scrollView;
   @InjectView(R.id.movie_heading) LinearLayout movieHeading;
   @InjectView(R.id.movie_title) TextView movieTitle;
@@ -269,39 +271,61 @@ public class MovieActivity extends BaseActivity
           }
         }
     );
-    tmDbDatabase.getMovieCredits(minifiedMovie.getId(), new EndlessObserver<Credits>() {
-      @Override public void onNext(Credits credits) {
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-            getResources().getDimensionPixelOffset(R.dimen.poster_item_width),
-            ViewGroup.LayoutParams.MATCH_PARENT);
-
-        if (CollectionUtils.isNullOrEmpty(credits.getCasts())) {
-          movieCastContainer.setVisibility(View.GONE);
-        } else {
-          for (Cast cast : credits.getCasts()) {
-            MovieCrewItem child =
-                (MovieCrewItem) getLayoutInflater().inflate(R.layout.movie_crew_item,
-                    movieCastContainer, false);
-            child.setLayoutParams(params);
-            movieCastContainer.addView(child);
-            child.bindTo(cast);
+    tmDbDatabase.getVideos(minifiedMovie.getId(), new EndlessObserver<List<Video>>() {
+          @Override public void onNext(List<Video> videos) {
+            if (CollectionUtils.isNullOrEmpty(videos)) {
+              movieVideosContainer.setVisibility(View.GONE);
+            } else {
+              FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                  getResources().getDimensionPixelOffset(R.dimen.trailer_item_width),
+                  ViewGroup.LayoutParams.MATCH_PARENT);
+              for (Video video : videos) {
+                MovieVideoItem child =
+                    (MovieVideoItem) getLayoutInflater().inflate(R.layout.movie_video_item,
+                        movieVideosContainer, false);
+                child.setLayoutParams(params);
+                movieVideosContainer.addView(child);
+                child.bindTo(video);
+              }
+            }
           }
         }
+    );
+    tmDbDatabase.getMovieCredits(minifiedMovie.getId(),
+        new EndlessObserver<MovieCreditsResponse>() {
+          @Override public void onNext(MovieCreditsResponse credits) {
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                getResources().getDimensionPixelOffset(R.dimen.poster_item_width),
+                ViewGroup.LayoutParams.MATCH_PARENT);
 
-        if (CollectionUtils.isNullOrEmpty(credits.getCrews())) {
-          movieCrewContainer.setVisibility(View.GONE);
-        } else {
-          for (Crew crew : credits.getCrews()) {
-            MovieCrewItem child =
-                (MovieCrewItem) getLayoutInflater().inflate(R.layout.movie_crew_item,
-                    movieCrewContainer, false);
-            child.setLayoutParams(params);
-            movieCrewContainer.addView(child);
-            child.bindTo(crew);
+            if (CollectionUtils.isNullOrEmpty(credits.getCasts())) {
+              movieCastContainer.setVisibility(View.GONE);
+            } else {
+              for (Cast cast : credits.getCasts()) {
+                MovieCrewItem child =
+                    (MovieCrewItem) getLayoutInflater().inflate(R.layout.movie_crew_item,
+                        movieCastContainer, false);
+                child.setLayoutParams(params);
+                movieCastContainer.addView(child);
+                child.bindTo(cast);
+              }
+            }
+
+            if (CollectionUtils.isNullOrEmpty(credits.getCrews())) {
+              movieCrewContainer.setVisibility(View.GONE);
+            } else {
+              for (Crew crew : credits.getCrews()) {
+                MovieCrewItem child =
+                    (MovieCrewItem) getLayoutInflater().inflate(R.layout.movie_crew_item,
+                        movieCrewContainer, false);
+                child.setLayoutParams(params);
+                movieCrewContainer.addView(child);
+                child.bindTo(crew);
+              }
+            }
           }
         }
-      }
-    });
+    );
   }
 
   /**

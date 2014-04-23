@@ -24,6 +24,7 @@
 
   <!-- Width of the grid columns.. -->
   <dimen name="poster_item_width">120dp</dimen>
+  <dimen name="trailer_item_width">240dp</dimen>
 
   <!-- Width of the navigation drawer. -->
   <dimen name="drawer_width">240dp</dimen>
