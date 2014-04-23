@@ -99,7 +99,8 @@
             android:id="@+id/similar_movies_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"/>
+            android:orientation="horizontal"
+            android:visibility="gone"/>
 
       </HorizontalScrollView>
 
@@ -111,7 +112,8 @@
             android:id="@+id/movie_cast_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"/>
+            android:orientation="horizontal"
+            android:visibility="gone"/>
 
       </HorizontalScrollView>
 
@@ -123,7 +125,8 @@
             android:id="@+id/movie_crew_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"/>
+            android:orientation="horizontal"
+            android:visibility="gone"/>
 
       </HorizontalScrollView>
 

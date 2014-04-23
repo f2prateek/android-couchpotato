@@ -64,7 +64,6 @@ import com.f2prateek.couchpotato.ui.widget.NotifyingScrollView;
 import com.f2prateek.couchpotato.util.CollectionUtils;
 import com.f2prateek.couchpotato.util.Strings;
 import com.f2prateek.dart.InjectExtra;
-import com.f2prateek.ln.Ln;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 import java.io.IOException;
@@ -226,7 +225,6 @@ public class MovieActivity extends BaseActivity
 
     tmDbDatabase.getMovie(minifiedMovie.getId(), new EndlessObserver<Movie>() {
       @Override public void onNext(Movie movie) {
-        Ln.d(movie);
         if (!Strings.isBlank(movie.getTagline())) {
           movieTagline.setVisibility(View.VISIBLE);
           movieTagline.setText(movie.getTagline());
@@ -251,53 +249,51 @@ public class MovieActivity extends BaseActivity
     tmDbDatabase.getSimilarMovies(minifiedMovie.getId(),
         new EndlessObserver<List<MinifiedMovie>>() {
           @Override public void onNext(List<MinifiedMovie> similarMovies) {
-            if (CollectionUtils.isNullOrEmpty(similarMovies)) {
-              similarMoviesContainer.setVisibility(View.GONE);
-              return;
-            }
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                getResources().getDimensionPixelOffset(R.dimen.poster_item_width),
-                ViewGroup.LayoutParams.MATCH_PARENT);
-            for (MinifiedMovie movie : similarMovies) {
-              MovieGridItem child =
-                  (MovieGridItem) getLayoutInflater().inflate(R.layout.grid_movie_item,
-                      similarMoviesContainer, false);
-              child.setLayoutParams(params);
-              similarMoviesContainer.addView(child);
-              child.bindTo(movie);
+            if (!CollectionUtils.isNullOrEmpty(similarMovies)) {
+              similarMoviesContainer.setVisibility(View.VISIBLE);
+              FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                  getResources().getDimensionPixelOffset(R.dimen.poster_item_width),
+                  ViewGroup.LayoutParams.MATCH_PARENT);
+              for (MinifiedMovie movie : similarMovies) {
+                MovieGridItem child =
+                    (MovieGridItem) getLayoutInflater().inflate(R.layout.grid_movie_item,
+                        similarMoviesContainer, false);
+                child.setLayoutParams(params);
+                similarMoviesContainer.addView(child);
+                child.bindTo(movie);
+              }
             }
           }
         }
     );
     tmDbDatabase.getMovieCredits(minifiedMovie.getId(), new EndlessObserver<Credits>() {
       @Override public void onNext(Credits credits) {
-        if (CollectionUtils.isNullOrEmpty(credits.getCasts())) {
-          movieCastContainer.setVisibility(View.GONE);
-          return;
-        }
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
             getResources().getDimensionPixelOffset(R.dimen.poster_item_width),
             ViewGroup.LayoutParams.MATCH_PARENT);
-        for (Cast cast : credits.getCasts()) {
-          MovieCrewItem child =
-              (MovieCrewItem) getLayoutInflater().inflate(R.layout.movie_crew_item,
-                  movieCastContainer, false);
-          child.setLayoutParams(params);
-          movieCastContainer.addView(child);
-          child.bindTo(cast);
+
+        if (!CollectionUtils.isNullOrEmpty(credits.getCasts())) {
+          movieCastContainer.setVisibility(View.VISIBLE);
+          for (Cast cast : credits.getCasts()) {
+            MovieCrewItem child =
+                (MovieCrewItem) getLayoutInflater().inflate(R.layout.movie_crew_item,
+                    movieCastContainer, false);
+            child.setLayoutParams(params);
+            movieCastContainer.addView(child);
+            child.bindTo(cast);
+          }
         }
 
-        if (CollectionUtils.isNullOrEmpty(credits.getCrews())) {
-          movieCastContainer.setVisibility(View.GONE);
-          return;
-        }
-        for (Crew crew : credits.getCrews()) {
-          MovieCrewItem child =
-              (MovieCrewItem) getLayoutInflater().inflate(R.layout.movie_crew_item,
-                  movieCrewContainer, false);
-          child.setLayoutParams(params);
-          movieCrewContainer.addView(child);
-          child.bindTo(crew);
+        if (!CollectionUtils.isNullOrEmpty(credits.getCrews())) {
+          movieCastContainer.setVisibility(View.VISIBLE);
+          for (Crew crew : credits.getCrews()) {
+            MovieCrewItem child =
+                (MovieCrewItem) getLayoutInflater().inflate(R.layout.movie_crew_item,
+                    movieCrewContainer, false);
+            child.setLayoutParams(params);
+            movieCrewContainer.addView(child);
+            child.bindTo(crew);
+          }
         }
       }
     });
