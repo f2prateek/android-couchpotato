@@ -32,7 +32,6 @@ public class NavigationDrawer extends GridLayout {
 
   public NavigationDrawer(Context context, AttributeSet attrs) {
     super(context, attrs);
-
     CouchPotatoApplication.get(context).inject(this);
   }
 
