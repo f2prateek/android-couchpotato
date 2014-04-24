@@ -16,6 +16,10 @@
 
 package com.f2prateek.couchpotato.ui;
 
+import com.f2prateek.couchpotato.ui.views.MovieCrewItem;
+import com.f2prateek.couchpotato.ui.views.MovieGridItem;
+import com.f2prateek.couchpotato.ui.views.MovieVideoItem;
+import com.f2prateek.couchpotato.ui.views.MoviesGrid;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;

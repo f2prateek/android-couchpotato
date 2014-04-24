@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato.ui;
+package com.f2prateek.couchpotato.ui.views;
 
 import android.content.Context;
 import android.content.Intent;

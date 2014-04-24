@@ -16,7 +16,7 @@
   ~ limitations under the License.
   -->
 
-<com.f2prateek.couchpotato.ui.MovieCrewItem
+<com.f2prateek.couchpotato.ui.views.MovieCrewItem
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -46,4 +46,4 @@
       tools:text="Peter Jackson\nas Director"
       style="@style/Widget.CouchPotato.Poster"/>
 
-</com.f2prateek.couchpotato.ui.MovieCrewItem>
+</com.f2prateek.couchpotato.ui.views.MovieCrewItem>

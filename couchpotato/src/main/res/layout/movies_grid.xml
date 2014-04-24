@@ -16,7 +16,7 @@
   ~ limitations under the License.
   -->
 
-<com.f2prateek.couchpotato.ui.MoviesGrid
+<com.f2prateek.couchpotato.ui.views.MoviesGrid
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -39,4 +39,4 @@
       android:stretchMode="columnWidth"
       android:columnWidth="@dimen/poster_item_width"/>
 
-</com.f2prateek.couchpotato.ui.MoviesGrid>
+</com.f2prateek.couchpotato.ui.views.MoviesGrid>
