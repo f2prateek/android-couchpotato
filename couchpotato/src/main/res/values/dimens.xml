@@ -23,7 +23,7 @@
   <dimen name="holo_gap_half">4dp</dimen>
 
   <!-- Width of the grid columns.. -->
-  <dimen name="poster_item_width">120dp</dimen>
+  <dimen name="poster_item_width">96dp</dimen>
   <dimen name="trailer_item_width">240dp</dimen>
 
   <!-- Width of the navigation drawer. -->
