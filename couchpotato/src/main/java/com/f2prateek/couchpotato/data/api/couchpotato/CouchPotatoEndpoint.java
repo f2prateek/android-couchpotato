@@ -20,6 +20,7 @@ public class CouchPotatoEndpoint implements Endpoint {
   }
 
   public void setHost(String host) {
+    // sanitize the input
     hostPreference.set(host);
     updateUrl();
   }
@@ -33,7 +34,7 @@ public class CouchPotatoEndpoint implements Endpoint {
     if (apiKeyPreference.get() == null) {
       url = hostPreference.get();
     } else {
-      url = hostPreference.get() + apiKeyPreference.get();
+      url = hostPreference.get() + "/api/" + apiKeyPreference.get();
     }
   }
 
@@ -42,8 +43,10 @@ public class CouchPotatoEndpoint implements Endpoint {
   }
 
   @Override public String getUrl() {
-    if (url == null) {
-      throw new IllegalStateException("url is not set yet.");
+    if (hostPreference.get() == null) {
+      throw new IllegalStateException("host is not set yet.");
+    } else if (url == null) {
+      updateUrl();
     }
     return url;
   }

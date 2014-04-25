@@ -14,28 +14,30 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato.data.api.couchpotato.model;
+package com.f2prateek.couchpotato.data.api.couchpotato.model.movie;
 
-import com.google.gson.annotations.SerializedName;
+import java.util.ArrayList;
 
-public class ApiKeyResponse {
-  private static final String FIELD_API_KEY = "api_key";
-  private static final String FIELD_SUCCESS = "success";
-
-  @SerializedName(FIELD_API_KEY)
-  private String apiKey;
-  @SerializedName(FIELD_SUCCESS)
-  private boolean success;
-
-  public String getApiKey() {
-    return apiKey;
-  }
-
-  public boolean isSuccess() {
-    return success;
-  }
+public class Library {
+  public Info info;
+  public String plot;
+  public int status_id;
+  public String tagline;
+  public ArrayList<Title> titles;
+  public int year;
+  public String identifier;
+  public ArrayList<File> files;
 
   @Override public String toString() {
-    return "ApiKeyResponse{" + "apiKey='" + apiKey + '\'' + ", success=" + success + '}';
+    return "Library{" +
+        "info=" + info +
+        ", plot='" + plot + '\'' +
+        ", status_id=" + status_id +
+        ", tagline='" + tagline + '\'' +
+        ", titles=" + titles +
+        ", year=" + year +
+        ", identifier='" + identifier + '\'' +
+        ", files=" + files +
+        '}';
   }
 }

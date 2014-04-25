@@ -17,10 +17,14 @@
 package com.f2prateek.couchpotato.data.api.couchpotato;
 
 import com.f2prateek.couchpotato.data.api.couchpotato.model.ApiKeyResponse;
-import com.f2prateek.couchpotato.data.api.couchpotato.model.UpdaterInfo;
+import com.f2prateek.couchpotato.data.api.couchpotato.model.movie.CouchPotatoMovie;
+import com.f2prateek.couchpotato.data.api.couchpotato.model.movie.MoviesResponse;
+import java.util.List;
+import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.f2prateek.couchpotato.data.Util.md5;
@@ -32,16 +36,22 @@ public class CouchPotatoDatabase {
     this.couchPotatoService = couchPotatoService;
   }
 
-  public Subscription getUpdaterInfo(final Observer<UpdaterInfo> observer) {
-    return couchPotatoService.updaterInfo()
+  public Subscription getApiKey(final String username, final String password,
+      final Observer<ApiKeyResponse> observer) {
+    return couchPotatoService.getApiKey(md5(password), md5(username))
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(observer);
   }
 
-  public Subscription getApiKey(final String username, final String password,
-      final Observer<ApiKeyResponse> observer) {
-    return couchPotatoService.apiKey(md5(password), md5(username))
+  public Subscription getMovies(final Observer<List<CouchPotatoMovie>> observer) {
+    return couchPotatoService.getMovies()
+        .flatMap(new Func1<MoviesResponse, Observable<CouchPotatoMovie>>() {
+          @Override public Observable<CouchPotatoMovie> call(MoviesResponse moviesResponse) {
+            return Observable.from(moviesResponse.getMovies());
+          }
+        })
+        .toList()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(observer);

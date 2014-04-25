@@ -14,28 +14,49 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato.data.api.couchpotato.model;
+package com.f2prateek.couchpotato.data.api.couchpotato.model.movie;
 
-import com.google.gson.annotations.SerializedName;
+import java.util.List;
 
-public class ApiKeyResponse {
-  private static final String FIELD_API_KEY = "api_key";
+/** Response for /CouchPotatoMovie.list */
+public class MoviesResponse {
+
+  private static final String FIELD_MOVIES = "movies";
+  private static final String FIELD_TOTAL = "total";
   private static final String FIELD_SUCCESS = "success";
+  private static final String FIELD_EMPTY = "empty";
 
-  @SerializedName(FIELD_API_KEY)
-  private String apiKey;
-  @SerializedName(FIELD_SUCCESS)
+  private List<CouchPotatoMovie> movies;
+  private int total;
   private boolean success;
+  private boolean empty;
 
-  public String getApiKey() {
-    return apiKey;
+  public List<CouchPotatoMovie> getMovies() {
+    return movies;
+  }
+
+  public int getTotal() {
+    return total;
   }
 
   public boolean isSuccess() {
     return success;
   }
 
+  public boolean isEmpty() {
+    return empty;
+  }
+
   @Override public String toString() {
-    return "ApiKeyResponse{" + "apiKey='" + apiKey + '\'' + ", success=" + success + '}';
+    return "MovieListResponse{"
+        + "movies="
+        + movies
+        + ", total="
+        + total
+        + ", success="
+        + success
+        + ", empty="
+        + empty
+        + '}';
   }
 }

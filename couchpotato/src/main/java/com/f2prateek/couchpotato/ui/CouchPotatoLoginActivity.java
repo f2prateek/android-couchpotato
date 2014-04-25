@@ -11,11 +11,13 @@ import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoDatabase;
 import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoEndpoint;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.ApiKeyResponse;
+import com.f2prateek.couchpotato.data.api.couchpotato.model.movie.CouchPotatoMovie;
 import com.f2prateek.couchpotato.data.rx.EndlessObserver;
 import com.f2prateek.couchpotato.util.Strings;
 import com.f2prateek.ln.Ln;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
+import java.util.List;
 import javax.inject.Inject;
 
 public class CouchPotatoLoginActivity extends BaseActivity {
@@ -78,6 +80,8 @@ public class CouchPotatoLoginActivity extends BaseActivity {
       }
     }
 
+    // todo : sanitize input
+
     if (!hasError) {
       endpoint.setHost(getText(host));
       endpoint.setApiKey(null);
@@ -86,6 +90,11 @@ public class CouchPotatoLoginActivity extends BaseActivity {
             @Override public void onNext(ApiKeyResponse apiKeyResponse) {
               if (apiKeyResponse.isSuccess()) {
                 endpoint.setApiKey(apiKeyResponse.getApiKey());
+                couchPotatoDatabase.getMovies(new EndlessObserver<List<CouchPotatoMovie>>() {
+                  @Override public void onNext(List<CouchPotatoMovie> couchPotatoMovies) {
+                    Ln.d(couchPotatoMovies);
+                  }
+                });
               } else {
                 showLoginError();
               }
@@ -98,7 +107,6 @@ public class CouchPotatoLoginActivity extends BaseActivity {
           }
       );
     } else {
-      // Show a message to the user
       showLoginError();
     }
   }

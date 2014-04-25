@@ -14,28 +14,23 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato.data.api.couchpotato.model;
+package com.f2prateek.couchpotato.data.api.couchpotato.model.movie;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ApiKeyResponse {
-  private static final String FIELD_API_KEY = "api_key";
-  private static final String FIELD_SUCCESS = "success";
-
-  @SerializedName(FIELD_API_KEY)
-  private String apiKey;
-  @SerializedName(FIELD_SUCCESS)
-  private boolean success;
-
-  public String getApiKey() {
-    return apiKey;
-  }
-
-  public boolean isSuccess() {
-    return success;
-  }
+public class Title {
+  @SerializedName("default")
+  public boolean isDefault;
+  public String simple_title;
+  public long id;
+  public String title;
 
   @Override public String toString() {
-    return "ApiKeyResponse{" + "apiKey='" + apiKey + '\'' + ", success=" + success + '}';
+    return "Title{" +
+        "isDefault=" + isDefault +
+        ", simple_title='" + simple_title + '\'' +
+        ", id=" + id +
+        ", title='" + title + '\'' +
+        '}';
   }
 }
