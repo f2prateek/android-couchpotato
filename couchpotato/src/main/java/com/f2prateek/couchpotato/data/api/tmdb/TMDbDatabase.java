@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato.data;
+package com.f2prateek.couchpotato.data.api.tmdb;
 
-import com.f2prateek.couchpotato.data.api.tmdb.TMDbService;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Configuration;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Images;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MinifiedMovie;

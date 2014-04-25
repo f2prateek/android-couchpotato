@@ -27,7 +27,8 @@ import javax.inject.Singleton;
 @Module(
     injects = {
         MainActivity.class, MoviesGrid.class, MovieGridItem.class, NavigationDrawer.class,
-        MovieCrewItem.class, MovieVideoItem.class, MovieActivity.class
+        MovieCrewItem.class, MovieVideoItem.class, MovieActivity.class,
+        CouchPotatoLoginActivity.class
     },
     complete = false,
     library = true)

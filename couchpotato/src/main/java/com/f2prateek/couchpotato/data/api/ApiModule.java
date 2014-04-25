@@ -16,11 +16,14 @@
 
 package com.f2prateek.couchpotato.data.api;
 
+import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoApiModule;
 import com.f2prateek.couchpotato.data.api.tmdb.TMDbApiModule;
 import dagger.Module;
 
 @Module(
-    includes = TMDbApiModule.class,
+    includes = {
+        TMDbApiModule.class, CouchPotatoApiModule.class
+    },
     complete = false,
     library = true)
 public final class ApiModule {

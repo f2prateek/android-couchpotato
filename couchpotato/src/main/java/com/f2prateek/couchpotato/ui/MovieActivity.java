@@ -50,7 +50,7 @@ import butterknife.InjectView;
 import butterknife.InjectViews;
 import com.f2prateek.couchpotato.Events;
 import com.f2prateek.couchpotato.R;
-import com.f2prateek.couchpotato.data.TMDbDatabase;
+import com.f2prateek.couchpotato.data.api.tmdb.TMDbDatabase;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Backdrop;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Cast;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Crew;

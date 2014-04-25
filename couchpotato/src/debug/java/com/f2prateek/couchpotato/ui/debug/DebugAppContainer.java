@@ -46,6 +46,8 @@ import com.f2prateek.couchpotato.data.PixelRatioEnabled;
 import com.f2prateek.couchpotato.data.ScalpelEnabled;
 import com.f2prateek.couchpotato.data.ScalpelWireframeEnabled;
 import com.f2prateek.couchpotato.data.SeenDebugDrawer;
+import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotato;
+import com.f2prateek.couchpotato.data.api.tmdb.TMDb;
 import com.f2prateek.couchpotato.data.prefs.BooleanPreference;
 import com.f2prateek.couchpotato.data.prefs.IntPreference;
 import com.f2prateek.couchpotato.ui.AppContainer;
@@ -87,7 +89,8 @@ public class DebugAppContainer implements AppContainer {
   private final BooleanPreference scalpelEnabled;
   private final BooleanPreference scalpelWireframeEnabled;
   private final BooleanPreference seenDebugDrawer;
-  private final RestAdapter restAdapter;
+  private final RestAdapter couchPotatoRestAdapter;
+  private final RestAdapter tmdbRestAdapter;
 
   CouchPotatoApplication app;
   Activity activity;
@@ -101,7 +104,8 @@ public class DebugAppContainer implements AppContainer {
       @PixelRatioEnabled BooleanPreference pixelRatioEnabled,
       @ScalpelEnabled BooleanPreference scalpelEnabled,
       @ScalpelWireframeEnabled BooleanPreference scalpelWireframeEnabled,
-      @SeenDebugDrawer BooleanPreference seenDebugDrawer, RestAdapter restAdapter) {
+      @SeenDebugDrawer BooleanPreference seenDebugDrawer,
+      @CouchPotato RestAdapter couchPotatoRestAdapter, @TMDb RestAdapter tmdbRestAdapter) {
     this.picasso = picasso;
     this.networkLoggingLevel = networkLoggingLevel;
     this.scalpelEnabled = scalpelEnabled;
@@ -111,7 +115,8 @@ public class DebugAppContainer implements AppContainer {
     this.picassoDebugging = picassoDebugging;
     this.pixelGridEnabled = pixelGridEnabled;
     this.pixelRatioEnabled = pixelRatioEnabled;
-    this.restAdapter = restAdapter;
+    this.couchPotatoRestAdapter = couchPotatoRestAdapter;
+    this.tmdbRestAdapter = tmdbRestAdapter;
   }
 
   @InjectView(R.id.debug_drawer_layout) DrawerLayout drawerLayout;
@@ -209,9 +214,11 @@ public class DebugAppContainer implements AppContainer {
       @Override
       public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
         LogLevel selected = loggingAdapter.getItem(position);
-        if (selected != restAdapter.getLogLevel()) {
+        if (selected != couchPotatoRestAdapter.getLogLevel()
+            || selected != tmdbRestAdapter.getLogLevel()) {
           Ln.d("Setting logging level to %s", selected);
-          restAdapter.setLogLevel(selected);
+          couchPotatoRestAdapter.setLogLevel(selected);
+          tmdbRestAdapter.setLogLevel(selected);
           networkLoggingLevel.set(selected.ordinal());
         } else {
           Ln.d("Ignoring re-selection of logging level " + selected);

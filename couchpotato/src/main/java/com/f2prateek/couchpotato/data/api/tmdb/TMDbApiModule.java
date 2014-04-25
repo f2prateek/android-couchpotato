@@ -16,8 +16,8 @@
 
 package com.f2prateek.couchpotato.data.api.tmdb;
 
-import com.f2prateek.couchpotato.data.TMDbDatabase;
 import com.f2prateek.ln.Ln;
+import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 import dagger.Module;
 import dagger.Provides;
@@ -28,6 +28,7 @@ import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.client.Client;
 import retrofit.client.OkClient;
+import retrofit.converter.GsonConverter;
 
 @Module(complete = false, library = true)
 public class TMDbApiModule {
@@ -42,28 +43,27 @@ public class TMDbApiModule {
     return new OkClient(client);
   }
 
-  @Provides @Singleton @TMDb @ApiKey String provideApiKey() {
+  @Provides @Singleton @TMDbApiKey String provideApiKey() {
     return API_KEY;
   }
 
   @Provides @Singleton @TMDb RequestInterceptor provideRequestInterceptor(
-      @TMDb @ApiKey String apiKey) {
+      @TMDbApiKey String apiKey) {
     return new TMDbRequestInterceptor(apiKey);
   }
 
-  @Provides @Singleton @TMDb RestAdapter provideRestAdapter(Endpoint endpoint, Client client,
-      @TMDb RequestInterceptor requestInterceptor) {
+  @Provides @Singleton @TMDb RestAdapter provideRestAdapter(@TMDb Endpoint endpoint,
+      @TMDb Client client, @TMDb RequestInterceptor requestInterceptor, Gson gson) {
     return new RestAdapter.Builder() //
         .setClient(client) //
         .setEndpoint(endpoint) //
+        .setConverter(new GsonConverter(gson)) //
         .setRequestInterceptor(requestInterceptor) //
         .setLog(new RestAdapter.Log() {
           @Override public void log(String message) {
             Ln.d(message);
           }
         }) //
-            //.setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.FULL:RestAdapter.LogLevel.NONE)
-            // todo: move to drawer
         .build();
   }
 

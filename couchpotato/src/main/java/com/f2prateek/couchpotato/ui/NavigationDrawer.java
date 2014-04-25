@@ -17,6 +17,7 @@
 package com.f2prateek.couchpotato.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
@@ -42,6 +43,11 @@ public class NavigationDrawer extends GridLayout {
 
   @OnClick(R.id.couchpotato_library) public void onLibraryClicked() {
     Ln.d("Library Clicked");
+  }
+
+  @OnClick(R.id.couchpotato_login) public void onLoginClicked() {
+    Intent intent = new Intent(getContext(), CouchPotatoLoginActivity.class);
+    getContext().startActivity(intent);
   }
 
   @OnClick(R.id.tmdb_popular) public void onExploreClicked() {

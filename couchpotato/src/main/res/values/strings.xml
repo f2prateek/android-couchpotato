@@ -28,5 +28,11 @@
   <string name="videos">Videos</string>
   <string name="crew">Crew</string>
   <string name="cast">Cast</string>
+  <string name="login">Login</string>
+  <string name="username_hint">Username</string>
+  <string name="password_hint">Password</string>
+  <string name="host_hint">Host</string>
+  <string name="required">Required</string>
+  <string name="invalid_fields">Please check all fields.</string>
 
 </resources>

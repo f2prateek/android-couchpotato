@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato.data.api.tmdb;
+package com.f2prateek.couchpotato.data.api.couchpotato;
 
 import java.lang.annotation.Retention;
 import javax.inject.Qualifier;
@@ -22,5 +22,5 @@ import javax.inject.Qualifier;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Qualifier @Retention(RUNTIME)
-public @interface TMDb {
+public @interface CouchPotatoHost {
 }

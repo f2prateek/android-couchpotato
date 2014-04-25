@@ -21,6 +21,8 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import com.f2prateek.couchpotato.data.api.ApiModule;
 import com.f2prateek.ln.Ln;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.HttpResponseCache;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.picasso.OkHttpDownloader;
@@ -71,5 +73,9 @@ public final class DataModule {
     }
 
     return client;
+  }
+
+  @Provides @Singleton Gson provideGson() {
+    return new GsonBuilder().create();
   }
 }
