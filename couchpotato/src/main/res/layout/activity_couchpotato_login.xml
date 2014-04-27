@@ -23,7 +23,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-  <com.f2prateek.couchpotato.ui.views.FloatLabelLayout
+  <com.f2prateek.couchpotato.ui.widget.FloatLabelLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="16dp"
@@ -39,9 +39,9 @@
         android:imeOptions="actionNext"
         android:nextFocusDown="@+id/username"/>
 
-  </com.f2prateek.couchpotato.ui.views.FloatLabelLayout>
+  </com.f2prateek.couchpotato.ui.widget.FloatLabelLayout>
 
-  <com.f2prateek.couchpotato.ui.views.FloatLabelLayout
+  <com.f2prateek.couchpotato.ui.widget.FloatLabelLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="16dp"
@@ -57,9 +57,9 @@
         android:imeOptions="actionNext"
         android:nextFocusDown="@+id/password"/>
 
-  </com.f2prateek.couchpotato.ui.views.FloatLabelLayout>
+  </com.f2prateek.couchpotato.ui.widget.FloatLabelLayout>
 
-  <com.f2prateek.couchpotato.ui.views.FloatLabelLayout
+  <com.f2prateek.couchpotato.ui.widget.FloatLabelLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="16dp"
@@ -76,7 +76,7 @@
         android:imeActionLabel="@string/login"
         android:imeOptions="actionDone"/>
 
-  </com.f2prateek.couchpotato.ui.views.FloatLabelLayout>
+  </com.f2prateek.couchpotato.ui.widget.FloatLabelLayout>
 
   <TextView
       android:id="@+id/login"

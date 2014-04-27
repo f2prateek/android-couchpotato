@@ -1,4 +1,4 @@
-package com.f2prateek.couchpotato.ui.views;
+package com.f2prateek.couchpotato.ui.widget;
 
 /*
  * Copyright (C) 2014 Chris Banes
