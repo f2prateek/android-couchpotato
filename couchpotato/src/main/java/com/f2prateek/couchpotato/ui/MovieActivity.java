@@ -83,7 +83,6 @@ import rx.schedulers.Schedulers;
 
 public class MovieActivity extends BaseActivity
     implements NotifyingScrollView.OnScrollChangedListener {
-
   private static final String ARGS_MOVIE = "movie";
   private static final String ARGS_ORIENTATION = "orientation";
   private static final String ARGS_THUMBNAIL_LEFT = "thumbnail_left";
@@ -167,7 +166,7 @@ public class MovieActivity extends BaseActivity
   public void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    // Load the initial data we want for animations
+    // Load the initial data we need for animations
     initialBindData();
 
     // Set the pivots regardless of whether we run the animation or not
@@ -267,10 +266,9 @@ public class MovieActivity extends BaseActivity
     });
     tmDbDatabase.getSimilarMovies(movie.id(), new EndlessObserver<List<Movie>>() {
           @Override public void onNext(List<Movie> movies) {
-            if (CollectionUtils.isNullOrEmpty(movies)) {
-              similarMoviesContainer.setVisibility(View.GONE);
-              similarMoviesHeader.setVisibility(View.GONE);
-            } else {
+            if (!CollectionUtils.isNullOrEmpty(movies)) {
+              similarMoviesContainer.setVisibility(View.VISIBLE);
+              similarMoviesHeader.setVisibility(View.VISIBLE);
               FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                   getResources().getDimensionPixelOffset(R.dimen.poster_item_width),
                   ViewGroup.LayoutParams.MATCH_PARENT);
@@ -288,10 +286,9 @@ public class MovieActivity extends BaseActivity
     );
     tmDbDatabase.getVideos(movie.id(), new EndlessObserver<List<Video>>() {
           @Override public void onNext(List<Video> videos) {
-            if (CollectionUtils.isNullOrEmpty(videos)) {
-              movieVideosContainer.setVisibility(View.GONE);
-              movieVideosHeader.setVisibility(View.GONE);
-            } else {
+            if (!CollectionUtils.isNullOrEmpty(videos)) {
+              movieVideosContainer.setVisibility(View.VISIBLE);
+              movieVideosHeader.setVisibility(View.VISIBLE);
               FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                   getResources().getDimensionPixelOffset(R.dimen.trailer_item_width),
                   ViewGroup.LayoutParams.MATCH_PARENT);
@@ -312,11 +309,9 @@ public class MovieActivity extends BaseActivity
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                 getResources().getDimensionPixelOffset(R.dimen.poster_item_width),
                 ViewGroup.LayoutParams.MATCH_PARENT);
-
-            if (CollectionUtils.isNullOrEmpty(credits.getCasts())) {
-              movieCastContainer.setVisibility(View.GONE);
-              movieCastHeader.setVisibility(View.GONE);
-            } else {
+            if (!CollectionUtils.isNullOrEmpty(credits.getCasts())) {
+              movieCastContainer.setVisibility(View.VISIBLE);
+              movieCastHeader.setVisibility(View.VISIBLE);
               for (Cast cast : credits.getCasts()) {
                 MovieCrewItem child =
                     (MovieCrewItem) getLayoutInflater().inflate(R.layout.movie_crew_item,
@@ -327,10 +322,9 @@ public class MovieActivity extends BaseActivity
               }
             }
 
-            if (CollectionUtils.isNullOrEmpty(credits.getCrews())) {
-              movieCrewContainer.setVisibility(View.GONE);
-              movieCrewHeader.setVisibility(View.GONE);
-            } else {
+            if (!CollectionUtils.isNullOrEmpty(credits.getCrews())) {
+              movieCrewContainer.setVisibility(View.VISIBLE);
+              movieCrewHeader.setVisibility(View.VISIBLE);
               for (Crew crew : credits.getCrews()) {
                 MovieCrewItem child =
                     (MovieCrewItem) getLayoutInflater().inflate(R.layout.movie_crew_item,
