@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MovieCreditsResponse implements Parcelable, Configuration.Configurable {
-
   private static final String FIELD_ID = "id";
   private static final String FIELD_CREW = "crew";
   private static final String FIELD_CAST = "cast";
@@ -18,10 +17,6 @@ public class MovieCreditsResponse implements Parcelable, Configuration.Configura
   private List<Crew> crews;
   @SerializedName(FIELD_CAST)
   private List<Cast> casts;
-
-  public MovieCreditsResponse() {
-
-  }
 
   public long getId() {
     return id;
@@ -47,11 +42,8 @@ public class MovieCreditsResponse implements Parcelable, Configuration.Configura
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == this) return true;
-    if (obj instanceof MovieCreditsResponse) {
-      return ((MovieCreditsResponse) obj).getId() == id;
-    }
-    return false;
+    return obj == this
+        || obj instanceof MovieCreditsResponse && ((MovieCreditsResponse) obj).getId() == id;
   }
 
   @Override
@@ -61,9 +53,9 @@ public class MovieCreditsResponse implements Parcelable, Configuration.Configura
 
   public MovieCreditsResponse(Parcel in) {
     id = in.readLong();
-    crews = new ArrayList<Crew>();
+    crews = new ArrayList<>();
     in.readTypedList(crews, Crew.CREATOR);
-    casts = new ArrayList<Cast>();
+    casts = new ArrayList<>();
     in.readTypedList(casts, Cast.CREATOR);
   }
 

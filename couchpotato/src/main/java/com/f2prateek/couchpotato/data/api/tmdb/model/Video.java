@@ -28,10 +28,6 @@ public class Video implements Parcelable {
   @SerializedName(FIELD_NAME)
   private String name;
 
-  public Video() {
-
-  }
-
   public String getIso6391() {
     return iso6391;
   }
@@ -70,12 +66,7 @@ public class Video implements Parcelable {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == this) return true;
-
-    if (obj instanceof Video) {
-      return ((Video) obj).getId() == id;
-    }
-    return false;
+    return obj == this || obj instanceof Video && ((Video) obj).getId() == id;
   }
 
   @Override

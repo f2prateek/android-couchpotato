@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Images implements Parcelable, Configuration.Configurable {
-
   private static final String FIELD_BACKDROPS = "backdrops";
   private static final String FIELD_ID = "id";
   private static final String FIELD_POSTERS = "posters";
@@ -18,10 +17,6 @@ public class Images implements Parcelable, Configuration.Configurable {
   private long id;
   @SerializedName(FIELD_POSTERS)
   private List<Poster> posters;
-
-  public Images() {
-
-  }
 
   public List<Backdrop> getBackdrops() {
     return backdrops;
@@ -47,11 +42,7 @@ public class Images implements Parcelable, Configuration.Configurable {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == this) return true;
-    if (obj instanceof Images) {
-      return ((Images) obj).getId() == id;
-    }
-    return false;
+    return obj == this || obj instanceof Images && ((Images) obj).getId() == id;
   }
 
   @Override

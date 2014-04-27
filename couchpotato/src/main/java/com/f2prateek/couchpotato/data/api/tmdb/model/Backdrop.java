@@ -5,7 +5,6 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 public class Backdrop implements Parcelable, Configuration.Configurable {
-
   private static final String FIELD_ISO_639_1 = "iso_639_1";
   private static final String FIELD_HEIGHT = "height";
   private static final String FIELD_VOTE_AVERAGE = "vote_average";
@@ -28,10 +27,6 @@ public class Backdrop implements Parcelable, Configuration.Configurable {
   private int width;
   @SerializedName(FIELD_ASPECT_RATIO)
   private double aspectRatio;
-
-  public Backdrop() {
-
-  }
 
   public String getIso6391() {
     return iso6391;

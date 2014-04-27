@@ -5,7 +5,6 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 public class SpokenLanguage implements Parcelable {
-
   private static final String FIELD_ISO_639_1 = "iso_639_1";
   private static final String FIELD_NAME = "name";
 
@@ -13,10 +12,6 @@ public class SpokenLanguage implements Parcelable {
   private String iso6391;
   @SerializedName(FIELD_NAME)
   private String name;
-
-  public SpokenLanguage() {
-
-  }
 
   public String getIso6391() {
     return iso6391;

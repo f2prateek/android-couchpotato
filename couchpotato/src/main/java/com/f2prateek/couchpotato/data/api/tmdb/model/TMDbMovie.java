@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TMDbMovie implements Parcelable, Configuration.Configurable {
-
   private static final String FIELD_TAGLINE = "tagline";
   private static final String FIELD_BACKDROP_PATH = "backdrop_path";
   private static final String FIELD_STATUS = "status";
@@ -78,10 +77,6 @@ public class TMDbMovie implements Parcelable, Configuration.Configurable {
   private String posterPath;
   @SerializedName(FIELD_RUNTIME)
   private int runtime;
-
-  public TMDbMovie() {
-
-  }
 
   public String getTagline() {
     return tagline;
@@ -181,11 +176,7 @@ public class TMDbMovie implements Parcelable, Configuration.Configurable {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == this) return true;
-    if (obj instanceof TMDbMovie) {
-      return ((TMDbMovie) obj).getId() == id;
-    }
-    return false;
+    return obj == this || obj instanceof TMDbMovie && ((TMDbMovie) obj).getId() == id;
   }
 
   @Override
@@ -197,7 +188,7 @@ public class TMDbMovie implements Parcelable, Configuration.Configurable {
     tagline = in.readString();
     backdropPath = in.readString();
     status = in.readString();
-    genres = new ArrayList<Genre>();
+    genres = new ArrayList<>();
     in.readTypedList(genres, Genre.CREATOR);
     releaseDate = in.readString();
     voteAverage = in.readDouble();
@@ -205,20 +196,20 @@ public class TMDbMovie implements Parcelable, Configuration.Configurable {
     budget = in.readInt();
     popularity = in.readDouble();
     imdbId = in.readString();
-    spokenLanguages = new ArrayList<SpokenLanguage>();
+    spokenLanguages = new ArrayList<>();
     in.readTypedList(spokenLanguages, SpokenLanguage.CREATOR);
     revenue = in.readInt();
     originalTitle = in.readString();
     belongsToCollection = in.readParcelable(MovieCollection.class.getClassLoader());
     id = in.readLong();
     homepage = in.readString();
-    productionCountries = new ArrayList<ProductionCountry>();
+    productionCountries = new ArrayList<>();
     in.readTypedList(productionCountries, ProductionCountry.CREATOR);
-    productionCompanies = new ArrayList<ProductionCompany>();
+    productionCompanies = new ArrayList<>();
     in.readTypedList(productionCompanies, ProductionCompany.CREATOR);
     overview = in.readString();
     title = in.readString();
-    adult = in.readInt() == 1 ? true : false;
+    adult = in.readInt() == 1;
     posterPath = in.readString();
     runtime = in.readInt();
   }

@@ -5,7 +5,6 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 public class Poster implements Parcelable, Configuration.Configurable {
-
   private static final String FIELD_ISO_639_1 = "iso_639_1";
   private static final String FIELD_ID = "id";
   private static final String FIELD_HEIGHT = "height";
@@ -31,10 +30,6 @@ public class Poster implements Parcelable, Configuration.Configurable {
   private int width;
   @SerializedName(FIELD_ASPECT_RATIO)
   private double aspectRatio;
-
-  public Poster() {
-
-  }
 
   public String getIso6391() {
     return iso6391;
@@ -74,11 +69,7 @@ public class Poster implements Parcelable, Configuration.Configurable {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == this) return true;
-    if (obj instanceof Poster) {
-      return ((Poster) obj).getId() == id;
-    }
-    return false;
+    return obj == this || obj instanceof Poster && ((Poster) obj).getId() == id;
   }
 
   @Override

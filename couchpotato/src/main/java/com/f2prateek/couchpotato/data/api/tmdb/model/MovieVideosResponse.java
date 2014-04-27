@@ -15,10 +15,6 @@ public class MovieVideosResponse implements Parcelable {
   @SerializedName(FIELD_RESULTS)
   private List<Video> videos;
 
-  public MovieVideosResponse() {
-
-  }
-
   public long getId() {
     return id;
   }
@@ -29,12 +25,8 @@ public class MovieVideosResponse implements Parcelable {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == this) return true;
-
-    if (obj instanceof MovieVideosResponse) {
-      return ((MovieVideosResponse) obj).getId() == id;
-    }
-    return false;
+    return obj == this
+        || obj instanceof MovieVideosResponse && ((MovieVideosResponse) obj).getId() == id;
   }
 
   @Override
@@ -44,7 +36,7 @@ public class MovieVideosResponse implements Parcelable {
 
   public MovieVideosResponse(Parcel in) {
     id = in.readLong();
-    videos = new ArrayList<Video>();
+    videos = new ArrayList<>();
     in.readTypedList(videos, Video.CREATOR);
   }
 

@@ -5,7 +5,6 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 public class Genre implements Parcelable {
-
   private static final String FIELD_ID = "id";
   private static final String FIELD_NAME = "name";
 
@@ -13,10 +12,6 @@ public class Genre implements Parcelable {
   private long id;
   @SerializedName(FIELD_NAME)
   private String name;
-
-  public Genre() {
-
-  }
 
   public long getId() {
     return id;
@@ -28,11 +23,7 @@ public class Genre implements Parcelable {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == this) return true;
-    if (obj instanceof Genre) {
-      return ((Genre) obj).getId() == id;
-    }
-    return false;
+    return obj == this || obj instanceof Genre && ((Genre) obj).getId() == id;
   }
 
   @Override

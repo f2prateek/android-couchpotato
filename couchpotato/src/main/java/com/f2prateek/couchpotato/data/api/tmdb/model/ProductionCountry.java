@@ -5,7 +5,6 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 public class ProductionCountry implements Parcelable {
-
   private static final String FIELD_ISO_3166_1 = "iso_3166_1";
   private static final String FIELD_NAME = "name";
 
@@ -13,10 +12,6 @@ public class ProductionCountry implements Parcelable {
   private String iso31661;
   @SerializedName(FIELD_NAME)
   private String name;
-
-  public ProductionCountry() {
-
-  }
 
   public String getIso31661() {
     return iso31661;

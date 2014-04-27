@@ -64,7 +64,9 @@ class Utils {
   }
 
   static float weightedAverage(float... values) {
-    assert values.length % 2 == 0;
+    if (values.length % 2 != 0) {
+      throw new IllegalArgumentException("values length must be two.");
+    }
 
     float sum = 0;
     float sumWeight = 0;

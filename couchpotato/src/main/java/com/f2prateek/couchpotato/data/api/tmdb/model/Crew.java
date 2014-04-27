@@ -5,7 +5,6 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 public class Crew implements Parcelable, Configuration.Configurable {
-
   private static final String FIELD_ID = "id";
   private static final String FIELD_DEPARTMENT = "department";
   private static final String FIELD_PROFILE_PATH = "profile_path";
@@ -25,10 +24,6 @@ public class Crew implements Parcelable, Configuration.Configurable {
   private String name;
   @SerializedName(FIELD_JOB)
   private String job;
-
-  public Crew() {
-
-  }
 
   public long getId() {
     return id;
@@ -60,11 +55,7 @@ public class Crew implements Parcelable, Configuration.Configurable {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == this) return true;
-    if (obj instanceof Crew) {
-      return ((Crew) obj).getId() == id;
-    }
-    return false;
+    return obj == this || obj instanceof Crew && ((Crew) obj).getId() == id;
   }
 
   @Override

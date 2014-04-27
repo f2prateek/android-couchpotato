@@ -5,7 +5,6 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 public class Cast implements Parcelable, Configuration.Configurable {
-
   private static final String FIELD_ID = "id";
   private static final String FIELD_CAST_ID = "cast_id";
   private static final String FIELD_ORDER = "order";
@@ -28,10 +27,6 @@ public class Cast implements Parcelable, Configuration.Configurable {
   private String creditId;
   @SerializedName(FIELD_NAME)
   private String name;
-
-  public Cast() {
-
-  }
 
   public long getId() {
     return id;
@@ -67,11 +62,7 @@ public class Cast implements Parcelable, Configuration.Configurable {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == this) return true;
-    if (obj instanceof Cast) {
-      return ((Cast) obj).getId() == id;
-    }
-    return false;
+    return obj == this || obj instanceof Cast && ((Cast) obj).getId() == id;
   }
 
   @Override

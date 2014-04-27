@@ -7,13 +7,11 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class Configuration implements Parcelable {
-
   private static final String FIELD_CHANGE_KEYS = "change_keys";
   private static final String FIELD_IMAGES = "images";
 
   private static final String PLACEHOLDER_IMAGE =
       "http://parmeter.net/tech/wp-content/uploads/2012/09/logo.png";
-
   private static final String AVATAR_PLACEHOLDER =
       "https://secure.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=500";
 
@@ -24,10 +22,6 @@ public class Configuration implements Parcelable {
 
   public interface Configurable {
     void setConfiguration(Configuration configuration);
-  }
-
-  public Configuration() {
-
   }
 
   public List<String> getChangeKeys() {

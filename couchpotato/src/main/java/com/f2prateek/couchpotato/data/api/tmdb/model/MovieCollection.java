@@ -21,7 +21,6 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 public class MovieCollection implements Parcelable, Configuration.Configurable {
-
   private static final String FIELD_ID = "id";
   private static final String FIELD_BACKDROP_PATH = "backdrop_path";
   private static final String FIELD_POSTER_PATH = "poster_path";
@@ -35,10 +34,6 @@ public class MovieCollection implements Parcelable, Configuration.Configurable {
   private String posterPath;
   @SerializedName(FIELD_NAME)
   private String name;
-
-  public MovieCollection() {
-
-  }
 
   public long getId() {
     return id;
@@ -62,11 +57,7 @@ public class MovieCollection implements Parcelable, Configuration.Configurable {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == this) return true;
-    if (obj instanceof MovieCollection) {
-      return ((MovieCollection) obj).getId() == id;
-    }
-    return false;
+    return obj == this || obj instanceof MovieCollection && ((MovieCollection) obj).getId() == id;
   }
 
   @Override

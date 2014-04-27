@@ -6,7 +6,6 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class ImageSizes implements Parcelable {
-
   private static final String FIELD_POSTER_SIZES = "poster_sizes";
   private static final String FIELD_BACKDROP_SIZES = "backdrop_sizes";
   private static final String FIELD_STILL_SIZES = "still_sizes";
@@ -29,10 +28,6 @@ public class ImageSizes implements Parcelable {
   private String secureBaseUrl;
   @SerializedName(FIELD_LOGO_SIZES)
   private List<String> logoSizes;
-
-  public ImageSizes() {
-
-  }
 
   public List<String> getPosterSizes() {
     return posterSizes;

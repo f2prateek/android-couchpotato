@@ -21,7 +21,6 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 public class MinifiedMovie implements Parcelable, Configuration.Configurable {
-
   private static final String FIELD_ID = "id";
   private static final String FIELD_ORIGINAL_TITLE = "original_title";
   private static final String FIELD_BACKDROP_PATH = "backdrop_path";
@@ -53,10 +52,6 @@ public class MinifiedMovie implements Parcelable, Configuration.Configurable {
   private String posterPath;
   @SerializedName(FIELD_POPULARITY)
   private double popularity;
-
-  public MinifiedMovie() {
-
-  }
 
   public long getId() {
     return id;
@@ -106,11 +101,7 @@ public class MinifiedMovie implements Parcelable, Configuration.Configurable {
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == this) return true;
-    if (obj instanceof MinifiedMovie) {
-      return ((MinifiedMovie) obj).getId() == id;
-    }
-    return false;
+    return obj == this || obj instanceof MinifiedMovie && ((MinifiedMovie) obj).getId() == id;
   }
 
   @Override
@@ -125,7 +116,7 @@ public class MinifiedMovie implements Parcelable, Configuration.Configurable {
     voteAverage = in.readDouble();
     releaseDate = in.readString();
     title = in.readString();
-    adult = in.readInt() == 1 ? true : false;
+    adult = in.readInt() == 1;
     voteCount = in.readInt();
     posterPath = in.readString();
     popularity = in.readDouble();

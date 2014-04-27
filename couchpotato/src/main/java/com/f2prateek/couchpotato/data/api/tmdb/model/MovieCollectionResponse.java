@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MovieCollectionResponse implements Parcelable {
-
   private static final String FIELD_TOTAL_RESULTS = "total_results";
   private static final String FIELD_RESULTS = "results";
   private static final String FIELD_TOTAL_PAGES = "total_pages";
@@ -37,10 +36,6 @@ public class MovieCollectionResponse implements Parcelable {
   private int totalPage;
   @SerializedName(FIELD_PAGE)
   private int page;
-
-  public MovieCollectionResponse() {
-
-  }
 
   public int getTotalResult() {
     return totalResult;
@@ -60,7 +55,7 @@ public class MovieCollectionResponse implements Parcelable {
 
   public MovieCollectionResponse(Parcel in) {
     totalResult = in.readInt();
-    minifiedMovies = new ArrayList<MinifiedMovie>();
+    minifiedMovies = new ArrayList<>();
     in.readTypedList(minifiedMovies, MinifiedMovie.CREATOR);
     totalPage = in.readInt();
     page = in.readInt();
