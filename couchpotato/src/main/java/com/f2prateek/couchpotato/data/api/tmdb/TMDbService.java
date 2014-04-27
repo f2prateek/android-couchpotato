@@ -18,10 +18,10 @@ package com.f2prateek.couchpotato.data.api.tmdb;
 
 import com.f2prateek.couchpotato.data.api.tmdb.model.Configuration;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Images;
-import com.f2prateek.couchpotato.data.api.tmdb.model.TMDbMovie;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MovieCollectionResponse;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MovieCreditsResponse;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MovieVideosResponse;
+import com.f2prateek.couchpotato.data.api.tmdb.model.TMDbMovie;
 import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;

@@ -16,27 +16,41 @@
 
 package com.f2prateek.couchpotato.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import com.f2prateek.couchpotato.Events;
 import com.f2prateek.couchpotato.R;
 import com.squareup.otto.Subscribe;
 
 public class MainActivity extends BaseActivity {
 
-  @InjectView(R.id.navigation_drawer) NavigationDrawer navigationDrawer;
   @InjectView(R.id.content) FrameLayout content;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     // Start in Popular
-    getLayoutInflater().inflate(R.layout.popular_movies_grid, content);
+    showLibrary();
   }
 
   @Override protected void inflateLayout(ViewGroup container) {
     getLayoutInflater().inflate(R.layout.activity_main, container);
+  }
+
+  @OnClick(R.id.tmdb_popular) public void showPopularMovies() {
+    getLayoutInflater().inflate(R.layout.popular_movies_grid, content);
+  }
+
+  @OnClick(R.id.couchpotato_library) public void showLibrary() {
+    getLayoutInflater().inflate(R.layout.library_movies_grid, content);
+  }
+
+  @OnClick(R.id.couchpotato_login) public void onLoginClicked() {
+    Intent intent = new Intent(this, CouchPotatoLoginActivity.class);
+    startActivity(intent);
   }
 
   @Subscribe public void onMovieClicked(Events.OnMovieClickedEvent event) {

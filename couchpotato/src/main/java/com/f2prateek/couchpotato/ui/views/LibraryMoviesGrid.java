@@ -24,31 +24,24 @@ import butterknife.InjectView;
 import com.f2prateek.couchpotato.CouchPotatoApplication;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.Movie;
-import com.f2prateek.couchpotato.data.api.tmdb.TMDbDatabase;
+import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoDatabase;
 import com.f2prateek.couchpotato.data.rx.EndlessObserver;
 import com.f2prateek.couchpotato.ui.widget.BetterViewAnimator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import javax.inject.Inject;
 import rx.Subscription;
 
-public class PopularMoviesGrid extends BetterViewAnimator {
-  private static final int LOAD_THRESHOLD = 4;
-  private final AtomicInteger page = new AtomicInteger(1);
-  private final AtomicBoolean loading = new AtomicBoolean(false);
-
+public class LibraryMoviesGrid extends BetterViewAnimator {
   @InjectView(R.id.grid) AbsListView grid;
 
-  @Inject TMDbDatabase database;
+  @Inject CouchPotatoDatabase database;
 
   private final MovieGridAdapter adapter;
   private Subscription request;
 
-  public PopularMoviesGrid(Context context, AttributeSet attrs) {
+  public LibraryMoviesGrid(Context context, AttributeSet attrs) {
     super(context, attrs);
     CouchPotatoApplication.get(context).inject(this);
-
     adapter = new MovieGridAdapter(context);
   }
 
@@ -60,34 +53,14 @@ public class PopularMoviesGrid extends BetterViewAnimator {
 
   @Override protected void onAttachedToWindow() {
     super.onAttachedToWindow();
-
     fetch();
-
-    grid.setOnScrollListener(new AbsListView.OnScrollListener() {
-      @Override public void onScrollStateChanged(AbsListView view, int scrollState) {
-        // ignore
-      }
-
-      @Override public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
-          int totalItemCount) {
-        if (adapter.getCount() == 0) return; // No items
-
-        int lastVisibleItem = visibleItemCount + firstVisibleItem;
-        if (lastVisibleItem >= totalItemCount - LOAD_THRESHOLD) {
-          fetch();
-        }
-      }
-    });
   }
 
   private void fetch() {
-    if (loading.get()) return;
-    loading.set(true);
-    request = database.getPopularMovies(page.getAndIncrement(), new EndlessObserver<List<Movie>>() {
+    request = database.getMovies(new EndlessObserver<List<Movie>>() {
       @Override public void onNext(List<Movie> movies) {
         adapter.add(movies);
         setDisplayedChildView(grid);
-        loading.set(false);
       }
     });
   }

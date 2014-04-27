@@ -22,6 +22,7 @@ public class CollectionUtils {
   private CollectionUtils() {
     // no instances
   }
+
   public static boolean isNullOrEmpty(Collection collection) {
     return collection == null || collection.size() == 0;
   }
