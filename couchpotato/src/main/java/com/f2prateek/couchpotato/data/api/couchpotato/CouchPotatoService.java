@@ -6,12 +6,8 @@ import com.f2prateek.couchpotato.data.api.couchpotato.model.FileTypesResponse;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.ProfileListResponse;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.app.AppAvailableResponse;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.app.AppVersionResponse;
-import com.f2prateek.couchpotato.data.api.couchpotato.model.logging.ClearLogginResponse;
+import com.f2prateek.couchpotato.data.api.couchpotato.model.logging.ClearLoggingResponse;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.logging.GetLoggingResponse;
-import com.f2prateek.couchpotato.data.api.couchpotato.model.logging.LoggingLogResponse;
-import com.f2prateek.couchpotato.data.api.couchpotato.model.logging.LoggingPartialResponse;
-import com.f2prateek.couchpotato.data.api.couchpotato.model.manage.ManageProgressResponse;
-import com.f2prateek.couchpotato.data.api.couchpotato.model.manage.ManageUpdateResponse;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.movie.AddMovieResponse;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.movie.MovieRefreshResponse;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.movie.MovieResponse;
@@ -23,7 +19,6 @@ import retrofit.http.Query;
 import rx.Observable;
 
 public interface CouchPotatoService {
-
   // login
   @GET("/getkey") Observable<ApiKeyResponse> getApiKey(@Query("p") String password,
       @Query("u") String username);
@@ -37,28 +32,19 @@ public interface CouchPotatoService {
   // profile
   @GET("/profile.list") Observable<ProfileListResponse> getProfiles();
 
-  // manage
-  @GET("/manage.progress") Observable<ManageProgressResponse> progress();
-
-  @GET("/manage.update") Observable<ManageUpdateResponse> update();
-
   // logging
-  @GET("/logging.clear") Observable<ClearLogginResponse> clear();
+  @GET("/logging.clear") Observable<ClearLoggingResponse> clearLog();
 
-  @GET("/logging.get") Observable<GetLoggingResponse> getLogging(@Query("id") long id);
-
-  @GET("/logging.log") Observable<LoggingLogResponse> log();
-
-  @GET("/logging.partial") Observable<LoggingPartialResponse> partial();
+  @GET("/logging.get") Observable<GetLoggingResponse> getLog(@Query("nr") String number);
 
   // app
-  @GET("/app.available") Observable<AppAvailableResponse> available();
+  @GET("/app.available") Observable<AppAvailableResponse> appAvailable();
 
-  @GET("/app.restart") Observable<Response> restart();
+  @GET("/app.restart") Observable<Response> appRestart();
 
-  @GET("/app.shutdown") Observable<Response> shutdown();
+  @GET("/app.shutdown") Observable<Response> appShutdown();
 
-  @GET("/app.version") Observable<AppVersionResponse> version();
+  @GET("/app.version") Observable<AppVersionResponse> appVersion();
 
   // movie
   @GET("/movie.add") Observable<AddMovieResponse> addMovie(@Query("profile_id") String profile_id,
