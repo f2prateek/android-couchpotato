@@ -17,7 +17,7 @@
 package com.f2prateek.couchpotato.ui;
 
 import com.f2prateek.couchpotato.ui.views.MovieCrewItem;
-import com.f2prateek.couchpotato.ui.views.MovieGrid;
+import com.f2prateek.couchpotato.ui.views.PopularMoviesGrid;
 import com.f2prateek.couchpotato.ui.views.MovieGridItem;
 import com.f2prateek.couchpotato.ui.views.MovieVideoItem;
 import dagger.Module;
@@ -26,7 +26,7 @@ import javax.inject.Singleton;
 
 @Module(
     injects = {
-        MainActivity.class, MovieGrid.class, MovieGridItem.class, NavigationDrawer.class,
+        MainActivity.class, PopularMoviesGrid.class, MovieGridItem.class, NavigationDrawer.class,
         MovieCrewItem.class, MovieVideoItem.class, MovieActivity.class,
         CouchPotatoLoginActivity.class
     },
