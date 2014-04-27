@@ -16,20 +16,44 @@
 
 package com.f2prateek.couchpotato.data.api.couchpotato.model.movie;
 
-import java.util.Arrays;
+import com.f2prateek.couchpotato.util.CollectionUtils;
+import java.util.List;
 
 public class Images {
-  public String[] poster_original;
-  public String[] poster;
-  public String[] backdrop_original;
-  public String[] backdrop;
+  private static final String PLACEHOLDER_IMAGE =
+      "http://parmeter.net/tech/wp-content/uploads/2012/09/logo.png";
+
+  public List<String> poster_original;
+  public List<String> poster;
+  public List<String> backdrop_original;
+  public List<String> backdrop;
+
+  public String getPoster() {
+    if (!CollectionUtils.isNullOrEmpty(poster)) {
+      return poster.get(0);
+    }
+    if (!CollectionUtils.isNullOrEmpty(poster_original)) {
+      return poster_original.get(0);
+    }
+    return PLACEHOLDER_IMAGE;
+  }
+
+  public String getBackdrop() {
+    if (!CollectionUtils.isNullOrEmpty(backdrop)) {
+      return backdrop.get(0);
+    }
+    if (!CollectionUtils.isNullOrEmpty(backdrop_original)) {
+      return backdrop_original.get(0);
+    }
+    return PLACEHOLDER_IMAGE;
+  }
 
   @Override public String toString() {
     return "Images{" +
-        "poster_original=" + Arrays.toString(poster_original) +
-        ", poster=" + Arrays.toString(poster) +
-        ", backdrop_original=" + Arrays.toString(backdrop_original) +
-        ", backdrop=" + Arrays.toString(backdrop) +
+        "poster_original=" + poster_original +
+        ", poster=" + poster +
+        ", backdrop_original=" + backdrop_original +
+        ", backdrop=" + backdrop +
         '}';
   }
 }

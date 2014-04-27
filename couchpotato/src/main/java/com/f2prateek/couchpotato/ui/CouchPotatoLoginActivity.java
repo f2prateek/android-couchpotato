@@ -8,10 +8,10 @@ import android.widget.TextView;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import com.f2prateek.couchpotato.R;
+import com.f2prateek.couchpotato.data.api.Movie;
 import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoDatabase;
 import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoEndpoint;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.ApiKeyResponse;
-import com.f2prateek.couchpotato.data.api.couchpotato.model.movie.CouchPotatoMovie;
 import com.f2prateek.couchpotato.data.rx.EndlessObserver;
 import com.f2prateek.couchpotato.util.Strings;
 import com.f2prateek.ln.Ln;
@@ -90,9 +90,9 @@ public class CouchPotatoLoginActivity extends BaseActivity {
             @Override public void onNext(ApiKeyResponse apiKeyResponse) {
               if (apiKeyResponse.isSuccess()) {
                 endpoint.setApiKey(apiKeyResponse.getApiKey());
-                couchPotatoDatabase.getMovies(new EndlessObserver<List<CouchPotatoMovie>>() {
-                  @Override public void onNext(List<CouchPotatoMovie> couchPotatoMovies) {
-                    Ln.d(couchPotatoMovies);
+                couchPotatoDatabase.getMovies(new EndlessObserver<List<Movie>>() {
+                  @Override public void onNext(List<Movie> movies) {
+                    Ln.d(movies);
                   }
                 });
               } else {

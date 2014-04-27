@@ -16,13 +16,14 @@
 
 package com.f2prateek.couchpotato.data.api.tmdb;
 
+import com.f2prateek.couchpotato.data.api.Movie;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Configuration;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Images;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MinifiedMovie;
-import com.f2prateek.couchpotato.data.api.tmdb.model.Movie;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MovieCollectionResponse;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MovieCreditsResponse;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MovieVideosResponse;
+import com.f2prateek.couchpotato.data.api.tmdb.model.TMDbMovie;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Video;
 import java.util.List;
 import rx.Observable;
@@ -48,23 +49,19 @@ public class TMDbDatabase {
     return configurationObservable.cache();
   }
 
-  public Subscription getPopularMovies(final int page,
-      final Observer<List<MinifiedMovie>> observer) {
+  public Subscription getPopularMovies(final int page, final Observer<List<Movie>> observer) {
     return getConfiguration() //
-        .flatMap(new Func1<Configuration, Observable<List<MinifiedMovie>>>() {
-                   @Override public Observable<List<MinifiedMovie>> call(
-                       Configuration configuration) {
-                     return popularMovies(page, configuration);
-                   }
-                 }
-        )
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+        .flatMap(new Func1<Configuration, Observable<List<Movie>>>() {
+          @Override public Observable<List<Movie>> call(Configuration configuration) {
+            return popularMovies(page, configuration);
+          }
+        }) //
+        .subscribeOn(Schedulers.io()) //
+        .observeOn(AndroidSchedulers.mainThread()) //
         .subscribe(observer);
   }
 
-  private Observable<List<MinifiedMovie>> popularMovies(final int page,
-      final Configuration configuration) {
+  private Observable<List<Movie>> popularMovies(final int page, final Configuration configuration) {
     return tmDbService.popular(page) //
         .map(new Func1<MovieCollectionResponse, List<MinifiedMovie>>() {
           @Override public List<MinifiedMovie> call(MovieCollectionResponse response) {
@@ -88,13 +85,17 @@ public class TMDbDatabase {
             return movie;
           }
         }) //
-        .toList();
+        .map(new Func1<MinifiedMovie, Movie>() {
+          @Override public Movie call(MinifiedMovie movie) {
+            return Movie.create(movie);
+          }
+        }).toList();
   }
 
-  public Subscription getMovie(final long id, final Observer<Movie> observer) {
+  public Subscription getMovie(final long id, final Observer<TMDbMovie> observer) {
     return getConfiguration() //
-        .flatMap(new Func1<Configuration, Observable<Movie>>() {
-          @Override public Observable<Movie> call(Configuration configuration) {
+        .flatMap(new Func1<Configuration, Observable<TMDbMovie>>() {
+          @Override public Observable<TMDbMovie> call(Configuration configuration) {
             return movie(id, configuration);
           }
         }) //
@@ -103,12 +104,12 @@ public class TMDbDatabase {
         .subscribe(observer);
   }
 
-  private Observable<Movie> movie(final long id, final Configuration configuration) {
+  private Observable<TMDbMovie> movie(final long id, final Configuration configuration) {
     return tmDbService.movie(id) //
-        .map(new Func1<Movie, Movie>() {
-          @Override public Movie call(Movie movie) {
-            movie.setConfiguration(configuration);
-            return movie;
+        .map(new Func1<TMDbMovie, TMDbMovie>() {
+          @Override public TMDbMovie call(TMDbMovie TMDbMovie) {
+            TMDbMovie.setConfiguration(configuration);
+            return TMDbMovie;
           }
         });
   }
@@ -178,11 +179,10 @@ public class TMDbDatabase {
     });
   }
 
-  public Subscription getSimilarMovies(final long id,
-      final Observer<List<MinifiedMovie>> observer) {
+  public Subscription getSimilarMovies(final long id, final Observer<List<Movie>> observer) {
     return getConfiguration() //
-        .flatMap(new Func1<Configuration, Observable<List<MinifiedMovie>>>() {
-          @Override public Observable<List<MinifiedMovie>> call(Configuration configuration) {
+        .flatMap(new Func1<Configuration, Observable<List<Movie>>>() {
+          @Override public Observable<List<Movie>> call(Configuration configuration) {
             return similarMovies(id, configuration);
           }
         }) //
@@ -191,8 +191,7 @@ public class TMDbDatabase {
         .subscribe(observer);
   }
 
-  private Observable<List<MinifiedMovie>> similarMovies(final long id,
-      final Configuration configuration) {
+  private Observable<List<Movie>> similarMovies(final long id, final Configuration configuration) {
     return tmDbService.movieSimilar(id) //
         .map(new Func1<MovieCollectionResponse, List<MinifiedMovie>>() {
           @Override public List<MinifiedMovie> call(MovieCollectionResponse response) {
@@ -216,6 +215,10 @@ public class TMDbDatabase {
             return movie;
           }
         }) //
-        .toList();
+        .map(new Func1<MinifiedMovie, Movie>() {
+          @Override public Movie call(MinifiedMovie movie) {
+            return Movie.create(movie);
+          }
+        }).toList();
   }
 }

@@ -50,14 +50,14 @@ import butterknife.InjectView;
 import butterknife.InjectViews;
 import com.f2prateek.couchpotato.Events;
 import com.f2prateek.couchpotato.R;
+import com.f2prateek.couchpotato.data.api.Movie;
 import com.f2prateek.couchpotato.data.api.tmdb.TMDbDatabase;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Backdrop;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Cast;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Crew;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Images;
-import com.f2prateek.couchpotato.data.api.tmdb.model.MinifiedMovie;
-import com.f2prateek.couchpotato.data.api.tmdb.model.Movie;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MovieCreditsResponse;
+import com.f2prateek.couchpotato.data.api.tmdb.model.TMDbMovie;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Video;
 import com.f2prateek.couchpotato.data.rx.EndlessObserver;
 import com.f2prateek.couchpotato.ui.colorizer.ColorScheme;
@@ -99,7 +99,7 @@ public class MovieActivity extends BaseActivity
   private final AccelerateDecelerateInterpolator smoothInterpolator =
       new AccelerateDecelerateInterpolator();
 
-  @InjectExtra(ARGS_MOVIE) MinifiedMovie minifiedMovie;
+  @InjectExtra(ARGS_MOVIE) Movie movie;
   @InjectExtra(ARGS_THUMBNAIL_LEFT) int thumbnailLeft;
   @InjectExtra(ARGS_THUMBNAIL_TOP) int thumbnailTop;
   @InjectExtra(ARGS_THUMBNAIL_WIDTH) int thumbnailWidth;
@@ -151,8 +151,8 @@ public class MovieActivity extends BaseActivity
   private int actionBarGradientColor = Color.BLACK;
 
   /** Create an intent to launch this activity. */
-  public static Intent createIntent(Context context, MinifiedMovie movie, int left, int top,
-      int width, int height, int orientation) {
+  public static Intent createIntent(Context context, Movie movie, int left, int top, int width,
+      int height, int orientation) {
     Intent intent = new Intent(context, MovieActivity.class);
     intent.putExtra(ARGS_MOVIE, movie);
     intent.putExtra(ARGS_THUMBNAIL_LEFT, left);
@@ -230,31 +230,31 @@ public class MovieActivity extends BaseActivity
    * run the animation. See {@link #bindMovie(boolean)}.
    */
   private void initialBindData() {
-    picasso.load(minifiedMovie.getPosterPath()).fit().centerCrop().into(moviePoster);
-    movieTitle.setText(minifiedMovie.getTitle());
+    picasso.load(movie.poster()).fit().centerCrop().into(moviePoster);
+    movieTitle.setText(movie.title());
   }
 
   /** Bind data to the views. Some data might already be bound in {@link #initialBindData()}. */
   private void bindMovie(boolean animate) {
-    spannableString = new SpannableString(minifiedMovie.getTitle());
-    movieBackdrop.load(picasso, minifiedMovie.getBackdropPath());
+    spannableString = new SpannableString(movie.title());
+    movieBackdrop.load(picasso, movie.backdrop());
     updateColorScheme(animate);
 
-    tmDbDatabase.getMovie(minifiedMovie.getId(), new EndlessObserver<Movie>() {
-      @Override public void onNext(Movie movie) {
-        if (Strings.isBlank(movie.getTagline())) {
+    tmDbDatabase.getMovie(movie.id(), new EndlessObserver<TMDbMovie>() {
+      @Override public void onNext(TMDbMovie TMDbMovie) {
+        if (Strings.isBlank(TMDbMovie.getTagline())) {
           movieTagline.setVisibility(View.GONE);
         } else {
-          movieTagline.setText(movie.getTagline());
+          movieTagline.setText(TMDbMovie.getTagline());
         }
-        if (Strings.isBlank(movie.getOverview())) {
+        if (Strings.isBlank(TMDbMovie.getOverview())) {
           moviePlot.setVisibility(View.GONE);
         } else {
-          moviePlot.setText(movie.getOverview());
+          moviePlot.setText(TMDbMovie.getOverview());
         }
       }
     });
-    tmDbDatabase.getMovieImages(minifiedMovie.getId(), new EndlessObserver<Images>() {
+    tmDbDatabase.getMovieImages(movie.id(), new EndlessObserver<Images>() {
       @Override public void onNext(Images images) {
         if (!CollectionUtils.isNullOrEmpty(images.getBackdrops())) {
           List<String> backdrops = new ArrayList<>();
@@ -265,17 +265,16 @@ public class MovieActivity extends BaseActivity
         }
       }
     });
-    tmDbDatabase.getSimilarMovies(minifiedMovie.getId(),
-        new EndlessObserver<List<MinifiedMovie>>() {
-          @Override public void onNext(List<MinifiedMovie> similarMovies) {
-            if (CollectionUtils.isNullOrEmpty(similarMovies)) {
+    tmDbDatabase.getSimilarMovies(movie.id(), new EndlessObserver<List<Movie>>() {
+          @Override public void onNext(List<Movie> movies) {
+            if (CollectionUtils.isNullOrEmpty(movies)) {
               similarMoviesContainer.setVisibility(View.GONE);
               similarMoviesHeader.setVisibility(View.GONE);
             } else {
               FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                   getResources().getDimensionPixelOffset(R.dimen.poster_item_width),
                   ViewGroup.LayoutParams.MATCH_PARENT);
-              for (MinifiedMovie movie : similarMovies) {
+              for (Movie movie : movies) {
                 MovieGridItem child =
                     (MovieGridItem) getLayoutInflater().inflate(R.layout.grid_movie_item,
                         similarMoviesContainer, false);
@@ -287,7 +286,7 @@ public class MovieActivity extends BaseActivity
           }
         }
     );
-    tmDbDatabase.getVideos(minifiedMovie.getId(), new EndlessObserver<List<Video>>() {
+    tmDbDatabase.getVideos(movie.id(), new EndlessObserver<List<Video>>() {
           @Override public void onNext(List<Video> videos) {
             if (CollectionUtils.isNullOrEmpty(videos)) {
               movieVideosContainer.setVisibility(View.GONE);
@@ -308,8 +307,7 @@ public class MovieActivity extends BaseActivity
           }
         }
     );
-    tmDbDatabase.getMovieCredits(minifiedMovie.getId(),
-        new EndlessObserver<MovieCreditsResponse>() {
+    tmDbDatabase.getMovieCredits(movie.id(), new EndlessObserver<MovieCreditsResponse>() {
           @Override public void onNext(MovieCreditsResponse credits) {
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                 getResources().getDimensionPixelOffset(R.dimen.poster_item_width),
@@ -352,7 +350,7 @@ public class MovieActivity extends BaseActivity
    * Don't animate if we're being re-created
    */
   private void updateColorScheme(final boolean animate) {
-    Observable.from(minifiedMovie.getPosterPath())
+    Observable.from(movie.poster())
         .map(new Func1<String, Bitmap>() {
           @Override public Bitmap call(String url) {
             try {

@@ -16,6 +16,7 @@
 
 package com.f2prateek.couchpotato.data.api.couchpotato;
 
+import com.f2prateek.couchpotato.data.api.Movie;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.ApiKeyResponse;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.movie.CouchPotatoMovie;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.movie.MoviesResponse;
@@ -44,11 +45,16 @@ public class CouchPotatoDatabase {
         .subscribe(observer);
   }
 
-  public Subscription getMovies(final Observer<List<CouchPotatoMovie>> observer) {
+  public Subscription getMovies(final Observer<List<Movie>> observer) {
     return couchPotatoService.getMovies()
         .flatMap(new Func1<MoviesResponse, Observable<CouchPotatoMovie>>() {
           @Override public Observable<CouchPotatoMovie> call(MoviesResponse moviesResponse) {
             return Observable.from(moviesResponse.getMovies());
+          }
+        })
+        .map(new Func1<CouchPotatoMovie, Movie>() {
+          @Override public Movie call(CouchPotatoMovie couchPotatoMovie) {
+            return Movie.create(couchPotatoMovie);
           }
         })
         .toList()

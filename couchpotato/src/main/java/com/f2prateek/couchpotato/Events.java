@@ -16,7 +16,7 @@
 
 package com.f2prateek.couchpotato;
 
-import com.f2prateek.couchpotato.data.api.tmdb.model.MinifiedMovie;
+import com.f2prateek.couchpotato.data.api.Movie;
 
 public class Events {
 
@@ -27,9 +27,9 @@ public class Events {
     public final int left;
     public final int top;
 
-    public final MinifiedMovie movie;
+    public final Movie movie;
 
-    public OnMovieClickedEvent(MinifiedMovie movie, int height, int width, int left, int top) {
+    public OnMovieClickedEvent(Movie movie, int height, int width, int left, int top) {
       this.movie = movie;
       this.height = height;
       this.width = width;

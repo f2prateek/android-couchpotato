@@ -19,6 +19,9 @@ package com.f2prateek.couchpotato.util;
 import java.util.Collection;
 
 public class CollectionUtils {
+  private CollectionUtils() {
+    // no instances
+  }
   public static boolean isNullOrEmpty(Collection collection) {
     return collection == null || collection.size() == 0;
   }

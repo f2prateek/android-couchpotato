@@ -18,7 +18,7 @@ package com.f2prateek.couchpotato.data.api.tmdb;
 
 import com.f2prateek.couchpotato.data.api.tmdb.model.Configuration;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Images;
-import com.f2prateek.couchpotato.data.api.tmdb.model.Movie;
+import com.f2prateek.couchpotato.data.api.tmdb.model.TMDbMovie;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MovieCollectionResponse;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MovieCreditsResponse;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MovieVideosResponse;
@@ -30,7 +30,7 @@ import rx.Observable;
 public interface TMDbService {
   @GET("/movie/popular") Observable<MovieCollectionResponse> popular(@Query("page") int page);
 
-  @GET("/movie/{id}") Observable<Movie> movie(@Path("id") long id);
+  @GET("/movie/{id}") Observable<TMDbMovie> movie(@Path("id") long id);
 
   @GET("/movie/{id}/images") Observable<Images> movieImages(@Path("id") long id);
 

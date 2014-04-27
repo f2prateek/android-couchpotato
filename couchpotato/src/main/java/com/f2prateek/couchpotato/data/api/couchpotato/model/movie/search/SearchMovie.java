@@ -38,26 +38,4 @@ public class SearchMovie {
   //public boolean in_wanted;
   public List<String> actors;
   public int runtime;
-
-  public String getPosterUrl() {
-    String[] posters = images.poster;
-    if (posters != null && posters.length > 0) {
-      return posters[0];
-    } else {
-      return null;
-    }
-  }
-
-  public String getBackdropUrl() {
-    String[] backdrops = images.backdrop;
-    if (backdrops != null && backdrops.length > 0) {
-      return backdrops[0];
-    } else {
-      return null;
-    }
-  }
-
-  public String getImdbPage() {
-    return "http://www.imdb.com/title/" + imdb;
-  }
 }

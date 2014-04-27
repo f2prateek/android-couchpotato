@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Movie implements Parcelable, Configuration.Configurable {
+public class TMDbMovie implements Parcelable, Configuration.Configurable {
 
   private static final String FIELD_TAGLINE = "tagline";
   private static final String FIELD_BACKDROP_PATH = "backdrop_path";
@@ -79,7 +79,7 @@ public class Movie implements Parcelable, Configuration.Configurable {
   @SerializedName(FIELD_RUNTIME)
   private int runtime;
 
-  public Movie() {
+  public TMDbMovie() {
 
   }
 
@@ -182,8 +182,8 @@ public class Movie implements Parcelable, Configuration.Configurable {
   @Override
   public boolean equals(Object obj) {
     if (obj == this) return true;
-    if (obj instanceof Movie) {
-      return ((Movie) obj).getId() == id;
+    if (obj instanceof TMDbMovie) {
+      return ((TMDbMovie) obj).getId() == id;
     }
     return false;
   }
@@ -193,7 +193,7 @@ public class Movie implements Parcelable, Configuration.Configurable {
     return ((Long) id).hashCode();
   }
 
-  public Movie(Parcel in) {
+  public TMDbMovie(Parcel in) {
     tagline = in.readString();
     backdropPath = in.readString();
     status = in.readString();
@@ -228,13 +228,13 @@ public class Movie implements Parcelable, Configuration.Configurable {
     return 0;
   }
 
-  public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
-    public Movie createFromParcel(Parcel in) {
-      return new Movie(in);
+  public static final Parcelable.Creator<TMDbMovie> CREATOR = new Parcelable.Creator<TMDbMovie>() {
+    public TMDbMovie createFromParcel(Parcel in) {
+      return new TMDbMovie(in);
     }
 
-    public Movie[] newArray(int size) {
-      return new Movie[size];
+    public TMDbMovie[] newArray(int size) {
+      return new TMDbMovie[size];
     }
   };
 

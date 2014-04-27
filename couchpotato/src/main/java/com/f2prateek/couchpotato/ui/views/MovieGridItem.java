@@ -28,7 +28,7 @@ import butterknife.OnClick;
 import com.f2prateek.couchpotato.CouchPotatoApplication;
 import com.f2prateek.couchpotato.Events;
 import com.f2prateek.couchpotato.R;
-import com.f2prateek.couchpotato.data.api.tmdb.model.MinifiedMovie;
+import com.f2prateek.couchpotato.data.api.Movie;
 import com.squareup.otto.Bus;
 import com.squareup.picasso.Picasso;
 import javax.inject.Inject;
@@ -40,7 +40,7 @@ public class MovieGridItem extends FrameLayout {
   @Inject Bus bus;
   @Inject Picasso picasso;
 
-  private MinifiedMovie movie;
+  private Movie movie;
 
   public MovieGridItem(Context context, AttributeSet attrs) {
     super(context, attrs);
@@ -52,10 +52,10 @@ public class MovieGridItem extends FrameLayout {
     ButterKnife.inject(this);
   }
 
-  public void bindTo(MinifiedMovie movie) {
+  public void bindTo(Movie movie) {
     this.movie = movie;
-    picasso.load(movie.getPosterPath()).fit().centerCrop().into(image);
-    title.setText(movie.getTitle());
+    picasso.load(movie.poster()).fit().centerCrop().into(image);
+    title.setText(movie.title());
   }
 
   @OnClick(R.id.movie_poster) public void onImageClicked(View view) {

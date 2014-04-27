@@ -26,12 +26,11 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import com.f2prateek.couchpotato.CouchPotatoApplication;
 import com.f2prateek.couchpotato.R;
+import com.f2prateek.couchpotato.data.api.Movie;
 import com.f2prateek.couchpotato.data.api.tmdb.TMDbDatabase;
-import com.f2prateek.couchpotato.data.api.tmdb.model.MinifiedMovie;
 import com.f2prateek.couchpotato.data.rx.EndlessObserver;
 import com.f2prateek.couchpotato.ui.misc.BindableAdapter;
 import com.f2prateek.couchpotato.ui.widget.BetterViewAnimator;
-import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -46,7 +45,6 @@ public class MoviesGrid extends BetterViewAnimator {
 
   @InjectView(R.id.gallery_grid) AbsListView grid;
 
-  @Inject Picasso picasso;
   @Inject TMDbDatabase database;
 
   private final GalleryAdapter adapter;
@@ -56,7 +54,7 @@ public class MoviesGrid extends BetterViewAnimator {
     super(context, attrs);
     CouchPotatoApplication.get(context).inject(this);
 
-    adapter = new GalleryAdapter(context, picasso);
+    adapter = new GalleryAdapter(context);
   }
 
   @Override protected void onFinishInflate() {
@@ -90,15 +88,13 @@ public class MoviesGrid extends BetterViewAnimator {
   private void fetch() {
     if (loading.get()) return;
     loading.set(true);
-    request = database.getPopularMovies(page.getAndIncrement(),
-        new EndlessObserver<List<MinifiedMovie>>() {
-          @Override public void onNext(List<MinifiedMovie> movies) {
-            adapter.add(movies);
-            setDisplayedChildView(grid);
-            loading.set(false);
-          }
-        }
-    );
+    request = database.getPopularMovies(page.getAndIncrement(), new EndlessObserver<List<Movie>>() {
+      @Override public void onNext(List<Movie> movies) {
+        adapter.add(movies);
+        setDisplayedChildView(grid);
+        loading.set(false);
+      }
+    });
   }
 
   @Override protected void onDetachedFromWindow() {
@@ -106,17 +102,14 @@ public class MoviesGrid extends BetterViewAnimator {
     super.onDetachedFromWindow();
   }
 
-  static class GalleryAdapter extends BindableAdapter<MinifiedMovie> {
-    private List<MinifiedMovie> movies = new ArrayList<>();
+  static class GalleryAdapter extends BindableAdapter<Movie> {
+    private List<Movie> movies = new ArrayList<>();
 
-    private final Picasso picasso;
-
-    public GalleryAdapter(Context context, Picasso picasso) {
+    public GalleryAdapter(Context context) {
       super(context);
-      this.picasso = picasso;
     }
 
-    public void add(List<MinifiedMovie> movies) {
+    public void add(List<Movie> movies) {
       this.movies.addAll(movies);
       notifyDataSetChanged();
     }
@@ -125,7 +118,7 @@ public class MoviesGrid extends BetterViewAnimator {
       return movies.size();
     }
 
-    @Override public MinifiedMovie getItem(int position) {
+    @Override public Movie getItem(int position) {
       return movies.get(position);
     }
 
@@ -137,7 +130,7 @@ public class MoviesGrid extends BetterViewAnimator {
       return inflater.inflate(R.layout.grid_movie_item, container, false);
     }
 
-    @Override public void bindView(MinifiedMovie item, int position, View view) {
+    @Override public void bindView(Movie item, int position, View view) {
       ((MovieGridItem) view).bindTo(item);
     }
   }

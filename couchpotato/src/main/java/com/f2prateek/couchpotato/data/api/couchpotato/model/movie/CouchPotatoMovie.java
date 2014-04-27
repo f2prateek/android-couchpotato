@@ -43,24 +43,6 @@ public class CouchPotatoMovie {
         '}';
   }
 
-  public String getPosterUrl() {
-    String[] posters = library.info.images.poster;
-    if (posters != null && posters.length > 0) {
-      return posters[0];
-    } else {
-      return null;
-    }
-  }
-
-  public String getBackdropUrl() {
-    String[] backdrops = library.info.images.backdrop;
-    if (backdrops != null && backdrops.length > 0) {
-      return backdrops[0];
-    } else {
-      return null;
-    }
-  }
-
   public String getImdbPage() {
     return "http://www.imdb.com/title/" + library.info.imdb;
   }
