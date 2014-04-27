@@ -18,9 +18,6 @@ package com.f2prateek.couchpotato.ui.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -29,9 +26,7 @@ import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.Movie;
 import com.f2prateek.couchpotato.data.api.tmdb.TMDbDatabase;
 import com.f2prateek.couchpotato.data.rx.EndlessObserver;
-import com.f2prateek.couchpotato.ui.misc.BindableAdapter;
 import com.f2prateek.couchpotato.ui.widget.BetterViewAnimator;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -47,14 +42,14 @@ public class MoviesGrid extends BetterViewAnimator {
 
   @Inject TMDbDatabase database;
 
-  private final GalleryAdapter adapter;
+  private final MovieGridAdapter adapter;
   private Subscription request;
 
   public MoviesGrid(Context context, AttributeSet attrs) {
     super(context, attrs);
     CouchPotatoApplication.get(context).inject(this);
 
-    adapter = new GalleryAdapter(context);
+    adapter = new MovieGridAdapter(context);
   }
 
   @Override protected void onFinishInflate() {
@@ -100,38 +95,5 @@ public class MoviesGrid extends BetterViewAnimator {
   @Override protected void onDetachedFromWindow() {
     request.unsubscribe();
     super.onDetachedFromWindow();
-  }
-
-  static class GalleryAdapter extends BindableAdapter<Movie> {
-    private List<Movie> movies = new ArrayList<>();
-
-    public GalleryAdapter(Context context) {
-      super(context);
-    }
-
-    public void add(List<Movie> movies) {
-      this.movies.addAll(movies);
-      notifyDataSetChanged();
-    }
-
-    @Override public int getCount() {
-      return movies.size();
-    }
-
-    @Override public Movie getItem(int position) {
-      return movies.get(position);
-    }
-
-    @Override public long getItemId(int position) {
-      return position;
-    }
-
-    @Override public View newView(LayoutInflater inflater, int position, ViewGroup container) {
-      return inflater.inflate(R.layout.grid_movie_item, container, false);
-    }
-
-    @Override public void bindView(Movie item, int position, View view) {
-      ((MovieGridItem) view).bindTo(item);
-    }
   }
 }
