@@ -20,7 +20,7 @@ public class CouchPotatoEndpoint implements Endpoint {
   }
 
   public void setHost(String host) {
-    // sanitize the input
+    // todo: sanitize the input
     hostPreference.set(host);
     updateUrl();
   }
@@ -28,6 +28,13 @@ public class CouchPotatoEndpoint implements Endpoint {
   public void setApiKey(String apiKey) {
     apiKeyPreference.set(apiKey);
     updateUrl();
+  }
+
+  /**
+   * ApiKey not being set is same as user not being logged in.
+   */
+  public boolean isSet() {
+    return apiKeyPreference.isSet();
   }
 
   private void updateUrl() {

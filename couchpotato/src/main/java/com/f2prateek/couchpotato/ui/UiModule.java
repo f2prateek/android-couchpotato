@@ -16,6 +16,7 @@
 
 package com.f2prateek.couchpotato.ui;
 
+import com.f2prateek.couchpotato.ui.views.CouchPotatoMovieController;
 import com.f2prateek.couchpotato.ui.views.LibraryMoviesGrid;
 import com.f2prateek.couchpotato.ui.views.MovieCrewItem;
 import com.f2prateek.couchpotato.ui.views.MovieGridItem;
@@ -29,7 +30,7 @@ import javax.inject.Singleton;
     injects = {
         MainActivity.class, PopularMoviesGrid.class, LibraryMoviesGrid.class, MovieGridItem.class,
         MovieCrewItem.class, MovieVideoItem.class, MovieActivity.class,
-        CouchPotatoLoginActivity.class
+        CouchPotatoLoginActivity.class, CouchPotatoMovieController.class
     },
     complete = false,
     library = true)

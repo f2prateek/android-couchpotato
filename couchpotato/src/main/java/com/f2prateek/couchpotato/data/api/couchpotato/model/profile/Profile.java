@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Profile implements Parcelable {
-
   private static final String FIELD_ID = "id";
   private static final String FIELD_ORDER = "order";
   private static final String FIELD_TYPES = "types";

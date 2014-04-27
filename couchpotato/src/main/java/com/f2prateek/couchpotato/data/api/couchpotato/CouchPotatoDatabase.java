@@ -20,6 +20,8 @@ import com.f2prateek.couchpotato.data.api.Movie;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.ApiKeyResponse;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.movie.CouchPotatoMovie;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.movie.MoviesResponse;
+import com.f2prateek.couchpotato.data.api.couchpotato.model.profile.Profile;
+import com.f2prateek.couchpotato.data.api.couchpotato.model.profile.ProfilesResponse;
 import java.util.List;
 import rx.Observable;
 import rx.Observer;
@@ -60,6 +62,18 @@ public class CouchPotatoDatabase {
         .toList()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(observer);
+  }
+
+  public Subscription getProfiles(final Observer<List<Profile>> observer) {
+    return couchPotatoService.getProfiles() //
+        .map(new Func1<ProfilesResponse, List<Profile>>() { //
+          @Override public List<Profile> call(ProfilesResponse response) {
+            return response.getProfiles();
+          }
+        }) //
+        .subscribeOn(Schedulers.io()) //
+        .observeOn(AndroidSchedulers.mainThread()) //
         .subscribe(observer);
   }
 }

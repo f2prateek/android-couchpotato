@@ -22,25 +22,26 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Response for /profile.list */
 public class ProfilesResponse implements Parcelable {
   private static final String FIELD_SUCCESS = "success";
   private static final String FIELD_LIST = "list";
 
   @SerializedName(FIELD_SUCCESS)
-  private boolean mSuccess;
+  private boolean success;
   @SerializedName(FIELD_LIST)
   private List<Profile> profiles;
 
   public boolean isSuccess() {
-    return mSuccess;
+    return success;
   }
 
-  public List<Profile> getLists() {
+  public List<Profile> getProfiles() {
     return profiles;
   }
 
   public ProfilesResponse(Parcel in) {
-    mSuccess = in.readInt() == 1;
+    success = in.readInt() == 1;
     new ArrayList<List>();
     in.readTypedList(profiles, Profile.CREATOR);
   }
@@ -62,7 +63,7 @@ public class ProfilesResponse implements Parcelable {
 
   @Override
   public void writeToParcel(Parcel dest, int flags) {
-    dest.writeInt(mSuccess ? 1 : 0);
+    dest.writeInt(success ? 1 : 0);
     dest.writeTypedList(profiles);
   }
 }
