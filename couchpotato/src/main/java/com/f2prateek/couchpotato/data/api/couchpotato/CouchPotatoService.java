@@ -1,7 +1,6 @@
 package com.f2prateek.couchpotato.data.api.couchpotato;
 
 import com.f2prateek.couchpotato.data.api.couchpotato.model.ApiKeyResponse;
-import com.f2prateek.couchpotato.data.api.couchpotato.model.ProfileListResponse;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.app.AppAvailableResponse;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.app.AppVersionResponse;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.file.FileTypesResponse;
@@ -12,6 +11,7 @@ import com.f2prateek.couchpotato.data.api.couchpotato.model.movie.MovieRefreshRe
 import com.f2prateek.couchpotato.data.api.couchpotato.model.movie.MovieResponse;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.movie.MoviesResponse;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.movie.search.MovieSearchResponse;
+import com.f2prateek.couchpotato.data.api.couchpotato.model.profile.ProfilesResponse;
 import retrofit.client.Response;
 import retrofit.http.GET;
 import retrofit.http.Query;
@@ -40,7 +40,7 @@ public interface CouchPotatoService {
   @GET("/file.types") Observable<FileTypesResponse> list();
 
   // profile
-  @GET("/profile.list") Observable<ProfileListResponse> getProfiles();
+  @GET("/profile.list") Observable<ProfilesResponse> getProfiles();
 
   // movie
   @GET("/movie.add") Observable<AddMovieResponse> addMovie(@Query("profile_id") String profile_id,

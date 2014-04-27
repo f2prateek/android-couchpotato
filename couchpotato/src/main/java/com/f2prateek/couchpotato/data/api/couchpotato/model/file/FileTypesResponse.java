@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Response for /file.types */
 public class FileTypesResponse implements Parcelable {
   private static final String FIELD_TYPES = "types";
 
