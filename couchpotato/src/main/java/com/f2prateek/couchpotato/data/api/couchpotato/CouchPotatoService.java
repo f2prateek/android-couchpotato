@@ -1,11 +1,10 @@
 package com.f2prateek.couchpotato.data.api.couchpotato;
 
 import com.f2prateek.couchpotato.data.api.couchpotato.model.ApiKeyResponse;
-import com.f2prateek.couchpotato.data.api.couchpotato.model.DirectoryListResponse;
-import com.f2prateek.couchpotato.data.api.couchpotato.model.FileTypesResponse;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.ProfileListResponse;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.app.AppAvailableResponse;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.app.AppVersionResponse;
+import com.f2prateek.couchpotato.data.api.couchpotato.model.file.FileTypesResponse;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.logging.ClearLoggingResponse;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.logging.GetLoggingResponse;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.movie.AddMovieResponse;
@@ -23,15 +22,6 @@ public interface CouchPotatoService {
   @GET("/getkey") Observable<ApiKeyResponse> getApiKey(@Query("p") String password,
       @Query("u") String username);
 
-  // directory
-  @GET("/directory.list") Observable<DirectoryListResponse> listDirectory();
-
-  // file
-  @GET("/file.types") Observable<FileTypesResponse> getFileTypes();
-
-  // profile
-  @GET("/profile.list") Observable<ProfileListResponse> getProfiles();
-
   // logging
   @GET("/logging.clear") Observable<ClearLoggingResponse> clearLog();
 
@@ -45,6 +35,12 @@ public interface CouchPotatoService {
   @GET("/app.shutdown") Observable<Response> appShutdown();
 
   @GET("/app.version") Observable<AppVersionResponse> appVersion();
+
+  // file
+  @GET("/file.types") Observable<FileTypesResponse> list();
+
+  // profile
+  @GET("/profile.list") Observable<ProfileListResponse> getProfiles();
 
   // movie
   @GET("/movie.add") Observable<AddMovieResponse> addMovie(@Query("profile_id") String profile_id,
