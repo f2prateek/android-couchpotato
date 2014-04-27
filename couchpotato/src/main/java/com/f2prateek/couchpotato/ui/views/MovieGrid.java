@@ -33,7 +33,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.inject.Inject;
 import rx.Subscription;
 
-public class MoviesGrid extends BetterViewAnimator {
+public class MovieGrid extends BetterViewAnimator {
   private static final int LOAD_THRESHOLD = 4;
   private final AtomicInteger page = new AtomicInteger(1);
   private final AtomicBoolean loading = new AtomicBoolean(false);
@@ -45,7 +45,7 @@ public class MoviesGrid extends BetterViewAnimator {
   private final MovieGridAdapter adapter;
   private Subscription request;
 
-  public MoviesGrid(Context context, AttributeSet attrs) {
+  public MovieGrid(Context context, AttributeSet attrs) {
     super(context, attrs);
     CouchPotatoApplication.get(context).inject(this);
 
