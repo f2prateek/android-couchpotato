@@ -18,7 +18,6 @@ package com.f2prateek.couchpotato.ui.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -54,12 +53,12 @@ public class MovieGridItem extends FrameLayout {
     title.setText(movie.title());
   }
 
-  @OnClick(R.id.movie_poster) public void onMovieClicked(View view) {
+  @OnClick(R.id.movie_poster) public void onMovieClicked() {
     int[] screenLocation = new int[2];
-    view.getLocationOnScreen(screenLocation);
+    getLocationOnScreen(screenLocation);
 
-    int width = view.getWidth();
-    int height = view.getHeight();
+    int width = getWidth();
+    int height = getHeight();
 
     bus.post(
         new Events.OnMovieClickedEvent(movie, height, width, screenLocation[0], screenLocation[1]));
