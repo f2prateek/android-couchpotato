@@ -18,6 +18,8 @@ package com.f2prateek.couchpotato.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
@@ -27,6 +29,8 @@ import butterknife.OnClick;
 import com.f2prateek.couchpotato.Events;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoEndpoint;
+import com.f2prateek.couchpotato.data.prefs.BooleanPreference;
+import com.f2prateek.couchpotato.data.prefs.FirstRun;
 import com.f2prateek.couchpotato.ui.fragments.PopularMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.WantedMoviesFragment;
 import com.squareup.otto.Subscribe;
@@ -37,8 +41,10 @@ public class MainActivity extends BaseActivity {
 
   @InjectViews({R.id.couchpotato_library}) List<View> authenticatedActions;
   @InjectView(R.id.couchpotato_login) View loginButton;
+  @InjectView(R.id.navigation_drawer_layout) DrawerLayout drawerLayout;
 
   @Inject CouchPotatoEndpoint couchPotatoEndpoint;
+  @Inject @FirstRun BooleanPreference firstRun;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -53,6 +59,15 @@ public class MainActivity extends BaseActivity {
         }
       });
       showPopularMovies();
+    }
+
+    if (!firstRun.get()) {
+      drawerLayout.postDelayed(new Runnable() {
+        @Override public void run() {
+          drawerLayout.openDrawer(Gravity.START);
+        }
+      }, 1000);
+      firstRun.set(true);
     }
   }
 

@@ -16,7 +16,6 @@
 
 package com.f2prateek.couchpotato.data.api.couchpotato;
 
-import android.content.SharedPreferences;
 import com.f2prateek.couchpotato.data.prefs.StringPreference;
 import com.f2prateek.ln.Ln;
 import com.google.gson.Gson;
@@ -31,17 +30,6 @@ import retrofit.converter.GsonConverter;
 
 @Module(complete = false, library = true)
 public class CouchPotatoApiModule {
-
-  @Provides @Singleton @CouchPotatoHost StringPreference provideHostPreference(
-      SharedPreferences preferences) {
-    return new StringPreference(preferences, "couch_potato_host");
-  }
-
-  @Provides @Singleton @CouchPotatoApiKey StringPreference provideApiKeyPreference(
-      SharedPreferences preferences) {
-    return new StringPreference(preferences, "couch_potato_api_key");
-  }
-
   @Provides @Singleton CouchPotatoEndpoint provideEndpoint(
       @CouchPotatoHost StringPreference hostPreference,
       @CouchPotatoApiKey StringPreference apiKeyPreference) {
