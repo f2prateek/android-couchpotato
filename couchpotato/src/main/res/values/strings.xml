@@ -18,24 +18,28 @@
 <resources>
 
   <string name="couchpotato">CouchPotato</string>
-  <string name="browse">Browse</string>
   <string name="library">Library</string>
   <string name="popular">Popular</string>
+  <string name="browse">Browse</string>
+
+  <!-- Main Activity -->
+  <string name="login">Login</string>
 
   <!-- Movie Activity -->
-  <string name="crew_name_display_format">%1$s\nas %2$s</string>
   <string name="similar_movies">Similar Movies</string>
   <string name="videos">Videos</string>
   <string name="crew">Crew</string>
   <string name="cast">Cast</string>
-  <string name="login">Login</string>
+  <string name="crew_name_display_format">%1$s\nas %2$s</string>
+  <string name="movie_added">Successfully added %1$s to your wanted list</string>
+  <string name="add">Add</string>
+  <string name="share">Share</string>
+
+  <!-- Login Activity -->
   <string name="username_hint">Username</string>
   <string name="password_hint">Password</string>
   <string name="host_hint">Host</string>
   <string name="required">Required</string>
   <string name="invalid_fields">Please check all fields</string>
-  <string name="movie_added">Successfully added %1$s to your wanted list</string>
-  <string name="add">Add</string>
-  <string name="share">Share</string>
 
 </resources>
