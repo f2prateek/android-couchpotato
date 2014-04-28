@@ -18,6 +18,7 @@ package com.f2prateek.couchpotato.data.api.couchpotato;
 
 import com.f2prateek.couchpotato.data.api.Movie;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.ApiKeyResponse;
+import com.f2prateek.couchpotato.data.api.couchpotato.model.movie.AddMovieResponse;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.movie.CouchPotatoMovie;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.movie.MoviesResponse;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.profile.Profile;
@@ -74,6 +75,17 @@ public class CouchPotatoDatabase {
         }) //
         .cache() //
         .subscribeOn(Schedulers.io()) //
+        .observeOn(AndroidSchedulers.mainThread()) //
+        .subscribe(observer);
+  }
+
+  public Subscription addMovie(int profileId, String imdbId, final Observer<Boolean> observer) {
+    return couchPotatoService.addMovie(profileId, imdbId)
+        .map(new Func1<AddMovieResponse, Boolean>() {
+          @Override public Boolean call(AddMovieResponse addMovieResponse) {
+            return addMovieResponse.success;
+          }
+        }).subscribeOn(Schedulers.io()) //
         .observeOn(AndroidSchedulers.mainThread()) //
         .subscribe(observer);
   }

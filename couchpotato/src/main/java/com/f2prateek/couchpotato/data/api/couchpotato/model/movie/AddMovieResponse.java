@@ -19,6 +19,5 @@ package com.f2prateek.couchpotato.data.api.couchpotato.model.movie;
 /** Response for /movie.add */
 public class AddMovieResponse {
   //ignored public Movie movie;
-  public boolean added;
   public boolean success;
 }

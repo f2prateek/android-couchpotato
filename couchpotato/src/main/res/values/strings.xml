@@ -33,6 +33,7 @@
   <string name="password_hint">Password</string>
   <string name="host_hint">Host</string>
   <string name="required">Required</string>
-  <string name="invalid_fields">Please check all fields.</string>
+  <string name="invalid_fields">Please check all fields</string>
+  <string name="movie_added">Added %1$s</string>
 
 </resources>

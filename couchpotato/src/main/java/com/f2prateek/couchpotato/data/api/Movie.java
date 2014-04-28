@@ -10,7 +10,6 @@ import com.f2prateek.couchpotato.data.api.tmdb.model.MinifiedMovie;
  */
 @AutoValue
 public abstract class Movie implements Parcelable {
-
   /** TMDb id for the movie */
   public abstract long id();
 

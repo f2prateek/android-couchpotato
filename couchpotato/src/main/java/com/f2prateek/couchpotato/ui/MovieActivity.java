@@ -34,6 +34,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.Property;
 import android.util.TypedValue;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -77,6 +78,8 @@ import com.f2prateek.couchpotato.util.Strings;
 import com.f2prateek.dart.InjectExtra;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +91,7 @@ import rx.schedulers.Schedulers;
 
 public class MovieActivity extends BaseActivity
     implements NotifyingScrollView.OnScrollChangedListener {
-  private static final String ARGS_MOVIE = "movie";
+  private static final String ARGS_MOVIE = "minified_movie";
   private static final String ARGS_ORIENTATION = "orientation";
   private static final String ARGS_THUMBNAIL_LEFT = "thumbnail_left";
   private static final String ARGS_THUMBNAIL_TOP = "thumbnail_top";
@@ -103,7 +106,7 @@ public class MovieActivity extends BaseActivity
   private final AccelerateDecelerateInterpolator smoothInterpolator =
       new AccelerateDecelerateInterpolator();
 
-  @InjectExtra(ARGS_MOVIE) Movie movie;
+  @InjectExtra(ARGS_MOVIE) Movie minifiedMovie;
   @InjectExtra(ARGS_THUMBNAIL_LEFT) int thumbnailLeft;
   @InjectExtra(ARGS_THUMBNAIL_TOP) int thumbnailTop;
   @InjectExtra(ARGS_THUMBNAIL_WIDTH) int thumbnailWidth;
@@ -158,6 +161,7 @@ public class MovieActivity extends BaseActivity
   private float posterWidthScale; // ratio of poster width to thumbnail width
   private float posterHeightScale; // ratio of poster height to thumbnail width
   private int actionBarGradientColor = Color.BLACK;
+  private TMDbMovie movie;
 
   /** Create an intent to launch this activity. */
   public static Intent createIntent(Context context, Movie movie, int left, int top, int width,
@@ -239,35 +243,35 @@ public class MovieActivity extends BaseActivity
    * run the animation. See {@link #bindMovie(boolean)}.
    */
   private void initialBindData() {
-    picasso.load(movie.poster()).fit().centerCrop().into(moviePoster);
-    movieTitle.setText(movie.title());
+    picasso.load(minifiedMovie.poster()).fit().centerCrop().into(moviePoster);
+    movieTitle.setText(minifiedMovie.title());
   }
 
   /** Bind data to the views. Some data might already be bound in {@link #initialBindData()}. */
   private void bindMovie(boolean animate) {
-    spannableString = new SpannableString(movie.title());
-    movieBackdrop.load(picasso, movie.backdrop());
+    spannableString = new SpannableString(minifiedMovie.title());
+    movieBackdrop.load(picasso, minifiedMovie.backdrop());
     updateColorScheme(animate);
 
-    if (couchPotatoEndpoint.isSet()) {
-      couchPotatoController.setVisibility(View.VISIBLE);
-    }
-
-    tmDbDatabase.getMovie(movie.id(), new EndlessObserver<TMDbMovie>() {
-      @Override public void onNext(TMDbMovie TMDbMovie) {
-        if (Strings.isBlank(TMDbMovie.getTagline())) {
+    tmDbDatabase.getMovie(minifiedMovie.id(), new EndlessObserver<TMDbMovie>() {
+      @Override public void onNext(TMDbMovie response) {
+        movie = response;
+        if (couchPotatoEndpoint.isSet()) {
+          couchPotatoController.setVisibility(View.VISIBLE);
+        }
+        if (Strings.isBlank(movie.getTagline())) {
           movieTagline.setVisibility(View.GONE);
         } else {
-          movieTagline.setText(TMDbMovie.getTagline());
+          movieTagline.setText(movie.getTagline());
         }
-        if (Strings.isBlank(TMDbMovie.getOverview())) {
+        if (Strings.isBlank(movie.getOverview())) {
           moviePlot.setVisibility(View.GONE);
         } else {
-          moviePlot.setText(TMDbMovie.getOverview());
+          moviePlot.setText(movie.getOverview());
         }
       }
     });
-    tmDbDatabase.getMovieImages(movie.id(), new EndlessObserver<Images>() {
+    tmDbDatabase.getMovieImages(minifiedMovie.id(), new EndlessObserver<Images>() {
       @Override public void onNext(Images images) {
         if (!CollectionUtils.isNullOrEmpty(images.getBackdrops())) {
           List<String> backdrops = new ArrayList<>();
@@ -278,7 +282,7 @@ public class MovieActivity extends BaseActivity
         }
       }
     });
-    tmDbDatabase.getSimilarMovies(movie.id(), new EndlessObserver<List<Movie>>() {
+    tmDbDatabase.getSimilarMovies(minifiedMovie.id(), new EndlessObserver<List<Movie>>() {
           @Override public void onNext(List<Movie> movies) {
             if (!CollectionUtils.isNullOrEmpty(movies)) {
               similarMoviesContainer.setVisibility(View.VISIBLE);
@@ -298,7 +302,7 @@ public class MovieActivity extends BaseActivity
           }
         }
     );
-    tmDbDatabase.getVideos(movie.id(), new EndlessObserver<List<Video>>() {
+    tmDbDatabase.getVideos(minifiedMovie.id(), new EndlessObserver<List<Video>>() {
           @Override public void onNext(List<Video> videos) {
             if (!CollectionUtils.isNullOrEmpty(videos)) {
               movieVideosContainer.setVisibility(View.VISIBLE);
@@ -318,7 +322,7 @@ public class MovieActivity extends BaseActivity
           }
         }
     );
-    tmDbDatabase.getMovieCredits(movie.id(), new EndlessObserver<MovieCreditsResponse>() {
+    tmDbDatabase.getMovieCredits(minifiedMovie.id(), new EndlessObserver<MovieCreditsResponse>() {
           @Override public void onNext(MovieCreditsResponse credits) {
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                 getResources().getDimensionPixelOffset(R.dimen.poster_item_width),
@@ -361,16 +365,32 @@ public class MovieActivity extends BaseActivity
           popupMenu.getMenu().add(0, profile.getId(), 0, profile.getLabel());
         }
         popupMenu.show();
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+          @Override public boolean onMenuItemClick(MenuItem item) {
+            couchPotatoDatabase.addMovie(item.getItemId(), movie.getImdbId(),
+                new EndlessObserver<Boolean>() {
+                  @Override public void onNext(Boolean aBoolean) {
+                    if (aBoolean) {
+                      Crouton.makeText(MovieActivity.this,
+                          getString(R.string.movie_added, minifiedMovie.title()), Style.ALERT)
+                          .show();
+                    }
+                  }
+                }
+            );
+            return true;
+          }
+        });
       }
     });
   }
 
   /**
-   * Use the movie's poster to find a color scheme and update our views accordingly.
+   * Use the minifiedMovie's poster to find a color scheme and update our views accordingly.
    * Don't animate if we're being re-created
    */
   private void updateColorScheme(final boolean animate) {
-    Observable.from(movie.poster())
+    Observable.from(minifiedMovie.poster())
         .map(new Func1<String, Bitmap>() {
           @Override public Bitmap call(String url) {
             try {

@@ -33,7 +33,7 @@ public class MainActivity extends BaseActivity {
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     // Start in Popular
-    showLibrary();
+    showPopularMovies();
   }
 
   @Override protected void inflateLayout(ViewGroup container) {
