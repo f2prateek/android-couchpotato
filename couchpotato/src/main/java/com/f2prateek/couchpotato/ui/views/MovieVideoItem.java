@@ -26,23 +26,18 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import com.f2prateek.couchpotato.CouchPotatoApplication;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Video;
 import com.squareup.picasso.Picasso;
-import javax.inject.Inject;
 
 public class MovieVideoItem extends FrameLayout {
   @InjectView(R.id.video_thumbnail) ImageView image;
   @InjectView(R.id.video_title) TextView title;
 
-  @Inject Picasso picasso;
-
   private Video video;
 
   public MovieVideoItem(Context context, AttributeSet attrs) {
     super(context, attrs);
-    CouchPotatoApplication.get(context).inject(this);
   }
 
   @Override protected void onFinishInflate() {
@@ -50,7 +45,7 @@ public class MovieVideoItem extends FrameLayout {
     ButterKnife.inject(this);
   }
 
-  public void bindTo(Video video) {
+  public void bindTo(Video video, Picasso picasso) {
     this.video = video;
     picasso.load(video.getThumbnail()).fit().centerCrop().into(image);
     title.setText(video.getName());

@@ -292,7 +292,7 @@ public class MovieActivity extends BaseActivity
                         similarMoviesContainer, false);
                 child.setLayoutParams(params);
                 similarMoviesContainer.addView(child);
-                child.bindTo(movie);
+                child.bindTo(movie, picasso);
               }
             }
           }
@@ -312,7 +312,7 @@ public class MovieActivity extends BaseActivity
                         movieVideosContainer, false);
                 child.setLayoutParams(params);
                 movieVideosContainer.addView(child);
-                child.bindTo(video);
+                child.bindTo(video, picasso);
               }
             }
           }
@@ -332,7 +332,7 @@ public class MovieActivity extends BaseActivity
                         movieCastContainer, false);
                 child.setLayoutParams(params);
                 movieCastContainer.addView(child);
-                child.bindTo(cast);
+                child.bindTo(cast, picasso);
               }
             }
 
@@ -345,7 +345,7 @@ public class MovieActivity extends BaseActivity
                         movieCrewContainer, false);
                 child.setLayoutParams(params);
                 movieCrewContainer.addView(child);
-                child.bindTo(crew);
+                child.bindTo(crew, picasso);
               }
             }
           }

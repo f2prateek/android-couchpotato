@@ -21,14 +21,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import butterknife.InjectView;
+import com.f2prateek.couchpotato.Events;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.ui.views.MovieGridAdapter;
 import com.f2prateek.couchpotato.ui.widget.BetterViewAnimator;
+import com.squareup.picasso.Picasso;
+import javax.inject.Inject;
 
 public class MoviesGridFragment extends BaseFragment {
   @InjectView(R.id.root) BetterViewAnimator root;
   @InjectView(R.id.grid) AbsListView grid;
+
+  @Inject Picasso picasso;
+
   protected MovieGridAdapter adapter;
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,7 +45,19 @@ public class MoviesGridFragment extends BaseFragment {
 
   @Override public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
-    adapter = new MovieGridAdapter(activityContext);
+    adapter = new MovieGridAdapter(activityContext, picasso);
     grid.setAdapter(adapter);
+    grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        int[] screenLocation = new int[2];
+        view.getLocationOnScreen(screenLocation);
+
+        int width = view.getWidth();
+        int height = view.getHeight();
+
+        bus.post(new Events.OnMovieClickedEvent(adapter.getItem(position), height, width,
+            screenLocation[0], screenLocation[1]));
+      }
+    });
   }
 }

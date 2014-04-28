@@ -39,11 +39,15 @@ public class MainActivity extends BaseActivity {
   }
 
   @OnClick(R.id.tmdb_popular) public void showPopularMovies() {
-    getFragmentManager().beginTransaction().add(R.id.content, new PopularMoviesFragment()).commit();
+    getFragmentManager().beginTransaction()
+        .replace(R.id.content, new PopularMoviesFragment())
+        .commit();
   }
 
   @OnClick(R.id.couchpotato_library) public void showLibrary() {
-    getFragmentManager().beginTransaction().add(R.id.content, new WantedMoviesFragment()).commit();
+    getFragmentManager().beginTransaction()
+        .replace(R.id.content, new WantedMoviesFragment())
+        .commit();
   }
 
   @OnClick(R.id.couchpotato_login) public void onLoginClicked() {

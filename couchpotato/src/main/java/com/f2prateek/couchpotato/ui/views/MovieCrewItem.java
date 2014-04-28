@@ -26,24 +26,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import com.f2prateek.couchpotato.CouchPotatoApplication;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Cast;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Crew;
 import com.squareup.picasso.Picasso;
-import javax.inject.Inject;
 
 public class MovieCrewItem extends FrameLayout {
   @InjectView(R.id.crew_profile) ImageView profile;
   @InjectView(R.id.crew_name) TextView name;
 
-  @Inject Picasso picasso;
-
   private final TypefaceSpan span = new TypefaceSpan("sans-serif-condensed");
 
   public MovieCrewItem(Context context, AttributeSet attrs) {
     super(context, attrs);
-    CouchPotatoApplication.get(context).inject(this);
   }
 
   @Override protected void onFinishInflate() {
@@ -51,15 +46,15 @@ public class MovieCrewItem extends FrameLayout {
     ButterKnife.inject(this);
   }
 
-  public void bindTo(Cast cast) {
-    bindTo(cast.getProfilePath(), cast.getName(), cast.getCharacter());
+  public void bindTo(Cast cast, Picasso picasso) {
+    bindTo(cast.getProfilePath(), cast.getName(), cast.getCharacter(), picasso);
   }
 
-  public void bindTo(Crew crew) {
-    bindTo(crew.getProfilePath(), crew.getName(), crew.getJob());
+  public void bindTo(Crew crew, Picasso picasso) {
+    bindTo(crew.getProfilePath(), crew.getName(), crew.getJob(), picasso);
   }
 
-  private void bindTo(String imageUrl, String crew, String role) {
+  private void bindTo(String imageUrl, String crew, String role, Picasso picasso) {
     picasso.load(imageUrl).fit().centerCrop().into(profile);
 
     String text = getResources().getString(R.string.crew_name_display_format, crew, role);
