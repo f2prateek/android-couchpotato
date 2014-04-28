@@ -18,20 +18,42 @@ package com.f2prateek.couchpotato.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.view.ViewGroup;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.InjectViews;
 import butterknife.OnClick;
 import com.f2prateek.couchpotato.Events;
 import com.f2prateek.couchpotato.R;
+import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoEndpoint;
 import com.f2prateek.couchpotato.ui.fragments.PopularMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.WantedMoviesFragment;
 import com.squareup.otto.Subscribe;
+import java.util.List;
+import javax.inject.Inject;
 
 public class MainActivity extends BaseActivity {
 
+  @InjectViews({R.id.couchpotato_library}) List<View> authenticatedActions;
+  @InjectView(R.id.couchpotato_login) View loginButton;
+
+  @Inject CouchPotatoEndpoint couchPotatoEndpoint;
+
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    // Start in Popular
-    showPopularMovies();
+
+    if (couchPotatoEndpoint.isSet()) {
+      loginButton.setVisibility(View.GONE);
+      showLibrary();
+    } else {
+      ButterKnife.apply(authenticatedActions, new ButterKnife.Action<View>() {
+        @Override public void apply(View view, int index) {
+          view.setVisibility(View.GONE);
+        }
+      });
+      showPopularMovies();
+    }
   }
 
   @Override protected void inflateLayout(ViewGroup container) {
