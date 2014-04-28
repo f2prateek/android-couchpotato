@@ -16,20 +16,21 @@
 
 package com.f2prateek.couchpotato.ui;
 
-import com.f2prateek.couchpotato.ui.views.LibraryMoviesGrid;
+import com.f2prateek.couchpotato.ui.fragments.BaseFragment;
+import com.f2prateek.couchpotato.ui.fragments.PopularMoviesFragment;
+import com.f2prateek.couchpotato.ui.fragments.WantedMoviesFragment;
 import com.f2prateek.couchpotato.ui.views.MovieCrewItem;
 import com.f2prateek.couchpotato.ui.views.MovieGridItem;
 import com.f2prateek.couchpotato.ui.views.MovieVideoItem;
-import com.f2prateek.couchpotato.ui.views.PopularMoviesGrid;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
 
 @Module(
     injects = {
-        MainActivity.class, PopularMoviesGrid.class, LibraryMoviesGrid.class, MovieGridItem.class,
-        MovieCrewItem.class, MovieVideoItem.class, MovieActivity.class,
-        CouchPotatoLoginActivity.class
+        MainActivity.class, BaseFragment.class, PopularMoviesFragment.class,
+        WantedMoviesFragment.class, MovieGridItem.class, MovieCrewItem.class, MovieVideoItem.class,
+        MovieActivity.class, CouchPotatoLoginActivity.class
     },
     complete = false,
     library = true)

@@ -16,8 +16,9 @@
   ~ limitations under the License.
   -->
 
-<com.f2prateek.couchpotato.ui.views.PopularMoviesGrid
+<com.f2prateek.couchpotato.ui.widget.BetterViewAnimator
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -38,4 +39,4 @@
       android:stretchMode="columnWidth"
       android:columnWidth="@dimen/poster_item_width"/>
 
-</com.f2prateek.couchpotato.ui.views.PopularMoviesGrid>
+</com.f2prateek.couchpotato.ui.widget.BetterViewAnimator>

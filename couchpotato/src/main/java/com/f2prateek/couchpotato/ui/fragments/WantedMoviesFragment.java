@@ -14,59 +14,34 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato.ui.views;
+package com.f2prateek.couchpotato.ui.fragments;
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.widget.AbsListView;
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import com.f2prateek.couchpotato.CouchPotatoApplication;
-import com.f2prateek.couchpotato.R;
+import android.os.Bundle;
 import com.f2prateek.couchpotato.data.api.Movie;
 import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoDatabase;
 import com.f2prateek.couchpotato.data.rx.EndlessObserver;
-import com.f2prateek.couchpotato.ui.widget.BetterViewAnimator;
 import java.util.List;
 import javax.inject.Inject;
 import rx.Subscription;
 
-public class LibraryMoviesGrid extends BetterViewAnimator {
-  @InjectView(R.id.grid) AbsListView grid;
+public class WantedMoviesFragment extends MoviesGridFragment {
 
   @Inject CouchPotatoDatabase database;
 
-  private final MovieGridAdapter adapter;
   private Subscription request;
 
-  public LibraryMoviesGrid(Context context, AttributeSet attrs) {
-    super(context, attrs);
-    CouchPotatoApplication.get(context).inject(this);
-    adapter = new MovieGridAdapter(context);
-  }
-
-  @Override protected void onFinishInflate() {
-    super.onFinishInflate();
-    ButterKnife.inject(this);
-    grid.setAdapter(adapter);
-  }
-
-  @Override protected void onAttachedToWindow() {
-    super.onAttachedToWindow();
-    fetch();
-  }
-
-  private void fetch() {
+  @Override public void onActivityCreated(Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
     request = database.getMovies(new EndlessObserver<List<Movie>>() {
       @Override public void onNext(List<Movie> movies) {
         adapter.add(movies);
-        setDisplayedChildView(grid);
+        root.setDisplayedChildView(grid);
       }
     });
   }
 
-  @Override protected void onDetachedFromWindow() {
+  @Override public void onPause() {
+    super.onPause();
     request.unsubscribe();
-    super.onDetachedFromWindow();
   }
 }

@@ -19,16 +19,14 @@ package com.f2prateek.couchpotato.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import com.f2prateek.couchpotato.Events;
 import com.f2prateek.couchpotato.R;
+import com.f2prateek.couchpotato.ui.fragments.PopularMoviesFragment;
+import com.f2prateek.couchpotato.ui.fragments.WantedMoviesFragment;
 import com.squareup.otto.Subscribe;
 
 public class MainActivity extends BaseActivity {
-
-  @InjectView(R.id.content) FrameLayout content;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -41,11 +39,11 @@ public class MainActivity extends BaseActivity {
   }
 
   @OnClick(R.id.tmdb_popular) public void showPopularMovies() {
-    getLayoutInflater().inflate(R.layout.popular_movies_grid, content);
+    getFragmentManager().beginTransaction().add(R.id.content, new PopularMoviesFragment()).commit();
   }
 
   @OnClick(R.id.couchpotato_library) public void showLibrary() {
-    getLayoutInflater().inflate(R.layout.library_movies_grid, content);
+    getFragmentManager().beginTransaction().add(R.id.content, new WantedMoviesFragment()).commit();
   }
 
   @OnClick(R.id.couchpotato_login) public void onLoginClicked() {
