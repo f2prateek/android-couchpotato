@@ -34,6 +34,8 @@
   <string name="host_hint">Host</string>
   <string name="required">Required</string>
   <string name="invalid_fields">Please check all fields</string>
-  <string name="movie_added">Added %1$s</string>
+  <string name="movie_added">Successfully added %1$s to your wanted list</string>
+  <string name="add">Add</string>
+  <string name="share">Share</string>
 
 </resources>

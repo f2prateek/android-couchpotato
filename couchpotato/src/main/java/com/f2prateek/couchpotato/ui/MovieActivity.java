@@ -29,11 +29,13 @@ import android.graphics.Color;
 import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.Property;
 import android.util.TypedValue;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,13 +46,12 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.ScrollView;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.InjectViews;
-import butterknife.OnClick;
 import com.f2prateek.couchpotato.Events;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.Movie;
@@ -100,6 +101,7 @@ public class MovieActivity extends BaseActivity
 
   private static final int ANIMATION_DURATION = 500; // 500ms
   private static final int HALF_ANIMATION_DURATION = ANIMATION_DURATION / 2;
+  private static final int MENU_ADD_GROUP = 23;
 
   private final TimeInterpolator decelerateInterpolator = new DecelerateInterpolator();
   private final TimeInterpolator accelerateInterpolator = new AccelerateInterpolator();
@@ -134,9 +136,6 @@ public class MovieActivity extends BaseActivity
   @InjectView(R.id.movie_secondary) FrameLayout movieSecondary;
   @InjectView(R.id.movie_secondary_accent) FrameLayout movieSecondaryAccent;
   @InjectView(R.id.movie_tertiary_accent) FrameLayout movieTertiaryAccent;
-  @InjectView(R.id.couchpotato_controller) View couchPotatoController;
-  @InjectView(R.id.add) ImageView addMovieButton;
-  @InjectView(R.id.share) ImageView shareMovieButton;
 
   @InjectViews({
       R.id.similar_movies_header, R.id.movie_cast_header, R.id.movie_crew_header,
@@ -162,6 +161,8 @@ public class MovieActivity extends BaseActivity
   private float posterHeightScale; // ratio of poster height to thumbnail width
   private int actionBarGradientColor = Color.BLACK;
   private TMDbMovie movie;
+  private ShareActionProvider movieShareActionProvider;
+  private MenuItem addMovieMenuItem;
 
   /** Create an intent to launch this activity. */
   public static Intent createIntent(Context context, Movie movie, int left, int top, int width,
@@ -256,9 +257,6 @@ public class MovieActivity extends BaseActivity
     tmDbDatabase.getMovie(minifiedMovie.id(), new EndlessObserver<TMDbMovie>() {
       @Override public void onNext(TMDbMovie response) {
         movie = response;
-        if (couchPotatoEndpoint.isSet()) {
-          couchPotatoController.setVisibility(View.VISIBLE);
-        }
         if (Strings.isBlank(movie.getTagline())) {
           movieTagline.setVisibility(View.GONE);
         } else {
@@ -269,6 +267,7 @@ public class MovieActivity extends BaseActivity
         } else {
           moviePlot.setText(movie.getOverview());
         }
+        setShareIntent();
       }
     });
     tmDbDatabase.getMovieImages(minifiedMovie.id(), new EndlessObserver<Images>() {
@@ -355,34 +354,57 @@ public class MovieActivity extends BaseActivity
           }
         }
     );
-  }
-
-  @OnClick(R.id.add) public void add(final View button) {
     couchPotatoDatabase.getProfiles(new EndlessObserver<List<Profile>>() {
       @Override public void onNext(List<Profile> profiles) {
-        PopupMenu popupMenu = new PopupMenu(MovieActivity.this, button);
         for (Profile profile : profiles) {
-          popupMenu.getMenu().add(0, profile.getId(), 0, profile.getLabel());
+          addMovieMenuItem.getSubMenu().add(MENU_ADD_GROUP, profile.getId(), 0, profile.getLabel());
         }
-        popupMenu.show();
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-          @Override public boolean onMenuItemClick(MenuItem item) {
-            couchPotatoDatabase.addMovie(item.getItemId(), movie.getImdbId(),
-                new EndlessObserver<Boolean>() {
-                  @Override public void onNext(Boolean aBoolean) {
-                    if (aBoolean) {
-                      Crouton.makeText(MovieActivity.this,
-                          getString(R.string.movie_added, minifiedMovie.title()), Style.ALERT)
-                          .show();
-                    }
-                  }
-                }
-            );
-            return true;
-          }
-        });
       }
     });
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.activity_movie, menu);
+    movieShareActionProvider =
+        (ShareActionProvider) menu.findItem(R.id.menu_share).getActionProvider();
+    addMovieMenuItem = menu.findItem(R.id.menu_add);
+    return true;
+  }
+
+  @Override public boolean onPrepareOptionsMenu(Menu menu) {
+    if (couchPotatoEndpoint.isSet()) {
+      addMovieMenuItem.setEnabled(true);
+    }
+    return super.onPrepareOptionsMenu(menu);
+  }
+
+  @Override public boolean onOptionsItemSelected(MenuItem item) {
+    if (item.getGroupId() == MENU_ADD_GROUP) {
+      couchPotatoDatabase.addMovie(item.getItemId(), movie.getImdbId(),
+          new EndlessObserver<Boolean>() {
+            @Override public void onNext(Boolean aBoolean) {
+              if (aBoolean) {
+                Crouton.makeText(MovieActivity.this,
+                    getString(R.string.movie_added, minifiedMovie.title()), Style.ALERT).show();
+              }
+            }
+          }
+      );
+    }
+    return super.onOptionsItemSelected(item);
+  }
+
+  private void setShareIntent() {
+    Intent intent = new Intent(Intent.ACTION_VIEW);
+    if (!Strings.isBlank(movie.getHomepage())) {
+      intent.setData(Uri.parse(movie.getHomepage()));
+    } else {
+      intent.setData(Uri.parse("http://www.imdb.com/title/" + movie.getImdbId()));
+    }
+    if (movieShareActionProvider != null) {
+      movieShareActionProvider.setShareIntent(intent);
+    }
   }
 
   /**
@@ -431,9 +453,6 @@ public class MovieActivity extends BaseActivity
                 colorScheme.getSecondaryAccent(), duration);
             animateBackgroundColor(movieTertiaryAccent, transparent,
                 colorScheme.getTertiaryAccent(), duration);
-
-            animateBackgroundColor(couchPotatoController, transparent,
-                colorScheme.getSecondaryAccent(), duration);
           }
         });
   }
