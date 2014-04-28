@@ -72,6 +72,7 @@ public class CouchPotatoDatabase {
             return response.getProfiles();
           }
         }) //
+        .cache() //
         .subscribeOn(Schedulers.io()) //
         .observeOn(AndroidSchedulers.mainThread()) //
         .subscribe(observer);

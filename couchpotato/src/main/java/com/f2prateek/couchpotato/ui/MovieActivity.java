@@ -43,14 +43,19 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.InjectViews;
+import butterknife.OnClick;
 import com.f2prateek.couchpotato.Events;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.Movie;
+import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoDatabase;
+import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoEndpoint;
+import com.f2prateek.couchpotato.data.api.couchpotato.model.profile.Profile;
 import com.f2prateek.couchpotato.data.api.tmdb.TMDbDatabase;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Backdrop;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Cast;
@@ -126,6 +131,9 @@ public class MovieActivity extends BaseActivity
   @InjectView(R.id.movie_secondary) FrameLayout movieSecondary;
   @InjectView(R.id.movie_secondary_accent) FrameLayout movieSecondaryAccent;
   @InjectView(R.id.movie_tertiary_accent) FrameLayout movieTertiaryAccent;
+  @InjectView(R.id.couchpotato_controller) View couchPotatoController;
+  @InjectView(R.id.add) ImageView addMovieButton;
+  @InjectView(R.id.share) ImageView shareMovieButton;
 
   @InjectViews({
       R.id.similar_movies_header, R.id.movie_cast_header, R.id.movie_crew_header,
@@ -135,6 +143,8 @@ public class MovieActivity extends BaseActivity
 
   @Inject TMDbDatabase tmDbDatabase;
   @Inject Picasso picasso;
+  @Inject CouchPotatoEndpoint couchPotatoEndpoint;
+  @Inject CouchPotatoDatabase couchPotatoDatabase;
 
   private int actionBarTitleColor;
   private int actionBarHeight;
@@ -239,6 +249,10 @@ public class MovieActivity extends BaseActivity
     movieBackdrop.load(picasso, movie.backdrop());
     updateColorScheme(animate);
 
+    if (couchPotatoEndpoint.isSet()) {
+      couchPotatoController.setVisibility(View.VISIBLE);
+    }
+
     tmDbDatabase.getMovie(movie.id(), new EndlessObserver<TMDbMovie>() {
       @Override public void onNext(TMDbMovie TMDbMovie) {
         if (Strings.isBlank(TMDbMovie.getTagline())) {
@@ -339,6 +353,18 @@ public class MovieActivity extends BaseActivity
     );
   }
 
+  @OnClick(R.id.add) public void add(final View button) {
+    couchPotatoDatabase.getProfiles(new EndlessObserver<List<Profile>>() {
+      @Override public void onNext(List<Profile> profiles) {
+        PopupMenu popupMenu = new PopupMenu(MovieActivity.this, button);
+        for (Profile profile : profiles) {
+          popupMenu.getMenu().add(0, profile.getId(), 0, profile.getLabel());
+        }
+        popupMenu.show();
+      }
+    });
+  }
+
   /**
    * Use the movie's poster to find a color scheme and update our views accordingly.
    * Don't animate if we're being re-created
@@ -385,6 +411,9 @@ public class MovieActivity extends BaseActivity
                 colorScheme.getSecondaryAccent(), duration);
             animateBackgroundColor(movieTertiaryAccent, transparent,
                 colorScheme.getTertiaryAccent(), duration);
+
+            animateBackgroundColor(couchPotatoController, transparent,
+                colorScheme.getSecondaryAccent(), duration);
           }
         });
   }
