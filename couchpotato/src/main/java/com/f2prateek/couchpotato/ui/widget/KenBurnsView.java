@@ -76,8 +76,8 @@ public class KenBurnsView extends FrameLayout {
     activeImageView = swapper;
 
     // show the active view
-    loadImage(activeImageView, images.get(currentImageIndex));
     currentImageIndex = (1 + currentImageIndex) % images.size();
+    loadImage(inactiveImageView, images.get(currentImageIndex));
 
     // Animate the active ImageView
     animate(activeImageView);
@@ -153,6 +153,8 @@ public class KenBurnsView extends FrameLayout {
   public void load(Picasso picasso, String image) {
     this.picasso = picasso;
     this.images = Arrays.asList(image);
+    loadImage(activeImageView, image);
+    loadImage(inactiveImageView, image);
     startKenBurnsAnimation();
   }
 
@@ -160,6 +162,7 @@ public class KenBurnsView extends FrameLayout {
     this.images = images;
     if (images.size() > 1) {
       currentImageIndex = 1;
+      loadImage(inactiveImageView, images.get(currentImageIndex));
     }
   }
 
