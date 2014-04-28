@@ -292,7 +292,7 @@ public class MovieActivity extends BaseActivity
                         similarMoviesContainer, false);
                 child.setLayoutParams(params);
                 similarMoviesContainer.addView(child);
-                child.bindTo(movie, picasso);
+                child.bindTo(movie, picasso, bus);
               }
             }
           }
