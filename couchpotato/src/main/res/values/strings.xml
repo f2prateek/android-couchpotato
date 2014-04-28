@@ -41,5 +41,7 @@
   <string name="host_hint">Host</string>
   <string name="required">Required</string>
   <string name="invalid_fields">Please check all fields</string>
+  <string name="invalid_credentials">Credentials rejected. Please try again.</string>
+  <string name="invalid_server">Could not reach server. Please check the host.</string>
 
 </resources>

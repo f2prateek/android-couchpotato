@@ -93,23 +93,23 @@ public class CouchPotatoLoginActivity extends BaseActivity {
                 startActivity(intent);
                 finish();
               } else {
-                showLoginError();
+                showError(R.string.invalid_credentials);
               }
             }
 
             @Override public void onError(Throwable throwable) {
               super.onError(throwable);
-              showLoginError();
+              showError(R.string.invalid_server);
             }
           }
       );
     } else {
-      showLoginError();
+      showError(R.string.invalid_fields);
     }
   }
 
-  private void showLoginError() {
-    Crouton.makeText(this, R.string.invalid_fields, Style.ALERT).show();
+  private void showError(int textResourceId) {
+    Crouton.makeText(this, textResourceId, Style.ALERT).show();
   }
 
   private static String getText(EditText editText) {
