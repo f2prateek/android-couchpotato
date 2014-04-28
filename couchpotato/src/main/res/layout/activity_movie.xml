@@ -163,21 +163,6 @@
 
       </HorizontalScrollView>
 
-      <FrameLayout
-          android:id="@+id/movie_secondary"
-          android:layout_width="match_parent"
-          android:layout_height="250dp"/>
-
-      <FrameLayout
-          android:id="@+id/movie_secondary_accent"
-          android:layout_width="match_parent"
-          android:layout_height="250dp"/>
-
-      <FrameLayout
-          android:id="@+id/movie_tertiary_accent"
-          android:layout_width="match_parent"
-          android:layout_height="250dp"/>
-
     </LinearLayout>
 
   </com.f2prateek.couchpotato.ui.widget.NotifyingScrollView>

@@ -133,9 +133,6 @@ public class MovieActivity extends BaseActivity
   @InjectView(R.id.movie_title) TextView movieTitle;
   @InjectView(R.id.movie_tagline) TextView movieTagline;
   @InjectView(R.id.movie_plot) TextView moviePlot;
-  @InjectView(R.id.movie_secondary) FrameLayout movieSecondary;
-  @InjectView(R.id.movie_secondary_accent) FrameLayout movieSecondaryAccent;
-  @InjectView(R.id.movie_tertiary_accent) FrameLayout movieTertiaryAccent;
 
   @InjectViews({
       R.id.similar_movies_header, R.id.movie_cast_header, R.id.movie_crew_header,
@@ -445,14 +442,6 @@ public class MovieActivity extends BaseActivity
                 animateBackgroundColor(view, transparent, colorScheme.getPrimaryAccent(), duration);
               }
             });
-
-            // todo: only for testing colors, delete these three for later
-            animateBackgroundColor(movieSecondary, transparent, colorScheme.getSecondaryText(),
-                duration);
-            animateBackgroundColor(movieSecondaryAccent, transparent,
-                colorScheme.getSecondaryAccent(), duration);
-            animateBackgroundColor(movieTertiaryAccent, transparent,
-                colorScheme.getTertiaryAccent(), duration);
           }
         });
   }
@@ -462,10 +451,9 @@ public class MovieActivity extends BaseActivity
   }
 
   /**
-   * The enter animation scales the picture in from its previous thumbnail
-   * size/location, colorizing it in parallel. In parallel, the background of the
-   * activity is fading in. When the pictue is in place, the text description
-   * drops down.
+   * The enter animation scales the picture in from its previous thumbnail size/location. In
+   * parallel, the background of the activity is fading in. When the picture is in place, the other
+   * content fades in.
    */
   public void runEnterAnimation(final Runnable endAction) {
     // Set starting values for properties we're going to animate. These
