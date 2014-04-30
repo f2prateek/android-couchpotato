@@ -21,7 +21,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
-import android.animation.TimeInterpolator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -43,6 +42,7 @@ import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -74,6 +74,7 @@ import com.f2prateek.couchpotato.ui.views.MovieGridItem;
 import com.f2prateek.couchpotato.ui.views.MovieVideoItem;
 import com.f2prateek.couchpotato.ui.widget.KenBurnsView;
 import com.f2prateek.couchpotato.ui.widget.NotifyingScrollView;
+import com.f2prateek.couchpotato.ui.widget.RatingView;
 import com.f2prateek.couchpotato.util.CollectionUtils;
 import com.f2prateek.couchpotato.util.Strings;
 import com.f2prateek.dart.InjectExtra;
@@ -103,10 +104,9 @@ public class MovieActivity extends BaseActivity
   private static final int HALF_ANIMATION_DURATION = ANIMATION_DURATION / 2;
   private static final int MENU_ADD_GROUP = 23;
 
-  private final TimeInterpolator decelerateInterpolator = new DecelerateInterpolator();
-  private final TimeInterpolator accelerateInterpolator = new AccelerateInterpolator();
-  private final AccelerateDecelerateInterpolator smoothInterpolator =
-      new AccelerateDecelerateInterpolator();
+  private final Interpolator decelerateInterpolator = new DecelerateInterpolator();
+  private final Interpolator accelerateInterpolator = new AccelerateInterpolator();
+  private final Interpolator smoothInterpolator = new AccelerateDecelerateInterpolator();
 
   @InjectExtra(ARGS_MOVIE) Movie minifiedMovie;
   @InjectExtra(ARGS_THUMBNAIL_LEFT) int thumbnailLeft;
@@ -120,7 +120,7 @@ public class MovieActivity extends BaseActivity
   @InjectView(R.id.movie_header_gradient) View movieHeaderGradient;
   @InjectView(R.id.movie_header_backdrop) KenBurnsView movieBackdrop;
   @InjectView(R.id.movie_header_poster) ImageView moviePoster;
-
+  @InjectView(R.id.movie_rating) RatingView movieRating;
   @InjectView(R.id.similar_movies_header) View similarMoviesHeader;
   @InjectView(R.id.similar_movies_container) LinearLayout similarMoviesContainer;
   @InjectView(R.id.movie_cast_header) View movieCastHeader;
@@ -133,7 +133,7 @@ public class MovieActivity extends BaseActivity
   @InjectView(R.id.movie_title) TextView movieTitle;
   @InjectView(R.id.movie_tagline) TextView movieTagline;
   @InjectView(R.id.movie_plot) TextView moviePlot;
-
+  @InjectView(R.id.movie_rating_container) View movieRatingContainer;
   @InjectViews({
       R.id.similar_movies_header, R.id.movie_cast_header, R.id.movie_crew_header,
       R.id.movie_videos_header, R.id.movie_title, R.id.movie_title, R.id.movie_plot,
@@ -245,6 +245,22 @@ public class MovieActivity extends BaseActivity
     movieTitle.setText(minifiedMovie.title());
   }
 
+  /**
+   * Property to let us animate the text color.
+   */
+  final Property<RatingView, Integer> ratingProperty =
+      new Property<RatingView, Integer>(Integer.class, "rating") {
+        @Override
+        public Integer get(RatingView object) {
+          return object.getRating();
+        }
+
+        @Override
+        public void set(RatingView object, Integer value) {
+          object.setRating(value);
+        }
+      };
+
   /** Bind data to the views. Some data might already be bound in {@link #initialBindData()}. */
   private void bindMovie(boolean animate) {
     spannableString = new SpannableString(minifiedMovie.title());
@@ -264,6 +280,11 @@ public class MovieActivity extends BaseActivity
         } else {
           moviePlot.setText(movie.getOverview());
         }
+        final ObjectAnimator animator = ObjectAnimator.ofInt(movieRating, ratingProperty, 0,
+            (int) (movie.getVoteAverage() * 10));
+        animator.setDuration(ANIMATION_DURATION * 2);
+        animator.setInterpolator(smoothInterpolator);
+        animator.start();
         setShareIntent();
       }
     });
@@ -431,6 +452,7 @@ public class MovieActivity extends BaseActivity
             final long duration = animate ? ANIMATION_DURATION : 0;
             final int transparent = getResources().getColor(android.R.color.transparent);
 
+            movieRating.setColorScheme(colorScheme);
             setActionBarTitleColor(colorScheme.getPrimaryText());
             actionBarGradientColor = colorScheme.getPrimaryAccent();
             // Rather than setting the background completely on the window, set it only on the views
@@ -442,6 +464,8 @@ public class MovieActivity extends BaseActivity
                 animateBackgroundColor(view, transparent, colorScheme.getPrimaryAccent(), duration);
               }
             });
+            animateBackgroundColor(movieRatingContainer, transparent,
+                colorScheme.getPrimaryAccent(), duration);
           }
         });
   }

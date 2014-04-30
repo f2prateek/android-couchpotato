@@ -23,6 +23,7 @@
   <style name="Theme.CouchPotato" parent="android:Theme.Holo">
     <item name="android:windowBackground">@drawable/app_background</item>
     <item name="android:progressBarStyle">@style/Widget.CouchPotato.ProgressBar</item>
+    <item name="ratingViewStyle">@style/Widget.RatingView</item>
   </style>
 
   <style name="Theme.CouchPotato.NoActionBar">
@@ -105,6 +106,16 @@
   <style name="Widget.CouchPotato.Drawer.RowWidget.Value">
     <item name="android:textColor">?android:attr/textColorPrimary</item>
     <item name="android:textSize">16sp</item>
+  </style>
+
+  <style name="Widget.RatingView" parent="None">
+    <item name="textMargin">20dp</item>
+    <item name="textColor">@color/background</item>
+    <item name="textSize">42sp</item>
+    <item name="circleStrokeWidth">5dp</item>
+    <item name="maxValue">100</item>
+    <item name="circleColor">@color/background</item>
+    <item name="circleBackgroundColor">@color/background</item>
   </style>
 
 </resources>

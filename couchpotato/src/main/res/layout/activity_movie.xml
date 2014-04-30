@@ -66,6 +66,19 @@
           android:paddingLeft="@dimen/activity_horizontal_margin"
           tools:text="How much can you know about yourself if you've never been in a fight?"/>
 
+      <FrameLayout
+          android:id="@+id/movie_rating_container"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+
+        <com.f2prateek.couchpotato.ui.widget.RatingView
+            android:id="@+id/movie_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+      </FrameLayout>
+
       <TextView
           android:id="@+id/movie_plot"
           android:layout_width="match_parent"
