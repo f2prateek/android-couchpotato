@@ -5,9 +5,11 @@ buildscript {
   dependencies {
     classpath 'com.android.tools.build:gradle:0.9.+'
     classpath 'com.jakewharton.hugo:hugo-plugin:1.0.+'
+    classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.9.+'
   }
 }
 
+apply plugin: 'android-sdk-manager'
 apply plugin: 'android'
 apply plugin: 'checkstyle'
 apply plugin: 'hugo'
