@@ -69,6 +69,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import retrofit.RestAdapter;
 
+import static butterknife.ButterKnife.findById;
 import static retrofit.RestAdapter.LogLevel;
 
 /**
