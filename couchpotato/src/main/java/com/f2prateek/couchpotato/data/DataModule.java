@@ -37,7 +37,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 @Module(
     includes = {ApiModule.class, UserPreferencesModule.class},
-    complete= false,
+    complete = false,
     library = true)
 public final class DataModule {
   static final int DISK_CACHE_SIZE = 50 * 1024 * 1024; // 50MB

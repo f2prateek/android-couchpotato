@@ -104,9 +104,9 @@ public class MovieActivity extends BaseActivity
   private static final int HALF_ANIMATION_DURATION = ANIMATION_DURATION / 2;
   private static final int MENU_ADD_GROUP = 23;
 
-  private final Interpolator decelerateInterpolator = new DecelerateInterpolator();
-  private final Interpolator accelerateInterpolator = new AccelerateInterpolator();
-  private final Interpolator smoothInterpolator = new AccelerateDecelerateInterpolator();
+  private static final Interpolator decelerateInterpolator = new DecelerateInterpolator();
+  private static final Interpolator accelerateInterpolator = new AccelerateInterpolator();
+  private static final Interpolator smoothInterpolator = new AccelerateDecelerateInterpolator();
 
   @InjectExtra(ARGS_MOVIE) Movie minifiedMovie;
   @InjectExtra(ARGS_THUMBNAIL_LEFT) int thumbnailLeft;
