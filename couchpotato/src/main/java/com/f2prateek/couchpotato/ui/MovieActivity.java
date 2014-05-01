@@ -21,6 +21,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.animation.TypeEvaluator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -40,8 +41,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -104,9 +103,8 @@ public class MovieActivity extends BaseActivity
   private static final int HALF_ANIMATION_DURATION = ANIMATION_DURATION / 2;
   private static final int MENU_ADD_GROUP = 23;
 
-  private static final Interpolator decelerateInterpolator = new DecelerateInterpolator();
-  private static final Interpolator accelerateInterpolator = new AccelerateInterpolator();
   private static final Interpolator smoothInterpolator = new AccelerateDecelerateInterpolator();
+  private static final TypeEvaluator argbEvaluator = new ArgbEvaluator();
 
   @InjectExtra(ARGS_MOVIE) Movie minifiedMovie;
   @InjectExtra(ARGS_THUMBNAIL_LEFT) int thumbnailLeft;
@@ -160,6 +158,7 @@ public class MovieActivity extends BaseActivity
   private TMDbMovie movie;
   private ShareActionProvider movieShareActionProvider;
   private MenuItem addMovieMenuItem;
+  private GradientDrawable gradientDrawable;
 
   /** Create an intent to launch this activity. */
   public static Intent createIntent(Context context, Movie movie, int left, int top, int width,
@@ -498,14 +497,14 @@ public class MovieActivity extends BaseActivity
     moviePoster.animate().setDuration(ANIMATION_DURATION).
         scaleX(1).scaleY(1).
         translationX(0).translationY(0).
-        setInterpolator(decelerateInterpolator).
+        setInterpolator(smoothInterpolator).
         withEndAction(new Runnable() {
           public void run() {
             // Animate the content in after the image animation is done
             scrollView.animate().setDuration(HALF_ANIMATION_DURATION).alpha(1).
-                setInterpolator(decelerateInterpolator).withEndAction(endAction);
+                setInterpolator(smoothInterpolator).withEndAction(endAction);
             movieBackdrop.animate().setDuration(HALF_ANIMATION_DURATION).alpha(1).
-                setInterpolator(decelerateInterpolator);
+                setInterpolator(smoothInterpolator);
           }
         });
   }
@@ -554,7 +553,7 @@ public class MovieActivity extends BaseActivity
     // First, slide/fade content out of the way
     AnimatorSet animatorSet = new AnimatorSet();
     animatorSet.setDuration(HALF_ANIMATION_DURATION);
-    animatorSet.setInterpolator(accelerateInterpolator);
+    animatorSet.setInterpolator(smoothInterpolator);
     animatorSet.playTogether(ObjectAnimator.ofFloat(movieBackdrop, "alpha", 1.0f, 0.0f),
         ObjectAnimator.ofFloat(scrollView, "alpha", 1.0f, 0.0f),
         ObjectAnimator.ofFloat(movieHeaderGradient, "alpha", 1.0f, 0.0f));
@@ -594,8 +593,8 @@ public class MovieActivity extends BaseActivity
   private void animateTextColor(TextView textView, int endColor, long animationDuration) {
     final ObjectAnimator animator = ObjectAnimator.ofInt(textView, textColorProperty, endColor);
     animator.setDuration(animationDuration);
-    animator.setEvaluator(new ArgbEvaluator());
-    animator.setInterpolator(decelerateInterpolator);
+    animator.setEvaluator(argbEvaluator);
+    animator.setInterpolator(smoothInterpolator);
     animator.start();
   }
 
@@ -618,8 +617,8 @@ public class MovieActivity extends BaseActivity
     view.setBackgroundColor(startColor);
     final ObjectAnimator animator = ObjectAnimator.ofInt(view, backgroundColorProperty, endColor);
     animator.setDuration(animationDuration);
-    animator.setEvaluator(new ArgbEvaluator());
-    animator.setInterpolator(decelerateInterpolator);
+    animator.setEvaluator(argbEvaluator);
+    animator.setInterpolator(smoothInterpolator);
     animator.start();
   }
 
@@ -699,11 +698,12 @@ public class MovieActivity extends BaseActivity
   }
 
   private void setActionBarGradient(float alpha) {
-    int[] colors = new int[2];
-    colors[0] = actionBarGradientColor;
-    colors[1] = getResources().getColor(android.R.color.transparent);
-    GradientDrawable gradientDrawable =
-        new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, colors);
+    if (gradientDrawable == null) {
+      int[] colors = new int[2];
+      colors[0] = actionBarGradientColor;
+      colors[1] = getResources().getColor(android.R.color.transparent);
+      gradientDrawable = new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, colors);
+    }
 
     movieHeaderGradient.setAlpha(alpha);
     movieHeaderGradient.setBackground(gradientDrawable);
