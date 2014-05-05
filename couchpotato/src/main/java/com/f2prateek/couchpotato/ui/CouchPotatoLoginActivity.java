@@ -14,7 +14,6 @@ import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoEndpoint;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.ApiKeyResponse;
 import com.f2prateek.couchpotato.data.rx.EndlessObserver;
 import com.f2prateek.couchpotato.util.Strings;
-import com.f2prateek.ln.Ln;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import javax.inject.Inject;
@@ -30,8 +29,6 @@ public class CouchPotatoLoginActivity extends BaseActivity {
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
-    Ln.d(endpoint);
 
     if (Strings.isBlank(endpoint.getHost())) {
       host.setText(DEFAULT_HOST_SCHEME);
@@ -65,10 +62,7 @@ public class CouchPotatoLoginActivity extends BaseActivity {
     }
 
     // Username is not required (server could be unprotected)
-    boolean hasUsername = true;
-    if (Strings.isBlank(username.getText())) {
-      hasUsername = false;
-    }
+    boolean hasUsername = !Strings.isBlank(username.getText());
     // However if username is provided, password must be provided as well.
     if (hasUsername) {
       if (Strings.isBlank(password.getText())) {

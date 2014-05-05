@@ -71,8 +71,6 @@ android {
 }
 
 dependencies {
-  compile fileTree(dir: 'libs', include: ['*.jar'])
-
   compile 'com.squareup.dagger:dagger:1.2.+'
   provided 'com.squareup.dagger:dagger-compiler:1.2.+'
 
@@ -105,6 +103,8 @@ checkstyle {
 
 android.applicationVariants.all { variant ->
   def name = variant.buildType.name
+
+  // Checkstyle
   def checkstyle = project.tasks.create "checkstyle${name.capitalize()}", Checkstyle
   checkstyle.dependsOn variant.javaCompile
   checkstyle.source variant.javaCompile.source
@@ -118,6 +118,7 @@ android.applicationVariants.all { variant ->
   checkstyle.exclude('**/MedianCutQuantizer.java')
   project.tasks.getByName("check").dependsOn checkstyle
 
+  // Rename apk
   def apk = variant.packageApplication.outputFile;
   def newName = apk.name.replace(".apk",
       "-v${android.defaultConfig.versionName}-${versionBuild}.apk");
