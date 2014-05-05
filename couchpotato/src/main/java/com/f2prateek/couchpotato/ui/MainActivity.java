@@ -22,7 +22,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.InjectViews;
 import butterknife.OnClick;
@@ -51,15 +50,11 @@ public class MainActivity extends BaseActivity {
 
     if (couchPotatoEndpoint.isSet()) {
       loginButton.setVisibility(View.GONE);
-      showLibrary();
     } else {
-      ButterKnife.apply(authenticatedActions, new ButterKnife.Action<View>() {
-        @Override public void apply(View view, int index) {
-          view.setVisibility(View.GONE);
-        }
-      });
-      showPopularMovies();
+      ButterKnives.hide(authenticatedActions);
     }
+
+    showPopularMovies();
 
     if (!firstRun.get()) {
       drawerLayout.postDelayed(new Runnable() {
