@@ -3,8 +3,10 @@ package com.f2prateek.couchpotato.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -23,6 +25,7 @@ public class CouchPotatoLoginActivity extends BaseActivity {
   @InjectView(R.id.host) EditText host;
   @InjectView(R.id.username) EditText username;
   @InjectView(R.id.password) EditText password;
+  @InjectView(R.id.progress) ProgressBar progressBar;
 
   @Inject CouchPotatoEndpoint endpoint;
   @Inject CouchPotatoDatabase couchPotatoDatabase;
@@ -77,6 +80,7 @@ public class CouchPotatoLoginActivity extends BaseActivity {
     if (!hasError) {
       endpoint.setHost(getText(host));
       endpoint.setApiKey(null);
+      progressBar.setVisibility(View.VISIBLE);
       couchPotatoDatabase.getApiKey(getText(username), getText(password),
           new EndlessObserver<ApiKeyResponse>() {
             @Override public void onNext(ApiKeyResponse apiKeyResponse) {
@@ -87,22 +91,24 @@ public class CouchPotatoLoginActivity extends BaseActivity {
                 startActivity(intent);
                 finish();
               } else {
-                showError(R.string.invalid_credentials);
+                loginError(R.string.invalid_credentials);
               }
             }
 
             @Override public void onError(Throwable throwable) {
               super.onError(throwable);
-              showError(R.string.invalid_server);
+              loginError(R.string.invalid_server);
             }
           }
       );
     } else {
-      showError(R.string.invalid_fields);
+      loginError(R.string.invalid_fields);
     }
   }
 
-  private void showError(int textResourceId) {
+  private void loginError(int textResourceId) {
+    endpoint.setApiKey(null);
+    progressBar.setVisibility(View.GONE);
     Crouton.makeText(this, textResourceId, Style.ALERT).show();
   }
 
