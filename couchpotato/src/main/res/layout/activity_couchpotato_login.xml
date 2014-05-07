@@ -80,13 +80,6 @@
 
   </com.f2prateek.couchpotato.ui.widget.FloatLabelLayout>
 
-  <TextView
-      android:id="@+id/login"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="@string/login"
-      style="?android:attr/buttonBarButtonStyle"/>
-
   <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
       xmlns:app="http://schemas.android.com/apk/res-auto"
       android:id="@+id/progress"

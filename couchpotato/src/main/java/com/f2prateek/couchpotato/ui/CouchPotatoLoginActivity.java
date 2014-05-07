@@ -1,8 +1,10 @@
 package com.f2prateek.couchpotato.ui;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -53,9 +55,27 @@ public class CouchPotatoLoginActivity extends BaseActivity {
 
   @Override protected void inflateLayout(ViewGroup container) {
     getLayoutInflater().inflate(R.layout.activity_couchpotato_login, container);
+
+    // Inflate a "Done/Discard" custom action bar view.
+    LayoutInflater inflater = (LayoutInflater) getActionBar().getThemedContext()
+        .getSystemService(LAYOUT_INFLATER_SERVICE);
+    final View customActionBarView =
+        inflater.inflate(R.layout.actionbar_custom_view_done_discard, null);
+    // Show the custom action bar view and hide the normal Home icon and title.
+    final ActionBar actionBar = getActionBar();
+    actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM,
+        ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
+    actionBar.setCustomView(customActionBarView,
+        new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT)
+    );
   }
 
-  @OnClick(R.id.login) public void login() {
+  @OnClick(R.id.actionbar_cancel) public void cancel() {
+    finish();
+  }
+
+  @OnClick(R.id.actionbar_done) public void login() {
     boolean hasError = false;
     if (Strings.isBlank(host.getText())) {
       host.setError(getString(R.string.required));

@@ -23,7 +23,6 @@
   <string name="browse">Browse</string>
 
   <!-- Main Activity -->
-  <string name="login">Login</string>
 
   <!-- Movie Activity -->
   <string name="similar_movies">Similar Movies</string>
@@ -43,5 +42,7 @@
   <string name="invalid_fields">Please check all fields</string>
   <string name="invalid_credentials">Credentials rejected. Please try again.</string>
   <string name="invalid_server">Could not reach server. Please check the host.</string>
+  <string name="cancel">Cancel</string>
+  <string name="login">Login</string>
 
 </resources>
