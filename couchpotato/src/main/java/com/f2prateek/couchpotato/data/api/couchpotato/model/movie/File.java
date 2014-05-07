@@ -16,20 +16,15 @@
 
 package com.f2prateek.couchpotato.data.api.couchpotato.model.movie;
 
+import com.google.gson.annotations.SerializedName;
+
 public class File {
+  private static final String TYPE_ID = "type_id";
+
   public boolean available;
   public String path;
   public int part;
   public long id;
-  public long type_id;
-
-  @Override public String toString() {
-    return "File{" +
-        "available=" + available +
-        ", path='" + path + '\'' +
-        ", part=" + part +
-        ", id=" + id +
-        ", type_id=" + type_id +
-        '}';
-  }
+  @SerializedName(TYPE_ID)
+  public long typeId;
 }

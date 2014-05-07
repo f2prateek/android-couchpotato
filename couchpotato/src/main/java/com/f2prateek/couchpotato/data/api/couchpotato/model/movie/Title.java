@@ -19,18 +19,13 @@ package com.f2prateek.couchpotato.data.api.couchpotato.model.movie;
 import com.google.gson.annotations.SerializedName;
 
 public class Title {
-  @SerializedName("default")
+  private static final String DEFAULT = "default";
+  private static final String SIMPLE_TITLE = "simple_title";
+
+  @SerializedName(DEFAULT)
   public boolean isDefault;
-  public String simple_title;
+  @SerializedName(SIMPLE_TITLE)
+  public String simpleTitle;
   public long id;
   public String title;
-
-  @Override public String toString() {
-    return "Title{" +
-        "isDefault=" + isDefault +
-        ", simple_title='" + simple_title + '\'' +
-        ", id=" + id +
-        ", title='" + title + '\'' +
-        '}';
-  }
 }

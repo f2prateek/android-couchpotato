@@ -16,32 +16,28 @@
 
 package com.f2prateek.couchpotato.data.api.couchpotato.model.movie;
 
+import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 public class CouchPotatoMovie {
+  private static final String LIBRARY_ID = "library_id";
+  private static final String STATUS_ID = "status_id";
+  private static final String PROFILE_ID = "profile_id";
+  private static final String LAST_EDIT = "last_edit";
+
   public MovieProfile profile;
-  public long library_id;
+  @SerializedName(LIBRARY_ID)
+  public long libraryId;
   public ArrayList<Release> releases;
-  public long status_id;
-  public long profile_id;
+  @SerializedName(STATUS_ID)
+  public long statusId;
+  @SerializedName(PROFILE_ID)
+  public long profileId;
   public Library library;
-  public long last_edit;
+  @SerializedName(LAST_EDIT)
+  public long lastEdit;
   public long id;
   public ArrayList<File> files;
-
-  @Override public String toString() {
-    return "MovieDBMovie{" +
-        "profile=" + profile +
-        ", library_id=" + library_id +
-        ", releases=" + releases +
-        ", status_id=" + status_id +
-        ", profile_id=" + profile_id +
-        ", library=" + library +
-        ", last_edit=" + last_edit +
-        ", id=" + id +
-        ", files=" + files +
-        '}';
-  }
 
   public String getImdbPage() {
     return "http://www.imdb.com/title/" + library.info.imdb;

@@ -36,7 +36,9 @@ import javax.inject.Singleton;
 import static android.content.Context.MODE_PRIVATE;
 
 @Module(
-    includes = {ApiModule.class, UserPreferencesModule.class},
+    includes = {
+        ApiModule.class, UserPreferencesModule.class
+    },
     complete = false,
     library = true)
 public final class DataModule {

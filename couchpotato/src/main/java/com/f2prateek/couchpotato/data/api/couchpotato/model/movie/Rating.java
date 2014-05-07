@@ -16,10 +16,16 @@
 
 package com.f2prateek.couchpotato.data.api.couchpotato.model.movie;
 
+import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 public class Rating {
+  private static final String TMDB_ID = "tmdb_id";
+  private static final String VIA_IMDB = "via_imdb";
+
   public ArrayList<Double> imdb;
-  public long tmdb_id;
-  public boolean via_imdb;
+  @SerializedName(TMDB_ID)
+  public long tmdbId;
+  @SerializedName(VIA_IMDB)
+  public boolean viaImdb;
 }

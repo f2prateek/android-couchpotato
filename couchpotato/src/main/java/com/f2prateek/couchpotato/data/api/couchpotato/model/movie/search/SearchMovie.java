@@ -17,16 +17,22 @@
 package com.f2prateek.couchpotato.data.api.couchpotato.model.movie.search;
 
 import com.f2prateek.couchpotato.data.api.couchpotato.model.movie.Images;
+import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class SearchMovie {
+  private static final String TMDB_ID = "tmdb_id";
+  private static final String ORIGINAL_TITLE = "original_title";
+
   public SearchRating rating;
   public List<String> genres;
   //public boolean in_library;
-  public long tmdb_id;
+  @SerializedName(TMDB_ID)
+  public long tmdbId;
   public String plot;
   public String tagline;
-  public String original_title;
+  @SerializedName(ORIGINAL_TITLE)
+  public String originalTitle;
   public List<String> writers;
   //public boolean via_imdb;
   public Images images;

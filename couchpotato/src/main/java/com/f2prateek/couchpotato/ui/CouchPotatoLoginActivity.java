@@ -26,9 +26,14 @@ import javax.inject.Inject;
 public class CouchPotatoLoginActivity extends BaseActivity {
   private static final String DEFAULT_HOST_SCHEME = "http://";
   private static final Pattern HOST_PATTERN = Pattern.compile(
-      "^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$");
+      "^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)"
+          + "*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]"
+          + "*[A-Za-z0-9])$"
+  );
   private static final Pattern IP_PATTERN = Pattern.compile(
-      "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$");
+      "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.)"
+          + "{3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"
+  );
 
   @InjectView(R.id.host) EditText host;
   @InjectView(R.id.username) EditText username;

@@ -37,8 +37,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class MainActivity extends BaseActivity {
-
-  @InjectViews({R.id.couchpotato_library}) List<View> authenticatedActions;
+  @InjectViews(R.id.couchpotato_library) List<View> authenticatedActions;
   @InjectView(R.id.couchpotato_login) View loginButton;
   @InjectView(R.id.navigation_drawer_layout) DrawerLayout drawerLayout;
 

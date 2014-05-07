@@ -16,20 +16,17 @@
 
 package com.f2prateek.couchpotato.data.api.couchpotato.model.movie;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Type {
-  public int quality_id;
+  private static final String QUALITY_ID = "quality_id";
+  private static final String WAIT_FOR = "wait_for";
+
+  @SerializedName(QUALITY_ID)
+  public int qualityId;
   public boolean finish;
-  public int wait_for;
+  @SerializedName(WAIT_FOR)
+  public int waitFor;
   public long id;
   public int order;
-
-  @Override public String toString() {
-    return "Type{" +
-        "quality_id=" + quality_id +
-        ", finish=" + finish +
-        ", wait_for=" + wait_for +
-        ", id=" + id +
-        ", order=" + order +
-        '}';
-  }
 }

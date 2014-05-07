@@ -16,46 +16,35 @@
 
 package com.f2prateek.couchpotato.data.api.couchpotato.model.movie;
 
+import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 public class Info {
+  private static final String TMDB_ID = "tmdb_id";
+  private static final String VIA_IMDB = "via_imdb";
+  private static final String VIA_TMDB = "via_tmdb";
+  private static final String ORIGINAL_TITLE = "original_title";
+
   public Rating rating;
-  public long tmdb_id;
-  public boolean via_imdb;
+  @SerializedName(TMDB_ID)
+  public long tmdbId;
+  @SerializedName(VIA_IMDB)
+  public boolean viaImdb;
   public Images images;
   public ArrayList<String> titles;
   public String imdb;
   public int year;
-  public boolean via_tmdb;
+  @SerializedName(VIA_TMDB)
+  public boolean viaTmdb;
   public String plot;
   public ArrayList<String> genres;
   public String released;
   public String tagline;
   // public List release_date;
-  public String original_title;
+  @SerializedName(ORIGINAL_TITLE)
+  public String originalTitle;
   public ArrayList<String> directors;
   public ArrayList<String> writers;
   public ArrayList<String> actors;
   public int runtime;
-
-  @Override public String toString() {
-    return "Info{" +
-        "tmdb_id=" + tmdb_id +
-        ", via_imdb=" + via_imdb +
-        ", images=" + images +
-        ", titles=" + titles +
-        ", imdb='" + imdb + '\'' +
-        ", year=" + year +
-        ", via_tmdb=" + via_tmdb +
-        ", plot='" + plot + '\'' +
-        ", genres=" + genres +
-        ", released='" + released + '\'' +
-        ", tagline='" + tagline + '\'' +
-        ", original_title='" + original_title + '\'' +
-        ", directors=" + directors +
-        ", writers=" + writers +
-        ", actors=" + actors +
-        ", runtime=" + runtime +
-        '}';
-  }
 }

@@ -107,9 +107,9 @@ public class TMDbDatabase {
   private Observable<TMDbMovie> movie(final long id, final Configuration configuration) {
     return tmDbService.movie(id) //
         .map(new Func1<TMDbMovie, TMDbMovie>() {
-          @Override public TMDbMovie call(TMDbMovie TMDbMovie) {
-            TMDbMovie.setConfiguration(configuration);
-            return TMDbMovie;
+          @Override public TMDbMovie call(TMDbMovie movie) {
+            movie.setConfiguration(configuration);
+            return movie;
           }
         });
   }

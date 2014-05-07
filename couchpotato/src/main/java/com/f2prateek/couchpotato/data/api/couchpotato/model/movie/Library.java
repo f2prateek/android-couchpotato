@@ -16,28 +16,19 @@
 
 package com.f2prateek.couchpotato.data.api.couchpotato.model.movie;
 
+import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 public class Library {
+  private static final String STATUS_ID = "status_id";
+
   public Info info;
   public String plot;
-  public int status_id;
+  @SerializedName(STATUS_ID)
+  public int statusId;
   public String tagline;
   public ArrayList<Title> titles;
   public int year;
   public String identifier;
   public ArrayList<File> files;
-
-  @Override public String toString() {
-    return "Library{" +
-        "info=" + info +
-        ", plot='" + plot + '\'' +
-        ", status_id=" + status_id +
-        ", tagline='" + tagline + '\'' +
-        ", titles=" + titles +
-        ", year=" + year +
-        ", identifier='" + identifier + '\'' +
-        ", files=" + files +
-        '}';
-  }
 }

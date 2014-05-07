@@ -28,7 +28,7 @@ public abstract class Movie implements Parcelable {
   }
 
   public static Movie create(CouchPotatoMovie movie) {
-    return new AutoValue_Movie(movie.library.info.tmdb_id, movie.library.info.titles.get(0),
+    return new AutoValue_Movie(movie.library.info.tmdbId, movie.library.info.titles.get(0),
         movie.library.info.images.getPoster(), movie.library.info.images.getBackdrop());
   }
 }

@@ -24,14 +24,4 @@ public class MovieProfile {
   public int order;
   public ArrayList<Type> types;
   public String label;
-
-  @Override public String toString() {
-    return "MovieProfile{" +
-        "core=" + core +
-        ", hide=" + hide +
-        ", order=" + order +
-        ", types=" + types +
-        ", label='" + label + '\'' +
-        '}';
-  }
 }

@@ -16,24 +16,21 @@
 
 package com.f2prateek.couchpotato.data.api.couchpotato.model.movie;
 
+import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 public class Release {
+  private static final String QUALITY_ID = "quality_id";
+  private static final String STATUS_ID = "status_id";
+  private static final String LAST_EDI = "last_edit";
+
   public ArrayList<File> files;
-  public int quality_id;
-  public int status_id;
-  public long last_edit;
+  @SerializedName(QUALITY_ID)
+  public int qualityId;
+  @SerializedName(STATUS_ID)
+  public int statusId;
+  @SerializedName(LAST_EDI)
+  public long lastEdit;
   public String identifier;
   public long id;
-
-  @Override public String toString() {
-    return "Release{" +
-        "files=" + files +
-        ", quality_id=" + quality_id +
-        ", status_id=" + status_id +
-        ", last_edit=" + last_edit +
-        ", identifier='" + identifier + '\'' +
-        ", id=" + id +
-        '}';
-  }
 }
