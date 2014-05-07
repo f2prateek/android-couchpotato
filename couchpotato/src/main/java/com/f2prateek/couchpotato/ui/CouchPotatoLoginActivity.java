@@ -20,10 +20,16 @@ import com.f2prateek.couchpotato.data.rx.EndlessObserver;
 import com.f2prateek.couchpotato.util.Strings;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 
 public class CouchPotatoLoginActivity extends BaseActivity {
   private static final String DEFAULT_HOST_SCHEME = "http://";
+  private static final Pattern HOST_PATTERN = Pattern.compile(
+      "^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$");
+  private static final Pattern IP_PATTERN = Pattern.compile(
+      "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$");
+
   @InjectView(R.id.host) EditText host;
   @InjectView(R.id.username) EditText username;
   @InjectView(R.id.password) EditText password;
@@ -77,11 +83,36 @@ public class CouchPotatoLoginActivity extends BaseActivity {
 
   @OnClick(R.id.actionbar_done) public void login() {
     boolean hasError = false;
+
     if (Strings.isBlank(host.getText())) {
       host.setError(getString(R.string.required));
       hasError = true;
     } else {
-      host.setError(null);
+      String hostText = getText(host);
+      int start = hostText.indexOf("://");
+      if (start == -1) {
+        host.setError(getString(R.string.invalid));
+        hasError = true;
+      } else {
+        int portStart = hostText.indexOf(":", start + 3);
+        if (portStart != -1) {
+          // port is specified, grab the string ://....:
+          String sub = hostText.substring(start + 3, portStart);
+          // check if it matches an ip address, hosts with ports are disallowed
+          if (!IP_PATTERN.matcher(sub).matches()) {
+            host.setError(getString(R.string.invalid));
+            hasError = true;
+          }
+        } else {
+          // grab the string ://....
+          String sub = hostText.substring(start + 3);
+          // check if it matches an ip address or host
+          if (!IP_PATTERN.matcher(sub).matches() && !HOST_PATTERN.matcher(sub).matches()) {
+            host.setError(getString(R.string.invalid));
+            hasError = true;
+          }
+        }
+      }
     }
 
     // Username is not required (server could be unprotected)
@@ -127,7 +158,7 @@ public class CouchPotatoLoginActivity extends BaseActivity {
   }
 
   private void loginError(int textResourceId) {
-    endpoint.setApiKey(null);
+    endpoint.clear();
     progressBar.setVisibility(View.GONE);
     Crouton.makeText(this, textResourceId, Style.ALERT).show();
   }

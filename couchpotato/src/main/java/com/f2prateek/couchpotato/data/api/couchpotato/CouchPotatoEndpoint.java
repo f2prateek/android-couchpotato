@@ -30,6 +30,12 @@ public class CouchPotatoEndpoint implements Endpoint {
     updateUrl();
   }
 
+  public void clear() {
+    hostPreference.delete();
+    apiKeyPreference.delete();
+    updateUrl();
+  }
+
   /**
    * ApiKey not being set is same as user not being logged in.
    */
