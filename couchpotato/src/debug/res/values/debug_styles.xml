@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <style name="Widget.CouchPotato.Drawer.Header" parent="None">
+    <item name="android:paddingBottom">2dp</item>
+    <item name="android:textColor">?android:attr/textColorSecondary</item>
+    <item name="android:textAllCaps">true</item>
+    <item name="android:textSize">13sp</item>
+    <item name="android:layout_marginTop">24dp</item>
+    <item name="android:layout_marginBottom">2dp</item>
+    <item name="android:background">@drawable/drawer_header_divider</item>
+  </style>
+
+  <style name="Widget.CouchPotato.Drawer.RowWidget" parent="None">
+    <item name="android:minHeight">26dp</item>
+    <item name="android:layout_marginTop">4dp</item>
+  </style>
+
+  <style name="Widget.CouchPotato.Drawer.RowWidget.Title">
+    <item name="android:layout_marginRight">16dp</item>
+    <item name="android:textColor">?android:attr/textColorSecondary</item>
+    <item name="android:textSize">16sp</item>
+  </style>
+
+  <style name="Widget.CouchPotato.Drawer.RowWidget.Value">
+    <item name="android:textColor">?android:attr/textColorPrimary</item>
+    <item name="android:textSize">16sp</item>
+  </style>
+
+</resources>

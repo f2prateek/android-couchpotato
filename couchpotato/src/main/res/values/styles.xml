@@ -32,7 +32,7 @@
 
   <style name="Widget.CouchPotato.CustomActionBar"
       parent="@android:style/Widget.Holo.ActionBar.Solid">
-    <item name="android:background">@color/drawer_background</item>
+    <item name="android:background">@color/dark_grey</item>
     <item name="android:displayOptions">showCustom</item>
   </style>
 
@@ -82,16 +82,6 @@
     <item name="android:textSize">15sp</item>
   </style>
 
-  <style name="Widget.CouchPotato.Drawer.Header" parent="None">
-    <item name="android:paddingBottom">2dp</item>
-    <item name="android:textColor">?android:attr/textColorSecondary</item>
-    <item name="android:textAllCaps">true</item>
-    <item name="android:textSize">13sp</item>
-    <item name="android:layout_marginTop">24dp</item>
-    <item name="android:layout_marginBottom">2dp</item>
-    <item name="android:background">@drawable/drawer_header_divider</item>
-  </style>
-
   <style name="Widget.CouchPotato.Text.Header" parent="None">
     <item name="android:textColor">?android:attr/textColorSecondary</item>
     <item name="android:textAllCaps">true</item>
@@ -100,22 +90,6 @@
     <item name="android:paddingLeft">8dp</item>
     <item name="android:paddingBottom">4dp</item>
     <item name="android:textStyle">bold</item>
-  </style>
-
-  <style name="Widget.CouchPotato.Drawer.RowWidget" parent="None">
-    <item name="android:minHeight">26dp</item>
-    <item name="android:layout_marginTop">4dp</item>
-  </style>
-
-  <style name="Widget.CouchPotato.Drawer.RowWidget.Title">
-    <item name="android:layout_marginRight">16dp</item>
-    <item name="android:textColor">?android:attr/textColorSecondary</item>
-    <item name="android:textSize">16sp</item>
-  </style>
-
-  <style name="Widget.CouchPotato.Drawer.RowWidget.Value">
-    <item name="android:textColor">?android:attr/textColorPrimary</item>
-    <item name="android:textSize">16sp</item>
   </style>
 
   <style name="Widget.RatingView" parent="None">

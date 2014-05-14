@@ -20,8 +20,8 @@
 
   <color name="dark_black">#ff161616</color>
   <color name="white">#fff</color>
+  <color name="dark_grey">#e222</color>
 
   <color name="background">@color/dark_black</color>
-  <color name="drawer_background">#e222</color>
 
 </resources>
