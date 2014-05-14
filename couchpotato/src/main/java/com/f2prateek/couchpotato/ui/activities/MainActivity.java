@@ -30,6 +30,7 @@ import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoEndpoint;
 import com.f2prateek.couchpotato.data.prefs.BooleanPreference;
 import com.f2prateek.couchpotato.data.prefs.FirstRun;
 import com.f2prateek.couchpotato.ui.ButterKnives;
+import com.f2prateek.couchpotato.ui.fragments.DiscoverMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.NowPlayingMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.PopularMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.TopRatedMoviesFragment;
@@ -88,6 +89,12 @@ public class MainActivity extends BaseActivity {
   @OnClick(R.id.tmdb_upcoming) public void showUpcomingMovies() {
     getFragmentManager().beginTransaction()
         .replace(R.id.content, new UpcomingMoviesFragment())
+        .commit();
+  }
+
+  @OnClick(R.id.tmdb_discover) public void discoverMovies() {
+    getFragmentManager().beginTransaction()
+        .replace(R.id.content, new DiscoverMoviesFragment())
         .commit();
   }
 

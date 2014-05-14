@@ -26,6 +26,7 @@
   <string name="top_rated">Top Rated</string>
   <string name="upcoming">Upcoming</string>
   <string name="now_playing">Now Playing</string>
+  <string name="discover">Discover</string>
 
   <!-- Movie Activity -->
   <string name="similar_movies">Similar Movies</string>

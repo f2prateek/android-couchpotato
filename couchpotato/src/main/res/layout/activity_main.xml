@@ -132,6 +132,16 @@
           android:drawablePadding="2dp"
           style="?android:buttonBarButtonStyle"/>
 
+      <TextView
+          android:id="@+id/tmdb_discover"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/discover"
+          android:gravity="left|center_vertical"
+          android:drawableLeft="@drawable/ic_action_star"
+          android:drawablePadding="2dp"
+          style="?android:buttonBarButtonStyle"/>
+
     </LinearLayout>
 
   </GridLayout>

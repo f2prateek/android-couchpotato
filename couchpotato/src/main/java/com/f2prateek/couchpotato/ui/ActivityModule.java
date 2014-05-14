@@ -23,6 +23,7 @@ import com.f2prateek.couchpotato.ui.activities.CouchPotatoServerSettingsActivity
 import com.f2prateek.couchpotato.ui.activities.MainActivity;
 import com.f2prateek.couchpotato.ui.activities.MovieActivity;
 import com.f2prateek.couchpotato.ui.fragments.BaseFragment;
+import com.f2prateek.couchpotato.ui.fragments.DiscoverMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.ExploreMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.MoviesGridFragment;
 import com.f2prateek.couchpotato.ui.fragments.NowPlayingMoviesFragment;
@@ -40,7 +41,7 @@ import javax.inject.Singleton;
         MainActivity.class, BaseFragment.class, PopularMoviesFragment.class,
         MoviesGridFragment.class, ExploreMoviesFragment.class, TopRatedMoviesFragment.class,
         NowPlayingMoviesFragment.class, UpcomingMoviesFragment.class, WantedMoviesFragment.class,
-        MovieActivity.class, CouchPotatoServerSettingsActivity.class
+        DiscoverMoviesFragment.class, MovieActivity.class, CouchPotatoServerSettingsActivity.class
     },
     complete = false,
     addsTo = UiModule.class //

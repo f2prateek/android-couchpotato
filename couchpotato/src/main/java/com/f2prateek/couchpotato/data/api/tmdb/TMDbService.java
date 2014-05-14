@@ -37,6 +37,8 @@ public interface TMDbService {
   @GET("/movie/now_playing") Observable<MovieCollectionResponse> nowPlaying(
       @Query("page") int page);
 
+  @GET("/discover/movie") Observable<MovieCollectionResponse> discover(@Query("page") int page);
+
   @GET("/movie/{id}") Observable<TMDbMovie> movie(@Path("id") long id);
 
   @GET("/movie/{id}/images") Observable<Images> movieImages(@Path("id") long id);
