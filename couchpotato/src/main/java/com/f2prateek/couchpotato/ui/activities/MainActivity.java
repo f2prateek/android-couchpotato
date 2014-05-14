@@ -19,6 +19,8 @@ package com.f2prateek.couchpotato.ui.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuItem;
 import butterknife.InjectView;
 import com.astuetz.PagerSlidingTabStrip;
 import com.f2prateek.couchpotato.Events;
@@ -68,9 +70,20 @@ public class MainActivity extends BaseActivity {
     tabStrip.setViewPager(pager);
   }
 
-  public void editCouchPotatoServerSetting() {
-    Intent intent = new Intent(this, CouchPotatoServerSettingsActivity.class);
-    startActivity(intent);
+  @Override public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.activity_main, menu);
+    return true;
+  }
+
+  @Override public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.menu_server_settings:
+        Intent intent = new Intent(this, CouchPotatoServerSettingsActivity.class);
+        startActivity(intent);
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
+    }
   }
 
   @Subscribe public void onMovieClicked(Events.OnMovieClickedEvent event) {
