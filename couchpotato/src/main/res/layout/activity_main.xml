@@ -59,22 +59,22 @@
         android:orientation="vertical">
 
       <TextView
-          android:id="@+id/couchpotato_login"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:text="@string/login"
-          android:gravity="left|center_vertical"
-          android:drawableLeft="@drawable/ic_action_login"
-          android:drawablePadding="2dp"
-          style="?android:buttonBarButtonStyle"/>
-
-      <TextView
           android:id="@+id/couchpotato_library"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:text="@string/library"
           android:gravity="left|center_vertical"
           android:drawableLeft="@drawable/ic_action_tags"
+          android:drawablePadding="2dp"
+          style="?android:buttonBarButtonStyle"/>
+
+      <TextView
+          android:id="@+id/couchpotato_server"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/server_settings"
+          android:gravity="left|center_vertical"
+          android:drawableLeft="@drawable/ic_action_settings"
           android:drawablePadding="2dp"
           style="?android:buttonBarButtonStyle"/>
 

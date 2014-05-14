@@ -23,7 +23,7 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 
-public class CouchPotatoLoginActivity extends BaseActivity {
+public class CouchPotatoServerSettingsActivity extends BaseActivity {
   private static final String DEFAULT_HOST_SCHEME = "http://";
   private static final Pattern HOST_PATTERN = Pattern.compile(
       "^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)"
@@ -65,7 +65,7 @@ public class CouchPotatoLoginActivity extends BaseActivity {
   }
 
   @Override protected void inflateLayout(ViewGroup container) {
-    getLayoutInflater().inflate(R.layout.activity_couchpotato_login, container);
+    getLayoutInflater().inflate(R.layout.activity_couchpotato_server_settings, container);
 
     // Inflate a "Done/Discard" custom action bar view.
     LayoutInflater inflater = (LayoutInflater) getActionBar().getThemedContext()
@@ -142,7 +142,7 @@ public class CouchPotatoLoginActivity extends BaseActivity {
             @Override public void onNext(ApiKeyResponse apiKeyResponse) {
               if (apiKeyResponse.isSuccess()) {
                 endpoint.setApiKey(apiKeyResponse.getApiKey());
-                Intent intent = new Intent(CouchPotatoLoginActivity.this, MainActivity.class);
+                Intent intent = new Intent(CouchPotatoServerSettingsActivity.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();

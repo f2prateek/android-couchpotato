@@ -26,7 +26,7 @@ import javax.inject.Singleton;
 @Module(
     injects = {
         MainActivity.class, BaseFragment.class, PopularMoviesFragment.class,
-        WantedMoviesFragment.class, MovieActivity.class, CouchPotatoLoginActivity.class
+        WantedMoviesFragment.class, MovieActivity.class, CouchPotatoServerSettingsActivity.class
     },
     complete = false,
     library = true)

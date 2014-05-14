@@ -44,6 +44,8 @@
   <string name="invalid_credentials">Credentials rejected. Please try again.</string>
   <string name="invalid_server">Could not reach server. Please check the host.</string>
   <string name="cancel">Cancel</string>
+  <string name="save">Save</string>
+  <string name="server_settings">Server Settings</string>
   <string name="login">Login</string>
 
 </resources>

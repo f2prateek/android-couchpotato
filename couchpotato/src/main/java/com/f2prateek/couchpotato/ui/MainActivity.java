@@ -38,7 +38,6 @@ import javax.inject.Inject;
 
 public class MainActivity extends BaseActivity {
   @InjectViews(R.id.couchpotato_library) List<View> authenticatedActions;
-  @InjectView(R.id.couchpotato_login) View loginButton;
   @InjectView(R.id.navigation_drawer_layout) DrawerLayout drawerLayout;
 
   @Inject CouchPotatoEndpoint couchPotatoEndpoint;
@@ -47,9 +46,7 @@ public class MainActivity extends BaseActivity {
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    if (couchPotatoEndpoint.isSet()) {
-      loginButton.setVisibility(View.GONE);
-    } else {
+    if (!couchPotatoEndpoint.isSet()) {
       ButterKnives.hide(authenticatedActions);
     }
 
@@ -81,8 +78,8 @@ public class MainActivity extends BaseActivity {
         .commit();
   }
 
-  @OnClick(R.id.couchpotato_login) public void onLoginClicked() {
-    Intent intent = new Intent(this, CouchPotatoLoginActivity.class);
+  @OnClick(R.id.couchpotato_server) public void onCouchPotatoServerSettingsClicked() {
+    Intent intent = new Intent(this, CouchPotatoServerSettingsActivity.class);
     startActivity(intent);
   }
 

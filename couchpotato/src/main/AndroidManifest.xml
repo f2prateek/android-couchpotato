@@ -43,7 +43,7 @@
         android:theme="@style/Theme.CouchPotato.TransparentActionBar.MovieActivity"/>
 
     <activity
-        android:name=".ui.CouchPotatoLoginActivity"/>
+        android:name=".ui.CouchPotatoServerSettingsActivity"/>
 
   </application>
 
