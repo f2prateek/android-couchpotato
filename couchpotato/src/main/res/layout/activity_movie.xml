@@ -69,7 +69,9 @@
       <FrameLayout
           android:id="@+id/movie_rating_container"
           android:layout_width="match_parent"
-          android:layout_height="wrap_content">
+          android:layout_height="wrap_content"
+          android:paddingTop="@dimen/holo_gap_half"
+          android:paddingBottom="@dimen/holo_gap_half">
 
         <com.f2prateek.couchpotato.ui.widget.RatingView
             android:id="@+id/movie_rating"
