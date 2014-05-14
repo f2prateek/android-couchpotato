@@ -14,19 +14,12 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato.ui;
+package com.f2prateek.couchpotato.ui.fragments;
 
-import dagger.Module;
-import dagger.Provides;
-import javax.inject.Singleton;
+import rx.Subscription;
 
-@Module(complete = false, library = true)
-public class UiModule {
-  @Provides @Singleton AppContainer provideAppContainer() {
-    return AppContainer.DEFAULT;
-  }
-
-  @Provides @Singleton ActivityHierarchyServer provideActivityHierarchyServer() {
-    return ActivityHierarchyServer.NONE;
+public class NowPlayingMoviesFragment extends ExploreMoviesFragment {
+  @Override protected Subscription subscribe(int page) {
+    return database.getNowPlayingMovies(page, this);
   }
 }

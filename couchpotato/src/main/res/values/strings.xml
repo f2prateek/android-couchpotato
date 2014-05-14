@@ -24,6 +24,8 @@
   <string name="popular">Popular</string>
   <string name="browse">Browse</string>
   <string name="top_rated">Top Rated</string>
+  <string name="upcoming">Upcoming</string>
+  <string name="now_playing">Now Playing</string>
 
   <!-- Movie Activity -->
   <string name="similar_movies">Similar Movies</string>

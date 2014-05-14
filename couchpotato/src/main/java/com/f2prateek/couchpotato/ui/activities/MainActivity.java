@@ -30,8 +30,10 @@ import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoEndpoint;
 import com.f2prateek.couchpotato.data.prefs.BooleanPreference;
 import com.f2prateek.couchpotato.data.prefs.FirstRun;
 import com.f2prateek.couchpotato.ui.ButterKnives;
+import com.f2prateek.couchpotato.ui.fragments.NowPlayingMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.PopularMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.TopRatedMoviesFragment;
+import com.f2prateek.couchpotato.ui.fragments.UpcomingMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.WantedMoviesFragment;
 import com.squareup.otto.Subscribe;
 import java.util.List;
@@ -74,6 +76,18 @@ public class MainActivity extends BaseActivity {
   @OnClick(R.id.tmdb_top_rated) public void showTopRatedMovies() {
     getFragmentManager().beginTransaction()
         .replace(R.id.content, new TopRatedMoviesFragment())
+        .commit();
+  }
+
+  @OnClick(R.id.tmdb_now_playing) public void showNowPlayingMovies() {
+    getFragmentManager().beginTransaction()
+        .replace(R.id.content, new NowPlayingMoviesFragment())
+        .commit();
+  }
+
+  @OnClick(R.id.tmdb_upcoming) public void showUpcomingMovies() {
+    getFragmentManager().beginTransaction()
+        .replace(R.id.content, new UpcomingMoviesFragment())
         .commit();
   }
 

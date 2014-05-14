@@ -112,6 +112,26 @@
           android:drawablePadding="2dp"
           style="?android:buttonBarButtonStyle"/>
 
+      <TextView
+          android:id="@+id/tmdb_upcoming"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/upcoming"
+          android:gravity="left|center_vertical"
+          android:drawableLeft="@drawable/ic_action_star"
+          android:drawablePadding="2dp"
+          style="?android:buttonBarButtonStyle"/>
+
+      <TextView
+          android:id="@+id/tmdb_now_playing"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/now_playing"
+          android:gravity="left|center_vertical"
+          android:drawableLeft="@drawable/ic_action_star"
+          android:drawablePadding="2dp"
+          style="?android:buttonBarButtonStyle"/>
+
     </LinearLayout>
 
   </GridLayout>
