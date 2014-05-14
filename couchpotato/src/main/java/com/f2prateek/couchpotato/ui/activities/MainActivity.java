@@ -18,18 +18,15 @@ package com.f2prateek.couchpotato.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
-import android.view.View;
+import android.support.v4.view.ViewPager;
 import butterknife.InjectView;
-import butterknife.InjectViews;
-import butterknife.OnClick;
+import com.astuetz.PagerSlidingTabStrip;
 import com.f2prateek.couchpotato.Events;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoEndpoint;
 import com.f2prateek.couchpotato.data.prefs.BooleanPreference;
 import com.f2prateek.couchpotato.data.prefs.FirstRun;
-import com.f2prateek.couchpotato.ui.ButterKnives;
+import com.f2prateek.couchpotato.ui.colorizer.FragmentTabAdapter;
 import com.f2prateek.couchpotato.ui.fragments.DiscoverMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.NowPlayingMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.PopularMoviesFragment;
@@ -37,74 +34,41 @@ import com.f2prateek.couchpotato.ui.fragments.TopRatedMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.UpcomingMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.WantedMoviesFragment;
 import com.squareup.otto.Subscribe;
-import java.util.List;
 import javax.inject.Inject;
 
 public class MainActivity extends BaseActivity {
-  @InjectViews(R.id.couchpotato_library) List<View> authenticatedActions;
-  @InjectView(R.id.navigation_drawer_layout) DrawerLayout drawerLayout;
+  @InjectView(R.id.pager) ViewPager pager;
+  @InjectView(R.id.tabs) PagerSlidingTabStrip tabStrip;
 
   @Inject CouchPotatoEndpoint couchPotatoEndpoint;
   @Inject @FirstRun BooleanPreference firstRun;
 
+  FragmentTabAdapter tabAdapter;
+
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
+    //noinspection ResourceType, ConstantConditions
+    getActionBar().setCustomView(R.layout.view_custom_action_bar);
+
     inflateLayout(R.layout.activity_main);
 
-    if (!couchPotatoEndpoint.isSet()) {
-      ButterKnives.hide(authenticatedActions);
-    }
+    tabAdapter = new FragmentTabAdapter(this, pager);
+    pager.setAdapter(tabAdapter);
 
-    showPopularMovies();
+    tabAdapter.addTab(WantedMoviesFragment.class, null, R.string.library);
+    tabAdapter.addTab(PopularMoviesFragment.class, null, R.string.popular);
+    tabAdapter.addTab(TopRatedMoviesFragment.class, null, R.string.top_rated);
+    tabAdapter.addTab(NowPlayingMoviesFragment.class, null, R.string.now_playing);
+    tabAdapter.addTab(UpcomingMoviesFragment.class, null, R.string.upcoming);
+    tabAdapter.addTab(DiscoverMoviesFragment.class, null, R.string.discover);
 
-    if (!firstRun.get()) {
-      drawerLayout.postDelayed(new Runnable() {
-        @Override public void run() {
-          drawerLayout.openDrawer(Gravity.START);
-        }
-      }, 1000);
-      firstRun.set(true);
-    }
+    // Can't be configured via xml so done here!
+    tabStrip.setTextColor(getResources().getColor(R.color.white));
+    tabStrip.setViewPager(pager);
   }
 
-  @OnClick(R.id.tmdb_popular) public void showPopularMovies() {
-    getFragmentManager().beginTransaction()
-        .replace(R.id.content, new PopularMoviesFragment())
-        .commit();
-  }
-
-  @OnClick(R.id.tmdb_top_rated) public void showTopRatedMovies() {
-    getFragmentManager().beginTransaction()
-        .replace(R.id.content, new TopRatedMoviesFragment())
-        .commit();
-  }
-
-  @OnClick(R.id.tmdb_now_playing) public void showNowPlayingMovies() {
-    getFragmentManager().beginTransaction()
-        .replace(R.id.content, new NowPlayingMoviesFragment())
-        .commit();
-  }
-
-  @OnClick(R.id.tmdb_upcoming) public void showUpcomingMovies() {
-    getFragmentManager().beginTransaction()
-        .replace(R.id.content, new UpcomingMoviesFragment())
-        .commit();
-  }
-
-  @OnClick(R.id.tmdb_discover) public void discoverMovies() {
-    getFragmentManager().beginTransaction()
-        .replace(R.id.content, new DiscoverMoviesFragment())
-        .commit();
-  }
-
-  @OnClick(R.id.couchpotato_library) public void showLibrary() {
-    getFragmentManager().beginTransaction()
-        .replace(R.id.content, new WantedMoviesFragment())
-        .commit();
-  }
-
-  @OnClick(R.id.couchpotato_server) public void editCouchPotatoServerSetting() {
+  public void editCouchPotatoServerSetting() {
     Intent intent = new Intent(this, CouchPotatoServerSettingsActivity.class);
     startActivity(intent);
   }

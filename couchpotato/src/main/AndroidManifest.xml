@@ -29,7 +29,7 @@
 
     <activity
         android:name=".ui.activities.MainActivity"
-        android:theme="@style/Theme.CouchPotato.NoActionBar"
+        android:theme="@style/Theme.CouchPotato.CustomActionBar"
         android:label="@string/launcher_name">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>

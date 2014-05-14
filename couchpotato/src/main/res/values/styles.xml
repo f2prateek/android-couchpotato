@@ -26,6 +26,16 @@
     <item name="ratingViewStyle">@style/Widget.RatingView</item>
   </style>
 
+  <style name="Theme.CouchPotato.CustomActionBar">
+    <item name="android:actionBarStyle">@style/Widget.CouchPotato.CustomActionBar</item>
+  </style>
+
+  <style name="Widget.CouchPotato.CustomActionBar"
+      parent="@android:style/Widget.Holo.ActionBar.Solid">
+    <item name="android:background">@color/drawer_background</item>
+    <item name="android:displayOptions">showCustom</item>
+  </style>
+
   <style name="Theme.CouchPotato.NoActionBar">
     <item name="android:windowActionBar">false</item>
     <item name="android:windowNoTitle">true</item>

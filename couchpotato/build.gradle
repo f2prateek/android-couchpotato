@@ -71,6 +71,9 @@ android {
 }
 
 dependencies {
+  compile 'com.android.support:support-v4:19.1.+'
+  compile 'com.android.support:support-v13:19.1.+'
+
   compile 'com.squareup.dagger:dagger:1.2.+'
   provided 'com.squareup.dagger:dagger-compiler:1.2.+'
 
@@ -90,6 +93,7 @@ dependencies {
 
   compile 'de.keyboardsurfer.android.widget:crouton:1.8.+'
   compile 'com.github.castorflex.smoothprogressbar:library:0.5.+'
+  compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
 
   debugCompile 'com.jakewharton.madge:madge:1.1.+'
   debugCompile 'com.jakewharton.scalpel:scalpel:1.1.+'
