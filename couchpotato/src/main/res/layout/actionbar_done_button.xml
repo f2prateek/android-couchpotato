@@ -31,6 +31,6 @@
       android:drawableLeft="@drawable/ic_action_tick"
       android:drawablePadding="8dp"
       android:gravity="center_vertical"
-      android:text="@string/login"/>
+      android:text="@string/done"/>
 
 </FrameLayout>

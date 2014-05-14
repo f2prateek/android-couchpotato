@@ -25,6 +25,6 @@
     android:dividerPadding="12dp">
 
   <include layout="@layout/actionbar_cancel_button"/>
-  <include layout="@layout/actionbar_login_button"/>
+  <include layout="@layout/actionbar_done_button"/>
 
 </LinearLayout>

@@ -51,5 +51,6 @@
   <string name="save">Save</string>
   <string name="server_settings">Server Settings</string>
   <string name="login">Login</string>
+  <string name="done">Done</string>
 
 </resources>
