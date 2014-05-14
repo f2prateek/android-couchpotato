@@ -21,21 +21,19 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import butterknife.ButterKnife;
-import com.f2prateek.couchpotato.CouchPotatoApplication;
+import com.f2prateek.couchpotato.ForActivity;
+import com.f2prateek.couchpotato.ui.ScopedBus;
+import com.f2prateek.couchpotato.ui.activities.BaseActivity;
 import com.f2prateek.dart.Dart;
-import com.squareup.otto.Bus;
 import javax.inject.Inject;
 
 public class BaseFragment extends Fragment {
-
-  @Inject Bus bus;
-
-  protected Context activityContext;
+  @Inject ScopedBus bus;
+  @Inject @ForActivity Context activityContext;
 
   @Override public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
-    activityContext = getActivity();
-    CouchPotatoApplication.get(activityContext).inject(this);
+    BaseActivity.get(this).inject(this);
   }
 
   @Override public void onCreate(Bundle savedInstanceState) {

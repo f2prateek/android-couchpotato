@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato.ui;
+package com.f2prateek.couchpotato.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import butterknife.InjectView;
 import butterknife.InjectViews;
 import butterknife.OnClick;
@@ -30,6 +29,7 @@ import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoEndpoint;
 import com.f2prateek.couchpotato.data.prefs.BooleanPreference;
 import com.f2prateek.couchpotato.data.prefs.FirstRun;
+import com.f2prateek.couchpotato.ui.ButterKnives;
 import com.f2prateek.couchpotato.ui.fragments.PopularMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.TopRatedMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.WantedMoviesFragment;
@@ -47,6 +47,8 @@ public class MainActivity extends BaseActivity {
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
+    inflateLayout(R.layout.activity_main);
+
     if (!couchPotatoEndpoint.isSet()) {
       ButterKnives.hide(authenticatedActions);
     }
@@ -61,10 +63,6 @@ public class MainActivity extends BaseActivity {
       }, 1000);
       firstRun.set(true);
     }
-  }
-
-  @Override protected void inflateLayout(ViewGroup container) {
-    getLayoutInflater().inflate(R.layout.activity_main, container);
   }
 
   @OnClick(R.id.tmdb_popular) public void showPopularMovies() {

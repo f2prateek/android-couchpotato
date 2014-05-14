@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato.ui;
+package com.f2prateek.couchpotato.ui.activities;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -176,6 +176,8 @@ public class MovieActivity extends BaseActivity
   @Override
   public void onCreate(final Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    inflateLayout(R.layout.activity_movie);
 
     // Load the initial data we need for animations
     initialBindData();
@@ -467,10 +469,6 @@ public class MovieActivity extends BaseActivity
                 colorScheme.getPrimaryAccent(), duration);
           }
         });
-  }
-
-  @Override protected void inflateLayout(ViewGroup container) {
-    getLayoutInflater().inflate(R.layout.activity_movie, container);
   }
 
   /**

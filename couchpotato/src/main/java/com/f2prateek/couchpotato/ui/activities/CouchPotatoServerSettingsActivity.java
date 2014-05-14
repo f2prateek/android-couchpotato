@@ -1,4 +1,4 @@
-package com.f2prateek.couchpotato.ui;
+package com.f2prateek.couchpotato.ui.activities;
 
 import android.app.ActionBar;
 import android.content.Intent;
@@ -46,6 +46,22 @@ public class CouchPotatoServerSettingsActivity extends BaseActivity {
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
+    // Inflate a "Done/Discard" custom action bar view.
+    LayoutInflater inflater = (LayoutInflater) getActionBar().getThemedContext()
+        .getSystemService(LAYOUT_INFLATER_SERVICE);
+    final View customActionBarView =
+        inflater.inflate(R.layout.actionbar_custom_view_done_discard, null);
+    // Show the custom action bar view and hide the normal Home icon and title.
+    final ActionBar actionBar = getActionBar();
+    actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM,
+        ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
+    actionBar.setCustomView(customActionBarView,
+        new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT)
+    );
+
+    inflateLayout(R.layout.activity_couchpotato_server_settings);
+
     if (Strings.isBlank(endpoint.getHost())) {
       host.setText(DEFAULT_HOST_SCHEME);
     } else {
@@ -62,24 +78,6 @@ public class CouchPotatoServerSettingsActivity extends BaseActivity {
         return false;
       }
     });
-  }
-
-  @Override protected void inflateLayout(ViewGroup container) {
-    getLayoutInflater().inflate(R.layout.activity_couchpotato_server_settings, container);
-
-    // Inflate a "Done/Discard" custom action bar view.
-    LayoutInflater inflater = (LayoutInflater) getActionBar().getThemedContext()
-        .getSystemService(LAYOUT_INFLATER_SERVICE);
-    final View customActionBarView =
-        inflater.inflate(R.layout.actionbar_custom_view_done_discard, null);
-    // Show the custom action bar view and hide the normal Home icon and title.
-    final ActionBar actionBar = getActionBar();
-    actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM,
-        ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
-    actionBar.setCustomView(customActionBarView,
-        new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT)
-    );
   }
 
   @OnClick(R.id.actionbar_cancel) public void cancel() {
@@ -142,7 +140,8 @@ public class CouchPotatoServerSettingsActivity extends BaseActivity {
             @Override public void onNext(ApiKeyResponse apiKeyResponse) {
               if (apiKeyResponse.isSuccess()) {
                 endpoint.setApiKey(apiKeyResponse.getApiKey());
-                Intent intent = new Intent(CouchPotatoServerSettingsActivity.this, MainActivity.class);
+                Intent intent =
+                    new Intent(CouchPotatoServerSettingsActivity.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();

@@ -54,6 +54,10 @@ public class CouchPotatoApplication extends Application {
     applicationGraph.inject(o);
   }
 
+  public ObjectGraph getApplicationGraph() {
+    return applicationGraph;
+  }
+
   public static CouchPotatoApplication get(Context context) {
     return (CouchPotatoApplication) context.getApplicationContext();
   }

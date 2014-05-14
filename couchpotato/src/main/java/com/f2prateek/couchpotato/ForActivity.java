@@ -16,29 +16,12 @@
 
 package com.f2prateek.couchpotato;
 
-import android.app.Application;
-import com.f2prateek.couchpotato.data.DataModule;
-import com.f2prateek.couchpotato.ui.UiModule;
-import dagger.Module;
-import dagger.Provides;
-import javax.inject.Singleton;
+import java.lang.annotation.Retention;
+import javax.inject.Qualifier;
 
-@Module(
-    includes = {
-        UiModule.class, DataModule.class
-    },
-    injects = {
-        CouchPotatoApplication.class
-    } //
-)
-public final class CouchPotatoModule {
-  private final CouchPotatoApplication app;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-  public CouchPotatoModule(CouchPotatoApplication app) {
-    this.app = app;
-  }
-
-  @Provides @Singleton Application provideApplication() {
-    return app;
-  }
+/** Identifies {@link android.app.Activity} scoped dependencies. */
+@Qualifier @Retention(RUNTIME)
+public @interface ForActivity {
 }

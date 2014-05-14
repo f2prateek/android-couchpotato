@@ -22,8 +22,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.Movie;
+import com.f2prateek.couchpotato.ui.ScopedBus;
 import com.f2prateek.couchpotato.ui.misc.BindableAdapter;
-import com.squareup.otto.Bus;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +31,9 @@ import java.util.List;
 public class MovieGridAdapter extends BindableAdapter<Movie> {
   private final List<Movie> movies;
   private final Picasso picasso;
-  private final Bus bus;
+  private final ScopedBus bus;
 
-  public MovieGridAdapter(Context context, Picasso picasso, Bus bus) {
+  public MovieGridAdapter(Context context, Picasso picasso, ScopedBus bus) {
     super(context);
     this.picasso = picasso;
     this.bus = bus;

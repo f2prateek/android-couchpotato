@@ -27,7 +27,7 @@ import butterknife.OnClick;
 import com.f2prateek.couchpotato.Events;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.Movie;
-import com.squareup.otto.Bus;
+import com.f2prateek.couchpotato.ui.ScopedBus;
 import com.squareup.picasso.Picasso;
 
 public class MovieGridItem extends FrameLayout {
@@ -35,7 +35,7 @@ public class MovieGridItem extends FrameLayout {
   @InjectView(R.id.movie_title) TextView title;
 
   private Movie movie;
-  private Bus bus;
+  private ScopedBus bus;
 
   public MovieGridItem(Context context, AttributeSet attrs) {
     super(context, attrs);
@@ -46,7 +46,7 @@ public class MovieGridItem extends FrameLayout {
     ButterKnife.inject(this);
   }
 
-  public void bindTo(Movie movie, Picasso picasso, Bus bus) {
+  public void bindTo(Movie movie, Picasso picasso, ScopedBus bus) {
     this.movie = movie;
     this.bus = bus;
     picasso.load(movie.poster()).fit().centerCrop().into(image);

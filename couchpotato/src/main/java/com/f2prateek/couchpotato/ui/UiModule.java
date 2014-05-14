@@ -16,22 +16,12 @@
 
 package com.f2prateek.couchpotato.ui;
 
-import com.f2prateek.couchpotato.ui.fragments.BaseFragment;
-import com.f2prateek.couchpotato.ui.fragments.ExploreMoviesFragment;
-import com.f2prateek.couchpotato.ui.fragments.MoviesGridFragment;
-import com.f2prateek.couchpotato.ui.fragments.PopularMoviesFragment;
-import com.f2prateek.couchpotato.ui.fragments.TopRatedMoviesFragment;
-import com.f2prateek.couchpotato.ui.fragments.WantedMoviesFragment;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
 
 @Module(
-    injects = {
-        MainActivity.class, BaseFragment.class, PopularMoviesFragment.class,
-        MoviesGridFragment.class, ExploreMoviesFragment.class, TopRatedMoviesFragment.class,
-        WantedMoviesFragment.class, MovieActivity.class, CouchPotatoServerSettingsActivity.class
-    },
+
     complete = false,
     library = true)
 public class UiModule {

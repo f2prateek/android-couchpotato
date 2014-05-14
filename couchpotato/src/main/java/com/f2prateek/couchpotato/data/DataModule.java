@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.HttpResponseCache;
 import com.squareup.okhttp.OkHttpClient;
+import com.squareup.otto.Bus;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 import dagger.Module;
@@ -75,6 +76,10 @@ public final class DataModule {
     }
 
     return client;
+  }
+
+  @Provides @Singleton Bus provideBus() {
+    return new Bus();
   }
 
   @Provides @Singleton Gson provideGson() {

@@ -20,7 +20,7 @@ import android.view.View;
 import butterknife.ButterKnife;
 import java.util.List;
 
-class ButterKnives {
+public class ButterKnives {
   private ButterKnives() {
     // no instances
   }
