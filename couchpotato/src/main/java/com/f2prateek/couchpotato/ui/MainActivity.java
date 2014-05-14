@@ -31,6 +31,7 @@ import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoEndpoint;
 import com.f2prateek.couchpotato.data.prefs.BooleanPreference;
 import com.f2prateek.couchpotato.data.prefs.FirstRun;
 import com.f2prateek.couchpotato.ui.fragments.PopularMoviesFragment;
+import com.f2prateek.couchpotato.ui.fragments.TopRatedMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.WantedMoviesFragment;
 import com.squareup.otto.Subscribe;
 import java.util.List;
@@ -72,13 +73,19 @@ public class MainActivity extends BaseActivity {
         .commit();
   }
 
+  @OnClick(R.id.tmdb_top_rated) public void showTopRatedMovies() {
+    getFragmentManager().beginTransaction()
+        .replace(R.id.content, new TopRatedMoviesFragment())
+        .commit();
+  }
+
   @OnClick(R.id.couchpotato_library) public void showLibrary() {
     getFragmentManager().beginTransaction()
         .replace(R.id.content, new WantedMoviesFragment())
         .commit();
   }
 
-  @OnClick(R.id.couchpotato_server) public void onCouchPotatoServerSettingsClicked() {
+  @OnClick(R.id.couchpotato_server) public void editCouchPotatoServerSetting() {
     Intent intent = new Intent(this, CouchPotatoServerSettingsActivity.class);
     startActivity(intent);
   }

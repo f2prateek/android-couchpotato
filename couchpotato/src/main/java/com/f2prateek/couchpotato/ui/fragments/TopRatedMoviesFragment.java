@@ -18,8 +18,8 @@ package com.f2prateek.couchpotato.ui.fragments;
 
 import rx.Subscription;
 
-public class PopularMoviesFragment extends ExploreMoviesFragment {
+public class TopRatedMoviesFragment extends ExploreMoviesFragment {
   @Override protected Subscription subscribe(int page) {
-    return database.getPopularMovies(page, this);
+    return database.getTopRatedMovies(page, this);
   }
 }

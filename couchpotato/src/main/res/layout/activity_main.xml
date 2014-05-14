@@ -87,10 +87,10 @@
         style="@style/Widget.CouchPotato.Drawer.Header"/>
 
     <LinearLayout
-        android:id="@+id/tmdb_drawer"
+        android:id="@+id/browse_section"
         android:layout_columnSpan="2"
         android:layout_gravity="start|end"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
       <TextView
           android:id="@+id/tmdb_popular"
@@ -99,6 +99,16 @@
           android:text="@string/popular"
           android:gravity="left|center_vertical"
           android:drawableLeft="@drawable/ic_action_ticket"
+          android:drawablePadding="2dp"
+          style="?android:buttonBarButtonStyle"/>
+
+      <TextView
+          android:id="@+id/tmdb_top_rated"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/top_rated"
+          android:gravity="left|center_vertical"
+          android:drawableLeft="@drawable/ic_action_star"
           android:drawablePadding="2dp"
           style="?android:buttonBarButtonStyle"/>
 

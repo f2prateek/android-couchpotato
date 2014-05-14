@@ -30,6 +30,8 @@ import rx.Observable;
 public interface TMDbService {
   @GET("/movie/popular") Observable<MovieCollectionResponse> popular(@Query("page") int page);
 
+  @GET("/movie/top_rated") Observable<MovieCollectionResponse> topRated(@Query("page") int page);
+
   @GET("/movie/{id}") Observable<TMDbMovie> movie(@Path("id") long id);
 
   @GET("/movie/{id}/images") Observable<Images> movieImages(@Path("id") long id);

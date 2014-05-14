@@ -18,11 +18,12 @@
 <resources>
 
   <string name="couchpotato">CouchPotato</string>
+
+  <!-- Main Activity -->
   <string name="library">Library</string>
   <string name="popular">Popular</string>
   <string name="browse">Browse</string>
-
-  <!-- Main Activity -->
+  <string name="top_rated">Top Rated</string>
 
   <!-- Movie Activity -->
   <string name="similar_movies">Similar Movies</string>

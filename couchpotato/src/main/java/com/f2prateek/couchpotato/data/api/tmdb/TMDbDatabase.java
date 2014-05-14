@@ -44,9 +44,9 @@ public class TMDbDatabase {
   // Fetch the configuration and cache it future use.
   public Observable<Configuration> getConfiguration() {
     if (configurationObservable == null) {
-      configurationObservable = tmDbService.configuration();
+      configurationObservable = tmDbService.configuration().cache();
     }
-    return configurationObservable.cache();
+    return configurationObservable;
   }
 
   public Subscription getPopularMovies(final int page, final Observer<List<Movie>> observer) {
@@ -63,6 +63,50 @@ public class TMDbDatabase {
 
   private Observable<List<Movie>> popularMovies(final int page, final Configuration configuration) {
     return tmDbService.popular(page) //
+        .map(new Func1<MovieCollectionResponse, List<MinifiedMovie>>() {
+          @Override public List<MinifiedMovie> call(MovieCollectionResponse response) {
+            return response.getResults();
+          }
+        }) //
+        .flatMap(new Func1<List<MinifiedMovie>, Observable<MinifiedMovie>>() {
+          @Override public Observable<MinifiedMovie> call(List<MinifiedMovie> movies) {
+            return Observable.from(movies);
+          }
+        }) //
+        .filter(new Func1<MinifiedMovie, Boolean>() {
+          @Override public Boolean call(MinifiedMovie movie) {
+            // TODO: control in preferences
+            return !movie.isAdult();
+          }
+        }) //
+        .map(new Func1<MinifiedMovie, MinifiedMovie>() {
+          @Override public MinifiedMovie call(MinifiedMovie movie) {
+            movie.setConfiguration(configuration);
+            return movie;
+          }
+        }) //
+        .map(new Func1<MinifiedMovie, Movie>() {
+          @Override public Movie call(MinifiedMovie movie) {
+            return Movie.create(movie);
+          }
+        }).toList();
+  }
+
+  public Subscription getTopRatedMovies(final int page, final Observer<List<Movie>> observer) {
+    return getConfiguration() //
+        .flatMap(new Func1<Configuration, Observable<List<Movie>>>() {
+          @Override public Observable<List<Movie>> call(Configuration configuration) {
+            return topRatedMovies(page, configuration);
+          }
+        }) //
+        .subscribeOn(Schedulers.io()) //
+        .observeOn(AndroidSchedulers.mainThread()) //
+        .subscribe(observer);
+  }
+
+  private Observable<List<Movie>> topRatedMovies(final int page,
+      final Configuration configuration) {
+    return tmDbService.topRated(page) //
         .map(new Func1<MovieCollectionResponse, List<MinifiedMovie>>() {
           @Override public List<MinifiedMovie> call(MovieCollectionResponse response) {
             return response.getResults();
