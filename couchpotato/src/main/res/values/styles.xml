@@ -24,6 +24,7 @@
     <item name="android:windowBackground">@drawable/app_background</item>
     <item name="android:progressBarStyle">@style/Widget.CouchPotato.ProgressBar</item>
     <item name="ratingViewStyle">@style/Widget.RatingView</item>
+    <item name="spbStyle">@style/Widget.CouchPotato.SmoothProgressBar</item>
     <item name="android:actionBarStyle">@style/Widget.CouchPotato.ActionBar</item>
   </style>
 
@@ -63,7 +64,8 @@
     <item name="android:background">@null</item>
     <item name="android:icon">@drawable/ic_transparent</item>
     <item name="android:displayOptions">homeAsUp|showHome|showTitle</item>
-    <item name="android:titleTextStyle">@style/TextAppearance.CouchPotato.Widget.ActionBar.Title</item>
+    <item name="android:titleTextStyle">@style/TextAppearance.CouchPotato.Widget.ActionBar.Title
+    </item>
   </style>
 
   <style name="TextAppearance.CouchPotato.Widget.ActionBar.Title"
@@ -105,6 +107,20 @@
     <item name="maxValue">100</item>
     <item name="circleColor">@color/background</item>
     <item name="circleBackgroundColor">@color/background</item>
+  </style>
+
+  <style name="Widget.CouchPotato.SmoothProgressBar" parent="SmoothProgressBar">
+    <item name="spb_sections_count">6</item>
+    <item name="spb_color">@color/app_color</item>
+    <item name="spb_speed">2</item>
+    <item name="spb_stroke_width">4dp</item>
+    <item name="spb_stroke_separator_length">4dp</item>
+    <item name="spb_reversed">false</item>
+    <item name="spb_mirror_mode">false</item>
+    <item name="spb_progressiveStart_activated">true</item>
+    <item name="spb_progressiveStart_speed">1.5</item>
+    <item name="spb_progressiveStop_speed">3.4</item>
+    <item name="android:indeterminate">true</item>
   </style>
 
 </resources>
