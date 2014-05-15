@@ -26,4 +26,7 @@
   <color name="app_color">#ffcc0000</color>
   <color name="app_color_secondary">#ff850000</color>
 
+  <color name="action_bar_color">@color/app_color_secondary</color>
+  <color name="action_bar_indicator_color">@color/app_color</color>
+
 </resources>

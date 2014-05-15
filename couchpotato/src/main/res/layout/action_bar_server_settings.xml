@@ -22,8 +22,8 @@
     android:id="@+id/tabs"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:pstsDividerColor="@color/app_color_secondary"
-    app:pstsIndicatorColor="@color/app_color_secondary"
+    app:pstsDividerColor="@color/action_bar_indicator_color"
+    app:pstsIndicatorColor="@color/action_bar_indicator_color"
     app:pstsIndicatorHeight="6dp"
     app:pstsUnderlineColor="@android:color/transparent"/>
 
