@@ -25,5 +25,5 @@
     app:pstsDividerColor="@android:color/holo_red_dark"
     app:pstsIndicatorColor="@android:color/holo_red_dark"
     app:pstsIndicatorHeight="6dp"
-    app:pstsUnderlineColor="@android:color/holo_red_dark"/>
+    app:pstsUnderlineColor="@android:color/transparent"/>
 

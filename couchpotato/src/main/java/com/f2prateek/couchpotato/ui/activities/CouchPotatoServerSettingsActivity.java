@@ -19,6 +19,7 @@ package com.f2prateek.couchpotato.ui.activities;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -173,30 +174,50 @@ public class CouchPotatoServerSettingsActivity extends BaseActivity {
                 startActivity(intent);
                 finish();
               } else {
-                loginError(R.string.invalid_credentials);
+                // Credentials were rejected
+                Crouton.makeText(CouchPotatoServerSettingsActivity.this,
+                    R.string.invalid_credentials, Style.ALERT).show();
+                loginError();
               }
             }
 
             @Override public void onError(Throwable throwable) {
               super.onError(throwable);
-              loginError(R.string.inaccessible_server);
+
+              // Could not reach the server, could be due to no network connectivity, or due to
+              // an invalid url
+              final String url = endpoint.getUrl();
+              Crouton.makeText(CouchPotatoServerSettingsActivity.this,
+                  getString(R.string.inaccessible_server, url), Style.ALERT)
+                  .setOnClickListener(new View.OnClickListener() {
+                    @Override public void onClick(View v) {
+                      final Intent intent = new Intent(Intent.ACTION_VIEW);
+                      intent.setData(Uri.parse(url));
+                      startActivity(intent);
+                    }
+                  })
+                  .show();
+              loginError();
             }
           }
       );
     } else {
-      loginError(R.string.invalid_fields);
+      // Some fields were invalid
+      Crouton.makeText(CouchPotatoServerSettingsActivity.this, R.string.invalid_fields, Style.ALERT)
+          .show();
+      loginError();
     }
   }
 
-  private void loginError(int textResourceId) {
-    Ln.e("Login error");
+  private void loginError() {
+    Ln.d("Error while trying to login");
     endpoint.clear();
     if (oldHost != null && oldApiKey != null) {
+      Ln.d("Restoring old url");
       endpoint.setHost(oldHost);
       endpoint.setApiKey(oldApiKey);
     }
     progressBar.setVisibility(View.GONE);
-    Crouton.makeText(this, textResourceId, Style.ALERT).show();
   }
 
   private static String getText(EditText editText) {
