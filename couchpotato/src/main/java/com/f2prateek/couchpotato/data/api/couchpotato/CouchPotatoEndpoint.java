@@ -71,6 +71,10 @@ public class CouchPotatoEndpoint implements Endpoint {
     return hostPreference.get();
   }
 
+  public String getApiKey() {
+    return apiKeyPreference.get();
+  }
+
   @Override public String getUrl() {
     if (hostPreference.get() == null) {
       throw new IllegalStateException("host is not set yet.");

@@ -24,6 +24,7 @@ import com.f2prateek.couchpotato.data.api.couchpotato.model.movie.MoviesResponse
 import com.f2prateek.couchpotato.data.api.couchpotato.model.profile.Profile;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.profile.ProfilesResponse;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
@@ -43,6 +44,7 @@ public class CouchPotatoDatabase {
   public Subscription getApiKey(final String username, final String password,
       final Observer<ApiKeyResponse> observer) {
     return couchPotatoService.getApiKey(md5(password), md5(username))
+        .timeout(10, TimeUnit.SECONDS)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(observer);

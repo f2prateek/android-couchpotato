@@ -35,6 +35,7 @@ import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoEndpoint;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.ApiKeyResponse;
 import com.f2prateek.couchpotato.data.rx.EndlessObserver;
 import com.f2prateek.couchpotato.util.Strings;
+import com.f2prateek.ln.Ln;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import java.util.regex.Pattern;
@@ -59,6 +60,9 @@ public class CouchPotatoServerSettingsActivity extends BaseActivity {
 
   @Inject CouchPotatoEndpoint endpoint;
   @Inject CouchPotatoDatabase couchPotatoDatabase;
+
+  private String oldHost;
+  private String oldApiKey;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -103,6 +107,12 @@ public class CouchPotatoServerSettingsActivity extends BaseActivity {
 
   @OnClick(R.id.actionbar_done) public void login() {
     boolean hasError = false;
+
+    // copy the current url
+    if (endpoint.isSet()) {
+      oldApiKey = endpoint.getApiKey();
+      oldHost = endpoint.getHost();
+    }
 
     if (Strings.isBlank(host.getText())) {
       host.setError(getString(R.string.required));
@@ -169,7 +179,7 @@ public class CouchPotatoServerSettingsActivity extends BaseActivity {
 
             @Override public void onError(Throwable throwable) {
               super.onError(throwable);
-              loginError(R.string.invalid_server);
+              loginError(R.string.inaccessible_server);
             }
           }
       );
@@ -179,7 +189,12 @@ public class CouchPotatoServerSettingsActivity extends BaseActivity {
   }
 
   private void loginError(int textResourceId) {
+    Ln.e("Login error");
     endpoint.clear();
+    if (oldHost != null && oldApiKey != null) {
+      endpoint.setHost(oldHost);
+      endpoint.setApiKey(oldApiKey);
+    }
     progressBar.setVisibility(View.GONE);
     Crouton.makeText(this, textResourceId, Style.ALERT).show();
   }

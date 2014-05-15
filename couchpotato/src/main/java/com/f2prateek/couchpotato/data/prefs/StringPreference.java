@@ -42,7 +42,11 @@ public class StringPreference {
   }
 
   public void set(String value) {
-    preferences.edit().putString(key, value).apply();
+    if (value == null) {
+      delete();
+    } else {
+      preferences.edit().putString(key, value).apply();
+    }
   }
 
   public void delete() {
