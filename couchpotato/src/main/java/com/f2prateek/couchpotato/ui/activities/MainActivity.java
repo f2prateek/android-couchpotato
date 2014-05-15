@@ -50,7 +50,6 @@ public class MainActivity extends BaseActivity {
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    //noinspection ResourceType, ConstantConditions
     getActionBar().setCustomView(R.layout.view_custom_action_bar);
 
     inflateLayout(R.layout.activity_main);

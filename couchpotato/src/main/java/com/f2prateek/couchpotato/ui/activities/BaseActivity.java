@@ -16,6 +16,7 @@
 
 package com.f2prateek.couchpotato.ui.activities;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -32,7 +33,7 @@ import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
 
-public class BaseActivity extends Activity {
+@SuppressLint("Registered") public class BaseActivity extends Activity {
   @Inject AppContainer appContainer;
   @Inject ScopedBus bus;
 

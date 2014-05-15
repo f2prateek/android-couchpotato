@@ -16,6 +16,7 @@
 
 package com.f2prateek.couchpotato.ui.activities;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
@@ -65,7 +66,7 @@ public class CouchPotatoServerSettingsActivity extends BaseActivity {
     // Inflate a "Done/Discard" custom action bar view.
     LayoutInflater inflater = (LayoutInflater) getActionBar().getThemedContext()
         .getSystemService(LAYOUT_INFLATER_SERVICE);
-    final View customActionBarView =
+    @SuppressLint("InflateParams") final View customActionBarView =
         inflater.inflate(R.layout.actionbar_custom_view_done_discard, null);
     // Show the custom action bar view and hide the normal Home icon and title.
     final ActionBar actionBar = getActionBar();

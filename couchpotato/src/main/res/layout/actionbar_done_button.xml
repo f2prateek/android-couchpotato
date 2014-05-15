@@ -17,11 +17,13 @@
   -->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     style="?android:actionButtonStyle"
     android:id="@+id/actionbar_done"
     android:layout_width="0dp"
     android:layout_height="match_parent"
-    android:layout_weight="1">
+    android:layout_weight="1"
+    tools:ignore="MergeRootFrame">
 
   <TextView style="?android:actionBarTabTextStyle"
       android:layout_width="wrap_content"

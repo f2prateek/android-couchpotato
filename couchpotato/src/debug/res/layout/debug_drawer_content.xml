@@ -23,7 +23,7 @@
     android:layout_height="wrap_content"
     android:padding="12dp"
     android:columnCount="2"
-    tools:ignore="UselessParent">
+    tools:ignore="HardcodedText,UselessParent">
 
   <LinearLayout
       android:layout_columnSpan="2"
@@ -73,7 +73,8 @@
       android:id="@+id/debug_contextual_list"
       android:layout_columnSpan="2"
       android:layout_gravity="start|end"
-      android:visibility="gone"/>
+      android:visibility="gone"
+      android:orientation="vertical"/>
 
   <!-- NETWORK SECTION -->
 

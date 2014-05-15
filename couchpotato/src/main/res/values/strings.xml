@@ -22,7 +22,6 @@
   <!-- Main Activity -->
   <string name="library">Library</string>
   <string name="popular">Popular</string>
-  <string name="browse">Browse</string>
   <string name="top_rated">Top Rated</string>
   <string name="upcoming">Upcoming</string>
   <string name="now_playing">Now Playing</string>
@@ -48,7 +47,6 @@
   <string name="invalid_credentials">Credentials rejected. Please try again.</string>
   <string name="invalid_server">Could not reach server. Please check the host.</string>
   <string name="cancel">Cancel</string>
-  <string name="save">Save</string>
   <string name="server_settings">Server Settings</string>
   <string name="login">Login</string>
   <string name="done">Done</string>
