@@ -16,23 +16,14 @@
   ~ limitations under the License.
   -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    style="?android:actionButtonStyle"
-    android:id="@+id/actionbar_done"
-    android:layout_width="0dp"
+<com.astuetz.PagerSlidingTabStrip
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tabs"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_weight="1"
-    tools:ignore="MergeRootFrame">
+    app:pstsDividerColor="@color/app_color_secondary"
+    app:pstsIndicatorColor="@color/app_color_secondary"
+    app:pstsIndicatorHeight="6dp"
+    app:pstsUnderlineColor="@android:color/transparent"/>
 
-  <TextView style="?android:actionBarTabTextStyle"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:paddingRight="20dp"
-      android:drawableLeft="@drawable/ic_action_tick"
-      android:drawablePadding="8dp"
-      android:gravity="center_vertical"
-      android:text="@string/done"/>
-
-</FrameLayout>

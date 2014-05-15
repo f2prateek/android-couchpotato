@@ -35,8 +35,7 @@
       android:gravity="center"
       android:text="@string/application_name"
       android:padding="@dimen/holo_gap"
-      style="@android:style/TextAppearance.DeviceDefault.Large"
-      android:textStyle="bold"/>
+      style="@android:style/TextAppearance.DeviceDefault.Large"/>
 
   <com.f2prateek.couchpotato.ui.widget.FloatLabelLayout
       xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -50,7 +49,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/host_hint"
-        android:singleLine="true"
         android:inputType="text|textUri"
         android:imeOptions="actionNext"
         android:nextFocusDown="@+id/username"/>
@@ -69,7 +67,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/username_hint"
-        android:singleLine="true"
         android:inputType="textNoSuggestions"
         android:imeOptions="actionNext"
         android:nextFocusDown="@+id/password"/>
@@ -88,13 +85,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/password_hint"
-        android:singleLine="true"
         android:inputType="textPassword"
         android:imeActionId="@+id/action_login"
         android:imeActionLabel="@string/login"
         android:imeOptions="actionDone"/>
 
   </com.f2prateek.couchpotato.ui.widget.FloatLabelLayout>
+
+  <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/login"
+      android:text="@string/login"
+      android:fontFamily="sans-serif-condensed"
+      style="?android:buttonBarButtonStyle"/>
 
   <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
       xmlns:app="http://schemas.android.com/apk/res-auto"

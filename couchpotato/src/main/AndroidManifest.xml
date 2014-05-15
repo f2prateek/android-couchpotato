@@ -43,7 +43,8 @@
         android:theme="@style/Theme.CouchPotato.TransparentActionBar.MovieActivity"/>
 
     <activity
-        android:name=".ui.activities.CouchPotatoServerSettingsActivity"/>
+        android:name=".ui.activities.CouchPotatoServerSettingsActivity"
+        android:theme="@style/Theme.CouchPotato.NoActionBar"/>
 
   </application>
 

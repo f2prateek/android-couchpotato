@@ -16,15 +16,11 @@
 
 package com.f2prateek.couchpotato.ui.activities;
 
-import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -39,6 +35,7 @@ import com.f2prateek.couchpotato.util.Strings;
 import com.f2prateek.ln.Ln;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
+import hugo.weaving.DebugLog;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 
@@ -68,20 +65,6 @@ public class CouchPotatoServerSettingsActivity extends BaseActivity {
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    // Inflate a "Done/Discard" custom action bar view.
-    LayoutInflater inflater = (LayoutInflater) getActionBar().getThemedContext()
-        .getSystemService(LAYOUT_INFLATER_SERVICE);
-    @SuppressLint("InflateParams") final View customActionBarView =
-        inflater.inflate(R.layout.actionbar_custom_view_done_discard, null);
-    // Show the custom action bar view and hide the normal Home icon and title.
-    final ActionBar actionBar = getActionBar();
-    actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM,
-        ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
-    actionBar.setCustomView(customActionBarView,
-        new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT)
-    );
-
     inflateLayout(R.layout.activity_couchpotato_server_settings);
 
     if (Strings.isBlank(endpoint.getHost())) {
@@ -91,9 +74,10 @@ public class CouchPotatoServerSettingsActivity extends BaseActivity {
     }
 
     password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-      @Override
+      @DebugLog @Override
       public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        if (actionId == R.id.action_login) {
+        // if (actionId == R.id.action_login)
+        if (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
           login();
           return true;
         }
@@ -102,11 +86,7 @@ public class CouchPotatoServerSettingsActivity extends BaseActivity {
     });
   }
 
-  @OnClick(R.id.actionbar_cancel) public void cancel() {
-    finish();
-  }
-
-  @OnClick(R.id.actionbar_done) public void login() {
+  @OnClick(R.id.login) public void login() {
     boolean hasError = false;
 
     // copy the current url
@@ -168,11 +148,20 @@ public class CouchPotatoServerSettingsActivity extends BaseActivity {
             @Override public void onNext(ApiKeyResponse apiKeyResponse) {
               if (apiKeyResponse.isSuccess()) {
                 endpoint.setApiKey(apiKeyResponse.getApiKey());
-                Intent intent =
-                    new Intent(CouchPotatoServerSettingsActivity.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
+                Crouton.makeText(CouchPotatoServerSettingsActivity.this, R.string.login_successfull,
+                    Style.CONFIRM).show();
+
+                progressBar.postDelayed(new Runnable() {
+                  @Override public void run() {
+                    progressBar.setVisibility(View.GONE);
+                    Intent intent =
+                        new Intent(CouchPotatoServerSettingsActivity.this, MainActivity.class);
+                    intent.setFlags(
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                  }
+                }, 1000);
               } else {
                 // Credentials were rejected
                 Crouton.makeText(CouchPotatoServerSettingsActivity.this,

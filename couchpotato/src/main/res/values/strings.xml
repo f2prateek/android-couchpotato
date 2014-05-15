@@ -52,5 +52,6 @@
   <string name="server_settings">Server Settings</string>
   <string name="login">Login</string>
   <string name="done">Done</string>
+  <string name="login_successfull">Successfully logged in</string>
 
 </resources>

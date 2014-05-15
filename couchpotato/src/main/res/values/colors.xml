@@ -23,5 +23,7 @@
   <color name="dark_grey">#e222</color>
 
   <color name="background">@color/dark_black</color>
+  <color name="app_color">#ffcc0000</color>
+  <color name="app_color_secondary">#ff850000</color>
 
 </resources>
