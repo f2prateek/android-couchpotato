@@ -24,15 +24,19 @@
     <item name="android:windowBackground">@drawable/app_background</item>
     <item name="android:progressBarStyle">@style/Widget.CouchPotato.ProgressBar</item>
     <item name="ratingViewStyle">@style/Widget.RatingView</item>
+    <item name="android:actionBarStyle">@style/Widget.CouchPotato.ActionBar</item>
+  </style>
+
+  <style name="Widget.CouchPotato.ActionBar"
+      parent="@android:style/Widget.Holo.ActionBar.Solid">
+    <item name="android:background">@color/action_bar_color</item>
   </style>
 
   <style name="Theme.CouchPotato.CustomActionBar">
-    <item name="android:actionBarStyle">@style/Widget.CouchPotato.CustomActionBar</item>
+    <item name="android:actionBarStyle">@style/Widget.CouchPotato.ActionBar.Custom</item>
   </style>
 
-  <style name="Widget.CouchPotato.CustomActionBar"
-      parent="@android:style/Widget.Holo.ActionBar.Solid">
-    <item name="android:background">@color/dark_grey</item>
+  <style name="Widget.CouchPotato.ActionBar.Custom">
     <item name="android:displayOptions">showCustom</item>
   </style>
 
@@ -50,6 +54,7 @@
   </style>
 
   <style name="Theme.CouchPotato.TransparentActionBar.MovieActivity">
+    <!-- This is an opaque activity, so we can just make the background transparent. -->
     <item name="android:windowBackground">@android:color/transparent</item>
   </style>
 
