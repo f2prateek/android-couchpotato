@@ -1,0 +1,83 @@
+/*
+ * Copyright 2014 Prateek Srivastava
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.f2prateek.couchpotato.ui.fragments;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.style.ForegroundColorSpan;
+import android.view.View;
+import android.widget.TextView;
+import butterknife.ButterKnife;
+import com.f2prateek.couchpotato.R;
+import com.f2prateek.couchpotato.data.api.Movie;
+import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoDatabase;
+import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoEndpoint;
+import com.f2prateek.couchpotato.data.rx.EndlessObserver;
+import com.f2prateek.couchpotato.ui.activities.CouchPotatoServerSettingsActivity;
+import com.f2prateek.couchpotato.ui.misc.Truss;
+import java.util.List;
+import javax.inject.Inject;
+import rx.Subscription;
+
+public class LibraryMoviesFragment extends MoviesGridFragment {
+  @Inject CouchPotatoDatabase database;
+  @Inject CouchPotatoEndpoint endpoint;
+
+  private Subscription request;
+
+  @Override public void onActivityCreated(Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+
+    if (!endpoint.isSet()) {
+      showInaccessibleServerMessage();
+    } else {
+      request = database.getMovies(new EndlessObserver<List<Movie>>() {
+        @Override public void onNext(List<Movie> movies) {
+          adapter.add(movies);
+          root.setDisplayedChildView(grid);
+        }
+
+        @Override public void onError(Throwable throwable) {
+          super.onError(throwable);
+
+          showInaccessibleServerMessage();
+        }
+      });
+    }
+  }
+
+  @Override public void onPause() {
+    super.onPause();
+    if (request != null) request.unsubscribe();
+  }
+
+  void showInaccessibleServerMessage() {
+    final Intent intent = new Intent(activityContext, CouchPotatoServerSettingsActivity.class);
+    View view = setExtraView(R.layout.partial_error_message);
+    TextView textView = ButterKnife.findById(view, R.id.error_message);
+    textView.setText(new Truss().append(getString(R.string.error_inaccessible_server)).append(
+        " ") // Space between sentences
+        .pushSpan(new ForegroundColorSpan(getResources().getColor(R.color.app_color)))
+        .append(getString(R.string.error_inaccessible_server_prompt))
+        .build());
+    textView.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        startActivity(intent);
+      }
+    });
+  }
+}

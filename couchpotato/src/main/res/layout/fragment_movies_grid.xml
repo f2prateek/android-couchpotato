@@ -39,4 +39,10 @@
       android:stretchMode="columnWidth"
       android:columnWidth="@dimen/poster_item_width"/>
 
+  <!-- For errors or when remote data might require additional information -->
+  <FrameLayout
+      android:id="@+id/extra"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"/>
+
 </com.f2prateek.couchpotato.ui.widget.BetterViewAnimator>

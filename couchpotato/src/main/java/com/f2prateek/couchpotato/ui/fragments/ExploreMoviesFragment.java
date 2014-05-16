@@ -28,6 +28,9 @@ import javax.inject.Inject;
 import rx.Observer;
 import rx.Subscription;
 
+/**
+ * A base fragment for exploring movies from TMDB.
+ */
 public abstract class ExploreMoviesFragment extends MoviesGridFragment
     implements Observer<List<Movie>> {
   private static final int LOAD_THRESHOLD = 4;

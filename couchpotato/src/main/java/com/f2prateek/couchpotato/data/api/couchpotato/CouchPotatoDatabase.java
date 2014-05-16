@@ -52,6 +52,7 @@ public class CouchPotatoDatabase {
 
   public Subscription getMovies(final Observer<List<Movie>> observer) {
     return couchPotatoService.getMovies()
+        .timeout(30, TimeUnit.SECONDS)
         .flatMap(new Func1<MoviesResponse, Observable<CouchPotatoMovie>>() {
           @Override public Observable<CouchPotatoMovie> call(MoviesResponse moviesResponse) {
             return Observable.from(moviesResponse.getMovies());

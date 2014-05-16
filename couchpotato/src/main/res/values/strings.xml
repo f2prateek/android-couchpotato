@@ -19,6 +19,10 @@
 
   <string name="couchpotato">CouchPotato</string>
 
+  <!-- Library Fragment -->
+  <string name="error_inaccessible_server">Could not reach CouchPotato server.</string>
+  <string name="error_inaccessible_server_prompt">Please check your server settings.</string>
+
   <!-- Main Activity -->
   <string name="library">Library</string>
   <string name="popular">Popular</string>
@@ -45,8 +49,8 @@
   <string name="invalid">Invalid</string>
   <string name="invalid_fields">Please check all fields</string>
   <string name="invalid_credentials">Credentials rejected. Please try again.</string>
-  <string name="inaccessible_server">Could not reach server at %1$s. Try clicking
-    this to view in a browser.
+  <string name="inaccessible_server_crouton">Could not reach CouchPotato server at %1$s. Try
+    clicking this to view in a browser.
   </string>
   <string name="cancel">Cancel</string>
   <string name="server_settings">Server Settings</string>

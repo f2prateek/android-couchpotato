@@ -177,7 +177,7 @@ public class CouchPotatoServerSettingsActivity extends BaseActivity {
               // an invalid url
               final String url = endpoint.getUrl();
               Crouton.makeText(CouchPotatoServerSettingsActivity.this,
-                  getString(R.string.inaccessible_server, url), Style.ALERT)
+                  getString(R.string.inaccessible_server_crouton, url), Style.ALERT)
                   .setOnClickListener(new View.OnClickListener() {
                     @Override public void onClick(View v) {
                       final Intent intent = new Intent(Intent.ACTION_VIEW);

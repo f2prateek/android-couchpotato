@@ -30,11 +30,11 @@ import com.f2prateek.couchpotato.data.prefs.BooleanPreference;
 import com.f2prateek.couchpotato.data.prefs.FirstRun;
 import com.f2prateek.couchpotato.ui.colorizer.FragmentTabAdapter;
 import com.f2prateek.couchpotato.ui.fragments.DiscoverMoviesFragment;
+import com.f2prateek.couchpotato.ui.fragments.LibraryMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.NowPlayingMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.PopularMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.TopRatedMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.UpcomingMoviesFragment;
-import com.f2prateek.couchpotato.ui.fragments.WantedMoviesFragment;
 import com.squareup.otto.Subscribe;
 import javax.inject.Inject;
 
@@ -57,7 +57,7 @@ public class MainActivity extends BaseActivity {
     tabAdapter = new FragmentTabAdapter(this, pager);
     pager.setAdapter(tabAdapter);
 
-    tabAdapter.addTab(WantedMoviesFragment.class, null, R.string.library);
+    tabAdapter.addTab(LibraryMoviesFragment.class, null, R.string.library);
     tabAdapter.addTab(PopularMoviesFragment.class, null, R.string.popular);
     tabAdapter.addTab(TopRatedMoviesFragment.class, null, R.string.top_rated);
     tabAdapter.addTab(NowPlayingMoviesFragment.class, null, R.string.now_playing);

@@ -25,12 +25,12 @@ import com.f2prateek.couchpotato.ui.activities.MovieActivity;
 import com.f2prateek.couchpotato.ui.fragments.BaseFragment;
 import com.f2prateek.couchpotato.ui.fragments.DiscoverMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.ExploreMoviesFragment;
+import com.f2prateek.couchpotato.ui.fragments.LibraryMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.MoviesGridFragment;
 import com.f2prateek.couchpotato.ui.fragments.NowPlayingMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.PopularMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.TopRatedMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.UpcomingMoviesFragment;
-import com.f2prateek.couchpotato.ui.fragments.WantedMoviesFragment;
 import com.squareup.otto.Bus;
 import dagger.Module;
 import dagger.Provides;
@@ -40,7 +40,7 @@ import javax.inject.Singleton;
     injects = {
         MainActivity.class, BaseFragment.class, PopularMoviesFragment.class,
         MoviesGridFragment.class, ExploreMoviesFragment.class, TopRatedMoviesFragment.class,
-        NowPlayingMoviesFragment.class, UpcomingMoviesFragment.class, WantedMoviesFragment.class,
+        NowPlayingMoviesFragment.class, UpcomingMoviesFragment.class, LibraryMoviesFragment.class,
         DiscoverMoviesFragment.class, MovieActivity.class, CouchPotatoServerSettingsActivity.class
     },
     complete = false,
