@@ -4,5 +4,12 @@ before_install:
   - export TERM=dumb
   - sudo apt-get install -qq libstdc++6:i386 lib32z1
 
+install:
+  # Without TERM=dumb, we get mangled output in the Travis console
+  - TERM=dumb ./gradlew assembleDebug
+
+script:
+  - TERM=dumb ./gradlew checkDebug
+
 notifications:
   email: false
