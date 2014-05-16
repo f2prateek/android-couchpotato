@@ -40,7 +40,7 @@
       android:layout_gravity="bottom"
       android:gravity="bottom"
       android:background="@drawable/text_background_gradient"
-      android:padding="@dimen/holo_gap_half"
+      android:padding="@dimen/holo_padding_small"
       android:lines="2"
       android:ellipsize="end"
       tools:text="Peter Jackson\nas Director"

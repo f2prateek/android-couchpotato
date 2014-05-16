@@ -19,8 +19,10 @@
   <dimen name="activity_horizontal_margin">16dp</dimen>
   <dimen name="activity_vertical_margin">16dp</dimen>
 
-  <dimen name="holo_gap">8dp</dimen>
-  <dimen name="holo_gap_half">4dp</dimen>
+  <dimen name="holo_padding_small">4dp</dimen>
+  <dimen name="holo_padding_medium">8dp</dimen>
+  <dimen name="holo_padding_large">16dp</dimen>
+  <dimen name="holo_padding_huge">32dp</dimen>
 
   <!-- Width of the grid columns.. -->
   <dimen name="poster_item_width">96dp</dimen>
