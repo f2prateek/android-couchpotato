@@ -31,6 +31,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.Property;
@@ -420,6 +421,11 @@ public class MovieActivity extends BaseActivity
             }
           }
       ));
+      return true;
+    }
+    if (item.getItemId() == android.R.id.home) {
+      NavUtils.navigateUpFromSameTask(this);
+      return true;
     }
     return super.onOptionsItemSelected(item);
   }

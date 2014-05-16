@@ -40,7 +40,8 @@
     <activity
         android:name=".ui.activities.MovieActivity"
         android:label=""
-        android:theme="@style/Theme.CouchPotato.TransparentActionBar.MovieActivity"/>
+        android:theme="@style/Theme.CouchPotato.TransparentActionBar.MovieActivity"
+        android:parentActivityName=".ui.activities.MainActivity"/>
 
     <activity
         android:name=".ui.activities.CouchPotatoServerSettingsActivity"
