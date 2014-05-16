@@ -97,13 +97,12 @@
 
     </com.f2prateek.couchpotato.ui.widget.FloatLabelLayout>
 
-    <TextView
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/login"
         android:text="@string/login"
-        android:fontFamily="sans-serif-condensed"
-        style="?android:buttonBarButtonStyle"/>
+        android:fontFamily="sans-serif-condensed"/>
 
     <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
         android:id="@+id/progress"
