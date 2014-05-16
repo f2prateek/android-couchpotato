@@ -33,13 +33,13 @@ import javax.inject.Inject;
  * A base fragment for displaying a grid of movies.
  */
 public abstract class MoviesGridFragment extends BaseFragment {
-  @InjectView(R.id.root) BetterViewAnimator root;
+  @InjectView(R.id.root) protected BetterViewAnimator root;
   @InjectView(R.id.extra) FrameLayout extra;
-  @InjectView(R.id.grid) AbsListView grid;
+  @InjectView(R.id.grid) protected AbsListView grid;
 
   @Inject Picasso picasso;
 
-  MovieGridAdapter adapter;
+  protected MovieGridAdapter adapter;
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {

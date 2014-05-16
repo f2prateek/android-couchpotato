@@ -29,12 +29,12 @@ import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoEndpoint;
 import com.f2prateek.couchpotato.data.prefs.BooleanPreference;
 import com.f2prateek.couchpotato.data.prefs.FirstRun;
 import com.f2prateek.couchpotato.ui.colorizer.FragmentTabAdapter;
-import com.f2prateek.couchpotato.ui.fragments.DiscoverMoviesFragment;
-import com.f2prateek.couchpotato.ui.fragments.LibraryMoviesFragment;
-import com.f2prateek.couchpotato.ui.fragments.NowPlayingMoviesFragment;
-import com.f2prateek.couchpotato.ui.fragments.PopularMoviesFragment;
-import com.f2prateek.couchpotato.ui.fragments.TopRatedMoviesFragment;
-import com.f2prateek.couchpotato.ui.fragments.UpcomingMoviesFragment;
+import com.f2prateek.couchpotato.ui.fragments.tmdb.DiscoverMoviesFragment;
+import com.f2prateek.couchpotato.ui.fragments.couchpotato.LibraryMoviesFragment;
+import com.f2prateek.couchpotato.ui.fragments.tmdb.NowPlayingMoviesFragment;
+import com.f2prateek.couchpotato.ui.fragments.tmdb.PopularMoviesFragment;
+import com.f2prateek.couchpotato.ui.fragments.tmdb.TopRatedMoviesFragment;
+import com.f2prateek.couchpotato.ui.fragments.tmdb.UpcomingMoviesFragment;
 import com.squareup.otto.Subscribe;
 import javax.inject.Inject;
 

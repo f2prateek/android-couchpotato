@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato.ui.fragments;
+package com.f2prateek.couchpotato.ui.fragments.couchpotato;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +28,7 @@ import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoDatabase;
 import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoEndpoint;
 import com.f2prateek.couchpotato.data.rx.EndlessObserver;
 import com.f2prateek.couchpotato.ui.activities.CouchPotatoServerSettingsActivity;
+import com.f2prateek.couchpotato.ui.fragments.MoviesGridFragment;
 import com.f2prateek.couchpotato.ui.misc.Truss;
 import java.util.List;
 import javax.inject.Inject;

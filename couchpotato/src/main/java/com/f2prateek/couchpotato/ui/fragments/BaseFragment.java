@@ -29,7 +29,7 @@ import javax.inject.Inject;
 
 public class BaseFragment extends Fragment {
   @Inject ScopedBus bus;
-  @Inject @ForActivity Context activityContext;
+  @Inject @ForActivity protected Context activityContext;
 
   @Override public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);

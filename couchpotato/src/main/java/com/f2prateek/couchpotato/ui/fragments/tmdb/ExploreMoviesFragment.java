@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato.ui.fragments;
+package com.f2prateek.couchpotato.ui.fragments.tmdb;
 
 import android.os.Bundle;
 import android.widget.AbsListView;
 import com.f2prateek.couchpotato.data.api.Movie;
 import com.f2prateek.couchpotato.data.api.tmdb.TMDbDatabase;
+import com.f2prateek.couchpotato.ui.fragments.MoviesGridFragment;
 import com.f2prateek.ln.Ln;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;

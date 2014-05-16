@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato.ui.fragments;
+package com.f2prateek.couchpotato.ui.fragments.tmdb;
 
+import com.f2prateek.couchpotato.ui.fragments.tmdb.ExploreMoviesFragment;
 import rx.Subscription;
 
-public class UpcomingMoviesFragment extends ExploreMoviesFragment {
+public class PopularMoviesFragment extends ExploreMoviesFragment {
   @Override protected Subscription subscribe(int page) {
-    return database.getUpcomingMovies(page, this);
+    return database.getPopularMovies(page, this);
   }
 }
