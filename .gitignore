@@ -115,3 +115,4 @@ local.properties
 *.jks
 signing.properties
 **/src/release/AndroidManifest.xml
+*com_crashlytics_export_strings.xml
