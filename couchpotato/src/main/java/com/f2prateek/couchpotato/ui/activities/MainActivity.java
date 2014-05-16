@@ -29,6 +29,7 @@ import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoEndpoint;
 import com.f2prateek.couchpotato.data.prefs.BooleanPreference;
 import com.f2prateek.couchpotato.data.prefs.FirstRun;
 import com.f2prateek.couchpotato.ui.colorizer.FragmentTabAdapter;
+import com.f2prateek.couchpotato.ui.fragments.AboutFragment;
 import com.f2prateek.couchpotato.ui.fragments.couchpotato.LibraryMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.tmdb.DiscoverMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.tmdb.NowPlayingMoviesFragment;
@@ -79,6 +80,10 @@ public class MainActivity extends BaseActivity {
       case R.id.menu_server_settings:
         Intent intent = new Intent(this, CouchPotatoServerSettingsActivity.class);
         startActivity(intent);
+        return true;
+      case R.id.menu_about:
+        final AboutFragment fragment = new AboutFragment();
+        fragment.show(getFragmentManager(), "about");
         return true;
       default:
         return super.onOptionsItemSelected(item);

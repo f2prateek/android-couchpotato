@@ -61,4 +61,10 @@
   <string name="done">Done</string>
   <string name="login_successfull">Successfully logged in</string>
 
+  <!-- About screen !-->
+  <string name="about">About</string>
+  <string name="developer">Developer</string>
+  <string name="gplus_profile" translatable="false">+Prateek Srivastava</string>
+  <string name="twitter" translatable="false">\@f2prateek</string>
+
 </resources>

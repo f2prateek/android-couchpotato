@@ -18,6 +18,8 @@ package com.f2prateek.couchpotato.data;
 
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import com.f2prateek.couchpotato.data.api.ApiModule;
 import com.f2prateek.ln.Ln;
@@ -84,5 +86,13 @@ public final class DataModule {
 
   @Provides @Singleton Gson provideGson() {
     return new GsonBuilder().create();
+  }
+
+  @Provides @Singleton PackageInfo providePackageInfo(Application application) {
+    try {
+      return application.getPackageManager().getPackageInfo(application.getPackageName(), 0);
+    } catch (PackageManager.NameNotFoundException e) {
+      throw new RuntimeException(e);
+    }
   }
 }

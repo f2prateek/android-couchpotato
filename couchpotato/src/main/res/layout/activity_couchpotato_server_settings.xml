@@ -16,94 +16,100 @@
   ~ limitations under the License.
   -->
 
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-  <ImageView
+  <LinearLayout
+      xmlns:android="http://schemas.android.com/apk/res/android"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:src="@drawable/ic_launcher"
-      android:padding="@dimen/holo_padding_medium"
-      android:scaleType="centerInside"/>
+      android:orientation="vertical">
 
-  <TextView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:gravity="center"
-      android:text="@string/application_name"
-      android:padding="@dimen/holo_padding_medium"
-      style="@android:style/TextAppearance.DeviceDefault.Large"/>
-
-  <com.f2prateek.couchpotato.ui.widget.FloatLabelLayout
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="16dp"
-      app:floatLabelTextAppearance="@android:style/TextAppearance.DeviceDefault.Small">
-
-    <EditText
-        android:id="@+id/host"
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/host_hint"
-        android:inputType="text|textUri"
-        android:imeOptions="actionNext"
-        android:nextFocusDown="@+id/username"/>
+        android:src="@drawable/ic_launcher"
+        android:padding="@dimen/holo_padding_medium"
+        android:scaleType="centerInside"/>
 
-  </com.f2prateek.couchpotato.ui.widget.FloatLabelLayout>
-
-  <com.f2prateek.couchpotato.ui.widget.FloatLabelLayout
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="16dp"
-      app:floatLabelTextAppearance="@android:style/TextAppearance.DeviceDefault.Small">
-
-    <EditText
-        android:id="@+id/username"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/username_hint"
-        android:inputType="textNoSuggestions"
-        android:imeOptions="actionNext"
-        android:nextFocusDown="@+id/password"/>
+        android:gravity="center"
+        android:text="@string/application_name"
+        android:padding="@dimen/holo_padding_medium"
+        style="@android:style/TextAppearance.DeviceDefault.Large"/>
 
-  </com.f2prateek.couchpotato.ui.widget.FloatLabelLayout>
-
-  <com.f2prateek.couchpotato.ui.widget.FloatLabelLayout
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="16dp"
-      app:floatLabelTextAppearance="@android:style/TextAppearance.DeviceDefault.Small">
-
-    <EditText
-        android:id="@+id/password"
+    <com.f2prateek.couchpotato.ui.widget.FloatLabelLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/password_hint"
-        android:inputType="textPassword"
-        android:imeActionId="@+id/action_login"
-        android:imeActionLabel="@string/login"
-        android:imeOptions="actionDone"/>
+        android:layout_marginTop="16dp"
+        app:floatLabelTextAppearance="@android:style/TextAppearance.DeviceDefault.Small">
 
-  </com.f2prateek.couchpotato.ui.widget.FloatLabelLayout>
+      <EditText
+          android:id="@+id/host"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="@string/host_hint"
+          android:inputType="text|textUri"
+          android:imeOptions="actionNext"
+          android:nextFocusDown="@+id/username"/>
 
-  <TextView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:id="@+id/login"
-      android:text="@string/login"
-      android:fontFamily="sans-serif-condensed"
-      style="?android:buttonBarButtonStyle"/>
+    </com.f2prateek.couchpotato.ui.widget.FloatLabelLayout>
 
-  <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
-      android:id="@+id/progress"
-      android:visibility="gone"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"/>
+    <com.f2prateek.couchpotato.ui.widget.FloatLabelLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:floatLabelTextAppearance="@android:style/TextAppearance.DeviceDefault.Small">
 
-</LinearLayout>
+      <EditText
+          android:id="@+id/username"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="@string/username_hint"
+          android:inputType="textNoSuggestions"
+          android:imeOptions="actionNext"
+          android:nextFocusDown="@+id/password"/>
+
+    </com.f2prateek.couchpotato.ui.widget.FloatLabelLayout>
+
+    <com.f2prateek.couchpotato.ui.widget.FloatLabelLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:floatLabelTextAppearance="@android:style/TextAppearance.DeviceDefault.Small">
+
+      <EditText
+          android:id="@+id/password"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="@string/password_hint"
+          android:inputType="textPassword"
+          android:imeActionId="@+id/action_login"
+          android:imeActionLabel="@string/login"
+          android:imeOptions="actionDone"/>
+
+    </com.f2prateek.couchpotato.ui.widget.FloatLabelLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/login"
+        android:text="@string/login"
+        android:fontFamily="sans-serif-condensed"
+        style="?android:buttonBarButtonStyle"/>
+
+    <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
+        android:id="@+id/progress"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+  </LinearLayout>
+</ScrollView>
