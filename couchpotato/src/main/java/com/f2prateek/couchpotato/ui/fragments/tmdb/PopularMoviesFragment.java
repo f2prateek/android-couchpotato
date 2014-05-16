@@ -16,7 +16,6 @@
 
 package com.f2prateek.couchpotato.ui.fragments.tmdb;
 
-import com.f2prateek.couchpotato.ui.fragments.tmdb.ExploreMoviesFragment;
 import rx.Subscription;
 
 public class PopularMoviesFragment extends ExploreMoviesFragment {

@@ -23,10 +23,10 @@ import com.f2prateek.couchpotato.ui.activities.CouchPotatoServerSettingsActivity
 import com.f2prateek.couchpotato.ui.activities.MainActivity;
 import com.f2prateek.couchpotato.ui.activities.MovieActivity;
 import com.f2prateek.couchpotato.ui.fragments.BaseFragment;
+import com.f2prateek.couchpotato.ui.fragments.MoviesGridFragment;
+import com.f2prateek.couchpotato.ui.fragments.couchpotato.LibraryMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.tmdb.DiscoverMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.tmdb.ExploreMoviesFragment;
-import com.f2prateek.couchpotato.ui.fragments.couchpotato.LibraryMoviesFragment;
-import com.f2prateek.couchpotato.ui.fragments.MoviesGridFragment;
 import com.f2prateek.couchpotato.ui.fragments.tmdb.NowPlayingMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.tmdb.PopularMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.tmdb.TopRatedMoviesFragment;
