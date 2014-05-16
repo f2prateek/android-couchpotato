@@ -415,7 +415,7 @@ public class MovieActivity extends BaseActivity
             @Override public void onNext(Boolean aBoolean) {
               if (aBoolean) {
                 Crouton.makeText(MovieActivity.this,
-                    getString(R.string.movie_added, minifiedMovie.title()), Style.ALERT).show();
+                    getString(R.string.movie_added, minifiedMovie.title()), Style.CONFIRM).show();
               }
             }
           }
