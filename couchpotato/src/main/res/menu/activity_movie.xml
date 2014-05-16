@@ -20,7 +20,7 @@
 
   <item android:id="@+id/menu_add"
       android:showAsAction="ifRoom"
-      android:icon="@drawable/ic_action_add"
+      android:icon="@drawable/ab_add"
       android:enabled="false"
       android:title="@string/add">
     <menu>

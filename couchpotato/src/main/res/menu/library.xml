@@ -19,7 +19,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
   <item
       android:id="@+id/menu_action_library_filter"
-      android:icon="@drawable/ic_action_filter"
+      android:icon="@drawable/ab_filter"
       android:showAsAction="always"
       android:title="@string/filter">
     <menu>
