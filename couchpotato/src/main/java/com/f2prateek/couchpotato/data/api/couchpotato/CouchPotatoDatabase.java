@@ -42,13 +42,17 @@ public class CouchPotatoDatabase {
     this.couchPotatoService = couchPotatoService;
   }
 
+  /**
+   * Wrap the given observable to be subscribe on the I/O thread, and observe on the main thread.
+   */
+  private static <T> Observable<T> network(Observable<T> observable) {
+    return observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+  }
+
   public Subscription getApiKey(final String username, final String password,
       final Observer<ApiKeyResponse> observer) {
-    return couchPotatoService.getApiKey(md5(password), md5(username))
-        .timeout(10, TimeUnit.SECONDS)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(observer);
+    return network(couchPotatoService.getApiKey(md5(password), md5(username))
+        .timeout(10, TimeUnit.SECONDS)).subscribe(observer);
   }
 
   public enum LibraryMovieStatus {
@@ -69,7 +73,7 @@ public class CouchPotatoDatabase {
   public Subscription getMovies(final List<LibraryMovieStatus> statuses,
       final Observer<List<Movie>> observer) {
     String status = Strings.join(',', statuses);
-    return couchPotatoService.getMovies(status)
+    return network(couchPotatoService.getMovies(status)
         .timeout(30, TimeUnit.SECONDS)
         .flatMap(new Func1<MoviesResponse, Observable<CouchPotatoMovie>>() {
           @Override public Observable<CouchPotatoMovie> call(MoviesResponse moviesResponse) {
@@ -81,33 +85,28 @@ public class CouchPotatoDatabase {
             return Movie.create(couchPotatoMovie);
           }
         })
-        .toList()
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+        .toList()) //
         .subscribe(observer);
   }
 
   public Subscription getProfiles(final Observer<List<Profile>> observer) {
-    return couchPotatoService.getProfiles() //
+    return network(couchPotatoService.getProfiles() //
         .map(new Func1<ProfilesResponse, List<Profile>>() { //
           @Override public List<Profile> call(ProfilesResponse response) {
             return response.getProfiles();
           }
         }) //
-        .cache() //
-        .subscribeOn(Schedulers.io()) //
-        .observeOn(AndroidSchedulers.mainThread()) //
+        .cache())//
         .subscribe(observer);
   }
 
   public Subscription addMovie(int profileId, String imdbId, final Observer<Boolean> observer) {
-    return couchPotatoService.addMovie(profileId, imdbId)
-        .map(new Func1<AddMovieResponse, Boolean>() {
+    return network(
+        couchPotatoService.addMovie(profileId, imdbId).map(new Func1<AddMovieResponse, Boolean>() {
           @Override public Boolean call(AddMovieResponse addMovieResponse) {
             return addMovieResponse.success;
           }
-        }).subscribeOn(Schedulers.io()) //
-        .observeOn(AndroidSchedulers.mainThread()) //
+        })) //
         .subscribe(observer);
   }
 }
