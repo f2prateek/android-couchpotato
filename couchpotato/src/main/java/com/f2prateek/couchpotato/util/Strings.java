@@ -20,7 +20,7 @@ import java.util.List;
 
 public final class Strings {
   private Strings() {
-    // No instances.
+    throw new AssertionError("No instances");
   }
 
   public static boolean isBlank(CharSequence string) {

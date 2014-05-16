@@ -24,6 +24,6 @@ final class Modules {
   }
 
   private Modules() {
-    // No instances.
+    throw new AssertionError("No instances");
   }
 }

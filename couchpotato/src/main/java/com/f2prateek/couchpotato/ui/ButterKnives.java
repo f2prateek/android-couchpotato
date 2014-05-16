@@ -22,7 +22,7 @@ import java.util.List;
 
 public class ButterKnives {
   private ButterKnives() {
-    // no instances
+    throw new AssertionError("No instances");
   }
 
   private static final ButterKnife.Action<View> HIDE = new ButterKnife.Action<View>() {

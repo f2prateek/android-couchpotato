@@ -22,7 +22,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class Util {
   private Util() {
-    // no instances
+    throw new AssertionError("No instances");
   }
 
   public static String md5(String s) {

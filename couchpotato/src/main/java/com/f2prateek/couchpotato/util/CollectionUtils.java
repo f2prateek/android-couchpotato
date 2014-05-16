@@ -20,7 +20,7 @@ import java.util.Collection;
 
 public class CollectionUtils {
   private CollectionUtils() {
-    // no instances
+    throw new AssertionError("No instances");
   }
 
   public static boolean isNullOrEmpty(Collection collection) {
