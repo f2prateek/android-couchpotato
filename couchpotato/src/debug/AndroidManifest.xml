@@ -22,5 +22,9 @@
   <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
   <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
-  <application/>
+  <application>
+    <meta-data android:name="com.crashlytics.ApiKey"
+        android:value="0000000000000000000000000000000000000000"/>
+  </application>
+  
 </manifest>

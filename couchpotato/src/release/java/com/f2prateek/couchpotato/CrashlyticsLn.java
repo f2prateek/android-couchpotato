@@ -17,22 +17,21 @@
 package com.f2prateek.couchpotato;
 
 import android.app.Application;
-import com.f2prateek.couchpotato.data.DebugDataModule;
-import com.f2prateek.couchpotato.ui.DebugUiModule;
+import android.util.Log;
+import com.crashlytics.android.Crashlytics;
 import com.f2prateek.ln.DebugLn;
-import com.f2prateek.ln.LnInterface;
-import dagger.Module;
-import dagger.Provides;
-import javax.inject.Singleton;
 
-@Module(
-    addsTo = CouchPotatoModule.class,
-    includes = {
-        DebugUiModule.class, DebugDataModule.class
-    },
-    overrides = true)
-public final class DebugCouchPotatoModule {
-  @Provides @Singleton LnInterface provideLnInterface(Application application) {
-    return DebugLn.from(application);
+public class CrashlyticsLn extends DebugLn {
+  private CrashlyticsLn(String packageName) {
+    super(packageName, Log.VERBOSE);
+  }
+
+  public static CrashlyticsLn from(Application application) {
+    Crashlytics.start(application);
+    return new CrashlyticsLn(application.getPackageName());
+  }
+
+  @Override protected void println(int priority, String msg) {
+    Crashlytics.log(msg);
   }
 }

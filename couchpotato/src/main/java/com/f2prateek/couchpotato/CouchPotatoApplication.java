@@ -19,15 +19,15 @@ package com.f2prateek.couchpotato;
 import android.app.Application;
 import android.content.Context;
 import com.f2prateek.couchpotato.ui.ActivityHierarchyServer;
-import com.f2prateek.ln.DebugLn;
 import com.f2prateek.ln.Ln;
+import com.f2prateek.ln.LnInterface;
 import dagger.ObjectGraph;
 import hugo.weaving.DebugLog;
 import javax.inject.Inject;
 
 public class CouchPotatoApplication extends Application {
-
   @Inject ActivityHierarchyServer activityHierarchyServer;
+  @Inject LnInterface lnInterface;
 
   private ObjectGraph applicationGraph;
 
@@ -35,12 +35,9 @@ public class CouchPotatoApplication extends Application {
   public void onCreate() {
     super.onCreate();
 
-    if (BuildConfig.DEBUG) {
-      Ln.set(DebugLn.from(this));
-    }
-
     buildApplicationGraphAndInject();
     registerActivityLifecycleCallbacks(activityHierarchyServer);
+    Ln.set(lnInterface);
   }
 
   @DebugLog

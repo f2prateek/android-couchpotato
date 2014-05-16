@@ -17,34 +17,14 @@
 package com.f2prateek.couchpotato;
 
 import android.app.Application;
-import com.f2prateek.couchpotato.data.DataModule;
-import com.f2prateek.couchpotato.ui.UiModule;
-import com.f2prateek.ln.EmptyLn;
 import com.f2prateek.ln.LnInterface;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
 
-@Module(
-    includes = {
-        UiModule.class, DataModule.class
-    },
-    injects = {
-        CouchPotatoApplication.class
-    } //
-)
-public final class CouchPotatoModule {
-  private final CouchPotatoApplication app;
-
-  public CouchPotatoModule(CouchPotatoApplication app) {
-    this.app = app;
-  }
-
-  @Provides @Singleton Application provideApplication() {
-    return app;
-  }
-
-  @Provides @Singleton LnInterface provideLnInterface() {
-    return new EmptyLn();
+@Module(addsTo = CouchPotatoModule.class, overrides = true)
+public final class ReleaseCouchPotatoModule {
+  @Provides @Singleton LnInterface provideLnInterface(Application application) {
+    return CrashlyticsLn.from(application);
   }
 }

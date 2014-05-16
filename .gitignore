@@ -112,7 +112,6 @@ local.properties
 .buildpath
 
 #Sensitive data
-app/src/release
-app/keystore
-*com_crashlytics_export_strings.xml
+*.jks
 signing.properties
+**/src/release/AndroidManifest.xml
