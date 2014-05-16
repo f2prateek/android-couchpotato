@@ -19,7 +19,7 @@ package com.f2prateek.couchpotato;
 final class Modules {
   static Object[] list(CouchPotatoApplication app) {
     return new Object[] {
-        new CouchPotatoModule(app)
+        new CouchPotatoModule(app), new ReleaseCouchPotatoModule()
     };
   }
 
