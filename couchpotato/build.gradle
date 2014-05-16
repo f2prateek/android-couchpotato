@@ -4,9 +4,9 @@ buildscript {
     maven { url 'http://download.crashlytics.com/maven' }
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:0.9.+'
-    classpath 'com.jakewharton.hugo:hugo-plugin:1.0.+'
-    classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.9.+'
+    classpath 'com.android.tools.build:gradle:0.10.+'
+    classpath 'com.jakewharton.hugo:hugo-plugin:1.1.+'
+    classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.10.+'
     classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:+'
   }
 }
@@ -148,9 +148,12 @@ android.applicationVariants.all { variant ->
  * storeFile=storeFile
  * storePassword=storePassword
  * keyAlias=keyAlias
- * keyPassword=keyPassword*/
-def propFile = new File('signing.properties')
+ * keyPassword=keyPassword
+ */
+def propFileName = 'signing.properties'
+def propFile = new File(propFileName)
 if (propFile.canRead()) {
+  println propFileName + ' found'
   def Properties signingProps = new Properties()
   signingProps.load(new FileInputStream(propFile))
 
@@ -164,10 +167,10 @@ if (propFile.canRead()) {
     android.signingConfigs.release.keyAlias = signingProps['keyAlias']
     android.signingConfigs.release.keyPassword = signingProps['keyPassword']
   } else {
-    println 'signing.properties found but some entries are missing'
+    println propFileName + ' found but some entries are missing'
     android.buildTypes.release.signingConfig = null
   }
 } else {
-  println 'signing.properties not found'
+  println propFileName + ' not found'
   android.buildTypes.release.signingConfig = null
 }
