@@ -17,8 +17,10 @@
 package com.f2prateek.couchpotato.data;
 
 import android.content.SharedPreferences;
+import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoHost;
 import com.f2prateek.couchpotato.data.prefs.BooleanPreference;
 import com.f2prateek.couchpotato.data.prefs.IntPreference;
+import com.f2prateek.couchpotato.data.prefs.StringPreference;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
@@ -37,6 +39,12 @@ public final class DebugDataModule {
   private static final boolean DEFAULT_SCALPEL_WIREFRAME_ENABLED = false; // Draw views by default.
   private static final boolean DEFAULT_SEEN_DEBUG_DRAWER = false; // Show debug drawer first time.
   private static final int DEFAULT_NETWORK_LOGGING_LEVEL = RestAdapter.LogLevel.NONE.ordinal();
+
+  @Provides @Singleton @CouchPotatoHost StringPreference provideHostPreference(
+      SharedPreferences preferences) {
+    // Keep in sync with UserPreferencesModule; this for my local server for development
+    return new StringPreference(preferences, "couch_potato_host", "http://10.14.176.118:5050");
+  }
 
   @Provides @Singleton @AnimationSpeed IntPreference provideAnimationSpeed(
       SharedPreferences preferences) {
