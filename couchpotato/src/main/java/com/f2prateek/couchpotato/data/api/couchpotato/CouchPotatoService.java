@@ -62,7 +62,7 @@ public interface CouchPotatoService {
   @GET("/movie.add") Observable<AddMovieResponse> addMovie(@Query("profile_id") int profileId,
       @Query("identifier") String imdbId);
 
-  @GET("/movie.list") Observable<MoviesResponse> getMovies();
+  @GET("/movie.list") Observable<MoviesResponse> getMovies(@Query("status") String status);
 
   @GET("/movie.get") Observable<MovieResponse> getMovie(@Query("id") long id);
 

@@ -22,6 +22,9 @@
   <!-- Library Fragment -->
   <string name="error_inaccessible_server">Could not reach CouchPotato server.</string>
   <string name="error_inaccessible_server_prompt">Please check your server settings.</string>
+  <string name="filter">Filter</string>
+  <string name="wanted">Wanted</string>
+  <string name="snatched">Snatched</string>
 
   <!-- Main Activity -->
   <string name="library">Library</string>

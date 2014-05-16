@@ -23,6 +23,7 @@ import com.f2prateek.couchpotato.data.api.couchpotato.model.movie.CouchPotatoMov
 import com.f2prateek.couchpotato.data.api.couchpotato.model.movie.MoviesResponse;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.profile.Profile;
 import com.f2prateek.couchpotato.data.api.couchpotato.model.profile.ProfilesResponse;
+import com.f2prateek.couchpotato.util.Strings;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import rx.Observable;
@@ -50,8 +51,25 @@ public class CouchPotatoDatabase {
         .subscribe(observer);
   }
 
-  public Subscription getMovies(final Observer<List<Movie>> observer) {
-    return couchPotatoService.getMovies()
+  public enum LibraryMovieStatus {
+    WANTED("active"),
+    SNATCHED("done");
+
+    String string;
+
+    LibraryMovieStatus(String string) {
+      this.string = string;
+    }
+
+    @Override public String toString() {
+      return string;
+    }
+  }
+
+  public Subscription getMovies(final List<LibraryMovieStatus> statuses,
+      final Observer<List<Movie>> observer) {
+    String status = Strings.join(',', statuses);
+    return couchPotatoService.getMovies(status)
         .timeout(30, TimeUnit.SECONDS)
         .flatMap(new Func1<MoviesResponse, Observable<CouchPotatoMovie>>() {
           @Override public Observable<CouchPotatoMovie> call(MoviesResponse moviesResponse) {

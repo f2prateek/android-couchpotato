@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import butterknife.InjectView;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.ui.views.MovieGridAdapter;
@@ -36,6 +37,7 @@ public abstract class MoviesGridFragment extends BaseFragment {
   @InjectView(R.id.root) protected BetterViewAnimator root;
   @InjectView(R.id.extra) FrameLayout extra;
   @InjectView(R.id.grid) protected AbsListView grid;
+  @InjectView(R.id.progress) protected ProgressBar progressBar;
 
   @Inject Picasso picasso;
 

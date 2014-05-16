@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MovieGridAdapter extends BindableAdapter<Movie> {
-  private final List<Movie> movies;
+  private List<Movie> movies;
   private final Picasso picasso;
   private final ScopedBus bus;
 
@@ -38,6 +38,11 @@ public class MovieGridAdapter extends BindableAdapter<Movie> {
     this.picasso = picasso;
     this.bus = bus;
     movies = new ArrayList<>();
+  }
+
+  public void set(List<Movie> movies) {
+    this.movies = movies;
+    notifyDataSetChanged();
   }
 
   public void add(List<Movie> collection) {

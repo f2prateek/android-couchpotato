@@ -16,6 +16,8 @@
 
 package com.f2prateek.couchpotato.util;
 
+import java.util.List;
+
 public final class Strings {
   private Strings() {
     // No instances.
@@ -31,5 +33,19 @@ public final class Strings {
 
   public static String truncateAt(String string, int length) {
     return string.length() > length ? string.substring(0, length) : string;
+  }
+
+  public static String join(char token, List list) {
+    if (list.size() == 1) {
+      return String.valueOf(list.get(0));
+    }
+    StringBuilder stringBuilder = new StringBuilder();
+    for (int i = 0, size = list.size(); i < size; i++) {
+      stringBuilder.append(String.valueOf(list.get(i)));
+      if (i != size - 1) {
+        stringBuilder.append(token);
+      }
+    }
+    return stringBuilder.toString();
   }
 }

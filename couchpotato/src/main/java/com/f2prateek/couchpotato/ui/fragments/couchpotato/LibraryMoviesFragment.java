@@ -19,6 +19,9 @@ package com.f2prateek.couchpotato.ui.fragments.couchpotato;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.style.ForegroundColorSpan;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import butterknife.ButterKnife;
@@ -30,6 +33,7 @@ import com.f2prateek.couchpotato.data.rx.EndlessObserver;
 import com.f2prateek.couchpotato.ui.activities.CouchPotatoServerSettingsActivity;
 import com.f2prateek.couchpotato.ui.fragments.MoviesGridFragment;
 import com.f2prateek.couchpotato.ui.misc.Truss;
+import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import rx.Subscription;
@@ -40,21 +44,68 @@ public class LibraryMoviesFragment extends MoviesGridFragment {
 
   private Subscription request;
 
+  final List<CouchPotatoDatabase.LibraryMovieStatus> displayedMoviesStatus = new ArrayList<>(2);
+
+  @Override public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setHasOptionsMenu(true);
+  }
+
+  @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    super.onCreateOptionsMenu(menu, inflater);
+    inflater.inflate(R.menu.library, menu);
+  }
+
+  @Override public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.menu_wanted:
+        if (item.isChecked()) {
+          displayedMoviesStatus.remove(CouchPotatoDatabase.LibraryMovieStatus.WANTED);
+          item.setChecked(false);
+        } else {
+          displayedMoviesStatus.add(CouchPotatoDatabase.LibraryMovieStatus.WANTED);
+          item.setChecked(true);
+        }
+        fetchMovies();
+        return true;
+      case R.id.menu_snatched:
+        if (item.isChecked()) {
+          displayedMoviesStatus.remove(CouchPotatoDatabase.LibraryMovieStatus.SNATCHED);
+          item.setChecked(false);
+        } else {
+          displayedMoviesStatus.add(CouchPotatoDatabase.LibraryMovieStatus.SNATCHED);
+          item.setChecked(true);
+        }
+        fetchMovies();
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
+    }
+  }
+
   @Override public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
+
+    // todo: arrays.asList mutable equivalent?
+    displayedMoviesStatus.add(CouchPotatoDatabase.LibraryMovieStatus.WANTED);
+    displayedMoviesStatus.add(CouchPotatoDatabase.LibraryMovieStatus.SNATCHED);
+    fetchMovies();
+  }
+
+  void fetchMovies() {
+    root.setDisplayedChildView(progressBar);
 
     if (!endpoint.isSet()) {
       showInaccessibleServerMessage();
     } else {
-      request = database.getMovies(new EndlessObserver<List<Movie>>() {
+      request = database.getMovies(displayedMoviesStatus, new EndlessObserver<List<Movie>>() {
         @Override public void onNext(List<Movie> movies) {
-          adapter.add(movies);
+          adapter.set(movies);
           root.setDisplayedChildView(grid);
         }
 
         @Override public void onError(Throwable throwable) {
           super.onError(throwable);
-
           showInaccessibleServerMessage();
         }
       });
@@ -70,11 +121,13 @@ public class LibraryMoviesFragment extends MoviesGridFragment {
     final Intent intent = new Intent(activityContext, CouchPotatoServerSettingsActivity.class);
     View view = setExtraView(R.layout.partial_error_message);
     TextView textView = ButterKnife.findById(view, R.id.error_message);
-    textView.setText(new Truss().append(getString(R.string.error_inaccessible_server)).append(
-        " ") // Space between sentences
-        .pushSpan(new ForegroundColorSpan(getResources().getColor(R.color.app_color)))
-        .append(getString(R.string.error_inaccessible_server_prompt))
-        .build());
+    textView.setText(new Truss() //
+            .append(getString(R.string.error_inaccessible_server)) //
+            .append(" ") // Space between sentences
+            .pushSpan(new ForegroundColorSpan(getResources().getColor(R.color.app_color)))
+            .append(getString(R.string.error_inaccessible_server_prompt))
+            .build()
+    );
     textView.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
         startActivity(intent);
