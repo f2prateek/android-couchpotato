@@ -38,6 +38,7 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 import hugo.weaving.DebugLog;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import rx.Subscription;
 
 public class CouchPotatoServerSettingsActivity extends BaseActivity {
   private static final String DEFAULT_HOST_SCHEME = "http://";
@@ -61,6 +62,8 @@ public class CouchPotatoServerSettingsActivity extends BaseActivity {
 
   private String oldHost;
   private String oldApiKey;
+
+  Subscription subscription;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -143,7 +146,7 @@ public class CouchPotatoServerSettingsActivity extends BaseActivity {
       endpoint.setHost(getText(host));
       endpoint.setApiKey(null);
       progressBar.setVisibility(View.VISIBLE);
-      couchPotatoDatabase.getApiKey(getText(username), getText(password),
+      subscription = couchPotatoDatabase.getApiKey(getText(username), getText(password),
           new EndlessObserver<ApiKeyResponse>() {
             @Override public void onNext(ApiKeyResponse apiKeyResponse) {
               if (apiKeyResponse.isSuccess()) {
@@ -207,6 +210,11 @@ public class CouchPotatoServerSettingsActivity extends BaseActivity {
       endpoint.setApiKey(oldApiKey);
     }
     progressBar.setVisibility(View.GONE);
+  }
+
+  @Override protected void onPause() {
+    super.onPause();
+    if (subscription != null) subscription.unsubscribe();
   }
 
   private static String getText(EditText editText) {
