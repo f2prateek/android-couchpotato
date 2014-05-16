@@ -151,7 +151,7 @@ public class CouchPotatoServerSettingsActivity extends BaseActivity {
             @Override public void onNext(ApiKeyResponse apiKeyResponse) {
               if (apiKeyResponse.isSuccess()) {
                 endpoint.setApiKey(apiKeyResponse.getApiKey());
-                Crouton.makeText(CouchPotatoServerSettingsActivity.this, R.string.login_successfull,
+                Crouton.makeText(CouchPotatoServerSettingsActivity.this, R.string.login_successful,
                     Style.CONFIRM).show();
 
                 progressBar.postDelayed(new Runnable() {

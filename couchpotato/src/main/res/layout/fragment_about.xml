@@ -52,7 +52,7 @@
     <TextView android:id="@+id/tv_gplus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/gplus_profile"
+        android:text="@string/google_plus"
         style="@style/AboutText.Clickable"/>
 
     <TextView android:id="@+id/tv_twitter"

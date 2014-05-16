@@ -21,10 +21,10 @@
       android:id="@+id/menu_server_settings"
       android:showAsAction="never"
       android:orderInCategory="99"
-      android:title="@string/server_settings"/>
+      android:title="@string/action_couchpotato_server"/>
   <item
       android:id="@+id/menu_about"
       android:showAsAction="never"
       android:orderInCategory="100"
-      android:title="@string/about"/>
+      android:title="@string/action_about"/>
 </menu>

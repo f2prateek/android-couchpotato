@@ -56,15 +56,15 @@
     clicking this to view in a browser.
   </string>
   <string name="cancel">Cancel</string>
-  <string name="server_settings">Server Settings</string>
   <string name="login">Login</string>
   <string name="done">Done</string>
-  <string name="login_successfull">Successfully logged in</string>
+  <string name="login_successful">Successfully logged in</string>
+  <string name="action_couchpotato_server">CouchPotato Settings</string>
 
   <!-- About screen !-->
-  <string name="about">About</string>
+  <string name="action_about">About</string>
   <string name="developer">Developer</string>
-  <string name="gplus_profile" translatable="false">+Prateek Srivastava</string>
+  <string name="google_plus" translatable="false">+Prateek Srivastava</string>
   <string name="twitter" translatable="false">\@f2prateek</string>
 
 </resources>

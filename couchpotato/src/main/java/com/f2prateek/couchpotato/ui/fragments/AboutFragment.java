@@ -50,7 +50,7 @@ public class AboutFragment extends DialogFragment {
     View v = inflater.inflate(R.layout.fragment_about, container, false);
     ButterKnife.inject(this, v);
     versionNumberText.setText(String.valueOf(packageInfo.versionName));
-    getDialog().setTitle(R.string.about);
+    getDialog().setTitle(R.string.action_about);
     return v;
   }
 
