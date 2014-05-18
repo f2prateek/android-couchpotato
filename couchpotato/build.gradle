@@ -153,7 +153,6 @@ android.applicationVariants.all { variant ->
 def propFileName = 'signing.properties'
 def propFile = new File(propFileName)
 if (propFile.canRead()) {
-  println propFileName + ' found'
   def Properties signingProps = new Properties()
   signingProps.load(new FileInputStream(propFile))
 
