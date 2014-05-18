@@ -115,6 +115,16 @@ checkstyle {
   showViolations true
 }
 
+task release << {
+  def gitStatus = 'git status --porcelain'.execute([], project.rootDir).text.trim()
+  if (gitStatus?.trim()) {
+    println gitStatus
+    throw new GradleException('You have unstaged files. Commit them first.')
+  }
+  "git tag v${android.defaultConfig.versionName}".execute([], project.rootDir)
+}
+release.dependsOn 'build'
+
 android.applicationVariants.all { variant ->
   def name = variant.buildType.name
 
