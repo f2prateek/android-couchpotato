@@ -143,33 +143,37 @@ android.applicationVariants.all { variant ->
   }
 }
 
-/**
- * Sample signing.properties file
- * storeFile=storeFile
- * storePassword=storePassword
- * keyAlias=keyAlias
- * keyPassword=keyPassword
- */
-def propFileName = 'signing.properties'
-def propFile = new File(propFileName)
-if (propFile.canRead()) {
-  def Properties signingProps = new Properties()
-  signingProps.load(new FileInputStream(propFile))
+gradle.taskGraph.whenReady { taskGraph ->
+  if (taskGraph.hasTask(':couchpotato:assembleRelease')) {
+    // Only execute when we are trying to assemble a release build
+    /**
+     * Sample signing.properties file
+     * storeFile=storeFile
+     * storePassword=storePassword
+     * keyAlias=keyAlias
+     * keyPassword=keyPassword*/
+    def propFileName = 'signing.properties'
+    def propFile = new File(propFileName)
+    if (propFile.canRead()) {
+      def Properties signingProps = new Properties()
+      signingProps.load(new FileInputStream(propFile))
 
-  if (signingProps != null &&
-      signingProps.containsKey('storeFile') &&
-      signingProps.containsKey('storePassword') &&
-      signingProps.containsKey('keyAlias') &&
-      signingProps.containsKey('keyPassword')) {
-    android.signingConfigs.release.storeFile = file(signingProps['storeFile'])
-    android.signingConfigs.release.storePassword = signingProps['storePassword']
-    android.signingConfigs.release.keyAlias = signingProps['keyAlias']
-    android.signingConfigs.release.keyPassword = signingProps['keyPassword']
-  } else {
-    println propFileName + ' found but some entries are missing'
-    android.buildTypes.release.signingConfig = null
+      if (signingProps != null &&
+          signingProps.containsKey('storeFile') &&
+          signingProps.containsKey('storePassword') &&
+          signingProps.containsKey('keyAlias') &&
+          signingProps.containsKey('keyPassword')) {
+        android.signingConfigs.release.storeFile = file(signingProps['storeFile'])
+        android.signingConfigs.release.storePassword = signingProps['storePassword']
+        android.signingConfigs.release.keyAlias = signingProps['keyAlias']
+        android.signingConfigs.release.keyPassword = signingProps['keyPassword']
+      } else {
+        println propFileName + ' found but some entries are missing'
+        android.buildTypes.release.signingConfig = null
+      }
+    } else {
+      println propFileName + ' not found'
+      android.buildTypes.release.signingConfig = null
+    }
   }
-} else {
-  println propFileName + ' not found'
-  android.buildTypes.release.signingConfig = null
 }
