@@ -166,7 +166,7 @@ public class DebugAppContainer implements AppContainer {
     activity.setContentView(R.layout.debug_activity_frame);
 
     // Manually find the debug drawer and inflate the drawer layout inside of it.
-    ViewGroup drawer = findById(activity, R.id.debug_drawer);
+    ViewGroup drawer = ButterKnife.findById(activity, R.id.debug_drawer);
     LayoutInflater.from(drawerContext).inflate(R.layout.debug_drawer_content, drawer);
 
     // Inject after inflating the drawer layout so its views are available to inject.
@@ -396,7 +396,9 @@ public class DebugAppContainer implements AppContainer {
   }
 
   private static String getSizeString(long bytes) {
-    String[] units = new String[] { "B", "KB", "MB", "GB" };
+    String[] units = new String[] {
+        "B", "KB", "MB", "GB"
+    };
     int unit = 0;
     while (bytes >= 1024) {
       bytes /= 1024;
