@@ -38,7 +38,6 @@ import java.util.List;
 import javax.inject.Inject;
 import rx.Subscription;
 import rx.android.observables.AndroidObservable;
-import rx.schedulers.Schedulers;
 
 public class LibraryMoviesFragment extends MoviesGridFragment {
   @Inject CouchPotatoDatabase database;

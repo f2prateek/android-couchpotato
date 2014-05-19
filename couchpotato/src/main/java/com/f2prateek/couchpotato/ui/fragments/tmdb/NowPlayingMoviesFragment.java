@@ -16,10 +16,12 @@
 
 package com.f2prateek.couchpotato.ui.fragments.tmdb;
 
-import rx.Subscription;
+import com.f2prateek.couchpotato.data.api.Movie;
+import java.util.List;
+import rx.Observable;
 
 public class NowPlayingMoviesFragment extends ExploreMoviesFragment {
-  @Override protected Subscription subscribe(int page) {
-    return database.getNowPlayingMovies(page, this);
+  @Override protected Observable<List<Movie>> subscribe(int page) {
+    return database.getNowPlayingMovies(page);
   }
 }

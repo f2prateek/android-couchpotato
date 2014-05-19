@@ -26,8 +26,10 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.inject.Inject;
+import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
+import rx.android.observables.AndroidObservable;
 
 /**
  * A base fragment for exploring movies from TMDB.
@@ -67,7 +69,8 @@ public abstract class ExploreMoviesFragment extends MoviesGridFragment
   private void fetch() {
     if (loading.get()) return;
     loading.set(true);
-    request = subscribe(page.getAndIncrement());
+    request =
+        AndroidObservable.bindFragment(this, subscribe(page.getAndIncrement())).subscribe(this);
   }
 
   @Override public void onPause() {
@@ -75,7 +78,7 @@ public abstract class ExploreMoviesFragment extends MoviesGridFragment
     if (request != null) request.unsubscribe();
   }
 
-  protected abstract Subscription subscribe(int page);
+  protected abstract Observable<List<Movie>> subscribe(int page);
 
   @Override public void onNext(List<Movie> movies) {
     adapter.add(movies);

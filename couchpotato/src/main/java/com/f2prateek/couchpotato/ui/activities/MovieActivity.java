@@ -273,118 +273,123 @@ public class MovieActivity extends BaseActivity
     movieBackdrop.load(picasso, minifiedMovie.backdrop());
     updateColorScheme(animate);
 
-    subscriptions.add(tmDbDatabase.getMovie(minifiedMovie.id(), new EndlessObserver<TMDbMovie>() {
-      @Override public void onNext(TMDbMovie response) {
-        movie = response;
-        if (Strings.isBlank(movie.getTagline())) {
-          movieTagline.setVisibility(View.GONE);
-        } else {
-          movieTagline.setText(movie.getTagline());
-        }
-        if (Strings.isBlank(movie.getOverview())) {
-          moviePlot.setVisibility(View.GONE);
-        } else {
-          moviePlot.setText(movie.getOverview());
-        }
-        final ObjectAnimator animator = ObjectAnimator.ofInt(movieRating, ratingProperty, 0,
-            (int) (movie.getVoteAverage() * 10));
-        animator.setDuration(ANIMATION_DURATION * 2);
-        animator.setInterpolator(smoothInterpolator);
-        animator.start();
-        setShareIntent();
-      }
-    }));
     subscriptions.add(
-        tmDbDatabase.getMovieImages(minifiedMovie.id(), new EndlessObserver<Images>() {
-          @Override public void onNext(Images images) {
-            if (!CollectionUtils.isNullOrEmpty(images.getBackdrops())) {
-              List<String> backdrops = new ArrayList<>();
-              for (Backdrop backdrop : images.getBackdrops()) {
-                backdrops.add(backdrop.getFilePath());
+        AndroidObservable.bindActivity(this, tmDbDatabase.getMovie(minifiedMovie.id()))
+            .subscribe(new EndlessObserver<TMDbMovie>() {
+              @Override public void onNext(TMDbMovie response) {
+                movie = response;
+                if (Strings.isBlank(movie.getTagline())) {
+                  movieTagline.setVisibility(View.GONE);
+                } else {
+                  movieTagline.setText(movie.getTagline());
+                }
+                if (Strings.isBlank(movie.getOverview())) {
+                  moviePlot.setVisibility(View.GONE);
+                } else {
+                  moviePlot.setText(movie.getOverview());
+                }
+                final ObjectAnimator animator = ObjectAnimator.ofInt(movieRating, ratingProperty, 0,
+                    (int) (movie.getVoteAverage() * 10));
+                animator.setDuration(ANIMATION_DURATION * 2);
+                animator.setInterpolator(smoothInterpolator);
+                animator.start();
+                setShareIntent();
               }
-              movieBackdrop.update(backdrops);
-            }
-          }
-        })
+            })
     );
     subscriptions.add(
-        tmDbDatabase.getSimilarMovies(minifiedMovie.id(), new EndlessObserver<List<Movie>>() {
-              @Override public void onNext(List<Movie> movies) {
-                if (!CollectionUtils.isNullOrEmpty(movies)) {
-                  similarMoviesContainer.setVisibility(View.VISIBLE);
-                  similarMoviesHeader.setVisibility(View.VISIBLE);
-                  FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                      getResources().getDimensionPixelOffset(R.dimen.poster_item_width),
-                      ViewGroup.LayoutParams.MATCH_PARENT);
-                  for (Movie movie : movies) {
-                    MovieGridItem child =
-                        (MovieGridItem) getLayoutInflater().inflate(R.layout.grid_movie_item,
-                            similarMoviesContainer, false);
-                    child.setLayoutParams(params);
-                    similarMoviesContainer.addView(child);
-                    child.bindTo(movie, picasso, bus);
+        AndroidObservable.bindActivity(this, tmDbDatabase.getMovieImages(minifiedMovie.id()))
+            .subscribe(new EndlessObserver<Images>() {
+              @Override public void onNext(Images images) {
+                if (!CollectionUtils.isNullOrEmpty(images.getBackdrops())) {
+                  List<String> backdrops = new ArrayList<>();
+                  for (Backdrop backdrop : images.getBackdrops()) {
+                    backdrops.add(backdrop.getFilePath());
                   }
+                  movieBackdrop.update(backdrops);
                 }
               }
-            }
-        )
+            })
     );
     subscriptions.add(
-        tmDbDatabase.getVideos(minifiedMovie.id(), new EndlessObserver<List<Video>>() {
-              @Override public void onNext(List<Video> videos) {
-                if (!CollectionUtils.isNullOrEmpty(videos)) {
-                  movieVideosContainer.setVisibility(View.VISIBLE);
-                  movieVideosHeader.setVisibility(View.VISIBLE);
-                  FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                      getResources().getDimensionPixelOffset(R.dimen.trailer_item_width),
-                      ViewGroup.LayoutParams.MATCH_PARENT);
-                  for (Video video : videos) {
-                    MovieVideoItem child =
-                        (MovieVideoItem) getLayoutInflater().inflate(R.layout.movie_video_item,
-                            movieVideosContainer, false);
-                    child.setLayoutParams(params);
-                    movieVideosContainer.addView(child);
-                    child.bindTo(video, picasso);
-                  }
-                }
-              }
-            }
-        )
+        AndroidObservable.bindActivity(this, tmDbDatabase.getSimilarMovies(minifiedMovie.id()))
+            .subscribe(new EndlessObserver<List<Movie>>() {
+                         @Override public void onNext(List<Movie> movies) {
+                           if (!CollectionUtils.isNullOrEmpty(movies)) {
+                             similarMoviesContainer.setVisibility(View.VISIBLE);
+                             similarMoviesHeader.setVisibility(View.VISIBLE);
+                             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                                 getResources().getDimensionPixelOffset(R.dimen.poster_item_width),
+                                 ViewGroup.LayoutParams.MATCH_PARENT);
+                             for (Movie movie : movies) {
+                               MovieGridItem child = (MovieGridItem) getLayoutInflater().inflate(
+                                   R.layout.grid_movie_item, similarMoviesContainer, false);
+                               child.setLayoutParams(params);
+                               similarMoviesContainer.addView(child);
+                               child.bindTo(movie, picasso, bus);
+                             }
+                           }
+                         }
+                       }
+            )
     );
-    subscriptions.add(tmDbDatabase.getMovieCredits(minifiedMovie.id(),
-        new EndlessObserver<MovieCreditsResponse>() {
-          @Override public void onNext(MovieCreditsResponse credits) {
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                getResources().getDimensionPixelOffset(R.dimen.poster_item_width),
-                ViewGroup.LayoutParams.MATCH_PARENT);
-            if (!CollectionUtils.isNullOrEmpty(credits.getCasts())) {
-              movieCastContainer.setVisibility(View.VISIBLE);
-              movieCastHeader.setVisibility(View.VISIBLE);
-              for (Cast cast : credits.getCasts()) {
-                MovieCrewItem child =
-                    (MovieCrewItem) getLayoutInflater().inflate(R.layout.movie_crew_item,
-                        movieCastContainer, false);
-                child.setLayoutParams(params);
-                movieCastContainer.addView(child);
-                child.bindTo(cast, picasso);
-              }
-            }
+    subscriptions.add(
+        AndroidObservable.bindActivity(this, tmDbDatabase.getVideos(minifiedMovie.id()))
+            .subscribe(new EndlessObserver<List<Video>>() {
+                         @Override
+                         public void onNext(List<Video> videos) {
+                           if (!CollectionUtils.isNullOrEmpty(videos)) {
+                             movieVideosContainer.setVisibility(View.VISIBLE);
+                             movieVideosHeader.setVisibility(View.VISIBLE);
+                             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                                 getResources().getDimensionPixelOffset(R.dimen.trailer_item_width),
+                                 ViewGroup.LayoutParams.MATCH_PARENT);
+                             for (Video video : videos) {
+                               MovieVideoItem child = (MovieVideoItem) getLayoutInflater().inflate(
+                                   R.layout.movie_video_item, movieVideosContainer, false);
+                               child.setLayoutParams(params);
+                               movieVideosContainer.addView(child);
+                               child.bindTo(video, picasso);
+                             }
+                           }
+                         }
+                       }
+            )
+    );
+    subscriptions.add(
+        AndroidObservable.bindActivity(this, tmDbDatabase.getMovieCredits(minifiedMovie.id()))
+            .subscribe(new EndlessObserver<MovieCreditsResponse>() {
+                         @Override public void onNext(MovieCreditsResponse credits) {
+                           FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                               getResources().getDimensionPixelOffset(R.dimen.poster_item_width),
+                               ViewGroup.LayoutParams.MATCH_PARENT);
+                           if (!CollectionUtils.isNullOrEmpty(credits.getCasts())) {
+                             movieCastContainer.setVisibility(View.VISIBLE);
+                             movieCastHeader.setVisibility(View.VISIBLE);
+                             for (Cast cast : credits.getCasts()) {
+                               MovieCrewItem child = (MovieCrewItem) getLayoutInflater().inflate(
+                                   R.layout.movie_crew_item, movieCastContainer, false);
+                               child.setLayoutParams(params);
+                               movieCastContainer.addView(child);
+                               child.bindTo(cast, picasso);
+                             }
+                           }
 
-            if (!CollectionUtils.isNullOrEmpty(credits.getCrews())) {
-              movieCrewContainer.setVisibility(View.VISIBLE);
-              movieCrewHeader.setVisibility(View.VISIBLE);
-              for (Crew crew : credits.getCrews()) {
-                MovieCrewItem child =
-                    (MovieCrewItem) getLayoutInflater().inflate(R.layout.movie_crew_item,
-                        movieCrewContainer, false);
-                child.setLayoutParams(params);
-                movieCrewContainer.addView(child);
-                child.bindTo(crew, picasso);
-              }
-            }
-          }
-        }
-    ));
+                           if (!CollectionUtils.isNullOrEmpty(credits.getCrews())) {
+                             movieCrewContainer.setVisibility(View.VISIBLE);
+                             movieCrewHeader.setVisibility(View.VISIBLE);
+                             for (Crew crew : credits.getCrews()) {
+                               MovieCrewItem child = (MovieCrewItem) getLayoutInflater().inflate(
+                                   R.layout.movie_crew_item, movieCrewContainer, false);
+                               child.setLayoutParams(params);
+                               movieCrewContainer.addView(child);
+                               child.bindTo(crew, picasso);
+                             }
+                           }
+                         }
+                       }
+            )
+    );
     subscriptions.add(AndroidObservable.bindActivity(this, couchPotatoDatabase.getProfiles())
         .subscribe(new EndlessObserver<List<Profile>>() {
                      @Override public void onNext(List<Profile> profiles) {

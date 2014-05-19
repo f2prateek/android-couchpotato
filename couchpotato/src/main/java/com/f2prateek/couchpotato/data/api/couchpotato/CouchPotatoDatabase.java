@@ -34,6 +34,7 @@ import static com.f2prateek.couchpotato.data.Util.md5;
 
 public class CouchPotatoDatabase {
   private final CouchPotatoService couchPotatoService;
+  private Observable<List<Profile>> profilesObservable;
 
   public CouchPotatoDatabase(CouchPotatoService couchPotatoService) {
     this.couchPotatoService = couchPotatoService;
@@ -81,12 +82,17 @@ public class CouchPotatoDatabase {
         .subscribeOn(Schedulers.io());
   }
 
+  // Fetch the profiles and cache it future use.
   public Observable<List<Profile>> getProfiles() {
-    return couchPotatoService.getProfiles().map(new Func1<ProfilesResponse, List<Profile>>() {
-      @Override public List<Profile> call(ProfilesResponse response) {
-        return response.getProfiles();
-      }
-    }).subscribeOn(Schedulers.io()).cache();
+    if (profilesObservable == null) {
+      profilesObservable =
+          couchPotatoService.getProfiles().map(new Func1<ProfilesResponse, List<Profile>>() {
+            @Override public List<Profile> call(ProfilesResponse response) {
+              return response.getProfiles();
+            }
+          }).cache().subscribeOn(Schedulers.io());
+    }
+    return profilesObservable;
   }
 
   public Observable<Boolean> addMovie(int profileId, String imdbId) {

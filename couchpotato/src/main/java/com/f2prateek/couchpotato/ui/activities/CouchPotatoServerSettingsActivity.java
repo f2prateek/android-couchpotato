@@ -40,7 +40,6 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 import rx.Subscription;
 import rx.android.observables.AndroidObservable;
-import rx.schedulers.Schedulers;
 
 public class CouchPotatoServerSettingsActivity extends BaseActivity {
   private static final String DEFAULT_HOST_SCHEME = "http://";
