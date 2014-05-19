@@ -39,6 +39,8 @@ import hugo.weaving.DebugLog;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import rx.Subscription;
+import rx.android.observables.AndroidObservable;
+import rx.schedulers.Schedulers;
 
 public class CouchPotatoServerSettingsActivity extends BaseActivity {
   private static final String DEFAULT_HOST_SCHEME = "http://";
@@ -146,8 +148,9 @@ public class CouchPotatoServerSettingsActivity extends BaseActivity {
       endpoint.setHost(getText(host));
       endpoint.setApiKey(null);
       progressBar.setVisibility(View.VISIBLE);
-      subscription = couchPotatoDatabase.getApiKey(getText(username), getText(password),
-          new EndlessObserver<ApiKeyResponse>() {
+      subscription = AndroidObservable.bindActivity(this,
+          couchPotatoDatabase.getApiKey(getText(username), getText(password)))
+          .subscribe(new EndlessObserver<ApiKeyResponse>() {
             @Override public void onNext(ApiKeyResponse apiKeyResponse) {
               if (apiKeyResponse.isSuccess()) {
                 endpoint.setApiKey(apiKeyResponse.getApiKey());
@@ -191,8 +194,7 @@ public class CouchPotatoServerSettingsActivity extends BaseActivity {
                   .show();
               loginError();
             }
-          }
-      );
+          });
     } else {
       // Some fields were invalid
       Crouton.makeText(CouchPotatoServerSettingsActivity.this, R.string.invalid_fields, Style.ALERT)

@@ -88,6 +88,7 @@ import java.util.List;
 import javax.inject.Inject;
 import rx.Observable;
 import rx.Subscription;
+import rx.android.observables.AndroidObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -384,13 +385,16 @@ public class MovieActivity extends BaseActivity
           }
         }
     ));
-    subscriptions.add(couchPotatoDatabase.getProfiles(new EndlessObserver<List<Profile>>() {
-      @Override public void onNext(List<Profile> profiles) {
-        for (Profile profile : profiles) {
-          addMovieMenuItem.getSubMenu().add(MENU_ADD_GROUP, profile.getId(), 0, profile.getLabel());
-        }
-      }
-    }));
+    subscriptions.add(AndroidObservable.bindActivity(this, couchPotatoDatabase.getProfiles())
+        .subscribe(new EndlessObserver<List<Profile>>() {
+                     @Override public void onNext(List<Profile> profiles) {
+                       for (Profile profile : profiles) {
+                         addMovieMenuItem.getSubMenu()
+                             .add(MENU_ADD_GROUP, profile.getId(), 0, profile.getLabel());
+                       }
+                     }
+                   }
+        ));
   }
 
   @Override
@@ -411,16 +415,20 @@ public class MovieActivity extends BaseActivity
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     if (item.getGroupId() == MENU_ADD_GROUP) {
-      subscriptions.add(couchPotatoDatabase.addMovie(item.getItemId(), movie.getImdbId(),
-          new EndlessObserver<Boolean>() {
-            @Override public void onNext(Boolean aBoolean) {
-              if (aBoolean) {
-                Crouton.makeText(MovieActivity.this,
-                    getString(R.string.movie_added, minifiedMovie.title()), Style.CONFIRM).show();
-              }
-            }
-          }
-      ));
+      subscriptions.add(AndroidObservable.bindActivity(this,
+              couchPotatoDatabase.addMovie(item.getItemId(), movie.getImdbId()))
+              .subscribe(new EndlessObserver<Boolean>() {
+                @Override public void onNext(Boolean aBoolean) {
+                  if (aBoolean) {
+                    Crouton.makeText(MovieActivity.this,
+                        getString(R.string.movie_added, minifiedMovie.title()), Style.CONFIRM)
+                        .show();
+                  } else {
+                    // TODO : show error
+                  }
+                }
+              })
+      );
       return true;
     }
     if (item.getItemId() == android.R.id.home) {

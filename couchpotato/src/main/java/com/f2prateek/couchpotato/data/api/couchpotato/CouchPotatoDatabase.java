@@ -27,9 +27,6 @@ import com.f2prateek.couchpotato.util.Strings;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import rx.Observable;
-import rx.Observer;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -42,17 +39,10 @@ public class CouchPotatoDatabase {
     this.couchPotatoService = couchPotatoService;
   }
 
-  /**
-   * Wrap the given observable to be subscribe on the I/O thread, and observe on the main thread.
-   */
-  private static <T> Observable<T> network(Observable<T> observable) {
-    return observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
-  }
-
-  public Subscription getApiKey(final String username, final String password,
-      final Observer<ApiKeyResponse> observer) {
-    return network(couchPotatoService.getApiKey(md5(password), md5(username))
-        .timeout(10, TimeUnit.SECONDS)).subscribe(observer);
+  public Observable<ApiKeyResponse> getApiKey(final String username, final String password) {
+    return couchPotatoService.getApiKey(md5(password), md5(username))
+        .timeout(10, TimeUnit.SECONDS)
+        .subscribeOn(Schedulers.io());
   }
 
   public enum LibraryMovieStatus {
@@ -70,10 +60,12 @@ public class CouchPotatoDatabase {
     }
   }
 
-  public Subscription getMovies(final List<LibraryMovieStatus> statuses,
-      final Observer<List<Movie>> observer) {
+  /**
+   * Fetch all movies with the given status(es).
+   */
+  public Observable<List<Movie>> getMovies(final List<LibraryMovieStatus> statuses) {
     String status = Strings.join(',', statuses);
-    return network(couchPotatoService.getMovies(status)
+    return couchPotatoService.getMovies(status)
         .timeout(30, TimeUnit.SECONDS)
         .flatMap(new Func1<MoviesResponse, Observable<CouchPotatoMovie>>() {
           @Override public Observable<CouchPotatoMovie> call(MoviesResponse moviesResponse) {
@@ -85,28 +77,25 @@ public class CouchPotatoDatabase {
             return Movie.create(couchPotatoMovie);
           }
         })
-        .toList()) //
-        .subscribe(observer);
+        .toList()
+        .subscribeOn(Schedulers.io());
   }
 
-  public Subscription getProfiles(final Observer<List<Profile>> observer) {
-    return network(couchPotatoService.getProfiles() //
-        .map(new Func1<ProfilesResponse, List<Profile>>() { //
-          @Override public List<Profile> call(ProfilesResponse response) {
-            return response.getProfiles();
-          }
-        }) //
-        .cache())//
-        .subscribe(observer);
+  public Observable<List<Profile>> getProfiles() {
+    return couchPotatoService.getProfiles().map(new Func1<ProfilesResponse, List<Profile>>() {
+      @Override public List<Profile> call(ProfilesResponse response) {
+        return response.getProfiles();
+      }
+    }).subscribeOn(Schedulers.io()).cache();
   }
 
-  public Subscription addMovie(int profileId, String imdbId, final Observer<Boolean> observer) {
-    return network(
-        couchPotatoService.addMovie(profileId, imdbId).map(new Func1<AddMovieResponse, Boolean>() {
+  public Observable<Boolean> addMovie(int profileId, String imdbId) {
+    return couchPotatoService.addMovie(profileId, imdbId)
+        .map(new Func1<AddMovieResponse, Boolean>() {
           @Override public Boolean call(AddMovieResponse addMovieResponse) {
             return addMovieResponse.success;
           }
-        })) //
-        .subscribe(observer);
+        })
+        .subscribeOn(Schedulers.io());
   }
 }

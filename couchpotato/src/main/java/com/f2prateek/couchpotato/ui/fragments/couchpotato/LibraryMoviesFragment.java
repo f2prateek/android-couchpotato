@@ -37,6 +37,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import rx.Subscription;
+import rx.android.observables.AndroidObservable;
+import rx.schedulers.Schedulers;
 
 public class LibraryMoviesFragment extends MoviesGridFragment {
   @Inject CouchPotatoDatabase database;
@@ -98,17 +100,19 @@ public class LibraryMoviesFragment extends MoviesGridFragment {
     if (!endpoint.isSet()) {
       showInaccessibleServerMessage();
     } else {
-      request = database.getMovies(displayedMoviesStatus, new EndlessObserver<List<Movie>>() {
-        @Override public void onNext(List<Movie> movies) {
-          adapter.set(movies);
-          root.setDisplayedChildView(grid);
-        }
+      request = AndroidObservable.bindFragment(this, database.getMovies(displayedMoviesStatus))
+          .subscribe(new EndlessObserver<List<Movie>>() {
+                       @Override public void onNext(List<Movie> movies) {
+                         adapter.set(movies);
+                         root.setDisplayedChildView(grid);
+                       }
 
-        @Override public void onError(Throwable throwable) {
-          super.onError(throwable);
-          showInaccessibleServerMessage();
-        }
-      });
+                       @Override public void onError(Throwable throwable) {
+                         super.onError(throwable);
+                         showInaccessibleServerMessage();
+                       }
+                     }
+          );
     }
   }
 
