@@ -390,16 +390,18 @@ public class MovieActivity extends BaseActivity
                        }
             )
     );
-    subscriptions.add(AndroidObservable.bindActivity(this, couchPotatoDatabase.getProfiles())
-        .subscribe(new EndlessObserver<List<Profile>>() {
-                     @Override public void onNext(List<Profile> profiles) {
-                       for (Profile profile : profiles) {
-                         addMovieMenuItem.getSubMenu()
-                             .add(MENU_ADD_GROUP, profile.getId(), 0, profile.getLabel());
+    if (couchPotatoEndpoint.isSet()) {
+      subscriptions.add(AndroidObservable.bindActivity(this, couchPotatoDatabase.getProfiles())
+          .subscribe(new EndlessObserver<List<Profile>>() {
+                       @Override public void onNext(List<Profile> profiles) {
+                         for (Profile profile : profiles) {
+                           addMovieMenuItem.getSubMenu()
+                               .add(MENU_ADD_GROUP, profile.getId(), 0, profile.getLabel());
+                         }
                        }
                      }
-                   }
-        ));
+          ));
+    }
   }
 
   @Override
