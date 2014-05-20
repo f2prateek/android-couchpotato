@@ -746,6 +746,6 @@ public class MovieActivity extends BaseActivity
 
   @Override protected void onPause() {
     super.onPause();
-    subscriptionManager.unsubscribeAll();
+    subscriptionManager.unsubscribe();
   }
 }

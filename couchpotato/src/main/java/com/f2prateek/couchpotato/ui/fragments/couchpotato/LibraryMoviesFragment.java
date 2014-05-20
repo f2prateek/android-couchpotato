@@ -118,7 +118,7 @@ public class LibraryMoviesFragment extends MoviesGridFragment {
   }
 
   @Override public void onPause() {
-    subscriptionManager.unsubscribeAll();
+    subscriptionManager.unsubscribe();
     super.onPause();
   }
 

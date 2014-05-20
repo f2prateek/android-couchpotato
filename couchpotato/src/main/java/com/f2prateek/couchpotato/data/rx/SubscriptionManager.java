@@ -16,15 +16,13 @@
 
 package com.f2prateek.couchpotato.data.rx;
 
-import com.f2prateek.couchpotato.util.CollectionUtils;
-import java.util.ArrayList;
-import java.util.Collection;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.observables.Assertions;
 import rx.functions.Func1;
 import rx.operators.OperatorConditionalBinding;
+import rx.subscriptions.CompositeSubscription;
 
 import static rx.android.schedulers.AndroidSchedulers.mainThread;
 
@@ -34,13 +32,13 @@ import static rx.android.schedulers.AndroidSchedulers.mainThread;
  */
 public abstract class SubscriptionManager<T> {
   private final T instance;
-  private final Collection<Subscription> subscriptions = new ArrayList<>();
   private final Func1<T, Boolean> predicate = new Func1<T, Boolean>() {
     @Override
     public Boolean call(T object) {
       return validate(object);
     }
   };
+  private final CompositeSubscription subscriptions = new CompositeSubscription();
 
   public SubscriptionManager(T instance) {
     this.instance = instance;
@@ -54,15 +52,8 @@ public abstract class SubscriptionManager<T> {
     subscriptions.add(subscription);
   }
 
-  public void unsubscribeAll() {
-    if (!CollectionUtils.isNullOrEmpty(subscriptions)) {
-      for (Subscription subscription : subscriptions) {
-        if (!subscription.isUnsubscribed()) {
-          subscription.unsubscribe();
-        }
-      }
-      subscriptions.clear();
-    }
+  public void unsubscribe() {
+    subscriptions.unsubscribe();
   }
 
   /**
