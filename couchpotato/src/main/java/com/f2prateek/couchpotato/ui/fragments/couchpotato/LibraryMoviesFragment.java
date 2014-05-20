@@ -97,7 +97,7 @@ public class LibraryMoviesFragment extends MoviesGridFragment {
     root.setDisplayedChildView(progressBar);
 
     if (!endpoint.isSet()) {
-      showInaccessibleServerMessage();
+      showServerNotSetMessage();
     } else {
       request = AndroidObservable.bindFragment(this, database.getMovies(displayedMoviesStatus))
           .subscribe(new EndlessObserver<List<Movie>>() {
@@ -118,6 +118,24 @@ public class LibraryMoviesFragment extends MoviesGridFragment {
   @Override public void onPause() {
     super.onPause();
     if (request != null) request.unsubscribe();
+  }
+
+  void showServerNotSetMessage() {
+    final Intent intent = new Intent(activityContext, CouchPotatoServerSettingsActivity.class);
+    View view = setExtraView(R.layout.partial_error_message);
+    TextView textView = ButterKnife.findById(view, R.id.error_message);
+    textView.setText(new Truss() //
+            .append(getString(R.string.error_server_not_set)) //
+            .append(" ") // Space between sentences
+            .pushSpan(new ForegroundColorSpan(getResources().getColor(R.color.app_color)))
+            .append(getString(R.string.error_server_not_set_prompt))
+            .build()
+    );
+    textView.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        startActivity(intent);
+      }
+    });
   }
 
   void showInaccessibleServerMessage() {

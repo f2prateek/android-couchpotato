@@ -25,6 +25,8 @@
   <string name="filter">Filter</string>
   <string name="wanted">Wanted</string>
   <string name="snatched">Snatched</string>
+  <string name="error_server_not_set">CouchPotato server settings are not configured.</string>
+  <string name="error_server_not_set_prompt">Please set your settings.</string>
 
   <!-- Main Activity -->
   <string name="library">Library</string>
