@@ -94,6 +94,21 @@
           android:paddingBottom="@dimen/holo_padding_small"
           tools:text="A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy. Their concept catches on, with underground fight clubs forming in every town, until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion."/>
 
+      <LinearLayout
+          android:id="@+id/couchpotato_controller"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/add_movie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ab_add"
+            android:layout_gravity="center"/>
+
+      </LinearLayout>
+
       <TextView
           android:id="@+id/movie_cast_header"
           android:layout_width="match_parent"

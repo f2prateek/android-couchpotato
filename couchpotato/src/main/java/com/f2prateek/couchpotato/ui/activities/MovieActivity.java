@@ -46,12 +46,14 @@ import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.ScrollView;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.InjectViews;
+import butterknife.OnClick;
 import com.f2prateek.couchpotato.Events;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.Movie;
@@ -135,6 +137,7 @@ public class MovieActivity extends BaseActivity
   @InjectView(R.id.movie_tagline) TextView movieTagline;
   @InjectView(R.id.movie_plot) TextView moviePlot;
   @InjectView(R.id.movie_rating_container) View movieRatingContainer;
+  @InjectView(R.id.couchpotato_controller) View couchPotatoController;
   @InjectViews({
       R.id.similar_movies_header, R.id.movie_cast_header, R.id.movie_crew_header,
       R.id.movie_videos_header, R.id.movie_title, R.id.movie_title, R.id.movie_plot,
@@ -160,7 +163,6 @@ public class MovieActivity extends BaseActivity
   private int actionBarGradientColor = Color.BLACK;
   private TMDbMovie movie;
   private ShareActionProvider movieShareActionProvider;
-  private MenuItem addMovieMenuItem;
   private GradientDrawable gradientDrawable;
 
   private final List<Subscription> subscriptions = new ArrayList<>();
@@ -391,17 +393,43 @@ public class MovieActivity extends BaseActivity
             )
     );
     if (couchPotatoEndpoint.isSet()) {
-      subscriptions.add(AndroidObservable.bindActivity(this, couchPotatoDatabase.getProfiles())
-          .subscribe(new EndlessObserver<List<Profile>>() {
-                       @Override public void onNext(List<Profile> profiles) {
-                         for (Profile profile : profiles) {
-                           addMovieMenuItem.getSubMenu()
-                               .add(MENU_ADD_GROUP, profile.getId(), 0, profile.getLabel());
-                         }
+      // todo couchPotatoController.setVisibility(View.GONE);
+    }
+  }
+
+  @OnClick(R.id.add_movie) public void onMovieAddClicked(final View button) {
+    final PopupMenu popupMenu = new PopupMenu(this, button);
+    popupMenu.inflate(R.menu.add_movie);
+    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+      @Override public boolean onMenuItemClick(MenuItem item) {
+        subscriptions.add(AndroidObservable.bindActivity(MovieActivity.this,
+                couchPotatoDatabase.addMovie(item.getItemId(), movie.getImdbId()))
+                .subscribe(new EndlessObserver<Boolean>() {
+                  @Override public void onNext(Boolean aBoolean) {
+                    if (aBoolean) {
+                      Crouton.makeText(MovieActivity.this,
+                          getString(R.string.movie_added, minifiedMovie.title()), Style.CONFIRM)
+                          .show();
+                    } else {
+                      // TODO : show error
+                    }
+                  }
+                })
+        );
+        return true;
+      }
+    });
+    popupMenu.show();
+    subscriptions.add(AndroidObservable.bindActivity(this, couchPotatoDatabase.getProfiles())
+        .subscribe(new EndlessObserver<List<Profile>>() {
+                     @Override public void onNext(List<Profile> profiles) {
+                       for (Profile profile : profiles) {
+                         popupMenu.getMenu()
+                             .add(MENU_ADD_GROUP, profile.getId(), 0, profile.getLabel());
                        }
                      }
-          ));
-    }
+                   }
+        ));
   }
 
   @Override
@@ -409,35 +437,10 @@ public class MovieActivity extends BaseActivity
     getMenuInflater().inflate(R.menu.activity_movie, menu);
     movieShareActionProvider =
         (ShareActionProvider) menu.findItem(R.id.menu_share).getActionProvider();
-    addMovieMenuItem = menu.findItem(R.id.menu_add);
     return true;
   }
 
-  @Override public boolean onPrepareOptionsMenu(Menu menu) {
-    if (couchPotatoEndpoint.isSet()) {
-      addMovieMenuItem.setEnabled(true);
-    }
-    return super.onPrepareOptionsMenu(menu);
-  }
-
   @Override public boolean onOptionsItemSelected(MenuItem item) {
-    if (item.getGroupId() == MENU_ADD_GROUP) {
-      subscriptions.add(AndroidObservable.bindActivity(this,
-              couchPotatoDatabase.addMovie(item.getItemId(), movie.getImdbId()))
-              .subscribe(new EndlessObserver<Boolean>() {
-                @Override public void onNext(Boolean aBoolean) {
-                  if (aBoolean) {
-                    Crouton.makeText(MovieActivity.this,
-                        getString(R.string.movie_added, minifiedMovie.title()), Style.CONFIRM)
-                        .show();
-                  } else {
-                    // TODO : show error
-                  }
-                }
-              })
-      );
-      return true;
-    }
     if (item.getItemId() == android.R.id.home) {
       NavUtils.navigateUpFromSameTask(this);
       return true;
