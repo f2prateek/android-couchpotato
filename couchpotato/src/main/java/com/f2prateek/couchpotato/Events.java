@@ -16,6 +16,7 @@
 
 package com.f2prateek.couchpotato;
 
+import android.view.View;
 import com.f2prateek.couchpotato.data.api.Movie;
 
 public class Events {
@@ -34,6 +35,17 @@ public class Events {
       this.width = width;
       this.left = left;
       this.top = top;
+    }
+
+    /** Factory method for figuring out required dimensions from clicked view. g*/
+    public static OnMovieClickedEvent fromSource(Movie movie, View source) {
+      int[] screenLocation = new int[2];
+      source.getLocationOnScreen(screenLocation);
+
+      int width = source.getWidth();
+      int height = source.getHeight();
+      return new Events.OnMovieClickedEvent(movie, height, width, screenLocation[0],
+          screenLocation[1]);
     }
   }
 }

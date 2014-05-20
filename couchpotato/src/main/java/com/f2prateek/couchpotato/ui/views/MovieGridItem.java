@@ -54,14 +54,7 @@ public class MovieGridItem extends FrameLayout {
   }
 
   @OnClick(R.id.movie_poster) public void onMovieClicked() {
-    int[] screenLocation = new int[2];
-    getLocationOnScreen(screenLocation);
-
-    int width = getWidth();
-    int height = getHeight();
-
-    bus.post(
-        new Events.OnMovieClickedEvent(movie, height, width, screenLocation[0], screenLocation[1]));
+    bus.post(Events.OnMovieClickedEvent.fromSource(movie, this));
   }
 }
 
