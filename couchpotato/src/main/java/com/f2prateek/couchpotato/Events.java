@@ -19,7 +19,6 @@ package com.f2prateek.couchpotato;
 import com.f2prateek.couchpotato.data.api.Movie;
 
 public class Events {
-
   public static class OnMovieClickedEvent {
     // View Attributes for Animation
     public final int height;
