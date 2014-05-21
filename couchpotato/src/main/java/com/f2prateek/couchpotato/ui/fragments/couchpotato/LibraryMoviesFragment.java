@@ -16,6 +16,7 @@
 
 package com.f2prateek.couchpotato.ui.fragments.couchpotato;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.style.ForegroundColorSpan;
@@ -30,20 +31,21 @@ import com.f2prateek.couchpotato.data.api.Movie;
 import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoDatabase;
 import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoEndpoint;
 import com.f2prateek.couchpotato.data.rx.EndlessObserver;
+import com.f2prateek.couchpotato.data.rx.FragmentSubscriptionManager;
+import com.f2prateek.couchpotato.data.rx.SubscriptionManager;
 import com.f2prateek.couchpotato.ui.activities.CouchPotatoServerSettingsActivity;
 import com.f2prateek.couchpotato.ui.fragments.MoviesGridFragment;
 import com.f2prateek.couchpotato.ui.misc.Truss;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
-import rx.Subscription;
-import rx.android.observables.AndroidObservable;
 
 public class LibraryMoviesFragment extends MoviesGridFragment {
   @Inject CouchPotatoDatabase database;
   @Inject CouchPotatoEndpoint endpoint;
 
-  private Subscription request;
+  private final SubscriptionManager<Fragment> subscriptionManager =
+      new FragmentSubscriptionManager(this);
 
   final List<CouchPotatoDatabase.LibraryMovieStatus> displayedMoviesStatus = new ArrayList<>(2);
 
@@ -99,25 +101,25 @@ public class LibraryMoviesFragment extends MoviesGridFragment {
     if (!endpoint.isSet()) {
       showServerNotSetMessage();
     } else {
-      request = AndroidObservable.bindFragment(this, database.getMovies(displayedMoviesStatus))
-          .subscribe(new EndlessObserver<List<Movie>>() {
-                       @Override public void onNext(List<Movie> movies) {
-                         adapter.set(movies);
-                         root.setDisplayedChildView(grid);
-                       }
+      subscriptionManager.subscribe(database.getMovies(displayedMoviesStatus),
+          new EndlessObserver<List<Movie>>() {
+            @Override public void onNext(List<Movie> movies) {
+              adapter.set(movies);
+              root.setDisplayedChildView(grid);
+            }
 
-                       @Override public void onError(Throwable throwable) {
-                         super.onError(throwable);
-                         showInaccessibleServerMessage();
-                       }
-                     }
-          );
+            @Override public void onError(Throwable throwable) {
+              super.onError(throwable);
+              showInaccessibleServerMessage();
+            }
+          }
+      );
     }
   }
 
   @Override public void onPause() {
+    subscriptionManager.unsubscribe();
     super.onPause();
-    if (request != null) request.unsubscribe();
   }
 
   void showServerNotSetMessage() {

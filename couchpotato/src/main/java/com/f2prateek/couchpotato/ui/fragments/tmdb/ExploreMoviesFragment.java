@@ -16,10 +16,13 @@
 
 package com.f2prateek.couchpotato.ui.fragments.tmdb;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.widget.AbsListView;
 import com.f2prateek.couchpotato.data.api.Movie;
 import com.f2prateek.couchpotato.data.api.tmdb.TMDbDatabase;
+import com.f2prateek.couchpotato.data.rx.FragmentSubscriptionManager;
+import com.f2prateek.couchpotato.data.rx.SubscriptionManager;
 import com.f2prateek.couchpotato.ui.fragments.MoviesGridFragment;
 import com.f2prateek.ln.Ln;
 import java.util.List;
@@ -28,8 +31,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.inject.Inject;
 import rx.Observable;
 import rx.Observer;
-import rx.Subscription;
-import rx.android.observables.AndroidObservable;
 
 /**
  * A base fragment for exploring movies from TMDB.
@@ -42,7 +43,8 @@ public abstract class ExploreMoviesFragment extends MoviesGridFragment
 
   @Inject TMDbDatabase database;
 
-  private Subscription request;
+  private final SubscriptionManager<Fragment> subscriptionManager =
+      new FragmentSubscriptionManager(this);
 
   @Override public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
@@ -69,15 +71,15 @@ public abstract class ExploreMoviesFragment extends MoviesGridFragment
   private void fetch() {
     if (loading.get()) return;
     loading.set(true);
-    request =
-        AndroidObservable.bindFragment(this, subscribe(page.getAndIncrement())).subscribe(this);
+    subscriptionManager.subscribe(subscribe(page.getAndIncrement()), this);
   }
 
   @Override public void onPause() {
+    subscriptionManager.unsubscribe();
     super.onPause();
-    if (request != null) request.unsubscribe();
   }
 
+  /** Return the source observable we should listen to. */
   protected abstract Observable<List<Movie>> subscribe(int page);
 
   @Override public void onNext(List<Movie> movies) {
