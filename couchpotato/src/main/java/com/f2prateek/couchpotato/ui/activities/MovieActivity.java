@@ -70,7 +70,7 @@ import com.f2prateek.couchpotato.data.api.tmdb.model.Video;
 import com.f2prateek.couchpotato.data.rx.ActivitySubscriptionManager;
 import com.f2prateek.couchpotato.data.rx.EndlessObserver;
 import com.f2prateek.couchpotato.data.rx.SubscriptionManager;
-import com.f2prateek.couchpotato.ui.colorizer.ColorScheme;
+import com.f2prateek.couchpotato.ui.misc.colorizer.ColorScheme;
 import com.f2prateek.couchpotato.ui.misc.AlphaForegroundColorSpan;
 import com.f2prateek.couchpotato.ui.views.MovieCrewItem;
 import com.f2prateek.couchpotato.ui.views.MovieGridItem;

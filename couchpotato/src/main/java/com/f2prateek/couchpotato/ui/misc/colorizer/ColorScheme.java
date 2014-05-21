@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.f2prateek.couchpotato.ui.colorizer;
+package com.f2prateek.couchpotato.ui.misc.colorizer;
 
 import android.graphics.Bitmap;
 

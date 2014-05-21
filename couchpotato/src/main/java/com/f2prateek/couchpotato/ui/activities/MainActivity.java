@@ -28,7 +28,7 @@ import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoEndpoint;
 import com.f2prateek.couchpotato.data.prefs.BooleanPreference;
 import com.f2prateek.couchpotato.data.prefs.FirstRun;
-import com.f2prateek.couchpotato.ui.colorizer.FragmentTabAdapter;
+import com.f2prateek.couchpotato.ui.misc.colorizer.FragmentTabAdapter;
 import com.f2prateek.couchpotato.ui.fragments.AboutFragment;
 import com.f2prateek.couchpotato.ui.fragments.couchpotato.LibraryMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.tmdb.DiscoverMoviesFragment;

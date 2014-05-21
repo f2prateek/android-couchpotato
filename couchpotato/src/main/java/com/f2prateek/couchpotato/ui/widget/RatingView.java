@@ -28,7 +28,7 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 import com.f2prateek.couchpotato.R;
-import com.f2prateek.couchpotato.ui.colorizer.ColorScheme;
+import com.f2prateek.couchpotato.ui.misc.colorizer.ColorScheme;
 
 public class RatingView extends View {
   private int minValue;
