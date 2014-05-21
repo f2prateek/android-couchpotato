@@ -27,7 +27,7 @@ import dagger.Provides;
 import javax.inject.Singleton;
 
 @Module(complete = false, library = true)
-public class UserPreferencesModule {
+public final class UserPreferencesModule {
   @Provides @Singleton @CouchPotatoHost StringPreference provideHostPreference(
       SharedPreferences preferences) {
     return new StringPreference(preferences, "couch_potato_host");

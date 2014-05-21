@@ -27,7 +27,7 @@ import javax.inject.Singleton;
     complete = false,
     library = true,
     overrides = true)
-public class DebugUiModule {
+public final class DebugUiModule {
   @Provides @Singleton AppContainer provideAppContainer(DebugAppContainer debugAppContainer) {
     return debugAppContainer;
   }

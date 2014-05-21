@@ -31,7 +31,7 @@ import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 
 @Module(complete = false, library = true)
-public class TMDbApiModule {
+public final class TMDbApiModule {
   private static final String API_URL = "http://api.themoviedb.org/3/";
   private static final String API_KEY = "c820209625cf108a92f8e4192ec26a7f";
 

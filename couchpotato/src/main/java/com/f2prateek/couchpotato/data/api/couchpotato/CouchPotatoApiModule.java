@@ -29,7 +29,7 @@ import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 
 @Module(complete = false, library = true)
-public class CouchPotatoApiModule {
+public final class CouchPotatoApiModule {
   @Provides @Singleton CouchPotatoEndpoint provideEndpoint(
       @CouchPotatoHost StringPreference hostPreference,
       @CouchPotatoApiKey StringPreference apiKeyPreference) {
