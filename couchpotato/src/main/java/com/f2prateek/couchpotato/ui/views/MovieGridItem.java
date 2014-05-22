@@ -54,7 +54,7 @@ public class MovieGridItem extends FrameLayout {
   }
 
   @OnClick(R.id.movie_poster) public void onMovieClicked() {
-    bus.post(Events.OnMovieClickedEvent.fromSource(movie, this));
+    bus.post(Events.OnMovieClickedEvent.fromSource(movie));
   }
 }
 

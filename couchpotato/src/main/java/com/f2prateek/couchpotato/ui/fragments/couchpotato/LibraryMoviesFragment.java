@@ -92,15 +92,15 @@ public class LibraryMoviesFragment extends MoviesGridFragment {
   }
 
   void fetchMovies() {
-    root.setDisplayedChildView(progressBar);
+    showLoadingView();
 
     if (!endpoint.isSet()) {
       showServerNotSetMessage();
     } else {
       subscribe(database.getMovies(displayedMoviesStatus), new EndlessObserver<List<Movie>>() {
             @Override public void onNext(List<Movie> movies) {
-              adapter.set(movies);
-              root.setDisplayedChildView(grid);
+              adapter.replaceWith(movies);
+              setAdapter(adapter);
             }
 
             @Override public void onError(Throwable throwable) {

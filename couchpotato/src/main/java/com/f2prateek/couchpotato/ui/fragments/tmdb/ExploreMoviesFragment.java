@@ -45,7 +45,7 @@ public abstract class ExploreMoviesFragment extends MoviesGridFragment
 
     fetch();
 
-    grid.setOnScrollListener(new AbsListView.OnScrollListener() {
+    getGridView().setOnScrollListener(new AbsListView.OnScrollListener() {
       @Override public void onScrollStateChanged(AbsListView view, int scrollState) {
         // ignore
       }
@@ -73,7 +73,6 @@ public abstract class ExploreMoviesFragment extends MoviesGridFragment
 
   @Override public void onNext(List<Movie> movies) {
     adapter.add(movies);
-    root.setDisplayedChildView(grid);
     loading.set(false);
   }
 

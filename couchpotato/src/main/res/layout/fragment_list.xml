@@ -16,11 +16,20 @@
   ~ limitations under the License.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-  <item
-      android:id="@+id/menu_share"
-      android:showAsAction="ifRoom"
-      android:title="@string/share"
-      android:actionProviderClass=
-          "android.widget.ShareActionProvider"/>
-</menu>
+<com.f2prateek.couchpotato.ui.widget.BetterViewAnimator
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:inAnimation="@android:anim/fade_in"
+    android:outAnimation="@android:anim/fade_out">
+
+  <ListView
+      android:id="@android:id/list"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"/>
+
+  <include
+      layout="@layout/partial_loading"/>
+
+</com.f2prateek.couchpotato.ui.widget.BetterViewAnimator>

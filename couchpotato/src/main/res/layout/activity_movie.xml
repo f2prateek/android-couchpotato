@@ -18,169 +18,8 @@
 
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-  <com.f2prateek.couchpotato.ui.widget.NotifyingScrollView
-      android:id="@+id/movie_scroll_container"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:scrollbars="none">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:animateLayoutChanges="true">
-
-      <Space
-          android:layout_width="match_parent"
-          android:layout_height="@dimen/movie_header_height"
-          android:orientation="vertical"/>
-
-      <TextView
-          android:id="@+id/movie_title"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:textSize="32sp"
-          android:ellipsize="end"
-          android:paddingRight="@dimen/activity_horizontal_margin"
-          android:paddingLeft="@dimen/activity_horizontal_margin"
-          android:paddingTop="@dimen/holo_padding_small"
-          android:paddingBottom="@dimen/holo_padding_small"
-          android:gravity="center"
-          tools:text="Fight Club"/>
-
-      <TextView
-          android:id="@+id/movie_tagline"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:textSize="18sp"
-          android:gravity="center"
-          android:fontFamily="sans-serif-light"
-          android:paddingRight="@dimen/activity_horizontal_margin"
-          android:paddingTop="@dimen/holo_padding_small"
-          android:paddingBottom="@dimen/holo_padding_small"
-          android:paddingLeft="@dimen/activity_horizontal_margin"
-          tools:text="How much can you know about yourself if you've never been in a fight?"/>
-
-      <FrameLayout
-          android:id="@+id/movie_rating_container"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:paddingTop="@dimen/holo_padding_small"
-          android:paddingBottom="@dimen/holo_padding_small">
-
-        <com.f2prateek.couchpotato.ui.widget.RatingView
-            android:id="@+id/movie_rating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
-
-      </FrameLayout>
-
-      <TextView
-          android:id="@+id/movie_plot"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:textSize="18sp"
-          android:gravity="center"
-          android:fontFamily="sans-serif-thin"
-          android:paddingRight="@dimen/activity_horizontal_margin"
-          android:paddingLeft="@dimen/activity_horizontal_margin"
-          android:paddingTop="@dimen/holo_padding_small"
-          android:paddingBottom="@dimen/holo_padding_small"
-          tools:text="A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy. Their concept catches on, with underground fight clubs forming in every town, until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion."/>
-
-      <TextView
-          android:id="@+id/movie_cast_header"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:text="@string/cast"
-          android:visibility="gone"
-          style="@style/Widget.CouchPotato.Text.Header"/>
-
-      <HorizontalScrollView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:id="@+id/movie_cast_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:orientation="horizontal"/>
-
-      </HorizontalScrollView>
-
-      <TextView
-          android:id="@+id/movie_crew_header"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:text="@string/crew"
-          android:visibility="gone"
-          style="@style/Widget.CouchPotato.Text.Header"/>
-
-      <HorizontalScrollView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:id="@+id/movie_crew_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:orientation="horizontal"/>
-
-      </HorizontalScrollView>
-
-      <TextView
-          android:id="@+id/movie_videos_header"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:text="@string/videos"
-          android:visibility="gone"
-          style="@style/Widget.CouchPotato.Text.Header"/>
-
-      <HorizontalScrollView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:id="@+id/movie_videos_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:orientation="horizontal"/>
-
-      </HorizontalScrollView>
-
-      <TextView
-          android:id="@+id/similar_movies_header"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:text="@string/similar_movies"
-          android:visibility="gone"
-          style="@style/Widget.CouchPotato.Text.Header"/>
-
-      <HorizontalScrollView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:id="@+id/similar_movies_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:orientation="horizontal"/>
-
-      </HorizontalScrollView>
-
-    </LinearLayout>
-
-  </com.f2prateek.couchpotato.ui.widget.NotifyingScrollView>
 
   <FrameLayout
       android:id="@+id/movie_header"
@@ -192,19 +31,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <View
-        android:id="@+id/movie_header_gradient"
+    <ImageView
+        android:id="@+id/movie_header_poster"
+        android:layout_width="@dimen/movie_header_logo_width"
+        android:layout_height="@dimen/movie_header_logo_height"
+        android:layout_marginTop="48dp"
+        android:layout_gravity="center_horizontal|top"/>
+
+    <com.astuetz.PagerSlidingTabStrip
+        android:id="@+id/movie_pager_strip"
         android:layout_width="match_parent"
-        android:layout_gravity="bottom"
-        android:layout_height="96dp"/>
+        android:layout_height="?android:actionBarSize"
+        android:layout_gravity="bottom"/>
 
   </FrameLayout>
 
-  <ImageView
-      android:id="@+id/movie_header_poster"
-      android:layout_width="@dimen/movie_header_logo_width"
-      android:layout_height="@dimen/movie_header_logo_height"
-      android:layout_marginTop="48dp"
-      android:layout_gravity="center_horizontal|top"/>
+  <android.support.v4.view.ViewPager
+      android:id="@+id/movie_pager"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"/>
 
 </FrameLayout>

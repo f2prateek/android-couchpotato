@@ -40,7 +40,7 @@ public class MovieGridAdapter extends BindableAdapter<Movie> {
     movies = new ArrayList<>();
   }
 
-  public void set(List<Movie> movies) {
+  public void replaceWith(List<Movie> movies) {
     this.movies = movies;
     notifyDataSetChanged();
   }

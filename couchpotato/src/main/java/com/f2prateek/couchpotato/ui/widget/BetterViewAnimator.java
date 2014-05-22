@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Prateek Srivastava
+ * Copyright 2014 Prateek Srivastava (@f2prateek)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,15 +21,26 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ViewAnimator;
 
+/**
+ * A {@link android.widget.ViewAnimator} which looks up children by id instead of position.
+ */
 public class BetterViewAnimator extends ViewAnimator {
   public BetterViewAnimator(Context context, AttributeSet attrs) {
     super(context, attrs);
   }
 
-  public void setDisplayedChildView(View view) {
-    setDisplayedChildId(view.getId());
+  /**
+   * Get the view id of the displayed view.
+   */
+  public int getDisplayedChildId() {
+    return getChildAt(getDisplayedChild()).getId();
   }
 
+  /**
+   * Sets which child view will be displayed.
+   *
+   * @param id the resource id of the child view to display
+   */
   public void setDisplayedChildId(int id) {
     if (getDisplayedChildId() == id) {
       return;
@@ -43,7 +54,12 @@ public class BetterViewAnimator extends ViewAnimator {
     throw new IllegalArgumentException("No view with ID " + id);
   }
 
-  public int getDisplayedChildId() {
-    return getChildAt(getDisplayedChild()).getId();
+  /**
+   * Sets which child view will be displayed.
+   *
+   * @param view the view to display
+   */
+  public void setDisplayedChild(View view) {
+    setDisplayedChildId(view.getId());
   }
 }

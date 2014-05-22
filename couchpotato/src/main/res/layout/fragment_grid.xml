@@ -18,15 +18,12 @@
 
 <com.f2prateek.couchpotato.ui.widget.BetterViewAnimator
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/root"
+    android:id="@+id/fragment_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-  <ProgressBar
-      android:id="@+id/progress"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"/>
+  <include
+      layout="@layout/partial_loading"/>
 
   <GridView
       android:id="@+id/grid"

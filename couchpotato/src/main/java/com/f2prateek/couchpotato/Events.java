@@ -16,36 +16,19 @@
 
 package com.f2prateek.couchpotato;
 
-import android.view.View;
 import com.f2prateek.couchpotato.data.api.Movie;
 
 public class Events {
   public static class OnMovieClickedEvent {
-    // View Attributes for Animation
-    public final int height;
-    public final int width;
-    public final int left;
-    public final int top;
-
     public final Movie movie;
 
-    public OnMovieClickedEvent(Movie movie, int height, int width, int left, int top) {
+    private OnMovieClickedEvent(Movie movie) {
       this.movie = movie;
-      this.height = height;
-      this.width = width;
-      this.left = left;
-      this.top = top;
     }
 
-    /** Factory method for figuring out required dimensions from clicked view. g*/
-    public static OnMovieClickedEvent fromSource(Movie movie, View source) {
-      int[] screenLocation = new int[2];
-      source.getLocationOnScreen(screenLocation);
-
-      int width = source.getWidth();
-      int height = source.getHeight();
-      return new Events.OnMovieClickedEvent(movie, height, width, screenLocation[0],
-          screenLocation[1]);
+    /** Factory method for figuring out required dimensions from clicked view. g */
+    public static OnMovieClickedEvent fromSource(Movie movie) {
+      return new Events.OnMovieClickedEvent(movie);
     }
   }
 }

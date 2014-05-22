@@ -66,7 +66,7 @@ class DominantColorCalculator {
     final int primaryTextColor = findPrimaryTextColor(primaryAccentColor);
     final int secondaryTextColor = findSecondaryTextColor(primaryAccentColor);
 
-    mColorScheme = new ColorScheme(primaryAccentColor.getRgb(), secondaryAccentColor.getRgb(),
+    mColorScheme = ColorScheme.create(primaryAccentColor.getRgb(), secondaryAccentColor.getRgb(),
         tertiaryAccentColor, primaryTextColor, secondaryTextColor);
   }
 

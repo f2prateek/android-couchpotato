@@ -16,46 +16,29 @@
 
 package com.f2prateek.couchpotato.ui.misc.colorizer;
 
+import android.auto.value.AutoValue;
 import android.graphics.Bitmap;
+import android.os.Parcelable;
 
-public class ColorScheme {
-  private final int primaryAccent;
-  private final int secondaryAccent;
-  private final int tertiaryAccent;
+@AutoValue
+public abstract class ColorScheme implements Parcelable {
+  public abstract int getPrimaryAccent();
 
-  private final int primaryText;
-  private final int secondaryText;
+  public abstract int getSecondaryAccent();
+
+  public abstract int getTertiaryAccent();
+
+  public abstract int getPrimaryText();
+
+  public abstract int getSecondaryText();
 
   public static ColorScheme fromBitmap(Bitmap bitmap) {
     return new DominantColorCalculator(bitmap).getColorScheme();
   }
 
-  ColorScheme(int primaryAccent, int secondaryAccent, int tertiaryAccent, int primaryText,
-      int secondaryText) {
-    this.primaryAccent = primaryAccent;
-    this.secondaryAccent = secondaryAccent;
-    this.tertiaryAccent = tertiaryAccent;
-    this.primaryText = primaryText;
-    this.secondaryText = secondaryText;
-  }
-
-  public int getPrimaryAccent() {
-    return primaryAccent;
-  }
-
-  public int getSecondaryAccent() {
-    return secondaryAccent;
-  }
-
-  public int getTertiaryAccent() {
-    return tertiaryAccent;
-  }
-
-  public int getPrimaryText() {
-    return primaryText;
-  }
-
-  public int getSecondaryText() {
-    return secondaryText;
+  public static ColorScheme create(int primaryAccent, int secondaryAccent, int tertiaryAccent,
+      int primaryText, int secondaryText) {
+    return new AutoValue_ColorScheme(primaryAccent, secondaryAccent, tertiaryAccent, primaryText,
+        secondaryText);
   }
 }
