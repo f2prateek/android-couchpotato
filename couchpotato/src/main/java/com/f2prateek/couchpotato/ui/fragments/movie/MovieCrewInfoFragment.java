@@ -16,11 +16,14 @@
 
 package com.f2prateek.couchpotato.ui.fragments.movie;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import butterknife.ButterKnife;
 import com.f2prateek.couchpotato.ForActivity;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.Movie;
@@ -31,6 +34,7 @@ import com.f2prateek.couchpotato.data.rx.EndlessObserver;
 import com.f2prateek.couchpotato.ui.fragments.BaseGridFragment;
 import com.f2prateek.couchpotato.ui.misc.BindableListAdapter;
 import com.f2prateek.couchpotato.ui.views.MovieCrewItem;
+import com.f2prateek.couchpotato.ui.widget.HeaderGridView;
 import com.f2prateek.couchpotato.util.CollectionUtils;
 import com.f2prateek.dart.InjectExtra;
 import com.squareup.picasso.Picasso;
@@ -45,15 +49,33 @@ public class MovieCrewInfoFragment extends BaseGridFragment {
   @Inject Picasso picasso;
   @Inject @ForActivity Context activityContext;
 
+  AbsListView.OnScrollListener scrollListener;
+
   public static Bundle newInstanceArgs(Movie movie) {
     Bundle args = new Bundle();
     args.putParcelable(ARGS_MOVIE, movie);
     return args;
   }
 
+  @Override public void onAttach(Activity activity) {
+    super.onAttach(activity);
+    scrollListener = (AbsListView.OnScrollListener) activity;
+  }
+
   @Override public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
+
+    getCollectionView().setOnScrollListener(scrollListener);
     fetch();
+  }
+
+  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
+      Bundle savedInstanceState) {
+    View root = inflater.inflate(R.layout.fragment_header_grid, container, false);
+    HeaderGridView gridView = ButterKnife.findById(root, R.id.collection_view);
+    View placeholder = inflater.inflate(R.layout.movie_header_placeholder, gridView, false);
+    gridView.addHeaderView(placeholder);
+    return root;
   }
 
   private void fetch() {
