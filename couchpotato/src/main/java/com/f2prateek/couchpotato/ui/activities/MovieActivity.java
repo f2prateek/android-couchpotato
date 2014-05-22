@@ -92,7 +92,6 @@ public class MovieActivity extends BaseActivity implements AbsListView.OnScrollL
   private AlphaForegroundColorSpan alphaForegroundColorSpan;
   private SpannableString spannableString;
   private TypedValue typedValue = new TypedValue();
-  private ShareActionProvider shareActionProvider;
 
   /** Create an intent to launch this activity. */
   public static Intent createIntent(Context context, Events.OnMovieClickedEvent event) {
@@ -116,6 +115,9 @@ public class MovieActivity extends BaseActivity implements AbsListView.OnScrollL
         MovieCastInfoFragment.newInstanceArgs(minifiedMovie), R.string.cast);
     tabAdapter.addTab(MovieCrewInfoFragment.class,
         MovieCrewInfoFragment.newInstanceArgs(minifiedMovie), R.string.crew);
+
+    // Can't be configured via xml so done here!
+    tabStrip.setTextColor(getResources().getColor(R.color.white));
     tabStrip.setViewPager(pager);
 
     picasso.load(minifiedMovie.poster()).fit().centerCrop().into(moviePoster);

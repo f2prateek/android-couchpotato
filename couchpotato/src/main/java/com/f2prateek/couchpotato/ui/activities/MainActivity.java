@@ -51,7 +51,7 @@ public class MainActivity extends BaseActivity {
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    getActionBar().setCustomView(R.layout.action_bar_server_settings);
+    getActionBar().setCustomView(R.layout.action_bar_tabs);
 
     inflateLayout(R.layout.activity_main);
 

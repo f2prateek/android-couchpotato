@@ -18,6 +18,7 @@
 
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -38,11 +39,21 @@
         android:layout_marginTop="48dp"
         android:layout_gravity="center_horizontal|top"/>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="128dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/bottom_to_top_gradient"/>
+
     <com.astuetz.PagerSlidingTabStrip
         android:id="@+id/movie_pager_strip"
         android:layout_width="match_parent"
         android:layout_height="?android:actionBarSize"
-        android:layout_gravity="bottom"/>
+        android:layout_gravity="bottom"
+        app:pstsDividerColor="@color/action_bar_indicator_color"
+        app:pstsIndicatorColor="@color/action_bar_indicator_color"
+        app:pstsIndicatorHeight="6dp"
+        app:pstsUnderlineColor="@android:color/transparent"/>
 
   </FrameLayout>
 
