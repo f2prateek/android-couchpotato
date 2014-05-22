@@ -26,8 +26,6 @@
       android:id="@+id/collection_view"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:paddingTop="@dimen/holo_padding_small"
-      android:clipToPadding="false"
       android:layout_marginRight="-1px"
       android:listSelector="@android:color/transparent"
       android:verticalSpacing="@dimen/holo_padding_medium"
