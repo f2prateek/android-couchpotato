@@ -26,7 +26,7 @@
 
   <!-- Width of the grid columns.. -->
   <dimen name="poster_item_width">96dp</dimen>
-  <dimen name="trailer_item_width">240dp</dimen>
+  <dimen name="video_item_width">240dp</dimen>
 
   <!-- Movie Activity -->
   <dimen name="movie_header_height">288dp</dimen>

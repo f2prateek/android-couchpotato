@@ -28,21 +28,21 @@ import com.f2prateek.couchpotato.ForActivity;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.Movie;
 import com.f2prateek.couchpotato.data.api.tmdb.TMDbDatabase;
-import com.f2prateek.couchpotato.data.api.tmdb.model.Cast;
-import com.f2prateek.couchpotato.data.api.tmdb.model.MovieCreditsResponse;
+import com.f2prateek.couchpotato.data.api.tmdb.model.Video;
 import com.f2prateek.couchpotato.data.rx.EndlessObserver;
 import com.f2prateek.couchpotato.ui.fragments.BaseGridFragment;
 import com.f2prateek.couchpotato.ui.misc.BindableListAdapter;
-import com.f2prateek.couchpotato.ui.views.MovieCrewItem;
+import com.f2prateek.couchpotato.ui.views.MovieVideoItem;
 import com.f2prateek.couchpotato.ui.widget.HeaderGridView;
 import com.f2prateek.couchpotato.util.CollectionUtils;
 import com.f2prateek.dart.InjectExtra;
 import com.squareup.picasso.Picasso;
+import java.util.List;
 import javax.inject.Inject;
 
 import static com.f2prateek.couchpotato.ui.activities.MovieActivity.ARGS_MOVIE;
 
-public class MovieCastInfoFragment extends BaseGridFragment {
+public class MovieVideosFragment extends BaseGridFragment {
   @InjectExtra(ARGS_MOVIE) Movie minifiedMovie;
 
   @Inject TMDbDatabase tmDbDatabase;
@@ -73,18 +73,18 @@ public class MovieCastInfoFragment extends BaseGridFragment {
       Bundle savedInstanceState) {
     View root = inflater.inflate(R.layout.fragment_header_grid, container, false);
     HeaderGridView gridView = ButterKnife.findById(root, R.id.collection_view);
+    gridView.setColumnWidth(getResources().getDimensionPixelOffset(R.dimen.video_item_width));
     View placeholder = inflater.inflate(R.layout.movie_header_placeholder, gridView, false);
     gridView.addHeaderView(placeholder);
     return root;
   }
 
   private void fetch() {
-    subscribe(tmDbDatabase.getMovieCredits(minifiedMovie.id()),
-        new EndlessObserver<MovieCreditsResponse>() {
-          @Override public void onNext(MovieCreditsResponse credits) {
-            if (!CollectionUtils.isNullOrEmpty(credits.getCasts())) {
-              MovieCastAdapter adapter = new MovieCastAdapter(activityContext, picasso);
-              adapter.replaceWith(credits.getCasts());
+    subscribe(tmDbDatabase.getVideos(minifiedMovie.id()), new EndlessObserver<List<Video>>() {
+          @Override public void onNext(List<Video> videos) {
+            if (!CollectionUtils.isNullOrEmpty(videos)) {
+              MovieVideoAdapter adapter = new MovieVideoAdapter(activityContext, picasso);
+              adapter.replaceWith(videos);
               setAdapter(adapter);
             }
           }
@@ -92,20 +92,20 @@ public class MovieCastInfoFragment extends BaseGridFragment {
     );
   }
 
-  static class MovieCastAdapter extends BindableListAdapter<Cast> {
+  static class MovieVideoAdapter extends BindableListAdapter<Video> {
     private final Picasso picasso;
 
-    public MovieCastAdapter(Context context, Picasso picasso) {
+    public MovieVideoAdapter(Context context, Picasso picasso) {
       super(context);
       this.picasso = picasso;
     }
 
     @Override public View newView(LayoutInflater inflater, int position, ViewGroup container) {
-      return inflater.inflate(R.layout.movie_crew_item, container, false);
+      return inflater.inflate(R.layout.movie_video_item, container, false);
     }
 
-    @Override public void bindView(Cast item, int position, View view) {
-      ((MovieCrewItem) view).bindTo(item, picasso);
+    @Override public void bindView(Video item, int position, View view) {
+      ((MovieVideoItem) view).bindTo(item, picasso);
     }
   }
 }
