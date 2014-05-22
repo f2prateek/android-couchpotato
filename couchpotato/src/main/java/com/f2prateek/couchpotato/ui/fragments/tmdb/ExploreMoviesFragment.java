@@ -16,13 +16,10 @@
 
 package com.f2prateek.couchpotato.ui.fragments.tmdb;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.widget.AbsListView;
 import com.f2prateek.couchpotato.data.api.Movie;
 import com.f2prateek.couchpotato.data.api.tmdb.TMDbDatabase;
-import com.f2prateek.couchpotato.data.rx.FragmentSubscriptionManager;
-import com.f2prateek.couchpotato.data.rx.SubscriptionManager;
 import com.f2prateek.couchpotato.ui.fragments.MoviesGridFragment;
 import com.f2prateek.ln.Ln;
 import java.util.List;
@@ -42,9 +39,6 @@ public abstract class ExploreMoviesFragment extends MoviesGridFragment
   private final AtomicInteger page = new AtomicInteger(1);
 
   @Inject TMDbDatabase database;
-
-  private final SubscriptionManager<Fragment> subscriptionManager =
-      new FragmentSubscriptionManager(this);
 
   @Override public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
@@ -71,12 +65,7 @@ public abstract class ExploreMoviesFragment extends MoviesGridFragment
   private void fetch() {
     if (loading.get()) return;
     loading.set(true);
-    subscriptionManager.subscribe(subscribe(page.getAndIncrement()), this);
-  }
-
-  @Override public void onPause() {
-    subscriptionManager.unsubscribe();
-    super.onPause();
+    subscribe(subscribe(page.getAndIncrement()), this);
   }
 
   /** Return the source observable we should listen to. */

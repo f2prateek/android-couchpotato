@@ -22,7 +22,6 @@ import android.animation.AnimatorSet;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.TypeEvaluator;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -67,11 +66,9 @@ import com.f2prateek.couchpotato.data.api.tmdb.model.Images;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MovieCreditsResponse;
 import com.f2prateek.couchpotato.data.api.tmdb.model.TMDbMovie;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Video;
-import com.f2prateek.couchpotato.data.rx.ActivitySubscriptionManager;
 import com.f2prateek.couchpotato.data.rx.EndlessObserver;
-import com.f2prateek.couchpotato.data.rx.SubscriptionManager;
-import com.f2prateek.couchpotato.ui.misc.colorizer.ColorScheme;
 import com.f2prateek.couchpotato.ui.misc.AlphaForegroundColorSpan;
+import com.f2prateek.couchpotato.ui.misc.colorizer.ColorScheme;
 import com.f2prateek.couchpotato.ui.views.MovieCrewItem;
 import com.f2prateek.couchpotato.ui.views.MovieGridItem;
 import com.f2prateek.couchpotato.ui.views.MovieVideoItem;
@@ -163,9 +160,6 @@ public class MovieActivity extends BaseActivity
   private ShareActionProvider movieShareActionProvider;
   private MenuItem addMovieMenuItem;
   private GradientDrawable gradientDrawable;
-
-  private final SubscriptionManager<Activity> subscriptionManager =
-      new ActivitySubscriptionManager(this);
 
   /** Create an intent to launch this activity. */
   public static Intent createIntent(Context context, Movie movie, int left, int top, int width,
@@ -275,7 +269,7 @@ public class MovieActivity extends BaseActivity
     movieBackdrop.load(picasso, minifiedMovie.backdrop());
     updateColorScheme(animate);
 
-    subscriptionManager.subscribe(tmDbDatabase.getMovie(minifiedMovie.id()),
+    subscribe(tmDbDatabase.getMovie(minifiedMovie.id()),
         new EndlessObserver<TMDbMovie>() {
           @Override public void onNext(TMDbMovie response) {
             movie = response;
@@ -298,7 +292,7 @@ public class MovieActivity extends BaseActivity
           }
         }
     );
-    subscriptionManager.subscribe(tmDbDatabase.getMovieImages(minifiedMovie.id()),
+    subscribe(tmDbDatabase.getMovieImages(minifiedMovie.id()),
         new EndlessObserver<Images>() {
           @Override public void onNext(Images images) {
             if (!CollectionUtils.isNullOrEmpty(images.getBackdrops())) {
@@ -311,7 +305,7 @@ public class MovieActivity extends BaseActivity
           }
         }
     );
-    subscriptionManager.subscribe(tmDbDatabase.getSimilarMovies(minifiedMovie.id()),
+    subscribe(tmDbDatabase.getSimilarMovies(minifiedMovie.id()),
         new EndlessObserver<List<Movie>>() {
           @Override public void onNext(List<Movie> movies) {
             if (!CollectionUtils.isNullOrEmpty(movies)) {
@@ -332,7 +326,7 @@ public class MovieActivity extends BaseActivity
           }
         }
     );
-    subscriptionManager.subscribe(tmDbDatabase.getVideos(minifiedMovie.id()),
+    subscribe(tmDbDatabase.getVideos(minifiedMovie.id()),
         new EndlessObserver<List<Video>>() {
           @Override
           public void onNext(List<Video> videos) {
@@ -354,7 +348,7 @@ public class MovieActivity extends BaseActivity
           }
         }
     );
-    subscriptionManager.subscribe(tmDbDatabase.getMovieCredits(minifiedMovie.id()),
+    subscribe(tmDbDatabase.getMovieCredits(minifiedMovie.id()),
         new EndlessObserver<MovieCreditsResponse>() {
           @Override public void onNext(MovieCreditsResponse credits) {
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
@@ -388,7 +382,7 @@ public class MovieActivity extends BaseActivity
           }
         }
     );
-    subscriptionManager.subscribe(couchPotatoDatabase.getProfiles(),
+    subscribe(couchPotatoDatabase.getProfiles(),
         new EndlessObserver<List<Profile>>() {
           @Override public void onNext(List<Profile> profiles) {
             for (Profile profile : profiles) {
@@ -418,7 +412,7 @@ public class MovieActivity extends BaseActivity
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     if (item.getGroupId() == MENU_ADD_GROUP) {
-      subscriptionManager.subscribe(
+      subscribe(
           couchPotatoDatabase.addMovie(item.getItemId(), movie.getImdbId()),
           new EndlessObserver<Boolean>() {
             @Override public void onNext(Boolean aBoolean) {
@@ -742,10 +736,5 @@ public class MovieActivity extends BaseActivity
 
     // Override transitions: we don't want the normal window animations
     overridePendingTransition(0, 0);
-  }
-
-  @Override protected void onPause() {
-    super.onPause();
-    subscriptionManager.unsubscribe();
   }
 }

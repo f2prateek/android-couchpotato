@@ -23,6 +23,8 @@ import android.os.Bundle;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import com.f2prateek.couchpotato.CouchPotatoApplication;
+import com.f2prateek.couchpotato.data.rx.ActivitySubscriptionManager;
+import com.f2prateek.couchpotato.data.rx.SubscriptionManager;
 import com.f2prateek.couchpotato.ui.ActivityModule;
 import com.f2prateek.couchpotato.ui.AppContainer;
 import com.f2prateek.couchpotato.ui.ScopedBus;
@@ -32,6 +34,9 @@ import hugo.weaving.DebugLog;
 import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
+import rx.Observable;
+import rx.Observer;
+import rx.Subscription;
 
 @SuppressLint("Registered") public class BaseActivity extends Activity {
   @Inject AppContainer appContainer;
@@ -39,6 +44,8 @@ import javax.inject.Inject;
 
   private ViewGroup container;
   private ObjectGraph activityGraph;
+
+  private SubscriptionManager<Activity> subscriptionManager;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -91,7 +98,7 @@ import javax.inject.Inject;
     // Eagerly clear the reference to the activity graph to allow it to be garbage collected as
     // soon as possible.
     activityGraph = null;
-
+    subscriptionManager.unsubscribeAll();
     super.onDestroy();
   }
 
@@ -103,5 +110,12 @@ import javax.inject.Inject;
 
   public static BaseActivity get(Fragment fragment) {
     return (BaseActivity) fragment.getActivity();
+  }
+
+  protected <O> Subscription subscribe(final Observable<O> source, final Observer<O> observer) {
+    if (subscriptionManager == null) {
+      subscriptionManager = new ActivitySubscriptionManager(this);
+    }
+    return subscriptionManager.subscribe(source, observer);
   }
 }

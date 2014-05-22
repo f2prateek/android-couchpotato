@@ -16,7 +16,7 @@
 
 package com.f2prateek.couchpotato.ui.fragments.couchpotato;
 
-import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.style.ForegroundColorSpan;
@@ -26,13 +26,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import butterknife.ButterKnife;
+import com.f2prateek.couchpotato.ForActivity;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.Movie;
 import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoDatabase;
 import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoEndpoint;
 import com.f2prateek.couchpotato.data.rx.EndlessObserver;
-import com.f2prateek.couchpotato.data.rx.FragmentSubscriptionManager;
-import com.f2prateek.couchpotato.data.rx.SubscriptionManager;
 import com.f2prateek.couchpotato.ui.activities.CouchPotatoServerSettingsActivity;
 import com.f2prateek.couchpotato.ui.fragments.MoviesGridFragment;
 import com.f2prateek.couchpotato.ui.misc.Truss;
@@ -43,10 +42,7 @@ import javax.inject.Inject;
 public class LibraryMoviesFragment extends MoviesGridFragment {
   @Inject CouchPotatoDatabase database;
   @Inject CouchPotatoEndpoint endpoint;
-
-  private final SubscriptionManager<Fragment> subscriptionManager =
-      new FragmentSubscriptionManager(this);
-
+  @Inject @ForActivity Context activityContext;
   final List<CouchPotatoDatabase.LibraryMovieStatus> displayedMoviesStatus = new ArrayList<>(2);
 
   @Override public void onCreate(Bundle savedInstanceState) {
@@ -101,8 +97,7 @@ public class LibraryMoviesFragment extends MoviesGridFragment {
     if (!endpoint.isSet()) {
       showServerNotSetMessage();
     } else {
-      subscriptionManager.subscribe(database.getMovies(displayedMoviesStatus),
-          new EndlessObserver<List<Movie>>() {
+      subscribe(database.getMovies(displayedMoviesStatus), new EndlessObserver<List<Movie>>() {
             @Override public void onNext(List<Movie> movies) {
               adapter.set(movies);
               root.setDisplayedChildView(grid);
@@ -115,11 +110,6 @@ public class LibraryMoviesFragment extends MoviesGridFragment {
           }
       );
     }
-  }
-
-  @Override public void onPause() {
-    subscriptionManager.unsubscribe();
-    super.onPause();
   }
 
   void showServerNotSetMessage() {

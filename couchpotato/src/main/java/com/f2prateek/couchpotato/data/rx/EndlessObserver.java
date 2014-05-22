@@ -19,11 +19,13 @@ package com.f2prateek.couchpotato.data.rx;
 import com.f2prateek.ln.Ln;
 import rx.Observer;
 
+/** An observer which doesn't care about a sequence ending. */
 public abstract class EndlessObserver<T> implements Observer<T> {
   @Override public void onCompleted() {
+    // Ignore
   }
 
-  @Override public void onError(Throwable throwable) {
-    Ln.e(throwable);
+  @Override public void onError(Throwable e) {
+    Ln.e(e);
   }
 }
