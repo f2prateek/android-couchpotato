@@ -16,8 +16,6 @@
 
 package com.f2prateek.couchpotato.ui.widget;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -75,23 +73,25 @@ public class KenBurnsView extends FrameLayout {
     inactiveImageView = activeImageView;
     activeImageView = swapper;
 
-    // show the active view
-    currentImageIndex = (1 + currentImageIndex) % images.size();
-    loadImage(inactiveImageView, images.get(currentImageIndex));
-
     // Animate the active ImageView
     animate(activeImageView);
 
     // Fade in the active ImageView and fade out the inactive ImageView
-    AnimatorSet animatorSet = new AnimatorSet();
-    animatorSet.setDuration(FADE_DURATION);
-    animatorSet.playTogether(ObjectAnimator.ofFloat(inactiveImageView, "alpha", 1.0f, 0.0f),
-        ObjectAnimator.ofFloat(activeImageView, "alpha", 0.0f, 1.0f));
-    animatorSet.start();
+    activeImageView.animate().alpha(1).withEndAction(new Runnable() {
+      @Override public void run() {
+        inactiveImageView.animate().alpha(0).withEndAction(new Runnable() {
+          @Override public void run() {
+            // Fetch the next image
+            currentImageIndex = (1 + currentImageIndex) % images.size();
+            loadImage(inactiveImageView, images.get(currentImageIndex));
+          }
+        });
+      }
+    });
   }
 
   /**
-   * Animate the view KenBurns style
+   * Animate the view with a KenBurns effect.
    */
   public void animate(View view) {
     float fromScale = pickScale();
