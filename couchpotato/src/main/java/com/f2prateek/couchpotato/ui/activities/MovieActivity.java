@@ -18,6 +18,7 @@ package com.f2prateek.couchpotato.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Bundle;
@@ -44,6 +45,7 @@ import com.f2prateek.couchpotato.data.rx.EndlessObserver;
 import com.f2prateek.couchpotato.ui.fragments.movie.MovieCastInfoFragment;
 import com.f2prateek.couchpotato.ui.fragments.movie.MovieCrewInfoFragment;
 import com.f2prateek.couchpotato.ui.misc.AlphaForegroundColorSpan;
+import com.f2prateek.couchpotato.ui.misc.colorizer.ColorScheme;
 import com.f2prateek.couchpotato.ui.misc.colorizer.FragmentTabAdapter;
 import com.f2prateek.couchpotato.ui.widget.KenBurnsView;
 import com.f2prateek.couchpotato.util.CollectionUtils;
@@ -51,9 +53,13 @@ import com.f2prateek.couchpotato.util.Strings;
 import com.f2prateek.dart.InjectExtra;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
+import rx.Observable;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 public class MovieActivity extends BaseActivity implements AbsListView.OnScrollListener {
   public static final String ARGS_MOVIE = "minified_movie";
@@ -138,6 +144,33 @@ public class MovieActivity extends BaseActivity implements AbsListView.OnScrollL
     subscribe(tmDbDatabase.getMovie(minifiedMovie.id()), new EndlessObserver<TMDbMovie>() {
           @Override public void onNext(TMDbMovie tmDbMovie) {
             setShareIntent(tmDbMovie);
+          }
+        }
+    );
+
+    updateColorScheme();
+  }
+
+  /**
+   * Use the minifiedMovie's poster to find a color scheme and update our views accordingly.
+   */
+  private void updateColorScheme() {
+    subscribe(Observable.from(minifiedMovie.poster()).map(new Func1<String, Bitmap>() {
+          @Override public Bitmap call(String url) {
+            try {
+              return picasso.load(url).get();
+            } catch (IOException e) {
+              throw new RuntimeException(e);
+            }
+          }
+        }).map(new Func1<Bitmap, ColorScheme>() {
+          @Override public ColorScheme call(Bitmap bitmap) {
+            return ColorScheme.fromBitmap(bitmap);
+          }
+        }).subscribeOn(Schedulers.io()), new EndlessObserver<ColorScheme>() {
+          @Override public void onNext(final ColorScheme colorScheme) {
+            tabStrip.setIndicatorColor(colorScheme.getPrimaryAccent());
+            tabStrip.setDividerColor(colorScheme.getPrimaryAccent());
           }
         }
     );
