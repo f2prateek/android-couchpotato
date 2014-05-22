@@ -20,45 +20,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import butterknife.InjectView;
 import com.f2prateek.couchpotato.R;
-import com.f2prateek.couchpotato.ui.widget.BetterViewAnimator;
 
-/**
- * A custom replacement for {@link android.app.ListFragment}.
- */
-public abstract class BaseListFragment extends BaseFragment {
-  @InjectView(R.id.fragment_root) BetterViewAnimator betterViewAnimator;
-  @InjectView(android.R.id.list) ListView listView;
-  @InjectView(android.R.id.progress) ProgressBar progressBar;
-
+public abstract class BaseListFragment extends BaseCollectionFragment {
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     return inflater.inflate(R.layout.fragment_list, container, false);
-  }
-
-  @Override public void onViewCreated(View view, Bundle inState) {
-    super.onViewCreated(view, inState);
-    showLoadingView();
-  }
-
-  protected void showLoadingView() {
-    show(progressBar);
-  }
-
-  private void showList() {
-    show(listView);
-  }
-
-  private void show(View view) {
-    betterViewAnimator.setDisplayedChild(view);
-  }
-
-  protected void setAdapter(ListAdapter adapter) {
-    listView.setAdapter(adapter);
-    showList();
   }
 }

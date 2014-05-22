@@ -16,64 +16,18 @@
 
 package com.f2prateek.couchpotato.ui.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
-import android.widget.ListAdapter;
-import android.widget.ProgressBar;
-import butterknife.InjectView;
-import com.f2prateek.couchpotato.ForActivity;
 import com.f2prateek.couchpotato.R;
-import com.f2prateek.couchpotato.ui.widget.BetterViewAnimator;
-import javax.inject.Inject;
 
 /**
  * A custom replacement for {@link android.app.ListFragment}.
  */
-public abstract class BaseGridFragment extends BaseFragment {
-  @InjectView(R.id.fragment_root) BetterViewAnimator root;
-  @InjectView(R.id.grid) GridView gridView;
-  @InjectView(android.R.id.progress) ProgressBar progressBar;
-
-  @Inject @ForActivity Context activityContext;
-
+public abstract class BaseGridFragment extends BaseCollectionFragment {
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     return inflater.inflate(R.layout.fragment_grid, container, false);
-  }
-
-  @Override public void onViewCreated(View view, Bundle inState) {
-    super.onViewCreated(view, inState);
-    showLoadingView();
-  }
-
-  protected void showLoadingView() {
-    show(progressBar);
-  }
-
-  private void showGrid() {
-    show(gridView);
-  }
-
-  private void show(View view) {
-    root.setDisplayedChild(view);
-  }
-
-  protected View setExtraView(int viewResourceId) {
-    View view = LayoutInflater.from(activityContext).inflate(viewResourceId, root);
-    root.setDisplayedChild(view);
-    return view;
-  }
-
-  protected void setAdapter(ListAdapter adapter) {
-    gridView.setAdapter(adapter);
-    showGrid();
-  }
-
-  public GridView getGridView() {
-    return gridView;
   }
 }

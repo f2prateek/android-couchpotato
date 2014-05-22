@@ -45,7 +45,7 @@ public abstract class ExploreMoviesFragment extends MoviesGridFragment
 
     fetch();
 
-    getGridView().setOnScrollListener(new AbsListView.OnScrollListener() {
+    getCollectionView().setOnScrollListener(new AbsListView.OnScrollListener() {
       @Override public void onScrollStateChanged(AbsListView view, int scrollState) {
         // ignore
       }

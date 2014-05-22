@@ -22,11 +22,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-  <include
-      layout="@layout/partial_loading"/>
-
   <GridView
-      android:id="@+id/grid"
+      android:id="@+id/collection_view"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:paddingTop="@dimen/holo_padding_small"
@@ -39,10 +36,7 @@
       android:stretchMode="columnWidth"
       android:columnWidth="@dimen/poster_item_width"/>
 
-  <!-- For errors or when remote data might require additional information -->
-  <FrameLayout
-      android:id="@+id/extra"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"/>
+  <include
+      layout="@layout/partial_loading"/>
 
 </com.f2prateek.couchpotato.ui.widget.BetterViewAnimator>
