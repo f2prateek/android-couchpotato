@@ -34,7 +34,7 @@ import java.util.ArrayList;
 /**
  * A {@link android.widget.GridView} that supports adding header rows in a
  * very similar way to {@link android.widget.ListView}.
- * See {@link com.f2prateek.couchpotato.ui.widget.HeaderGridView#addHeaderView(android.view.View, Object, boolean)}
+ * See {@link #addHeaderView(android.view.View, Object, boolean)}
  */
 public class HeaderGridView extends GridView {
   private static final String TAG = "HeaderGridView";
@@ -47,7 +47,10 @@ public class HeaderGridView extends GridView {
     /** The view to add to the grid */
     public View view;
     public ViewGroup viewContainer;
-    /** The data backing the view. This is returned from {@link android.widget.ListAdapter#getItem(int)}. */
+    /**
+     * The data backing the view. This is returned from
+     * {@link android.widget.ListAdapter#getItem(int)}.
+     */
     public Object data;
     /** <code>true</code> if the fixed view should be selectable in the grid */
     public boolean isSelectable;
