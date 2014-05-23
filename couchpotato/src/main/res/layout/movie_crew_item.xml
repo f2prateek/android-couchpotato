@@ -36,14 +36,14 @@
   <TextView
       android:id="@+id/crew_name"
       android:layout_width="match_parent"
-      android:layout_height="48dp"
+      android:layout_height="96dp"
       android:layout_gravity="bottom"
       android:gravity="bottom"
       android:background="@drawable/text_background_gradient"
       android:padding="@dimen/holo_padding_small"
-      android:lines="2"
+      android:maxLines="2"
       android:ellipsize="end"
-      tools:text="Peter Jackson\nas Director"
-      style="@style/Widget.CouchPotato.Poster"/>
+      tools:text="Sir Patrick Stewart\nas Charles Xavier (Future)"
+      style="@style/Widget.CouchPotato.Poster.Text"/>
 
 </com.f2prateek.couchpotato.ui.views.MovieCrewItem>

@@ -46,6 +46,6 @@
       android:singleLine="true"
       android:ellipsize="end"
       tools:text="This Is The Title"
-      style="@style/Widget.CouchPotato.Poster"/>
+      style="@style/Widget.CouchPotato.Poster.Text"/>
 
 </com.f2prateek.couchpotato.ui.views.MovieVideoItem>
