@@ -60,7 +60,8 @@ public abstract class BaseCollectionFragment extends BaseFragment {
   }
 
   public View setExtraView(int viewResourceId) {
-    View view = LayoutInflater.from(activityContext).inflate(viewResourceId, root);
+    View view = LayoutInflater.from(activityContext).inflate(viewResourceId, root, false);
+    root.addView(view);
     root.setDisplayedChild(view);
     return view;
   }
