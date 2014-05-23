@@ -28,6 +28,7 @@ import com.f2prateek.couchpotato.data.api.tmdb.model.Video;
 import java.util.List;
 import rx.Observable;
 import rx.functions.Func1;
+import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
 public class TMDbDatabase {
@@ -106,20 +107,14 @@ public class TMDbDatabase {
   }
 
   public Observable<TMDbMovie> getMovie(final long id) {
-    return getConfiguration().flatMap(new Func1<Configuration, Observable<TMDbMovie>>() {
-      @Override public Observable<TMDbMovie> call(Configuration configuration) {
-        return movie(id, configuration);
-      }
-    });
-  }
-
-  private Observable<TMDbMovie> movie(final long id, final Configuration configuration) {
-    return tmDbService.movie(id).map(new Func1<TMDbMovie, TMDbMovie>() {
-      @Override public TMDbMovie call(TMDbMovie movie) {
-        movie.setConfiguration(configuration);
-        return movie;
-      }
-    }).subscribeOn(Schedulers.io());
+    return Observable.combineLatest(getConfiguration(), tmDbService.movie(id),
+        new Func2<Configuration, TMDbMovie, TMDbMovie>() {
+          @Override public TMDbMovie call(Configuration configuration, TMDbMovie tmDbMovie) {
+            tmDbMovie.setConfiguration(configuration);
+            return tmDbMovie;
+          }
+        }
+    ).subscribeOn(Schedulers.io());
   }
 
   public Observable<List<Movie>> discoverMovies(final int page) {
@@ -131,52 +126,34 @@ public class TMDbDatabase {
   }
 
   public Observable<Images> getMovieImages(final long id) {
-    return getConfiguration().flatMap(new Func1<Configuration, Observable<Images>>() {
-      @Override public Observable<Images> call(Configuration configuration) {
-        return images(id, configuration);
-      }
-    }).subscribeOn(Schedulers.io());
-  }
-
-  private Observable<Images> images(final long id, final Configuration configuration) {
-    return tmDbService.movieImages(id).map(new Func1<Images, Images>() {
-      @Override public Images call(Images images) {
-        images.setConfiguration(configuration);
-        return images;
-      }
-    });
+    return Observable.combineLatest(getConfiguration(), tmDbService.movieImages(id),
+        new Func2<Configuration, Images, Images>() {
+          @Override public Images call(Configuration configuration, Images images) {
+            images.setConfiguration(configuration);
+            return images;
+          }
+        }
+    ).subscribeOn(Schedulers.io());
   }
 
   public Observable<MovieCreditsResponse> getMovieCredits(final long id) {
-    return getConfiguration().flatMap(new Func1<Configuration, Observable<MovieCreditsResponse>>() {
-      @Override public Observable<MovieCreditsResponse> call(Configuration configuration) {
-        return credits(id, configuration);
-      }
-    }).subscribeOn(Schedulers.io());
-  }
-
-  private Observable<MovieCreditsResponse> credits(final long id,
-      final Configuration configuration) {
-    return tmDbService.movieCredits(id)
-        .map(new Func1<MovieCreditsResponse, MovieCreditsResponse>() {
-          @Override public MovieCreditsResponse call(MovieCreditsResponse movieCreditsResponse) {
+    return Observable.combineLatest(getConfiguration(), tmDbService.movieCredits(id),
+        new Func2<Configuration, MovieCreditsResponse, MovieCreditsResponse>() {
+          @Override public MovieCreditsResponse call(Configuration configuration,
+              MovieCreditsResponse movieCreditsResponse) {
             movieCreditsResponse.setConfiguration(configuration);
             return movieCreditsResponse;
           }
-        });
+        }
+    ).subscribeOn(Schedulers.io());
   }
 
   public Observable<List<Video>> getVideos(final long id) {
-    return videos(id).subscribeOn(Schedulers.io());
-  }
-
-  private Observable<List<Video>> videos(final long id) {
-    return tmDbService.movieVideos(id) //
-        .map(new Func1<MovieVideosResponse, List<Video>>() {
-          @Override public List<Video> call(MovieVideosResponse movieVideosResponse) {
-            return movieVideosResponse.getResults();
-          }
-        });
+    return tmDbService.movieVideos(id).map(new Func1<MovieVideosResponse, List<Video>>() {
+      @Override public List<Video> call(MovieVideosResponse movieVideosResponse) {
+        return movieVideosResponse.getResults();
+      }
+    }).subscribeOn(Schedulers.io());
   }
 
   public Observable<List<Movie>> getSimilarMovies(final long id) {
