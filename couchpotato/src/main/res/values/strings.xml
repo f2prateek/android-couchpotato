@@ -45,6 +45,7 @@
   <string name="movie_added">Successfully added {movie} to your wanted list</string>
   <string name="add">Add</string>
   <string name="share">Share</string>
+  <string name="reviews">Reviews</string>
 
   <!-- Login Activity -->
   <string name="username_hint">Username</string>

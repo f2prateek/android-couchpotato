@@ -18,7 +18,7 @@
 
   <!-- Customization of dimensions originally defined in res/values/dimens.xml for screens with
         more than 600dp of available width. This would include 7" devices in portrait -->
-  <dimen name="poster_item_width">144dp</dimen>
-  <dimen name="video_item_width">288dp</dimen>
+  <dimen name="small_grid_item_width">144dp</dimen>
+  <dimen name="large_grid_item_width">288dp</dimen>
 
 </resources>

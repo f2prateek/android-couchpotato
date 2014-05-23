@@ -20,6 +20,7 @@ import com.f2prateek.couchpotato.data.api.tmdb.model.Configuration;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Images;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MovieCollectionResponse;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MovieCreditsResponse;
+import com.f2prateek.couchpotato.data.api.tmdb.model.MovieReviewsResponse;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MovieVideosResponse;
 import com.f2prateek.couchpotato.data.api.tmdb.model.TMDbMovie;
 import retrofit.http.GET;
@@ -46,6 +47,8 @@ public interface TMDbService {
   @GET("/movie/{id}/credits") Observable<MovieCreditsResponse> movieCredits(@Path("id") long id);
 
   @GET("/movie/{id}/videos") Observable<MovieVideosResponse> movieVideos(@Path("id") long id);
+
+  @GET("/movie/{id}/reviews") Observable<MovieReviewsResponse> movieReviews(@Path("id") long id);
 
   @GET("/movie/{id}/similar_movies") Observable<MovieCollectionResponse> movieSimilar(
       @Path("id") long id);

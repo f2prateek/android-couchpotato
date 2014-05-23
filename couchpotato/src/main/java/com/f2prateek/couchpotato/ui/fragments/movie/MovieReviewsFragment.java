@@ -26,18 +26,16 @@ import com.f2prateek.couchpotato.ForActivity;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.Movie;
 import com.f2prateek.couchpotato.data.api.tmdb.TMDbDatabase;
-import com.f2prateek.couchpotato.data.api.tmdb.model.Video;
+import com.f2prateek.couchpotato.data.api.tmdb.model.MovieReview;
 import com.f2prateek.couchpotato.data.rx.EndlessObserver;
 import com.f2prateek.couchpotato.ui.misc.BindableListAdapter;
-import com.f2prateek.couchpotato.ui.views.MovieVideoItem;
+import com.f2prateek.couchpotato.ui.views.MovieReviewItem;
 import com.f2prateek.couchpotato.util.CollectionUtils;
-import com.squareup.picasso.Picasso;
 import java.util.List;
 import javax.inject.Inject;
 
-public class MovieVideosFragment extends MovieInfoGridFragment {
+public class MovieReviewsFragment extends MovieInfoGridFragment {
   @Inject TMDbDatabase tmDbDatabase;
-  @Inject Picasso picasso;
   @Inject @ForActivity Context activityContext;
 
   @Override public void onViewCreated(View view, Bundle inState) {
@@ -47,11 +45,12 @@ public class MovieVideosFragment extends MovieInfoGridFragment {
   }
 
   @Override protected void fetch(Movie minifiedMovie) {
-    subscribe(tmDbDatabase.getVideos(minifiedMovie.id()), new EndlessObserver<List<Video>>() {
-          @Override public void onNext(List<Video> videos) {
-            if (!CollectionUtils.isNullOrEmpty(videos)) {
-              MovieVideoAdapter adapter = new MovieVideoAdapter(activityContext, picasso);
-              adapter.replaceWith(videos);
+    subscribe(tmDbDatabase.getMovieReviews(minifiedMovie.id()),
+        new EndlessObserver<List<MovieReview>>() {
+          @Override public void onNext(List<MovieReview> movieReviews) {
+            if (!CollectionUtils.isNullOrEmpty(movieReviews)) {
+              MovieReviewAdapter adapter = new MovieReviewAdapter(activityContext);
+              adapter.replaceWith(movieReviews);
               setAdapter(adapter);
             }
           }
@@ -59,20 +58,17 @@ public class MovieVideosFragment extends MovieInfoGridFragment {
     );
   }
 
-  static class MovieVideoAdapter extends BindableListAdapter<Video> {
-    private final Picasso picasso;
-
-    public MovieVideoAdapter(Context context, Picasso picasso) {
+  static class MovieReviewAdapter extends BindableListAdapter<MovieReview> {
+    public MovieReviewAdapter(Context context) {
       super(context);
-      this.picasso = picasso;
     }
 
     @Override public View newView(LayoutInflater inflater, int position, ViewGroup container) {
-      return inflater.inflate(R.layout.movie_video_item, container, false);
+      return inflater.inflate(R.layout.movie_review_item, container, false);
     }
 
-    @Override public void bindView(Video item, int position, View view) {
-      ((MovieVideoItem) view).bindTo(item, picasso);
+    @Override public void bindView(MovieReview item, int position, View view) {
+      ((MovieReviewItem) view).bindTo(item);
     }
   }
 }

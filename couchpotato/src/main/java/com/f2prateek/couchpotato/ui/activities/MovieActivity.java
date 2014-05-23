@@ -44,6 +44,7 @@ import com.f2prateek.couchpotato.data.api.tmdb.model.TMDbMovie;
 import com.f2prateek.couchpotato.data.rx.EndlessObserver;
 import com.f2prateek.couchpotato.ui.fragments.movie.MovieCastInfoFragment;
 import com.f2prateek.couchpotato.ui.fragments.movie.MovieCrewInfoFragment;
+import com.f2prateek.couchpotato.ui.fragments.movie.MovieReviewsFragment;
 import com.f2prateek.couchpotato.ui.fragments.movie.MovieSimilarMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.movie.MovieVideosFragment;
 import com.f2prateek.couchpotato.ui.misc.AlphaForegroundColorSpan;
@@ -126,7 +127,9 @@ public class MovieActivity extends BaseActivity implements AbsListView.OnScrollL
     tabAdapter.addTab(MovieVideosFragment.class, MovieVideosFragment.newInstanceArgs(minifiedMovie),
         R.string.videos);
     tabAdapter.addTab(MovieSimilarMoviesFragment.class,
-        MovieVideosFragment.newInstanceArgs(minifiedMovie), R.string.similar_movies);
+        MovieSimilarMoviesFragment.newInstanceArgs(minifiedMovie), R.string.similar_movies);
+    tabAdapter.addTab(MovieReviewsFragment.class,
+        MovieReviewsFragment.newInstanceArgs(minifiedMovie), R.string.reviews);
 
     // Can't be configured via xml so done here!
     tabStrip.setTextColor(getResources().getColor(R.color.white));

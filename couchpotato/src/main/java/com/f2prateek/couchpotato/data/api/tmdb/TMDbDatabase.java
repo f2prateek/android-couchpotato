@@ -22,6 +22,8 @@ import com.f2prateek.couchpotato.data.api.tmdb.model.Images;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MinifiedMovie;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MovieCollectionResponse;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MovieCreditsResponse;
+import com.f2prateek.couchpotato.data.api.tmdb.model.MovieReview;
+import com.f2prateek.couchpotato.data.api.tmdb.model.MovieReviewsResponse;
 import com.f2prateek.couchpotato.data.api.tmdb.model.MovieVideosResponse;
 import com.f2prateek.couchpotato.data.api.tmdb.model.TMDbMovie;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Video;
@@ -162,5 +164,20 @@ public class TMDbDatabase {
         return transformMovieResponse(configuration, tmDbService.movieSimilar(id));
       }
     });
+  }
+
+  public Observable<List<MovieReview>> getMovieReviews(final long id) {
+    return Observable.combineLatest(getConfiguration(), tmDbService.movieReviews(id),
+        new Func2<Configuration, MovieReviewsResponse, MovieReviewsResponse>() {
+          @Override public MovieReviewsResponse call(Configuration configuration,
+              MovieReviewsResponse movieReviewsResponse) {
+            return movieReviewsResponse;
+          }
+        }
+    ).map(new Func1<MovieReviewsResponse, List<MovieReview>>() {
+      @Override public List<MovieReview> call(MovieReviewsResponse movieReviewsResponse) {
+        return movieReviewsResponse.getResults();
+      }
+    }).subscribeOn(Schedulers.io());
   }
 }

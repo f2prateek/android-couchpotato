@@ -20,7 +20,7 @@
         (~960dp and ~1280dp respectively). -->
   <dimen name="activity_horizontal_margin">64dp</dimen>
 
-  <dimen name="poster_item_width">160dp</dimen>
-  <dimen name="video_item_width">320dp</dimen>
+  <dimen name="small_grid_item_width">160dp</dimen>
+  <dimen name="large_grid_item_width">320dp</dimen>
 
 </resources>

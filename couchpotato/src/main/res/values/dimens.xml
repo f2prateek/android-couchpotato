@@ -25,8 +25,8 @@
   <dimen name="holo_padding_huge">32dp</dimen>
 
   <!-- Width of the grid columns.. -->
-  <dimen name="poster_item_width">96dp</dimen>
-  <dimen name="video_item_width">240dp</dimen>
+  <dimen name="small_grid_item_width">96dp</dimen>
+  <dimen name="large_grid_item_width">240dp</dimen>
 
   <!-- Movie Activity -->
   <dimen name="movie_header_height">288dp</dimen>
