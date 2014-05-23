@@ -98,7 +98,12 @@ import rx.Subscription;
     // Eagerly clear the reference to the activity graph to allow it to be garbage collected as
     // soon as possible.
     activityGraph = null;
-    subscriptionManager.unsubscribeAll();
+
+    // Clear any subscriptions
+    if (subscriptionManager != null) {
+      subscriptionManager.unsubscribeAll();
+    }
+
     super.onDestroy();
   }
 

@@ -47,7 +47,7 @@ public class MovieVideoItem extends FrameLayout {
 
   public void bindTo(Video video, Picasso picasso) {
     this.video = video;
-    picasso.load(video.getThumbnail()).fit().centerCrop().into(image);
+    picasso.load(video.getThumbnail()).fit().centerCrop().error(R.drawable.ic_error).into(image);
     title.setText(video.getName());
   }
 

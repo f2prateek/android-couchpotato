@@ -55,7 +55,7 @@ public class MovieCrewItem extends FrameLayout {
   }
 
   private void bindTo(String imageUrl, String crew, String role, Picasso picasso) {
-    picasso.load(imageUrl).fit().centerCrop().into(profile);
+    picasso.load(imageUrl).fit().centerCrop().error(R.drawable.ic_error).into(profile);
 
     String text = getResources().getString(R.string.crew_name_display_format, crew, role);
     SpannableString spannableString = new SpannableString(text);

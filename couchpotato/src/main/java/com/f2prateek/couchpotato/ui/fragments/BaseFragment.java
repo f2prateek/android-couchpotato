@@ -70,12 +70,11 @@ public abstract class BaseFragment extends Fragment {
   }
 
   @Override public void onDetach() {
-    super.onDetach();
-
     // Clear any subscriptions
     if (subscriptionManager != null) {
       subscriptionManager.unsubscribeAll();
     }
+    super.onDetach();
   }
 
   @Override public void onDestroyView() {
