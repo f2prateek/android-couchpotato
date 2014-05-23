@@ -20,6 +20,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.f2prateek.couchpotato.Events;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.Movie;
 import com.f2prateek.couchpotato.ui.ScopedBus;
@@ -28,15 +29,16 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieGridAdapter extends BindableAdapter<Movie> {
+public class MovieGridAdapter extends BindableAdapter<Movie>
+    implements MovieGridItem.MovieClickListener {
   private List<Movie> movies;
   private final Picasso picasso;
-  private final ScopedBus bus;
+  private final ScopedBus scopedBus;
 
-  public MovieGridAdapter(Context context, Picasso picasso, ScopedBus bus) {
+  public MovieGridAdapter(Context context, Picasso picasso, ScopedBus scopedBus) {
     super(context);
     this.picasso = picasso;
-    this.bus = bus;
+    this.scopedBus = scopedBus;
     movies = new ArrayList<>();
   }
 
@@ -67,6 +69,10 @@ public class MovieGridAdapter extends BindableAdapter<Movie> {
   }
 
   @Override public void bindView(Movie item, int position, View view) {
-    ((MovieGridItem) view).bindTo(item, picasso, bus);
+    ((MovieGridItem) view).bindTo(item, picasso, this);
+  }
+
+  @Override public void onMovieClicked(Movie movie) {
+    scopedBus.post(Events.OnMovieClickedEvent.fromSource(movie));
   }
 }
