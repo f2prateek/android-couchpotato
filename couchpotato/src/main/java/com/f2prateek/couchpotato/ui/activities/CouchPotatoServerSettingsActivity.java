@@ -33,6 +33,7 @@ import com.f2prateek.couchpotato.data.api.couchpotato.model.ApiKeyResponse;
 import com.f2prateek.couchpotato.data.rx.EndlessObserver;
 import com.f2prateek.couchpotato.util.Strings;
 import com.f2prateek.ln.Ln;
+import com.squareup.phrase.Phrase;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import hugo.weaving.DebugLog;
@@ -182,15 +183,15 @@ public class CouchPotatoServerSettingsActivity extends BaseActivity {
               // an invalid url
               final String url = endpoint.getUrl();
               Crouton.makeText(CouchPotatoServerSettingsActivity.this,
-                  getString(R.string.inaccessible_server_crouton, url), Style.ALERT)
-                  .setOnClickListener(new View.OnClickListener() {
-                    @Override public void onClick(View v) {
-                      final Intent intent = new Intent(Intent.ACTION_VIEW);
-                      intent.setData(Uri.parse(url));
-                      startActivity(intent);
-                    }
-                  })
-                  .show();
+                  Phrase.from(CouchPotatoServerSettingsActivity.this,
+                      R.string.inaccessible_server_crouton).put("url", url).format(), Style.ALERT
+              ).setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                  final Intent intent = new Intent(Intent.ACTION_VIEW);
+                  intent.setData(Uri.parse(url));
+                  startActivity(intent);
+                }
+              }).show();
               loginError();
             }
           });

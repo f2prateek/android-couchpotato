@@ -29,13 +29,14 @@ import butterknife.InjectView;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Cast;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Crew;
+import com.squareup.phrase.Phrase;
 import com.squareup.picasso.Picasso;
 
 public class MovieCrewItem extends FrameLayout {
   @InjectView(R.id.crew_profile) ImageView profile;
   @InjectView(R.id.crew_name) TextView name;
 
-  private final TypefaceSpan span = new TypefaceSpan("sans-serif-condensed");
+  private TypefaceSpan condensedTextSpan;
 
   public MovieCrewItem(Context context, AttributeSet attrs) {
     super(context, attrs);
@@ -44,6 +45,8 @@ public class MovieCrewItem extends FrameLayout {
   @Override protected void onFinishInflate() {
     super.onFinishInflate();
     ButterKnife.inject(this);
+
+    condensedTextSpan = new TypefaceSpan("sans-serif-condensed");
   }
 
   public void bindTo(Cast cast, Picasso picasso) {
@@ -57,9 +60,13 @@ public class MovieCrewItem extends FrameLayout {
   private void bindTo(String imageUrl, String crew, String role, Picasso picasso) {
     picasso.load(imageUrl).fit().centerCrop().error(R.drawable.ic_error).into(profile);
 
-    String text = getResources().getString(R.string.crew_name_display_format, crew, role);
-    SpannableString spannableString = new SpannableString(text);
-    spannableString.setSpan(span, text.indexOf(role), text.length(),
+    String displayText = Phrase.from(this, R.string.crew_name_display_format)
+        .put("name", crew)
+        .put("role", role)
+        .format()
+        .toString();
+    SpannableString spannableString = new SpannableString(displayText);
+    spannableString.setSpan(condensedTextSpan, displayText.indexOf(role), displayText.length(),
         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     name.setText(spannableString);
   }

@@ -111,6 +111,8 @@ dependencies {
   compile 'com.github.castorflex.smoothprogressbar:library:0.5.+'
   compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
 
+  compile 'com.squareup.phrase:phrase:1.0.+'
+
   debugCompile 'com.jakewharton.madge:madge:1.1.+'
   debugCompile 'com.jakewharton.scalpel:scalpel:1.1.+'
 

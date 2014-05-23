@@ -41,8 +41,8 @@
   <string name="videos">Videos</string>
   <string name="crew">Crew</string>
   <string name="cast">Cast</string>
-  <string name="crew_name_display_format">%1$s\nas %2$s</string>
-  <string name="movie_added">Successfully added %1$s to your wanted list</string>
+  <string name="crew_name_display_format">{name}\nas {role}</string>
+  <string name="movie_added">Successfully added {movie} to your wanted list</string>
   <string name="add">Add</string>
   <string name="share">Share</string>
 
@@ -54,7 +54,7 @@
   <string name="invalid">Invalid</string>
   <string name="invalid_fields">Please check all fields</string>
   <string name="invalid_credentials">Credentials rejected. Please try again.</string>
-  <string name="inaccessible_server_crouton">Could not reach CouchPotato server at %1$s. Try
+  <string name="inaccessible_server_crouton">Could not reach CouchPotato server at {url}. Try
     clicking this to view in a browser.
   </string>
   <string name="cancel">Cancel</string>
