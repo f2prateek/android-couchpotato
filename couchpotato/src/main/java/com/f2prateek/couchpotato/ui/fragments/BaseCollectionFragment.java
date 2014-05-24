@@ -16,7 +16,6 @@
 
 package com.f2prateek.couchpotato.ui.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,10 +23,8 @@ import android.widget.AbsListView;
 import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 import butterknife.InjectView;
-import com.f2prateek.couchpotato.ForActivity;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.ui.widget.BetterViewAnimator;
-import javax.inject.Inject;
 
 /**
  * A custom replacement for {@link android.app.ListFragment}.
@@ -39,8 +36,6 @@ public abstract class BaseCollectionFragment extends BaseFragment {
   @InjectView(R.id.fragment_root) BetterViewAnimator root;
   @InjectView(R.id.collection_view) AbsListView collectionView;
   @InjectView(android.R.id.progress) ProgressBar progressBar;
-
-  @Inject @ForActivity Context activityContext;
 
   public void showLoadingView() {
     show(progressBar);
@@ -59,11 +54,9 @@ public abstract class BaseCollectionFragment extends BaseFragment {
     showLoadingView();
   }
 
-  public View setExtraView(int viewResourceId) {
-    View view = LayoutInflater.from(activityContext).inflate(viewResourceId, root, false);
+  public void setExtraView(View view) {
     root.addView(view);
-    root.setDisplayedChild(view);
-    return view;
+    show(view);
   }
 
   protected void setAdapter(ListAdapter adapter) {
@@ -73,5 +66,9 @@ public abstract class BaseCollectionFragment extends BaseFragment {
 
   public AbsListView getCollectionView() {
     return collectionView;
+  }
+
+  protected View inflate(int viewResourceId) {
+    return LayoutInflater.from(activityContext).inflate(viewResourceId, root, false);
   }
 }

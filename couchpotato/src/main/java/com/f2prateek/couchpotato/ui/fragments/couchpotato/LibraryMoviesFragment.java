@@ -25,7 +25,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import butterknife.ButterKnife;
 import com.f2prateek.couchpotato.ForActivity;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.Movie;
@@ -114,37 +113,37 @@ public class LibraryMoviesFragment extends MoviesGridFragment {
 
   void showServerNotSetMessage() {
     final Intent intent = new Intent(activityContext, CouchPotatoServerSettingsActivity.class);
-    View view = setExtraView(R.layout.partial_error_message);
-    TextView textView = ButterKnife.findById(view, R.id.error_message);
-    textView.setText(new Truss() //
+    TextView extraText = (TextView) inflate(R.layout.partial_extra_text);
+    extraText.setText(new Truss() //
             .append(getString(R.string.error_server_not_set)) //
             .append(" ") // Space between sentences
             .pushSpan(new ForegroundColorSpan(getResources().getColor(R.color.app_color)))
             .append(getString(R.string.error_server_not_set_prompt))
             .build()
     );
-    textView.setOnClickListener(new View.OnClickListener() {
+    extraText.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
         startActivity(intent);
       }
     });
+    setExtraView(extraText);
   }
 
   void showInaccessibleServerMessage() {
     final Intent intent = new Intent(activityContext, CouchPotatoServerSettingsActivity.class);
-    View view = setExtraView(R.layout.partial_error_message);
-    TextView textView = ButterKnife.findById(view, R.id.error_message);
-    textView.setText(new Truss() //
+    TextView extraText = (TextView) inflate(R.layout.partial_extra_text);
+    extraText.setText(new Truss() //
             .append(getString(R.string.error_inaccessible_server)) //
             .append(" ") // Space between sentences
             .pushSpan(new ForegroundColorSpan(getResources().getColor(R.color.app_color)))
             .append(getString(R.string.error_inaccessible_server_prompt))
             .build()
     );
-    textView.setOnClickListener(new View.OnClickListener() {
+    extraText.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
         startActivity(intent);
       }
     });
+    setExtraView(extraText);
   }
 }

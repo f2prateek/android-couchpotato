@@ -31,6 +31,7 @@ import com.f2prateek.couchpotato.data.rx.EndlessObserver;
 import com.f2prateek.couchpotato.ui.misc.BindableListAdapter;
 import com.f2prateek.couchpotato.ui.views.MovieReviewItem;
 import com.f2prateek.couchpotato.util.CollectionUtils;
+import com.squareup.phrase.Phrase;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -52,6 +53,10 @@ public class MovieReviewsFragment extends MovieInfoGridFragment {
               MovieReviewAdapter adapter = new MovieReviewAdapter(activityContext);
               adapter.replaceWith(movieReviews);
               setAdapter(adapter);
+            } else {
+              setEmptyView(Phrase.from(activityContext, R.string.no_items)
+                  .put("items", getString(R.string.reviews))
+                  .format());
             }
           }
         }

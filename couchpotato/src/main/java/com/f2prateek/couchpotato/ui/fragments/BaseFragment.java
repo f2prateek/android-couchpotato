@@ -17,9 +17,11 @@
 package com.f2prateek.couchpotato.ui.fragments;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import butterknife.ButterKnife;
+import com.f2prateek.couchpotato.ForActivity;
 import com.f2prateek.couchpotato.data.rx.FragmentSubscriptionManager;
 import com.f2prateek.couchpotato.data.rx.SubscriptionManager;
 import com.f2prateek.couchpotato.ui.ScopedBus;
@@ -36,6 +38,7 @@ import rx.Subscription;
  */
 public abstract class BaseFragment extends Fragment {
   @Inject ScopedBus bus;
+  @Inject @ForActivity protected Context activityContext;
 
   private SubscriptionManager<Fragment> subscriptionManager;
 

@@ -23,7 +23,7 @@ import android.view.ViewGroup;
 import com.f2prateek.couchpotato.R;
 
 /**
- * A custom replacement for {@link android.app.ListFragment}.
+ * A custom replacement for {@link android.app.ListFragment} that can display a grid.
  */
 public abstract class BaseGridFragment extends BaseCollectionFragment {
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,

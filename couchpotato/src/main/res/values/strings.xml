@@ -46,6 +46,7 @@
   <string name="add">Add</string>
   <string name="share">Share</string>
   <string name="reviews">Reviews</string>
+  <string name="no_items">No {items} available.</string>
 
   <!-- Login Activity -->
   <string name="username_hint">Username</string>

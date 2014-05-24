@@ -22,6 +22,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import butterknife.ButterKnife;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.Movie;
@@ -67,5 +69,16 @@ public abstract class MovieInfoGridFragment extends BaseGridFragment {
     View placeholder = inflater.inflate(R.layout.movie_header_placeholder, gridView, false);
     gridView.addHeaderView(placeholder);
     return root;
+  }
+
+  public void setEmptyView(CharSequence emptyText) {
+    LinearLayout container = new LinearLayout(activityContext);
+    container.setOrientation(LinearLayout.VERTICAL);
+    container.addView(inflate(R.layout.movie_header_placeholder));
+    TextView emptyView = (TextView) inflate(R.layout.partial_extra_text);
+    emptyView.setText(emptyText);
+    container.addView(emptyView);
+
+    setExtraView(container);
   }
 }
