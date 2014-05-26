@@ -101,8 +101,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/login"
-        android:text="@string/login"
-        android:fontFamily="sans-serif-condensed"/>
+        android:text="@string/login"/>
 
     <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
         android:id="@+id/progress"
