@@ -65,7 +65,7 @@ public class MovieGridAdapter extends BindableAdapter<Movie>
   }
 
   @Override public View newView(LayoutInflater inflater, int position, ViewGroup container) {
-    return inflater.inflate(R.layout.grid_movie_item, container, false);
+    return inflater.inflate(R.layout.movie_poster_grid_item, container, false);
   }
 
   @Override public void bindView(Movie item, int position, View view) {
