@@ -135,7 +135,11 @@ public class MovieActivity extends BaseActivity implements AbsListView.OnScrollL
     tabStrip.setTextColor(getResources().getColor(R.color.white));
     tabStrip.setViewPager(pager);
 
-    picasso.load(minifiedMovie.poster()).fit().centerCrop().into(moviePoster);
+    picasso.load(minifiedMovie.poster())
+        .fit()
+        .centerCrop()
+        .error(R.drawable.ic_launcher)
+        .into(moviePoster);
     movieBackdrop.load(picasso, minifiedMovie.backdrop());
 
     subscribe(tmDbDatabase.getMovieImages(minifiedMovie.id()), new EndlessObserver<Images>() {

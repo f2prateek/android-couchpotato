@@ -34,7 +34,11 @@
       android:stretchMode="columnWidth"
       android:columnWidth="@dimen/small_grid_item_width"/>
 
-  <include
-      layout="@layout/partial_loading"/>
+  <ProgressBar
+      android:id="@android:id/progress"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingTop="@dimen/movie_header_height"
+      android:layout_gravity="center"/>
 
 </com.f2prateek.couchpotato.ui.widget.BetterViewAnimator>

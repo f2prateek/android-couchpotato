@@ -167,6 +167,6 @@ public class KenBurnsView extends FrameLayout {
   }
 
   private void loadImage(ImageView imageView, String image) {
-    picasso.load(image).fit().centerCrop().noFade().into(imageView);
+    picasso.load(image).fit().centerCrop().error(R.drawable.ic_launcher).noFade().into(imageView);
   }
 }
