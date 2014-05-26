@@ -2,6 +2,7 @@ buildscript {
   repositories {
     mavenCentral()
     maven { url 'http://download.crashlytics.com/maven' }
+    maven { url "https://github.com/ben-manes/gradle-versions-plugin/raw/mvnrepo" }
   }
   dependencies {
     classpath 'com.android.tools.build:gradle:0.10.+'
@@ -9,6 +10,7 @@ buildscript {
     classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.10.+'
     classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:+'
     classpath 'com.neenbedankt.gradle.plugins:android-apt:1.2'
+    classpath 'com.github.ben-manes:gradle-versions-plugin:0.5-beta-2'
   }
 }
 
@@ -18,6 +20,7 @@ apply plugin: 'checkstyle'
 apply plugin: 'hugo'
 apply plugin: 'crashlytics'
 apply plugin: 'android-apt'
+apply plugin: 'versions'
 
 def versionMajor = 1
 def versionMinor = 0
@@ -94,7 +97,7 @@ dependencies {
   apt 'com.squareup.dagger:dagger-compiler:1.2.+'
 
   compile 'com.squareup.retrofit:retrofit:1.5.+'
-  compile 'com.squareup.okhttp:okhttp:1.3.+'
+  compile 'com.squareup.okhttp:okhttp:2.0.+'
   compile 'com.squareup.picasso:picasso:2.2.+'
 
   compile 'com.netflix.rxjava:rxjava-core:0.17.+'
