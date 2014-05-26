@@ -30,7 +30,8 @@
     <com.f2prateek.couchpotato.ui.widget.KenBurnsView
         android:id="@+id/movie_header_backdrop"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:background="@color/dark_grey"/>
 
     <ImageView
         android:id="@+id/movie_header_poster"
