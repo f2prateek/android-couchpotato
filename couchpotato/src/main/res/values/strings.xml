@@ -41,7 +41,7 @@
   <string name="videos">Videos</string>
   <string name="crew">Crew</string>
   <string name="cast">Cast</string>
-  <string name="crew_name_display_format">{name}\nas {role}</string>
+  <string name="crew_name_display_format">{name} as {role}</string>
   <string name="movie_added">Successfully added {movie} to your wanted list</string>
   <string name="add">Add</string>
   <string name="share">Share</string>

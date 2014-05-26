@@ -17,9 +17,6 @@
 package com.f2prateek.couchpotato.ui.views;
 
 import android.content.Context;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.TypefaceSpan;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -36,8 +33,6 @@ public class MovieCrewItem extends FrameLayout {
   @InjectView(R.id.crew_profile) ImageView profile;
   @InjectView(R.id.crew_name) TextView name;
 
-  private TypefaceSpan condensedTextSpan;
-
   public MovieCrewItem(Context context, AttributeSet attrs) {
     super(context, attrs);
   }
@@ -45,8 +40,6 @@ public class MovieCrewItem extends FrameLayout {
   @Override protected void onFinishInflate() {
     super.onFinishInflate();
     ButterKnife.inject(this);
-
-    condensedTextSpan = new TypefaceSpan("sans-serif-condensed");
   }
 
   public void bindTo(Cast cast, Picasso picasso) {
@@ -59,15 +52,9 @@ public class MovieCrewItem extends FrameLayout {
 
   private void bindTo(String imageUrl, String crew, String role, Picasso picasso) {
     picasso.load(imageUrl).fit().centerCrop().error(R.drawable.ic_launcher).into(profile);
-
-    String displayText = Phrase.from(this, R.string.crew_name_display_format)
+    name.setText(Phrase.from(this, R.string.crew_name_display_format)
         .put("name", crew)
         .put("role", role)
-        .format()
-        .toString();
-    SpannableString spannableString = new SpannableString(displayText);
-    spannableString.setSpan(condensedTextSpan, displayText.indexOf(role), displayText.length(),
-        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-    name.setText(spannableString);
+        .format());
   }
 }
