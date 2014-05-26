@@ -44,6 +44,7 @@ import com.f2prateek.couchpotato.data.api.tmdb.model.TMDbMovie;
 import com.f2prateek.couchpotato.data.rx.EndlessObserver;
 import com.f2prateek.couchpotato.ui.fragments.movie.MovieCastInfoFragment;
 import com.f2prateek.couchpotato.ui.fragments.movie.MovieCrewInfoFragment;
+import com.f2prateek.couchpotato.ui.fragments.movie.MovieInfoGridFragment;
 import com.f2prateek.couchpotato.ui.fragments.movie.MovieReviewsFragment;
 import com.f2prateek.couchpotato.ui.fragments.movie.MovieSimilarMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.movie.MovieVideosFragment;
@@ -120,16 +121,16 @@ public class MovieActivity extends BaseActivity implements AbsListView.OnScrollL
 
     tabAdapter = new FragmentTabAdapter(this, pager);
     pager.setAdapter(tabAdapter);
-    tabAdapter.addTab(MovieCastInfoFragment.class,
-        MovieCastInfoFragment.newInstanceArgs(minifiedMovie), R.string.cast);
-    tabAdapter.addTab(MovieCrewInfoFragment.class,
-        MovieCrewInfoFragment.newInstanceArgs(minifiedMovie), R.string.crew);
-    tabAdapter.addTab(MovieVideosFragment.class, MovieVideosFragment.newInstanceArgs(minifiedMovie),
-        R.string.videos);
+    tabAdapter.addTab(MovieVideosFragment.class,
+        MovieInfoGridFragment.newInstanceArgs(minifiedMovie), R.string.videos);
     tabAdapter.addTab(MovieSimilarMoviesFragment.class,
-        MovieSimilarMoviesFragment.newInstanceArgs(minifiedMovie), R.string.similar_movies);
+        MovieInfoGridFragment.newInstanceArgs(minifiedMovie), R.string.similar_movies);
+    tabAdapter.addTab(MovieCastInfoFragment.class,
+        MovieInfoGridFragment.newInstanceArgs(minifiedMovie), R.string.cast);
+    tabAdapter.addTab(MovieCrewInfoFragment.class,
+        MovieInfoGridFragment.newInstanceArgs(minifiedMovie), R.string.crew);
     tabAdapter.addTab(MovieReviewsFragment.class,
-        MovieReviewsFragment.newInstanceArgs(minifiedMovie), R.string.reviews);
+        MovieInfoGridFragment.newInstanceArgs(minifiedMovie), R.string.reviews);
 
     // Can't be configured via xml so done here!
     tabStrip.setTextColor(getResources().getColor(R.color.white));
