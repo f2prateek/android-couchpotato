@@ -47,7 +47,7 @@ public class MovieGridItem extends FrameLayout {
   public void bindTo(Movie movie, Picasso picasso, MovieClickListener movieClickListener) {
     this.movie = movie;
     this.movieClickListener = movieClickListener;
-    picasso.load(movie.poster()).fit().centerCrop().error(R.drawable.ic_error).into(image);
+    picasso.load(movie.poster()).fit().centerCrop().error(R.drawable.ic_launcher).into(image);
     title.setText(movie.title());
   }
 
