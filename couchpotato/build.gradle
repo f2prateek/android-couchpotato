@@ -100,10 +100,10 @@ dependencies {
   compile 'com.squareup.okhttp:okhttp:2.0.+'
   compile 'com.squareup.picasso:picasso:2.2.+'
 
-  compile 'com.netflix.rxjava:rxjava-core:0.17.+'
-  compile 'com.netflix.rxjava:rxjava-android:0.17.+'
+  compile 'com.netflix.rxjava:rxjava-core:0.18.+'
+  compile 'com.netflix.rxjava:rxjava-android:0.18.+'
 
-  compile 'com.jakewharton:butterknife:5.0.+'
+  compile 'com.jakewharton:butterknife:5.1.+'
   compile 'com.f2prateek.ln:ln:1.1.+'
   compile 'com.f2prateek.dart:dart:1.1.+'
   compile 'com.github.frankiesardo:android-auto-value:+'
@@ -118,8 +118,6 @@ dependencies {
 
   debugCompile 'com.jakewharton.madge:madge:1.1.+'
   debugCompile 'com.jakewharton.scalpel:scalpel:1.1.+'
-
-  compile 'com.android.support:support-v4:19.0.+'
 }
 
 checkstyle {
