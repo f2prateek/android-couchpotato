@@ -31,19 +31,23 @@ import com.f2prateek.couchpotato.ui.fragments.BaseGridFragment;
 import com.f2prateek.couchpotato.ui.widget.HeaderGridView;
 import com.f2prateek.dart.InjectExtra;
 
-import static com.f2prateek.couchpotato.ui.activities.MovieActivity.ARGS_MOVIE;
-
 /**
  * Common functionality for {@link com.f2prateek.couchpotato.ui.fragments.BaseGridFragment} that is
  * contained in a {@link com.f2prateek.couchpotato.ui.activities.MovieActivity}.
  */
 public abstract class MovieInfoGridFragment extends BaseGridFragment {
+  public static final int KEY_PAGE = R.id.key_page;
+  private static final String ARGS_PAGE = "page";
+  private static final String ARGS_MOVIE = "movie";
+
   @InjectExtra(ARGS_MOVIE) Movie minifiedMovie;
+  @InjectExtra(ARGS_PAGE) int page;
   AbsListView.OnScrollListener scrollListener;
 
-  public static Bundle newInstanceArgs(Movie movie) {
+  public static Bundle newInstanceArgs(Movie movie, int page) {
     Bundle args = new Bundle();
     args.putParcelable(ARGS_MOVIE, movie);
+    args.putInt(ARGS_PAGE, page);
     return args;
   }
 
@@ -68,6 +72,7 @@ public abstract class MovieInfoGridFragment extends BaseGridFragment {
     HeaderGridView gridView = ButterKnife.findById(root, R.id.collection_view);
     View placeholder = inflater.inflate(R.layout.movie_header_placeholder, gridView, false);
     gridView.addHeaderView(placeholder);
+    gridView.setTag(KEY_PAGE, page);
     return root;
   }
 

@@ -45,7 +45,6 @@ import com.f2prateek.couchpotato.data.rx.EndlessObserver;
 import com.f2prateek.couchpotato.ui.fragments.movie.MovieCastInfoFragment;
 import com.f2prateek.couchpotato.ui.fragments.movie.MovieCrewInfoFragment;
 import com.f2prateek.couchpotato.ui.fragments.movie.MovieInfoGridFragment;
-import com.f2prateek.couchpotato.ui.fragments.movie.MovieReviewsFragment;
 import com.f2prateek.couchpotato.ui.fragments.movie.MovieSimilarMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.movie.MovieVideosFragment;
 import com.f2prateek.couchpotato.ui.misc.AlphaForegroundColorSpan;
@@ -119,18 +118,17 @@ public class MovieActivity extends BaseActivity implements AbsListView.OnScrollL
     init();
     setupFancyScroll();
 
+    int page = 0;
     tabAdapter = new FragmentTabAdapter(this, pager);
     pager.setAdapter(tabAdapter);
     tabAdapter.addTab(MovieVideosFragment.class,
-        MovieInfoGridFragment.newInstanceArgs(minifiedMovie), R.string.videos);
+        MovieInfoGridFragment.newInstanceArgs(minifiedMovie, page++), R.string.videos);
     tabAdapter.addTab(MovieSimilarMoviesFragment.class,
-        MovieInfoGridFragment.newInstanceArgs(minifiedMovie), R.string.similar_movies);
+        MovieInfoGridFragment.newInstanceArgs(minifiedMovie, page++), R.string.similar_movies);
     tabAdapter.addTab(MovieCastInfoFragment.class,
-        MovieInfoGridFragment.newInstanceArgs(minifiedMovie), R.string.cast);
+        MovieInfoGridFragment.newInstanceArgs(minifiedMovie, page++), R.string.cast);
     tabAdapter.addTab(MovieCrewInfoFragment.class,
-        MovieInfoGridFragment.newInstanceArgs(minifiedMovie), R.string.crew);
-    tabAdapter.addTab(MovieReviewsFragment.class,
-        MovieInfoGridFragment.newInstanceArgs(minifiedMovie), R.string.reviews);
+        MovieInfoGridFragment.newInstanceArgs(minifiedMovie, page), R.string.crew);
 
     // Can't be configured via xml so done here!
     tabStrip.setTextColor(getResources().getColor(R.color.white));
@@ -328,11 +326,14 @@ public class MovieActivity extends BaseActivity implements AbsListView.OnScrollL
 
   @Override public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
       int totalItemCount) {
-    int scrollY = getScrollY(view);
-    movieHeader.setTranslationY(Math.max(-scrollY, minHeaderTranslation));
-    float ratio = clamp(movieHeader.getTranslationY() / minHeaderTranslation, 0.0f, 1.0f);
-    interpolate(moviePoster, actionBarIconView, smoothInterpolator.getInterpolation(ratio));
-    float alpha = clamp(5.0F * ratio - 4.0F, 0.0F, 1.0F);
-    setTitleAlpha(alpha);
+    if ((int) view.getTag(MovieInfoGridFragment.KEY_PAGE) == pager.getCurrentItem()) {
+      // Only do the scroll if the view is in the current page
+      int scrollY = getScrollY(view);
+      movieHeader.setTranslationY(Math.max(-scrollY, minHeaderTranslation));
+      float ratio = clamp(movieHeader.getTranslationY() / minHeaderTranslation, 0.0f, 1.0f);
+      interpolate(moviePoster, actionBarIconView, smoothInterpolator.getInterpolation(ratio));
+      float alpha = clamp(5.0F * ratio - 4.0F, 0.0F, 1.0F);
+      setTitleAlpha(alpha);
+    }
   }
 }
