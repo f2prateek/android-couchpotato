@@ -65,7 +65,7 @@ public class CouchPotatoDatabase {
    * Fetch all movies with the given status(es).
    */
   public Observable<List<Movie>> getMovies(final List<LibraryMovieStatus> statuses) {
-    String status = Strings.join(',', statuses);
+    String status = Strings.join(", ", statuses);
     return couchPotatoService.getMovies(status)
         .timeout(30, TimeUnit.SECONDS)
         .flatMap(new Func1<MoviesResponse, Observable<CouchPotatoMovie>>() {

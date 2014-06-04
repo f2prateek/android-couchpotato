@@ -108,7 +108,7 @@ public class RatingView extends View {
 
   public void setRating(int value) {
     this.value = value;
-    valueString = String.valueOf((int) value);
+    valueString = String.valueOf(value);
     textPaint.getTextBounds(valueString, 0, valueString.length(), textBounds);
     textWidth = textPaint.measureText(valueString);
     invalidate();
@@ -135,8 +135,8 @@ public class RatingView extends View {
     circlePaint.setStyle(Paint.Style.FILL);
     canvas.drawArc(circleBounds, 0, 360, false, circlePaint);
 
-    circlePaint.setStyle(Paint.Style.STROKE);
     circlePaint.setColor(circleBackgroundColor);
+    circlePaint.setStyle(Paint.Style.STROKE);
     canvas.drawArc(circleBounds, 0, 360, false, circlePaint);
 
     circlePaint.setColor(circleColor);

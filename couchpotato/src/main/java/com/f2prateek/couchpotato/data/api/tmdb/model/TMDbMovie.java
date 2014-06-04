@@ -188,6 +188,7 @@ public class TMDbMovie implements Parcelable, Configuration.Configurable {
 
   @Override public void setConfiguration(Configuration configuration) {
     // todo: implement
+    posterPath = configuration.getPosterUrl(posterPath);
   }
 
   @Override

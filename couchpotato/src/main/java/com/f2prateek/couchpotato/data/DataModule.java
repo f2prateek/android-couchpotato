@@ -22,12 +22,14 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import com.f2prateek.couchpotato.data.api.ApiModule;
+import com.f2prateek.couchpotato.util.Utils;
 import com.f2prateek.ln.Ln;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.HttpResponseCache;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.otto.Bus;
+import com.squareup.picasso.LruCache;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 import dagger.Module;
@@ -56,7 +58,8 @@ public final class DataModule {
   }
 
   @Provides @Singleton Picasso providePicasso(Application app, OkHttpClient client) {
-    return new Picasso.Builder(app).downloader(new OkHttpDownloader(client))
+    return new Picasso.Builder(app).memoryCache(new LruCache(Utils.calculateMemoryCacheSize(app)))
+        .downloader(new OkHttpDownloader(client))
         .listener(new Picasso.Listener() {
           @Override public void onImageLoadFailed(Picasso picasso, Uri uri, Exception e) {
             Ln.e(e, "Failed to load image: %s", uri);

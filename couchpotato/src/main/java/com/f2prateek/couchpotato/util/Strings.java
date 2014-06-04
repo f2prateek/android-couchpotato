@@ -35,7 +35,7 @@ public final class Strings {
     return string.length() > length ? string.substring(0, length) : string;
   }
 
-  public static String join(char token, List list) {
+  public static String join(String token, List list) {
     if (list.size() == 1) {
       return String.valueOf(list.get(0));
     }

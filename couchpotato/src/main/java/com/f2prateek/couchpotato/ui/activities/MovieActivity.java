@@ -45,6 +45,7 @@ import com.f2prateek.couchpotato.data.rx.EndlessObserver;
 import com.f2prateek.couchpotato.ui.fragments.movie.MovieCastInfoFragment;
 import com.f2prateek.couchpotato.ui.fragments.movie.MovieCrewInfoFragment;
 import com.f2prateek.couchpotato.ui.fragments.movie.MovieInfoGridFragment;
+import com.f2prateek.couchpotato.ui.fragments.movie.MovieOverviewInfoFragment;
 import com.f2prateek.couchpotato.ui.fragments.movie.MovieSimilarMoviesFragment;
 import com.f2prateek.couchpotato.ui.fragments.movie.MovieVideosFragment;
 import com.f2prateek.couchpotato.ui.misc.AlphaForegroundColorSpan;
@@ -121,6 +122,8 @@ public class MovieActivity extends BaseActivity implements AbsListView.OnScrollL
     int page = 0;
     tabAdapter = new FragmentTabAdapter(this, pager);
     pager.setAdapter(tabAdapter);
+    tabAdapter.addTab(MovieOverviewInfoFragment.class,
+        MovieOverviewInfoFragment.newInstanceArgs(minifiedMovie, page++), R.string.overview);
     tabAdapter.addTab(MovieVideosFragment.class,
         MovieInfoGridFragment.newInstanceArgs(minifiedMovie, page++), R.string.videos);
     tabAdapter.addTab(MovieSimilarMoviesFragment.class,
