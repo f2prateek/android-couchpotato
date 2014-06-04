@@ -22,11 +22,13 @@ import android.graphics.Bitmap;
 import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.TypedValue;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.AbsListView;
@@ -37,6 +39,9 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.f2prateek.couchpotato.Events;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.api.Movie;
+import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoDatabase;
+import com.f2prateek.couchpotato.data.api.couchpotato.CouchPotatoEndpoint;
+import com.f2prateek.couchpotato.data.api.couchpotato.model.profile.Profile;
 import com.f2prateek.couchpotato.data.api.tmdb.TMDbDatabase;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Backdrop;
 import com.f2prateek.couchpotato.data.api.tmdb.model.Images;
@@ -57,6 +62,8 @@ import com.f2prateek.couchpotato.util.Strings;
 import com.f2prateek.dart.InjectExtra;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,6 +90,8 @@ public class MovieActivity extends BaseActivity implements AbsListView.OnScrollL
 
   @Inject Picasso picasso;
   @Inject TMDbDatabase tmDbDatabase;
+  @Inject CouchPotatoDatabase couchPotatoDatabase;
+  @Inject CouchPotatoEndpoint couchPotatoEndpoint;
 
   FragmentTabAdapter tabAdapter;
   ShareActionProvider movieShareActionProvider;
@@ -102,6 +111,7 @@ public class MovieActivity extends BaseActivity implements AbsListView.OnScrollL
   private AlphaForegroundColorSpan alphaForegroundColorSpan;
   private SpannableString spannableString;
   private TypedValue typedValue = new TypedValue();
+  private MenuItem addMovieMenuItem;
 
   /** Create an intent to launch this activity. */
   public static Intent createIntent(Context context, Events.OnMovieClickedEvent event) {
@@ -159,6 +169,15 @@ public class MovieActivity extends BaseActivity implements AbsListView.OnScrollL
     subscribe(tmDbDatabase.getMovie(minifiedMovie.id()), new EndlessObserver<TMDbMovie>() {
           @Override public void onNext(TMDbMovie tmDbMovie) {
             setShareIntent(tmDbMovie);
+          }
+        }
+    );
+    subscribe(couchPotatoDatabase.getProfiles(), new EndlessObserver<List<Profile>>() {
+          @Override public void onNext(List<Profile> profiles) {
+            for (Profile profile : profiles) {
+              addMovieMenuItem.getSubMenu()
+                  .add(MENU_ADD_GROUP, profile.getId(), 0, profile.getLabel());
+            }
           }
         }
     );
@@ -304,7 +323,44 @@ public class MovieActivity extends BaseActivity implements AbsListView.OnScrollL
     getMenuInflater().inflate(R.menu.activity_movie, menu);
     movieShareActionProvider =
         (ShareActionProvider) menu.findItem(R.id.menu_share).getActionProvider();
+    addMovieMenuItem = menu.findItem(R.id.menu_add);
     return true;
+  }
+
+  @Override public boolean onPrepareOptionsMenu(Menu menu) {
+    if (couchPotatoEndpoint.isSet()) {
+      addMovieMenuItem.setEnabled(true);
+    }
+    return super.onPrepareOptionsMenu(menu);
+  }
+
+  private static final int MENU_ADD_GROUP = 23;
+
+  @Override public boolean onOptionsItemSelected(final MenuItem item) {
+    if (item.getGroupId() == MENU_ADD_GROUP) {
+      subscribe(tmDbDatabase.getMovie(minifiedMovie.id())
+              .flatMap(new Func1<TMDbMovie, Observable<Boolean>>() {
+                @Override public Observable<Boolean> call(TMDbMovie tmDbMovie) {
+                  return couchPotatoDatabase.addMovie(item.getItemId(), tmDbMovie.getImdbId());
+                }
+              }), new EndlessObserver<Boolean>() {
+            @Override public void onNext(Boolean aBoolean) {
+              if (aBoolean) {
+                Crouton.makeText(MovieActivity.this,
+                    getString(R.string.movie_added, minifiedMovie.title()), Style.CONFIRM).show();
+              } else {
+                // TODO : show error
+              }
+            }
+          }
+      );
+      return true;
+    }
+    if (item.getItemId() == android.R.id.home) {
+      NavUtils.navigateUpFromSameTask(this);
+      return true;
+    }
+    return super.onOptionsItemSelected(item);
   }
 
   private void setShareIntent(TMDbMovie movie) {

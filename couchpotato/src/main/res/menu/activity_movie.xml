@@ -17,6 +17,14 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:id="@+id/menu_add"
+      android:showAsAction="ifRoom"
+      android:icon="@drawable/ab_add"
+      android:enabled="false"
+      android:title="@string/add">
+    <menu>
+    </menu>
+  </item>
   <item
       android:id="@+id/menu_share"
       android:showAsAction="ifRoom"
