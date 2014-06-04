@@ -63,7 +63,6 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:gravity="center"
-      style="@android:style/TextAppearance.DeviceDefault.Medium"
       android:paddingTop="@dimen/holo_padding_small"
       android:paddingBottom="@dimen/holo_padding_small"
       tools:text="@string/movie_runtime"/>
