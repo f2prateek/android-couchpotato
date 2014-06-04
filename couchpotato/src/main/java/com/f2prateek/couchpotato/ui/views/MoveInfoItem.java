@@ -34,6 +34,7 @@ public class MoveInfoItem extends LinearLayout {
   @InjectView(R.id.movie_runtime) TextView runtime;
   @InjectView(R.id.movie_rating) RatingView rating;
   @InjectView(R.id.movie_genres) TextView genres;
+  @InjectView(R.id.movie_collections) TextView collections;
 
   public MoveInfoItem(Context context, AttributeSet attrs) {
     super(context, attrs);
@@ -51,5 +52,6 @@ public class MoveInfoItem extends LinearLayout {
         .format());
     rating.setRating((int) movie.getVoteAverage());
     genres.setText(Strings.join(", ", movie.getGenres()));
+    collections.setText(movie.getBelongsToCollection().displayText());
   }
 }

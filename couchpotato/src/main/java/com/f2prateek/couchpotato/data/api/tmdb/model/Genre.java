@@ -18,9 +18,10 @@ package com.f2prateek.couchpotato.data.api.tmdb.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.f2prateek.couchpotato.util.Strings;
 import com.google.gson.annotations.SerializedName;
 
-public class Genre implements Parcelable {
+public class Genre implements Parcelable, Strings.Displayable {
   private static final String FIELD_ID = "id";
   private static final String FIELD_NAME = "name";
 
@@ -73,8 +74,14 @@ public class Genre implements Parcelable {
     dest.writeString(name);
   }
 
-  @Override
-  public String toString() {
+  @Override public String toString() {
+    return "Genre{" +
+        "id=" + id +
+        ", name='" + name + '\'' +
+        '}';
+  }
+
+  @Override public String displayText() {
     return name;
   }
 }

@@ -31,6 +31,7 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.f2prateek.couchpotato.data.Util.md5;
+import static com.f2prateek.couchpotato.util.Strings.Displayable;
 
 public class CouchPotatoDatabase {
   private final CouchPotatoService couchPotatoService;
@@ -46,18 +47,24 @@ public class CouchPotatoDatabase {
         .subscribeOn(Schedulers.io());
   }
 
-  public enum LibraryMovieStatus {
+  public enum LibraryMovieStatus implements Displayable {
     WANTED("active"),
     SNATCHED("done");
 
-    String string;
+    String status;
 
-    LibraryMovieStatus(String string) {
-      this.string = string;
+    LibraryMovieStatus(String status) {
+      this.status = status;
     }
 
     @Override public String toString() {
-      return string;
+      return "LibraryMovieStatus{" +
+          "status='" + status + '\'' +
+          '}';
+    }
+
+    @Override public String displayText() {
+      return status;
     }
   }
 

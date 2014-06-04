@@ -61,4 +61,14 @@
       android:textStyle="italic"
       tools:text="Action, Adventure, Fantasy, Science Fiction"/>
 
+  <TextView
+      android:id="@+id/movie_collections"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:paddingTop="@dimen/holo_padding_large"
+      android:textStyle="italic"
+      tools:text="Action, Adventure, Fantasy, Science Fiction"/>
+
+
 </com.f2prateek.couchpotato.ui.views.MoveInfoItem>

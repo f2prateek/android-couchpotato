@@ -35,17 +35,21 @@ public final class Strings {
     return string.length() > length ? string.substring(0, length) : string;
   }
 
-  public static String join(String token, List list) {
+  public static String join(String token, List<? extends Displayable> list) {
     if (list.size() == 1) {
       return String.valueOf(list.get(0));
     }
     StringBuilder stringBuilder = new StringBuilder();
     for (int i = 0, size = list.size(); i < size; i++) {
-      stringBuilder.append(String.valueOf(list.get(i)));
+      stringBuilder.append(list.get(i).displayText());
       if (i != size - 1) {
         stringBuilder.append(token);
       }
     }
     return stringBuilder.toString();
+  }
+
+  public interface Displayable {
+    String displayText();
   }
 }

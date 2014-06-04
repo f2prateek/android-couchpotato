@@ -18,9 +18,11 @@ package com.f2prateek.couchpotato.data.api.tmdb.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.f2prateek.couchpotato.util.Strings;
 import com.google.gson.annotations.SerializedName;
 
-public class MovieCollection implements Parcelable, Configuration.Configurable {
+public class MovieCollection
+    implements Parcelable, Configuration.Configurable, Strings.Displayable {
   private static final String FIELD_ID = "id";
   private static final String FIELD_BACKDROP_PATH = "backdrop_path";
   private static final String FIELD_POSTER_PATH = "poster_path";
@@ -105,5 +107,9 @@ public class MovieCollection implements Parcelable, Configuration.Configurable {
         + posterPath
         + ", name = "
         + name;
+  }
+
+  @Override public String displayText() {
+    return name;
   }
 }
