@@ -97,11 +97,12 @@ dependencies {
   apt 'com.squareup.dagger:dagger-compiler:1.2.+'
 
   compile 'com.squareup.retrofit:retrofit:1.5.+'
-  compile 'com.squareup.okhttp:okhttp:1.5.+'
-  compile 'com.squareup.picasso:picasso:2.2.+'
+  compile 'com.squareup.okhttp:okhttp:1.6.+'
+  compile 'com.squareup.okhttp:okhttp-urlconnection:1.6.+'
+  compile 'com.squareup.picasso:picasso:2.3.+'
 
-  compile 'com.netflix.rxjava:rxjava-core:0.18.+'
-  compile 'com.netflix.rxjava:rxjava-android:0.18.+'
+  compile 'com.netflix.rxjava:rxjava-core:0.19.+'
+  compile 'com.netflix.rxjava:rxjava-android:0.19.+'
 
   compile 'com.jakewharton:butterknife:5.1.+'
   compile 'com.f2prateek.ln:ln:1.1.+'
