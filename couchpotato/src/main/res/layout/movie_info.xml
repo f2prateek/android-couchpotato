@@ -32,7 +32,7 @@
       style="@android:style/TextAppearance.DeviceDefault.Large"
       android:ellipsize="end"
       android:gravity="center"
-      android:padding="@dimen/holo_padding_medium"
+      android:textStyle="bold"
       tools:text="X-Men: Days of Future Past"/>
 
   <TextView
@@ -40,8 +40,9 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:gravity="center"
-      android:padding="@dimen/holo_padding_large"
       style="@android:style/TextAppearance.DeviceDefault.Medium"
+      android:paddingTop="@dimen/holo_padding_large"
+      android:paddingBottom="@dimen/holo_padding_large"
       android:fontFamily="sans-serif-condensed"
       tools:text="131 minutes"/>
 
@@ -49,7 +50,6 @@
       android:id="@+id/movie_rating"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:padding="@dimen/holo_padding_large"
       android:layout_gravity="center"/>
 
   <TextView
@@ -57,7 +57,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:gravity="center"
-      android:padding="@dimen/holo_padding_large"
+      android:paddingTop="@dimen/holo_padding_large"
       android:textStyle="italic"
       tools:text="Action, Adventure, Fantasy, Science Fiction"/>
 
