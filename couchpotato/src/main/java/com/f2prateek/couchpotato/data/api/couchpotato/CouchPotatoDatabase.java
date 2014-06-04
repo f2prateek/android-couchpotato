@@ -58,9 +58,7 @@ public class CouchPotatoDatabase {
     }
 
     @Override public String toString() {
-      return "LibraryMovieStatus{" +
-          "status='" + status + '\'' +
-          '}';
+      return "LibraryMovieStatus{" + "status='" + status + '\'' + '}';
     }
 
     @Override public String displayText() {

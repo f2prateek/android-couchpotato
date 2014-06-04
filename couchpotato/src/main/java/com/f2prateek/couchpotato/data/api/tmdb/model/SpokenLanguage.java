@@ -66,10 +66,7 @@ public class SpokenLanguage implements Parcelable, Strings.Displayable {
   }
 
   @Override public String toString() {
-    return "SpokenLanguage{" +
-        "iso6391='" + iso6391 + '\'' +
-        ", name='" + name + '\'' +
-        '}';
+    return "SpokenLanguage{" + "iso6391='" + iso6391 + '\'' + ", name='" + name + '\'' + '}';
   }
 
   @Override public String displayText() {

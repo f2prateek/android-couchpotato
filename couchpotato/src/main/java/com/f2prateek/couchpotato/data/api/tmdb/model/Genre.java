@@ -75,10 +75,7 @@ public class Genre implements Parcelable, Strings.Displayable {
   }
 
   @Override public String toString() {
-    return "Genre{" +
-        "id=" + id +
-        ", name='" + name + '\'' +
-        '}';
+    return "Genre{" + "id=" + id + ", name='" + name + '\'' + '}';
   }
 
   @Override public String displayText() {

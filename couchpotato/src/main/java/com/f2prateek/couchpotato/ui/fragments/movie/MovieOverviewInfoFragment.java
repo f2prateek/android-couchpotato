@@ -78,14 +78,17 @@ public class MovieOverviewInfoFragment extends MovieInfoGridFragment {
       switch (position) {
         case 0:
           return inflater.inflate(R.layout.movie_info, container, false);
+        default:
+          return null;
       }
-      return null;
     }
 
     @Override public void bindView(Object item, int position, View view) {
       switch (position) {
         case 0:
           ((MoveInfoItem) view).bindTo(movie, picasso);
+          break;
+        default:
           break;
       }
     }
