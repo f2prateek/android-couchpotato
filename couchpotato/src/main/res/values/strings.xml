@@ -48,8 +48,12 @@
   <string name="reviews">Reviews</string>
   <string name="no_items">No {items} available.</string>
   <string name="overview">Overview</string>
-  <string name="movie_runtime">{minutes} mins</string>
-  <string name="movie_vote_count">{vote_count}\nvotes</string>
+  <string name="movie_runtime"><b>{minutes}</b> mins</string>
+  <string name="movie_vote_count"><b>{vote_count}</b>\nVotes</string>
+  <string name="genres">Genres</string>
+  <string name="languages">Languages</string>
+  <string name="countries">Countries</string>
+  <string name="production_companies">Production Companies</string>
 
   <!-- Login Activity -->
   <string name="username_hint">Username</string>

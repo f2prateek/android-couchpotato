@@ -47,6 +47,15 @@
       android:paddingTop="@dimen/holo_padding_small"
       android:paddingBottom="@dimen/holo_padding_small"
       android:textStyle="italic"
+      tools:text="To save the future, they must alter the past"/>
+
+  <TextView
+      android:id="@+id/movie_collection"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:paddingTop="@dimen/holo_padding_small"
+      android:paddingBottom="@dimen/holo_padding_small"
       tools:text="X-Men Collection"/>
 
   <TextView
@@ -57,15 +66,14 @@
       style="@android:style/TextAppearance.DeviceDefault.Medium"
       android:paddingTop="@dimen/holo_padding_small"
       android:paddingBottom="@dimen/holo_padding_small"
-      android:fontFamily="sans-serif-condensed"
-      tools:text="131 minutes"/>
+      tools:text="@string/movie_runtime"/>
 
   <LinearLayout
       android:id="@+id/movie_rating_container"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:paddingTop="@dimen/holo_padding_small"
-      android:paddingBottom="@dimen/holo_padding_small"
+      android:paddingTop="@dimen/holo_padding_medium"
+      android:paddingBottom="@dimen/holo_padding_medium"
       android:orientation="horizontal">
 
     <TextView
@@ -74,8 +82,7 @@
         android:layout_weight="1"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:lines="2"
-        tools:text="236\nvotes"/>
+        tools:text="@string/movie_vote_count"/>
 
     <com.f2prateek.couchpotato.ui.widget.RatingView
         android:id="@+id/movie_rating"
@@ -90,59 +97,79 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:paddingTop="@dimen/holo_padding_large"
-        android:textStyle="italic"
         tools:text="Released"/>
 
   </LinearLayout>
+
+  <TextView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:gravity="center"
+      android:layout_gravity="center"
+      style="?android:listSeparatorTextViewStyle"
+      android:text="@string/genres"/>
 
   <TextView
       android:id="@+id/movie_genres"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:gravity="center"
-      android:paddingTop="@dimen/holo_padding_small"
+      android:paddingTop="@dimen/holo_padding_medium"
       android:paddingBottom="@dimen/holo_padding_small"
-      android:textStyle="italic"
       tools:text="Action, Adventure, Fantasy, Science Fiction"/>
 
   <TextView
-      android:id="@+id/movie_collection"
+      android:id="@+id/movie_languages_label"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_height="match_parent"
       android:gravity="center"
-      android:paddingTop="@dimen/holo_padding_small"
-      android:paddingBottom="@dimen/holo_padding_small"
-      android:textStyle="italic"
-      tools:text="X-Men Collection"/>
+      android:layout_gravity="center"
+      android:text="@string/languages"
+      style="?android:listSeparatorTextViewStyle"/>
 
   <TextView
       android:id="@+id/movie_languages"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:gravity="center"
-      android:paddingTop="@dimen/holo_padding_small"
+      android:paddingTop="@dimen/holo_padding_medium"
       android:paddingBottom="@dimen/holo_padding_small"
-      android:textStyle="italic"
       tools:text="English"/>
+
+  <TextView
+      android:id="@+id/movie_countries_label"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:gravity="center"
+      android:layout_gravity="center"
+      style="?android:listSeparatorTextViewStyle"
+      android:text="@string/countries"/>
 
   <TextView
       android:id="@+id/movie_countries"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:gravity="center"
-      android:paddingTop="@dimen/holo_padding_small"
+      android:paddingTop="@dimen/holo_padding_medium"
       android:paddingBottom="@dimen/holo_padding_small"
-      android:textStyle="italic"
       tools:text="Canada"/>
+
+  <TextView
+      android:id="@+id/movie_companies_label"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:gravity="center"
+      android:layout_gravity="center"
+      style="?android:listSeparatorTextViewStyle"
+      android:text="@string/production_companies"/>
 
   <TextView
       android:id="@+id/movie_companies"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:gravity="center"
-      android:paddingTop="@dimen/holo_padding_small"
+      android:paddingTop="@dimen/holo_padding_medium"
       android:paddingBottom="@dimen/holo_padding_small"
-      android:textStyle="italic"
       tools:text="Bad Hat Harry Productions"/>
 
 </com.f2prateek.couchpotato.ui.views.MoveInfoItem>
