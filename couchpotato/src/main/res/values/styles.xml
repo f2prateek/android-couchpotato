@@ -101,12 +101,12 @@
 
   <style name="Widget.RatingView" parent="None">
     <item name="textMargin">20dp</item>
-    <item name="textColor">@color/background</item>
+    <item name="textColor">@color/white</item>
     <item name="textSize">42sp</item>
     <item name="circleStrokeWidth">5dp</item>
-    <item name="maxValue">100</item>
-    <item name="circleColor">@color/background</item>
-    <item name="circleBackgroundColor">@color/background</item>
+    <item name="maxValue">10</item>
+    <item name="circleColor">@color/white</item>
+    <item name="circleBackgroundColor">@color/dark_grey</item>
   </style>
 
   <style name="Widget.CouchPotato.SmoothProgressBar" parent="SmoothProgressBar">
