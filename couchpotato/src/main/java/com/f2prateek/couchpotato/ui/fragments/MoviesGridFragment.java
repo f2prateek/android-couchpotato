@@ -25,14 +25,12 @@ import javax.inject.Inject;
  * A base fragment for displaying a grid of movies.
  */
 public abstract class MoviesGridFragment extends BaseGridFragment {
-  @Inject Picasso picasso;
-
   protected MovieGridAdapter adapter;
+  @Inject Picasso picasso;
 
   @Override public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
     adapter = new MovieGridAdapter(activityContext, picasso, bus);
     setAdapter(adapter);
   }
-
 }

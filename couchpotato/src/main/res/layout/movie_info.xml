@@ -115,7 +115,7 @@
       android:layout_height="wrap_content"
       android:gravity="center"
       android:paddingTop="@dimen/holo_padding_medium"
-      android:paddingBottom="@dimen/holo_padding_small"
+      android:paddingBottom="@dimen/holo_padding_large"
       tools:text="Action, Adventure, Fantasy, Science Fiction"/>
 
   <TextView
@@ -133,7 +133,7 @@
       android:layout_height="wrap_content"
       android:gravity="center"
       android:paddingTop="@dimen/holo_padding_medium"
-      android:paddingBottom="@dimen/holo_padding_small"
+      android:paddingBottom="@dimen/holo_padding_large"
       tools:text="English"/>
 
   <TextView
@@ -151,7 +151,7 @@
       android:layout_height="wrap_content"
       android:gravity="center"
       android:paddingTop="@dimen/holo_padding_medium"
-      android:paddingBottom="@dimen/holo_padding_small"
+      android:paddingBottom="@dimen/holo_padding_large"
       tools:text="Canada"/>
 
   <TextView
@@ -169,7 +169,6 @@
       android:layout_height="wrap_content"
       android:gravity="center"
       android:paddingTop="@dimen/holo_padding_medium"
-      android:paddingBottom="@dimen/holo_padding_small"
       tools:text="Bad Hat Harry Productions"/>
 
 </com.f2prateek.couchpotato.ui.views.MoveInfoItem>
