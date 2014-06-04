@@ -329,14 +329,15 @@ public class MovieActivity extends BaseActivity implements AbsListView.OnScrollL
 
   @Override public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
       int totalItemCount) {
-    if ((int) view.getTag(MovieInfoGridFragment.KEY_PAGE) == pager.getCurrentItem()) {
+    if ((int) view.getTag(MovieInfoGridFragment.KEY_PAGE) != pager.getCurrentItem()) {
       // Only do the scroll if the view is in the current page
-      int scrollY = getScrollY(view);
-      movieHeader.setTranslationY(Math.max(-scrollY, minHeaderTranslation));
-      float ratio = clamp(movieHeader.getTranslationY() / minHeaderTranslation, 0.0f, 1.0f);
-      interpolate(moviePoster, actionBarIconView, smoothInterpolator.getInterpolation(ratio));
-      float alpha = clamp(5.0F * ratio - 4.0F, 0.0F, 1.0F);
-      setTitleAlpha(alpha);
+      return;
     }
+    int scrollY = getScrollY(view);
+    movieHeader.setTranslationY(Math.max(-scrollY, minHeaderTranslation));
+    float ratio = clamp(movieHeader.getTranslationY() / minHeaderTranslation, 0.0f, 1.0f);
+    interpolate(moviePoster, actionBarIconView, smoothInterpolator.getInterpolation(ratio));
+    float alpha = clamp(5.0F * ratio - 4.0F, 0.0F, 1.0F);
+    setTitleAlpha(alpha);
   }
 }

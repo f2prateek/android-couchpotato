@@ -36,6 +36,15 @@
       tools:text="X-Men: Days of Future Past"/>
 
   <TextView
+      android:id="@+id/movie_tagline"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:paddingTop="@dimen/holo_padding_medium"
+      android:textStyle="italic"
+      tools:text="X-Men Collection"/>
+
+  <TextView
       android:id="@+id/movie_runtime"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -62,13 +71,48 @@
       tools:text="Action, Adventure, Fantasy, Science Fiction"/>
 
   <TextView
-      android:id="@+id/movie_collections"
+      android:id="@+id/movie_collection"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:gravity="center"
       android:paddingTop="@dimen/holo_padding_large"
       android:textStyle="italic"
-      tools:text="Action, Adventure, Fantasy, Science Fiction"/>
+      tools:text="X-Men Collection"/>
 
+  <TextView
+      android:id="@+id/movie_status"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:paddingTop="@dimen/holo_padding_large"
+      android:textStyle="italic"
+      tools:text="X-Men Collection"/>
+
+  <TextView
+      android:id="@+id/movie_languages"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:paddingTop="@dimen/holo_padding_large"
+      android:textStyle="italic"
+      tools:text="X-Men Collection"/>
+
+  <TextView
+      android:id="@+id/movie_countries"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:paddingTop="@dimen/holo_padding_large"
+      android:textStyle="italic"
+      tools:text="X-Men Collection"/>
+
+  <TextView
+      android:id="@+id/movie_companies"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:paddingTop="@dimen/holo_padding_large"
+      android:textStyle="italic"
+      tools:text="X-Men Collection"/>
 
 </com.f2prateek.couchpotato.ui.views.MoveInfoItem>

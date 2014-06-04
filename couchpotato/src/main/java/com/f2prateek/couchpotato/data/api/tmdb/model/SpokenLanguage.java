@@ -18,9 +18,10 @@ package com.f2prateek.couchpotato.data.api.tmdb.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.f2prateek.couchpotato.util.Strings;
 import com.google.gson.annotations.SerializedName;
 
-public class SpokenLanguage implements Parcelable {
+public class SpokenLanguage implements Parcelable, Strings.Displayable {
   private static final String FIELD_ISO_639_1 = "iso_639_1";
   private static final String FIELD_NAME = "name";
 
@@ -64,8 +65,14 @@ public class SpokenLanguage implements Parcelable {
     dest.writeString(name);
   }
 
-  @Override
-  public String toString() {
-    return "iso6391 = " + iso6391 + ", name = " + name;
+  @Override public String toString() {
+    return "SpokenLanguage{" +
+        "iso6391='" + iso6391 + '\'' +
+        ", name='" + name + '\'' +
+        '}';
+  }
+
+  @Override public String displayText() {
+    return name;
   }
 }

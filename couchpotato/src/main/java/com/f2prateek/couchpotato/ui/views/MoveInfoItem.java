@@ -31,10 +31,15 @@ import com.squareup.picasso.Picasso;
 
 public class MoveInfoItem extends LinearLayout {
   @InjectView(R.id.movie_title) TextView title;
+  @InjectView(R.id.movie_tagline) TextView tagline;
   @InjectView(R.id.movie_runtime) TextView runtime;
   @InjectView(R.id.movie_rating) RatingView rating;
   @InjectView(R.id.movie_genres) TextView genres;
-  @InjectView(R.id.movie_collections) TextView collections;
+  @InjectView(R.id.movie_collection) TextView collection;
+  @InjectView(R.id.movie_status) TextView status;
+  @InjectView(R.id.movie_languages) TextView languages;
+  @InjectView(R.id.movie_countries) TextView countries;
+  @InjectView(R.id.movie_companies) TextView companies;
 
   public MoveInfoItem(Context context, AttributeSet attrs) {
     super(context, attrs);
@@ -47,11 +52,25 @@ public class MoveInfoItem extends LinearLayout {
 
   public void bindTo(TMDbMovie movie, Picasso picasso) {
     title.setText(movie.getTitle());
+    if (!Strings.isBlank(movie.getTagline())) {
+      tagline.setText(movie.getTagline());
+    }
     runtime.setText(Phrase.from(getContext(), R.string.movie_runtime)
         .put("minutes", movie.getRuntime())
         .format());
     rating.setRating((int) movie.getVoteAverage());
     genres.setText(Strings.join(", ", movie.getGenres()));
-    collections.setText(movie.getBelongsToCollection().displayText());
+    if (!Strings.isBlank(movie.getBelongsToCollection().displayText())) {
+      collection.setText(movie.getBelongsToCollection().displayText());
+    }
+    if (!Strings.isBlank(movie.getStatus())) {
+      status.setText(movie.getStatus());
+    }
+    languages.setText(Strings.join(", ", movie.getSpokenLanguages()));
+    countries.setText(Strings.join(", ", movie.getProductionCountries()));
+    companies.setText(Strings.join(", ", movie.getProductionCompanies()));
+    // movie.getRevenue();
+    // movie.getReleaseDate();
+    movie.getPopularity();
   }
 }

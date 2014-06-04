@@ -37,7 +37,7 @@ public final class Strings {
 
   public static String join(String token, List<? extends Displayable> list) {
     if (list.size() == 1) {
-      return String.valueOf(list.get(0));
+      return list.get(0).displayText();
     }
     StringBuilder stringBuilder = new StringBuilder();
     for (int i = 0, size = list.size(); i < size; i++) {
