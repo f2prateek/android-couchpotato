@@ -51,9 +51,15 @@ public final class DebugDataModule {
     return new IntPreference(preferences, "debug_animation_speed", DEFAULT_ANIMATION_SPEED);
   }
 
-  @Provides @Singleton @PicassoDebugging BooleanPreference providePicassoDebugging(
+  @Provides @Singleton @PicassoIndicators BooleanPreference providePicassoIndicators(
       SharedPreferences preferences) {
-    return new BooleanPreference(preferences, "debug_picasso_debugging", DEFAULT_PICASSO_DEBUGGING);
+    return new BooleanPreference(preferences, "debug_picasso_indicators",
+        DEFAULT_PICASSO_DEBUGGING);
+  }
+
+  @Provides @Singleton @PicassoLogging BooleanPreference providePicassoLogging(
+      SharedPreferences preferences) {
+    return new BooleanPreference(preferences, "debug_picasso_logging", DEFAULT_PICASSO_DEBUGGING);
   }
 
   @Provides @Singleton @PixelGridEnabled BooleanPreference providePixelGridEnabled(

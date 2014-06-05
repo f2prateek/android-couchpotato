@@ -40,7 +40,8 @@ import com.f2prateek.couchpotato.CouchPotatoApplication;
 import com.f2prateek.couchpotato.R;
 import com.f2prateek.couchpotato.data.AnimationSpeed;
 import com.f2prateek.couchpotato.data.NetworkLoggingLevel;
-import com.f2prateek.couchpotato.data.PicassoDebugging;
+import com.f2prateek.couchpotato.data.PicassoIndicators;
+import com.f2prateek.couchpotato.data.PicassoLogging;
 import com.f2prateek.couchpotato.data.PixelGridEnabled;
 import com.f2prateek.couchpotato.data.PixelRatioEnabled;
 import com.f2prateek.couchpotato.data.ScalpelEnabled;
@@ -82,7 +83,8 @@ public class DebugAppContainer implements AppContainer {
   private final Picasso picasso;
   private final IntPreference networkLoggingLevel;
   private final IntPreference animationSpeed;
-  private final BooleanPreference picassoDebugging;
+  private final BooleanPreference picassoIndicators;
+  private final BooleanPreference picassoLogging;
   private final BooleanPreference pixelGridEnabled;
   private final BooleanPreference pixelRatioEnabled;
   private final BooleanPreference scalpelEnabled;
@@ -98,7 +100,8 @@ public class DebugAppContainer implements AppContainer {
   @Inject public DebugAppContainer(Picasso picasso,
       @NetworkLoggingLevel IntPreference networkLoggingLevel,
       @AnimationSpeed IntPreference animationSpeed,
-      @PicassoDebugging BooleanPreference picassoDebugging,
+      @PicassoIndicators BooleanPreference picassoIndicators,
+      @PicassoLogging BooleanPreference picassoLogging,
       @PixelGridEnabled BooleanPreference pixelGridEnabled,
       @PixelRatioEnabled BooleanPreference pixelRatioEnabled,
       @ScalpelEnabled BooleanPreference scalpelEnabled,
@@ -111,7 +114,8 @@ public class DebugAppContainer implements AppContainer {
     this.scalpelWireframeEnabled = scalpelWireframeEnabled;
     this.seenDebugDrawer = seenDebugDrawer;
     this.animationSpeed = animationSpeed;
-    this.picassoDebugging = picassoDebugging;
+    this.picassoIndicators = picassoIndicators;
+    this.picassoLogging = picassoLogging;
     this.pixelGridEnabled = pixelGridEnabled;
     this.pixelRatioEnabled = pixelRatioEnabled;
     this.couchPotatoRestAdapter = couchPotatoRestAdapter;
@@ -148,6 +152,7 @@ public class DebugAppContainer implements AppContainer {
   @InjectView(R.id.debug_device_api) TextView deviceApiView;
 
   @InjectView(R.id.debug_picasso_indicators) Switch picassoIndicatorView;
+  @InjectView(R.id.debug_picasso_logging) Switch picassoLoggingView;
   @InjectView(R.id.debug_picasso_cache_size) TextView picassoCacheSizeView;
   @InjectView(R.id.debug_picasso_cache_hit) TextView picassoCacheHitView;
   @InjectView(R.id.debug_picasso_cache_miss) TextView picassoCacheMissView;
@@ -335,14 +340,26 @@ public class DebugAppContainer implements AppContainer {
   }
 
   private void setupPicassoSection() {
-    boolean picassoDebuggingValue = picassoDebugging.get();
-    picasso.setDebugging(picassoDebuggingValue);
-    picassoIndicatorView.setChecked(picassoDebuggingValue);
+    boolean picassoIndicatorsValue = picassoIndicators.get();
+    picasso.setIndicatorsEnabled(picassoIndicatorsValue);
+    picassoIndicatorView.setChecked(picassoIndicatorsValue);
     picassoIndicatorView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
       @Override public void onCheckedChanged(CompoundButton button, boolean isChecked) {
-        Ln.d("Setting Picasso debugging to " + isChecked);
-        picasso.setDebugging(isChecked);
-        picassoDebugging.set(isChecked);
+        Ln.d("Setting Picasso Indicators to " + isChecked);
+        picasso.setIndicatorsEnabled(isChecked);
+        picassoIndicators.set(isChecked);
+      }
+    });
+
+    boolean picassoLoggingValue = picassoLogging.get();
+    picasso.setLoggingEnabled(picassoLoggingValue);
+    picasso.setIndicatorsEnabled(picassoLoggingValue);
+    picassoLoggingView.setChecked(picassoLoggingValue);
+    picassoLoggingView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+      @Override public void onCheckedChanged(CompoundButton button, boolean isChecked) {
+        Ln.d("Setting Picasso Logging to " + isChecked);
+        picasso.setLoggingEnabled(isChecked);
+        picassoLogging.set(isChecked);
       }
     });
 
