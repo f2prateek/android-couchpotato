@@ -22,8 +22,8 @@ apply plugin: 'crashlytics'
 apply plugin: 'android-apt'
 apply plugin: 'versions'
 
-def versionMajor = 1
-def versionMinor = 0
+def versionMajor = 0
+def versionMinor = 1
 def versionPatch = 0
 // bump for dogfood builds, public betas, etc.
 def versionBuild = 0
