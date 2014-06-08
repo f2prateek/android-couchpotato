@@ -50,6 +50,15 @@
       tools:text="To save the future, they must alter the past"/>
 
   <TextView
+      android:id="@+id/movie_plot"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:paddingTop="@dimen/holo_padding_small"
+      android:paddingBottom="@dimen/holo_padding_small"
+      tools:text="Wolverine races back in time to save the future they will never have."/>
+
+  <TextView
       android:id="@+id/movie_collection"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"

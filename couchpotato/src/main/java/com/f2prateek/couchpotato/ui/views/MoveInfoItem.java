@@ -43,6 +43,7 @@ import rx.schedulers.Schedulers;
 public class MoveInfoItem extends LinearLayout {
   @InjectView(R.id.movie_title) TextView title;
   @InjectView(R.id.movie_tagline) TextView tagline;
+  @InjectView(R.id.movie_plot) TextView plot;
   @InjectView(R.id.movie_runtime) TextView runtime;
   @InjectView(R.id.movie_rating_container) LinearLayout ratingContainer;
   @InjectView(R.id.movie_vote_count) TextView voteCount;
@@ -70,6 +71,8 @@ public class MoveInfoItem extends LinearLayout {
 
   public void bindTo(TMDbMovie movie, Picasso picasso) {
     title.setText(movie.getTitle());
+
+    plot.setText(movie.getOverview());
 
     if (Strings.isBlank(movie.getTagline())) {
       tagline.setVisibility(View.GONE);
@@ -146,10 +149,10 @@ public class MoveInfoItem extends LinearLayout {
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new EndlessObserver<ColorScheme>() {
-              @Override public void onNext(final ColorScheme colorScheme) {
-                rating.setColorScheme(colorScheme);
-              }
-            }
+                     @Override public void onNext(final ColorScheme colorScheme) {
+                       rating.setColorScheme(colorScheme);
+                     }
+                   }
         );
   }
 
